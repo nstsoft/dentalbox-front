@@ -1,0 +1,47 @@
+.toolbar-wrapper {
+  background-color: #008fba;
+  background-image: -webkit-linear-gradient(left, #008fba, #03c4e8);
+  background-image: -o-linear-gradient(left, #008fba, #03c4e8);
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#008fba),
+    to(#03c4e8)
+  );
+  background-image: linear-gradient(90deg, #008fba, #03c4e8);
+}
+
+.toolbar {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 0;
+  width: 100%;
+}
+
+.login-button,
+.create_cabinet {
+  background: transparent;
+  color: #fff;
+  border: none;
+
+  button {
+    font-size: 15px;
+    padding: 0 10px;
+    background: transparent;
+    height: 100%;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.logo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+}
