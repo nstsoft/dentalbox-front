@@ -1,8 +1,7 @@
+import "./auth.scss";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "../../components/Navbar/Navbar";
-
-import "./Auth.scss";
 
 export const Auth = () => {
   return (

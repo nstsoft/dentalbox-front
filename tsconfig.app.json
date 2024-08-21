@@ -18,7 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@types": ["./src/types/index.ts"],
+      "@api": ["./src/store/services/index.ts"],
+      "@store": ["./src/store/index.ts"],
+      "@hooks": ["./src/hooks/index.ts"]
+    }
   },
   "include": ["src"]
 }

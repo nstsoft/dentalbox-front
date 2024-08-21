@@ -1,19 +1,33 @@
-import { ChangeEvent, useState } from "react";
-import { signIn } from "../../api";
+import { ChangeEvent, useState, useEffect } from "react";
+import { useLoginMutation, LOGIN_CACHE_KEY } from "@api";
+import { useLocalStorage } from "@hooks";
 
 export const Login = () => {
-  const [userForm, setUserForm] = useState({ email: "", password: "" });
+  const [userForm, setUserForm] = useState({ login: "", password: "" });
+  const [, setAuthToken] = useLocalStorage("auth-token");
+  const [, setRefresh] = useLocalStorage("refresh-token");
+  const [, setUser] = useLocalStorage("user");
+  const [login, { data, status }] = useLoginMutation({
+    fixedCacheKey: LOGIN_CACHE_KEY,
+  });
+
+  useEffect(() => {
+    if (data && status === "fulfilled") {
+      setAuthToken(data.authToken);
+      setRefresh(data.refreshToken);
+      setUser(data.user);
+    }
+  }, [data, setAuthToken, setRefresh, setUser, status]);
+
   const signInInputs = [
     {
       id: "login",
-      label: "Email",
+      label: "Login",
       type: "text",
-      placeholder: "Email",
-      value: userForm.email,
+      placeholder: "Login",
+      value: userForm.login,
       onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setUserForm((prevState) => {
-          return { ...prevState, email: ev.target.value };
-        }),
+        setUserForm((prevState) => ({ ...prevState, login: ev.target.value })),
     },
     {
       id: "password",
@@ -22,19 +36,16 @@ export const Login = () => {
       placeholder: "Password",
       value: userForm.password,
       onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setUserForm((prevState) => {
-          return { ...prevState, password: ev.target.value };
-        }),
+        setUserForm((prevState) => ({
+          ...prevState,
+          password: ev.target.value,
+        })),
     },
   ];
 
-  const onSubmit = async () => {
-    try {
-      const user = await signIn(userForm.email, userForm.password);
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    login(userForm);
   };
 
   return (
