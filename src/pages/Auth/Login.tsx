@@ -1,15 +1,21 @@
 import { ChangeEvent, useState, useEffect } from "react";
-import { useLoginMutation, LOGIN_CACHE_KEY } from "@api";
-import { useLocalStorage } from "@hooks";
+import {
+  useLoginMutation,
+  LOGIN_CACHE_KEY,
+  useLazyLoginWithGoogleQuery,
+} from "@api";
+import { useLocalStorage, AUTH_TOKEN, REFRESH_TOKEN } from "@hooks";
 
 export const Login = () => {
   const [userForm, setUserForm] = useState({ login: "", password: "" });
-  const [, setAuthToken] = useLocalStorage("auth-token");
-  const [, setRefresh] = useLocalStorage("refresh-token");
+  const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
+  const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
   const [, setUser] = useLocalStorage("user");
   const [login, { data, status }] = useLoginMutation({
     fixedCacheKey: LOGIN_CACHE_KEY,
   });
+  const [loginWithGoogle, { data: googleRedirectUrl, status: googleStatus }] =
+    useLazyLoginWithGoogleQuery();
 
   useEffect(() => {
     if (data && status === "fulfilled") {
@@ -18,6 +24,12 @@ export const Login = () => {
       setUser(data.user);
     }
   }, [data, setAuthToken, setRefresh, setUser, status]);
+
+  useEffect(() => {
+    if (googleRedirectUrl && googleStatus === "fulfilled") {
+      window.location.href = googleRedirectUrl;
+    }
+  }, [googleStatus, googleRedirectUrl]);
 
   const signInInputs = [
     {
@@ -75,6 +87,11 @@ export const Login = () => {
           </div>
         </div>
       </form>
+      <div className="auth__form__login__submit">
+        <button className="btn btn-light" onClick={() => loginWithGoogle()}>
+          Sign In with google
+        </button>
+      </div>
     </div>
   );
 };

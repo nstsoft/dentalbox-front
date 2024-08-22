@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+export const AUTH_TOKEN = "auth-token";
+export const REFRESH_TOKEN = "refresh-token";
+
 export const useLocalStorage = (key: string, initialValue?: unknown) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {

@@ -15,9 +15,11 @@ export const authApi = createApi({
         method: "POST",
       }),
     }),
+
+    loginWithGoogle: builder.query<void, void>({ query: () => "/auth/google" }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useLazyLoginWithGoogleQuery } = authApi;
 export const LOGIN_CACHE_KEY = CACHE_KEYS.LOGIN;
 export default { authApi };

@@ -25,6 +25,13 @@ const router = createBrowserRouter([
               return { Component: SignUp };
             },
           },
+          {
+            path: "/auth/oauth2",
+            lazy: async () => {
+              const { Oauth2 } = await import("../pages/Auth/Oauth2");
+              return { Component: Oauth2 };
+            },
+          },
         ],
       },
     ],
