@@ -1,0 +1,66 @@
+name: Upload Website
+
+on:
+  push:
+    branches: ["development", "staging", "master"]
+
+jobs:
+  deploy-to-s3:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Set environment variable
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+            echo "ENV=PRODUCTION" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+            echo "ENV=STAGING" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+            echo "ENV=DEVELOPMENT" >> $GITHUB_ENV
+          fi
+
+      - name: Build environment variable
+        run: |
+          echo "BUCKET_VAR=BUCKET_${{env.ENV}}" >> $GITHUB_ENV
+          echo "DISTRIBUTION_VAR=DISTRIBUTION_${{env.ENV}}" >> $GITHUB_ENV
+          
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build app
+        run: NODE_ENV=${{env.ENVIRONMENT}} yarn build --mode ${{env.ENVIRONMENT}}
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./dist s3://${{vars[env.BUCKET_VAR]}} --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          if [ -n "${{ env.DISTRIBUTION }}" ]; then
+            echo "Invalidating CloudFront cache for distribution ${DISTRIBUTION_ID}"
+            aws cloudfront create-invalidation --distribution-id ${{ env.DISTRIBUTION }} --paths "/*"
+          else
+            echo "DISTRIBUTION environment variable is not set. Skipping CloudFront cache invalidation."
+          fi
+        shell: bash
+
+

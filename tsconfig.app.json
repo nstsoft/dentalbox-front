@@ -26,5 +26,5 @@
       "@hooks": ["./src/hooks/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "config"]
 }
