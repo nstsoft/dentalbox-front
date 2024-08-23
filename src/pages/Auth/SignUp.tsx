@@ -1,11 +1,8 @@
 import { ChangeEvent, useState } from "react";
-import { useGetMeQuery } from "@api";
 
 import { signUp } from "../../api";
 
 export const SignUp = () => {
-  const { data, status } = useGetMeQuery();
-  console.log({ data, status });
   const [userForm, setUserForm] = useState({
     name: "",
     email: "",
