@@ -27,6 +27,11 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/dashboard",
+        lazy: () =>
+          import("./pages").then(({ Dashboard }) => ({ Component: Dashboard })),
+      },
     ],
   },
 ]);

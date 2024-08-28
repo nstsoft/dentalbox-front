@@ -1,112 +1,86 @@
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
+import StepWizard from "react-step-wizard";
 
-import { signUp } from "../../api";
+import { UserData, UserPlan, Workspace } from "./Wizard";
+
+import transitionsStyles from "./Wizard/transitions.module.scss";
+import { useRegisterMutation } from "@api";
+import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 
 export const SignUp = () => {
-  const [userForm, setUserForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "",
+  const [state, setState] = useState({
+    user: {
+      name: "",
+      email: "",
+      password: "",
+      surname: "",
+      secondName: "",
+    },
+    workspace: {
+      name: "",
+      description: "",
+    },
+    plan: "",
   });
-  const [workspaceData, setWorkspaceData] = useState({
-    name: "",
-    description: "",
-  });
+  const transitions = {
+    enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
+    enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
+    exitRight: `${transitionsStyles.animated} ${transitionsStyles.exitRight}`,
+    exitLeft: `${transitionsStyles.animated} ${transitionsStyles.exitLeft}`,
+    intro: `${transitionsStyles.animated} ${transitionsStyles.intro}`,
+  };
+  const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
+  const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
+  const [, setUser] = useLocalStorage("user");
+  const [register, { data, status }] = useRegisterMutation();
+
+  useEffect(() => {
+    if (data && status === "fulfilled") {
+      setAuthToken(data.authToken);
+      setRefresh(data.refreshToken);
+      setUser(data.user);
+    }
+  }, [data, setAuthToken, setRefresh, setUser, status]);
+
+  const updateForm = (stateKey: string, value: string, key?: string) => {
+    const newState = { ...state };
+
+    if (key) {
+      newState[stateKey][key] = value;
+    } else {
+      newState[stateKey] = value;
+    }
+    setState({
+      ...newState,
+    });
+  };
 
   const onSubmit = async () => {
     try {
-      const user = await signUp(userForm, workspaceData);
-      console.log(user);
+      register(state);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const signUpInputs = [
-    {
-      id: "name",
-      label: "Name",
-      type: "text",
-      placeholder: "Name",
-      value: userForm.name,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setUserForm((prevState) => {
-          return { ...prevState, name: ev.target.value };
-        }),
-    },
-    {
-      id: "login",
-      label: "Email",
-      type: "text",
-      placeholder: "Email",
-      value: userForm.email,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setUserForm((prevState) => {
-          return { ...prevState, email: ev.target.value };
-        }),
-    },
-    {
-      id: "password",
-      label: "Password",
-      type: "password",
-      placeholder: "Password",
-      value: userForm.password,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setUserForm((prevState) => {
-          return { ...prevState, password: ev.target.value };
-        }),
-    },
-    {
-      id: "workspaceName",
-      label: "Workspace Name",
-      type: "text",
-      placeholder: "Workspace Name",
-      value: workspaceData.name,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setWorkspaceData((prevState) => {
-          return { ...prevState, name: ev.target.value };
-        }),
-    },
-    {
-      id: "workspaceDesc",
-      label: "Workspace Description",
-      type: "text",
-      placeholder: "Workspace Description",
-      value: workspaceData.description,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-        setWorkspaceData((prevState) => {
-          return { ...prevState, description: ev.target.value };
-        }),
-    },
-  ];
-
   return (
-    <form className="auth__form__cabinet" onSubmit={onSubmit}>
-      <div className="form-row">
-        {signUpInputs.map((input) => (
-          <div className="form-group col-sm-6 mb-2 w-100" key={input.id}>
-            <label htmlFor={input.id}>{input.label}</label>
-            <input
-              id={input.id}
-              className="form-control"
-              type={input.type}
-              required
-              value={input.value}
-              onChange={input.onChange}
-              placeholder={input.placeholder}
-            />
-          </div>
-        ))}
-        <div className="form-group col-sm-12 mt-4">
-          <button
-            type="submit"
-            className="btn btn-info auth__form__cabinet__submit"
-          >
-            Create Cabinet
-          </button>
-        </div>
-      </div>
-    </form>
+    <StepWizard transitions={transitions}>
+      <UserData
+        stepName="userData"
+        userForm={state.user}
+        onUpdate={updateForm}
+      />
+      <Workspace
+        stepName="workspace"
+        workspaceForm={state.workspace}
+        onUpdate={updateForm}
+      />
+      <UserPlan
+        stepName="userPlan"
+        plan={state.plan}
+        onUpdate={updateForm}
+        onSubmit={onSubmit}
+      />
+    </StepWizard>
   );
 };
