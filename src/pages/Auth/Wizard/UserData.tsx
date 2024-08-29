@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
 import type { UserForm } from "./types";
+import { useTranslation } from "react-i18next";
 
 interface IUserDataStepProps {
   userForm: UserForm;
@@ -11,13 +12,14 @@ export const UserData = (
   props: IUserDataStepProps & Partial<StepWizardChildProps>
 ) => {
   const { userForm, onUpdate, nextStep } = props;
+  const { t } = useTranslation();
 
   const signUpInputs = [
     {
       id: "name",
-      label: "Name",
+      label: t("signUpWizard.userData.name"),
       type: "text",
-      placeholder: "Name",
+      placeholder: t("signUpWizard.userData.name"),
       value: userForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ name: ev.target.value });
@@ -25,9 +27,9 @@ export const UserData = (
     },
     {
       id: "surname",
-      label: "Sur Name",
+      label: t("signUpWizard.userData.surname"),
       type: "text",
-      placeholder: "Sur Name",
+      placeholder: t("signUpWizard.userData.surname"),
       value: userForm.surname,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ surname: ev.target.value });
@@ -35,9 +37,9 @@ export const UserData = (
     },
     {
       id: "secondName",
-      label: "Second Name",
+      label: t("signUpWizard.userData.secondName"),
       type: "text",
-      placeholder: "Second Name",
+      placeholder: t("signUpWizard.userData.secondName"),
       value: userForm.secondName,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ secondName: ev.target.value });
@@ -45,9 +47,9 @@ export const UserData = (
     },
     {
       id: "email",
-      label: "Email",
+      label: t("signUpWizard.userData.email"),
       type: "email",
-      placeholder: "Email",
+      placeholder: t("signUpWizard.userData.email"),
       value: userForm.email,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ email: ev.target.value });
@@ -55,9 +57,9 @@ export const UserData = (
     },
     {
       id: "password",
-      label: "Password",
+      label: t("signUpWizard.userData.password"),
       type: "password",
-      placeholder: "Password",
+      placeholder: t("signUpWizard.userData.password"),
       value: userForm.password,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ password: ev.target.value });
@@ -95,7 +97,7 @@ export const UserData = (
             className="btn btn-info auth__form__cabinet__submit"
             onClick={onNext}
           >
-            Next
+            {t("signUpWizard.nextButton")}
           </button>
         </div>
       </div>

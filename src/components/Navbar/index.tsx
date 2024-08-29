@@ -1,18 +1,19 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import classes from "./Navbar.module.scss";
 
 export const Navbar = () => {
-  const location = useLocation();
+  const { t } = useTranslation();
   const navLinks = [
     {
       path: "/auth/login",
-      name: "Sign In",
+      name: t("navbar.signIn"),
       active: "login",
     },
     {
       path: "/auth/cabinet",
-      name: "Create Cabinet",
+      name: t("navbar.createCabinet"),
       active: "cabinet",
     },
   ];

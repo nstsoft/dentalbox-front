@@ -5,6 +5,7 @@ import {
   useLazyLoginWithGoogleQuery,
 } from "@api";
 import { useLocalStorage, AUTH_TOKEN, REFRESH_TOKEN } from "@hooks";
+import { useTranslation } from "react-i18next";
 
 export const Login = () => {
   const [userForm, setUserForm] = useState({ login: "", password: "" });
@@ -16,6 +17,7 @@ export const Login = () => {
   });
   const [loginWithGoogle, { data: googleRedirectUrl, status: googleStatus }] =
     useLazyLoginWithGoogleQuery();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (data && status === "fulfilled") {
@@ -34,18 +36,18 @@ export const Login = () => {
   const signInInputs = [
     {
       id: "login",
-      label: "Login",
+      label: t("loginPage.login"),
       type: "text",
-      placeholder: "Login",
+      placeholder: t("loginPage.login"),
       value: userForm.login,
       onChange: (ev: ChangeEvent<HTMLInputElement>) =>
         setUserForm((prevState) => ({ ...prevState, login: ev.target.value })),
     },
     {
       id: "password",
-      label: "Password",
+      label: t("loginPage.password"),
       type: "password",
-      placeholder: "Password",
+      placeholder: t("loginPage.password"),
       value: userForm.password,
       onChange: (ev: ChangeEvent<HTMLInputElement>) =>
         setUserForm((prevState) => ({
@@ -82,14 +84,14 @@ export const Login = () => {
           ))}
           <div className="auth__form__login__submit">
             <button className="btn btn-light" type="submit">
-              Sign In
+              {t("loginPage.signIn")}
             </button>
           </div>
         </div>
       </form>
       <div className="auth__form__login__submit">
         <button className="btn btn-light" onClick={() => loginWithGoogle()}>
-          Sign In with google
+          {t("loginPage.signInGoogle")}
         </button>
       </div>
     </div>

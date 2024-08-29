@@ -2,6 +2,7 @@ import { useGetPlansQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
 
 import "../auth.scss";
+import { useTranslation } from "react-i18next";
 
 interface IUserWorkspaceStepProps {
   plan: string;
@@ -14,10 +15,12 @@ export const UserPlan = (
 ) => {
   const { plan, onUpdate, onSubmit, previousStep, isActive } = props;
   const { data, status } = useGetPlansQuery();
+  const { t } = useTranslation();
 
   return (
     <form className="auth__form__cabinet" onSubmit={onSubmit}>
       <div className="form-row">
+        <h3>{t("signUpWizard.userPlan.title")}</h3>
         <div className="d-flex justify-content-between">
           {isActive &&
             data &&
@@ -39,14 +42,14 @@ export const UserPlan = (
             className="btn btn-info auth__form__cabinet__submit"
             onClick={previousStep}
           >
-            Previous
+            {t("signUpWizard.previousButton")}
           </button>
           <button
             type="button"
             className="btn btn-info auth__form__cabinet__submit"
             onClick={() => plan && onSubmit()}
           >
-            Create User
+            {t("signUpWizard.userPlan.createAccount")}
           </button>
         </div>
       </div>

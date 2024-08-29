@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { StepWizardChildProps } from "react-step-wizard";
 import { WorkspaceForm } from "./types";
 
@@ -13,13 +14,14 @@ export const Workspace = (
 ) => {
   const { workspaceForm, onUpdate, nextStep, previousStep, setWorkspaceImage } =
     props;
+  const { t } = useTranslation();
 
   const signUpInputs = [
     {
       id: "workspaceName",
-      label: "Workspace Name",
+      label: t("signUpWizard.workspace.name"),
       type: "text",
-      placeholder: "Workspace Name",
+      placeholder: t("signUpWizard.workspace.name"),
       required: true,
       value: workspaceForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
@@ -28,9 +30,9 @@ export const Workspace = (
     },
     {
       id: "description",
-      label: "Workspace Description",
+      label: t("signUpWizard.workspace.description"),
       type: "text",
-      placeholder: "Workspace Description",
+      placeholder: t("signUpWizard.workspace.description"),
       required: false,
       value: workspaceForm.description,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +68,8 @@ export const Workspace = (
         ))}
         <div className="mt-4">
           <label className="p-1">
-            Upload image
+            {t("signUpWizard.workspace.image")}
+
             <input
               type="file"
               onChange={({ target }) => {
@@ -81,13 +84,13 @@ export const Workspace = (
             className="btn btn-info auth__form__cabinet__submit"
             onClick={previousStep}
           >
-            Previous
+            {t("signUpWizard.previousButton")}
           </button>
           <button
             className="btn btn-info auth__form__cabinet__submit"
             onClick={onNext}
           >
-            Next
+            {t("signUpWizard.nextButton")}
           </button>
         </div>
       </div>
