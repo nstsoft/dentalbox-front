@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 import classes from "./Navbar.module.scss";
 
-const Navbar = () => {
+export const Navbar = () => {
   const location = useLocation();
   const navLinks = [
     {
@@ -41,5 +41,3 @@ const Navbar = () => {
     </div>
   );
 };
-
-export default Navbar;
