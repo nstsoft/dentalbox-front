@@ -1,13 +1,15 @@
 import { ChangeEvent, FormEvent } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
-import { UserRequest } from "../../../interfaces";
+import type { UserForm } from "./types";
 
 interface IUserDataStepProps {
-  userForm: UserRequest;
-  onUpdate: (key: string, value: string) => void;
+  userForm: UserForm;
+  onUpdate: (data: Partial<UserForm>) => void;
 }
 
-export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
+export const UserData = (
+  props: IUserDataStepProps & Partial<StepWizardChildProps>
+) => {
   const { userForm, onUpdate, nextStep } = props;
 
   const signUpInputs = [
@@ -18,7 +20,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Name",
       value: userForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("name", ev.target.value);
+        onUpdate({ name: ev.target.value });
       },
     },
     {
@@ -28,7 +30,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Sur Name",
       value: userForm.surname,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("surname", ev.target.value);
+        onUpdate({ surname: ev.target.value });
       },
     },
     {
@@ -38,7 +40,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Second Name",
       value: userForm.secondName,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("secondName", ev.target.value);
+        onUpdate({ secondName: ev.target.value });
       },
     },
     {
@@ -48,7 +50,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Email",
       value: userForm.email,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("email", ev.target.value);
+        onUpdate({ email: ev.target.value });
       },
     },
     {
@@ -58,7 +60,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Password",
       value: userForm.password,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("password", ev.target.value);
+        onUpdate({ password: ev.target.value });
       },
     },
   ];
@@ -67,7 +69,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
     event.preventDefault();
 
     if (userForm.name && userForm.email && userForm.password) {
-      nextStep();
+      nextStep?.();
     }
   };
 

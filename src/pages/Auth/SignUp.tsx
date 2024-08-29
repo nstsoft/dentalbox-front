@@ -1,26 +1,33 @@
 import { useEffect, useState } from "react";
 import StepWizard from "react-step-wizard";
 
-import { UserData, UserPlan, Workspace } from "./Wizard";
+import {
+  UserData,
+  UserPlan,
+  Workspace,
+  type UserForm,
+  type WorkspaceForm,
+} from "./Wizard";
 
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
 import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
+import { convertFileToBase64 } from "@utils";
 
 export const SignUp = () => {
-  const [userState, setUserState] = useState({
+  const [user, setUser] = useState<UserForm>({
     name: "",
     email: "",
     password: "",
     surname: "",
     secondName: "",
   });
-  const [workspaceState, setWorkspaceState] = useState({
+  const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
     description: "",
-    image: null,
   });
-  const [planState, setPlanState] = useState("");
+  const [workspaceImage, setWorkspaceImage] = useState<File>();
+  const [plan, setPlan] = useState("");
   const transitions = {
     enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
     enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
@@ -30,45 +37,56 @@ export const SignUp = () => {
   };
   const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
   const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
-  const [, setUser] = useLocalStorage("user");
+  const [, setUserToStorage] = useLocalStorage("user");
   const [register, { data, status }] = useRegisterMutation();
 
   useEffect(() => {
-    if (data && status === "fulfilled") {
+    if (status === "fulfilled") {
       setAuthToken(data.authToken);
       setRefresh(data.refreshToken);
-      setUser(data.user);
+      setUserToStorage(data.user);
     }
-  }, [data, setAuthToken, setRefresh, setUser, status]);
+  }, [data, setAuthToken, setRefresh, setUserToStorage, status]);
 
   const onSubmit = async () => {
-    try {
-      register({user: userState, workspace: workspaceState, plan: planState});
-    } catch (error) {
-      console.log(error);
-    }
+    const imageBase64 =
+      workspaceImage && (await convertFileToBase64(workspaceImage));
+    register({
+      user,
+      workspace,
+      plan,
+      workspaceImage: imageBase64,
+    });
   };
 
   return (
     <StepWizard transitions={transitions}>
       <UserData
         stepName="userData"
-        userForm={userState}
-        onUpdate={(key: string, value: string) =>
-          setUserState((prevState) => ({ ...prevState, [key]: value }))
+        hashKey={"userData"}
+        userForm={user}
+        onUpdate={(value: Partial<UserForm>) =>
+          setUser((prevState) => ({ ...prevState, ...value }))
         }
       />
       <Workspace
         stepName="workspace"
-        workspaceForm={workspaceState}
-        onUpdate={(key: string, value: any) =>
-          setWorkspaceState((prevState) => ({ ...prevState, [key]: value }))
-        }
+        hashKey={"workspace"}
+        workspaceForm={workspace}
+        onUpdate={(value: {
+          name?: string;
+          description?: string;
+          image?: null;
+        }) => {
+          setWorkspace((prevState) => ({ ...prevState, ...value }));
+        }}
+        setWorkspaceImage={setWorkspaceImage}
       />
       <UserPlan
+        hashKey={"userPlan"}
         stepName="userPlan"
-        plan={planState}
-        onUpdate={(value: string) => setPlanState(value)}
+        plan={plan}
+        onUpdate={(value: string) => setPlan(value)}
         onSubmit={onSubmit}
       />
     </StepWizard>

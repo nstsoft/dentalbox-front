@@ -1,28 +1,18 @@
 import { ChangeEvent, FormEvent } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
+import { WorkspaceForm } from "./types";
 
 interface IUserWorkspaceStepProps {
-  workspaceForm: {
-    name: string;
-    image: File | null;
-    description: string;
-  };
-  onUpdate: (key: string, value: any) => void;
+  workspaceForm: WorkspaceForm;
+  onUpdate: (data: Partial<WorkspaceForm>) => void;
+  setWorkspaceImage: (file: File) => void;
 }
 
 export const Workspace = (
-  props: IUserWorkspaceStepProps & StepWizardChildProps
+  props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { workspaceForm, onUpdate, nextStep, previousStep } = props;
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const image = event.target.files[0];
-      onUpdate("image", image);
-    }
-  };
+  const { workspaceForm, onUpdate, nextStep, previousStep, setWorkspaceImage } =
+    props;
 
   const signUpInputs = [
     {
@@ -33,7 +23,7 @@ export const Workspace = (
       required: true,
       value: workspaceForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("name", ev.target.value);
+        onUpdate({ name: ev.target.value });
       },
     },
     {
@@ -44,7 +34,7 @@ export const Workspace = (
       required: false,
       value: workspaceForm.description,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("description", ev.target.value);
+        onUpdate({ description: ev.target.value });
       },
     },
   ];
@@ -52,13 +42,8 @@ export const Workspace = (
   const onNext = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!workspaceForm.image) {
-      alert("Please select a file to upload.");
-      return;
-    }
-
     if (workspaceForm.name) {
-      nextStep();
+      nextStep?.();
     }
   };
 
@@ -82,7 +67,12 @@ export const Workspace = (
         <div className="mt-4">
           <label className="p-1">
             Upload image
-            <input type="file" onChange={handleFileChange} />
+            <input
+              type="file"
+              onChange={({ target }) => {
+                target.files?.[0] && setWorkspaceImage(target.files?.[0]);
+              }}
+            />
           </label>
         </div>
         <div className="form-group col-sm-12 mt-4 d-flex justify-content-between">

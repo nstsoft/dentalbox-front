@@ -3,6 +3,13 @@ import type { Auth, UserRequest, Workspace } from "@types";
 import { TAG, REDUCER, CACHE_KEYS } from "../constants";
 import { baseQuery } from "./baseQuery";
 
+type RegisterData = {
+  user: UserRequest;
+  workspace: Workspace;
+  plan: string;
+  workspaceImage?: string;
+};
+
 export const authApi = createApi({
   reducerPath: REDUCER.AUTH,
   tagTypes: [TAG.AUTH],
@@ -15,10 +22,7 @@ export const authApi = createApi({
         method: "POST",
       }),
     }),
-    register: builder.mutation<
-      Auth,
-      { user: UserRequest; workspace: Workspace; plan: string }
-    >({
+    register: builder.mutation<Auth, RegisterData>({
       query: (body) => ({
         body,
         url: "auth/register",

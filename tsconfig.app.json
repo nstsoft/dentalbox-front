@@ -24,7 +24,8 @@
       "@api": ["./src/store/services/index.ts"],
       "@store": ["./src/store/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
-      "@components": ["./src/components/index.ts"]
+      "@components": ["./src/components/index.ts"],
+      "@utils": ["./src/utils/index.ts"]
     }
   },
   "include": ["src", "config"]

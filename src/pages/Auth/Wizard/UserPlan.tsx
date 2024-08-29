@@ -10,14 +10,10 @@ interface IUserWorkspaceStepProps {
 }
 
 export const UserPlan = (
-  props: IUserWorkspaceStepProps & StepWizardChildProps
+  props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
   const { plan, onUpdate, onSubmit, previousStep, isActive } = props;
   const { data, status } = useGetPlansQuery();
-
-  const createAccount = () => {
-    plan && onSubmit();
-  };
 
   return (
     <form className="auth__form__cabinet" onSubmit={onSubmit}>
@@ -48,7 +44,7 @@ export const UserPlan = (
           <button
             type="button"
             className="btn btn-info auth__form__cabinet__submit"
-            onClick={createAccount}
+            onClick={() => plan && onSubmit()}
           >
             Create User
           </button>
