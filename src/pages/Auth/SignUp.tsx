@@ -8,20 +8,18 @@ import { useRegisterMutation } from "@api";
 import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 
 export const SignUp = () => {
-  const [state, setState] = useState({
-    user: {
-      name: "",
-      email: "",
-      password: "",
-      surname: "",
-      secondName: "",
-    },
-    workspace: {
-      name: "",
-      description: "",
-    },
-    plan: "",
+  const [userState, setUserState] = useState({
+    name: "",
+    email: "",
+    password: "",
+    surname: "",
+    secondName: "",
   });
+  const [workspaceState, setWorkspaceState] = useState({
+    name: "",
+    description: "",
+  });
+  const [planState, setPlanState] = useState("");
   const transitions = {
     enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
     enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
@@ -42,22 +40,9 @@ export const SignUp = () => {
     }
   }, [data, setAuthToken, setRefresh, setUser, status]);
 
-  const updateForm = (stateKey: string, value: string, key?: string) => {
-    const newState = { ...state };
-
-    if (key) {
-      newState[stateKey][key] = value;
-    } else {
-      newState[stateKey] = value;
-    }
-    setState({
-      ...newState,
-    });
-  };
-
   const onSubmit = async () => {
     try {
-      register(state);
+      register({user: userState, workspace: workspaceState, plan: planState});
     } catch (error) {
       console.log(error);
     }
@@ -67,18 +52,22 @@ export const SignUp = () => {
     <StepWizard transitions={transitions}>
       <UserData
         stepName="userData"
-        userForm={state.user}
-        onUpdate={updateForm}
+        userForm={userState}
+        onUpdate={(key: string, value: string) =>
+          setUserState((prevState) => ({ ...prevState, [key]: value }))
+        }
       />
       <Workspace
         stepName="workspace"
-        workspaceForm={state.workspace}
-        onUpdate={updateForm}
+        workspaceForm={workspaceState}
+        onUpdate={(key: string, value: string) =>
+          setWorkspaceState((prevState) => ({ ...prevState, [key]: value }))
+        }
       />
       <UserPlan
         stepName="userPlan"
-        plan={state.plan}
-        onUpdate={updateForm}
+        plan={planState}
+        onUpdate={(value: string) => setPlanState(value)}
         onSubmit={onSubmit}
       />
     </StepWizard>

@@ -4,7 +4,7 @@ import { UserRequest } from "../../../interfaces";
 
 interface IUserDataStepProps {
   userForm: UserRequest;
-  onUpdate: (stateKey: string, value: string, key?: string) => void;
+  onUpdate: (key: string, value: string) => void;
 }
 
 export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
@@ -18,7 +18,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Name",
       value: userForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("user", ev.target.value, "name");
+        onUpdate("name", ev.target.value);
       },
     },
     {
@@ -28,7 +28,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Sur Name",
       value: userForm.surname,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("user", ev.target.value, "surname");
+        onUpdate("surname", ev.target.value);
       },
     },
     {
@@ -38,7 +38,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Second Name",
       value: userForm.secondName,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("user", ev.target.value, "secondName");
+        onUpdate("secondName", ev.target.value);
       },
     },
     {
@@ -48,7 +48,7 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Email",
       value: userForm.email,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("user", ev.target.value, "email");
+        onUpdate("email", ev.target.value);
       },
     },
     {
@@ -58,15 +58,15 @@ export const UserData = (props: IUserDataStepProps & StepWizardChildProps) => {
       placeholder: "Password",
       value: userForm.password,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("user", ev.target.value, "password");
+        onUpdate("password", ev.target.value);
       },
     },
   ];
 
   const onNext = (event: FormEvent) => {
-    if (userForm.name && userForm.email && userForm.password) {
-      event.preventDefault();
+    event.preventDefault();
 
+    if (userForm.name && userForm.email && userForm.password) {
       nextStep();
     }
   };

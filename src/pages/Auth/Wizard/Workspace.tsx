@@ -6,7 +6,7 @@ interface IUserWorkspaceStepProps {
     name: string;
     description: string;
   };
-  onUpdate: (stateKey: string, value: string, key?: string) => void;
+  onUpdate: (key: string, value: string) => void;
 }
 
 export const Workspace = (
@@ -23,7 +23,7 @@ export const Workspace = (
       required: true,
       value: workspaceForm.name,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("workspace", ev.target.value, "name");
+        onUpdate("name", ev.target.value);
       },
     },
     {
@@ -34,14 +34,15 @@ export const Workspace = (
       required: false,
       value: workspaceForm.description,
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate("workspace", ev.target.value, "description");
+        onUpdate("description", ev.target.value);
       },
     },
   ];
 
   const onNext = (event: FormEvent) => {
+    event.preventDefault();
+
     if (workspaceForm.name) {
-      event.preventDefault();
       nextStep();
     }
   };

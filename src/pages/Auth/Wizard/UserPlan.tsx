@@ -5,7 +5,7 @@ import "../auth.scss";
 
 interface IUserWorkspaceStepProps {
   plan: string;
-  onUpdate: (stateKey: string, value: string, key?: string) => void;
+  onUpdate: (value: string) => void;
   onSubmit: () => void;
 }
 
@@ -14,12 +14,9 @@ export const UserPlan = (
 ) => {
   const { plan, onUpdate, onSubmit, previousStep, isActive } = props;
   const { data, status } = useGetPlansQuery();
-  console.log(data);
 
   const createAccount = () => {
-    if (plan) {
-      onSubmit();
-    }
+    plan && onSubmit();
   };
 
   return (
@@ -31,9 +28,9 @@ export const UserPlan = (
             data.map((availablePlan) => (
               <div
                 className={`col-sm-5 mb-2 mr-2 ml-2 bg-white p-2 rounded text-center ${
-                  availablePlan._id === plan && 'active'
+                  availablePlan._id === plan && "active"
                 }`}
-                onClick={() => onUpdate("plan", availablePlan._id)}
+                onClick={() => onUpdate(availablePlan._id)}
                 key={availablePlan._id}
               >
                 {availablePlan.name}
