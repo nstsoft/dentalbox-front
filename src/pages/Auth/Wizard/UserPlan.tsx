@@ -1,8 +1,21 @@
 import { useGetPlansQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
+import { Box, Paper, Grid2 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 import "../auth.scss";
 import { useTranslation } from "react-i18next";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
+  }),
+}));
 
 interface IUserWorkspaceStepProps {
   plan: string;
@@ -21,21 +34,21 @@ export const UserPlan = (
     <form className="auth__form__cabinet" onSubmit={onSubmit}>
       <div className="form-row">
         <h3>{t("signUpWizard.userPlan.title")}</h3>
-        <div className="d-flex justify-content-between">
-          {isActive &&
-            data &&
-            data.map((availablePlan) => (
-              <div
-                className={`col-sm-5 mb-2 mr-2 ml-2 bg-white p-2 rounded text-center ${
-                  availablePlan._id === plan && "active"
-                }`}
-                onClick={() => onUpdate(availablePlan._id)}
-                key={availablePlan._id}
-              >
-                {availablePlan.name}
-              </div>
+        <Box style={{ maxWidth: "900px" }} sx={{ flexGrow: 1 }}>
+          <Grid2 container spacing={2}>
+            {data?.map((availablePlan) => (
+              <Grid2 key={availablePlan._id} size={4}>
+                <Item onClick={() => onUpdate(availablePlan._id)}>
+                  <div>{availablePlan.name}</div>
+                  <div>{availablePlan.price}</div>
+                  <div>{availablePlan.totalMembers}</div>
+                  <div>{availablePlan.type}</div>
+                </Item>
+              </Grid2>
             ))}
-        </div>
+          </Grid2>
+        </Box>
+
         <div className="col-sm-12 mt-4 d-flex justify-content-between">
           <button
             type="button"
