@@ -4,15 +4,25 @@ import { StepWizardChildProps } from "react-step-wizard";
 interface IUserWorkspaceStepProps {
   workspaceForm: {
     name: string;
+    image: File | null;
     description: string;
   };
-  onUpdate: (key: string, value: string) => void;
+  onUpdate: (key: string, value: any) => void;
 }
 
 export const Workspace = (
   props: IUserWorkspaceStepProps & StepWizardChildProps
 ) => {
   const { workspaceForm, onUpdate, nextStep, previousStep } = props;
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const image = event.target.files[0];
+      onUpdate("image", image);
+    }
+  };
 
   const signUpInputs = [
     {
@@ -42,6 +52,11 @@ export const Workspace = (
   const onNext = (event: FormEvent) => {
     event.preventDefault();
 
+    if (!workspaceForm.image) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
     if (workspaceForm.name) {
       nextStep();
     }
@@ -64,6 +79,12 @@ export const Workspace = (
             />
           </div>
         ))}
+        <div className="mt-4">
+          <label className="p-1">
+            Upload image
+            <input type="file" onChange={handleFileChange} />
+          </label>
+        </div>
         <div className="form-group col-sm-12 mt-4 d-flex justify-content-between">
           <button
             type="button"

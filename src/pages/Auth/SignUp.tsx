@@ -18,6 +18,7 @@ export const SignUp = () => {
   const [workspaceState, setWorkspaceState] = useState({
     name: "",
     description: "",
+    image: null,
   });
   const [planState, setPlanState] = useState("");
   const transitions = {
@@ -60,7 +61,7 @@ export const SignUp = () => {
       <Workspace
         stepName="workspace"
         workspaceForm={workspaceState}
-        onUpdate={(key: string, value: string) =>
+        onUpdate={(key: string, value: any) =>
           setWorkspaceState((prevState) => ({ ...prevState, [key]: value }))
         }
       />
