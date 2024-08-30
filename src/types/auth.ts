@@ -10,3 +10,18 @@ export type Auth = {
   workspaces: Workspace[];
   subscription: Subscription;
 };
+
+export type AuthState = {
+  refreshToken: string;
+  user: User;
+  authToken: string;
+};
+
+export interface AuthContextType {
+  authToken: string | null;
+  refreshToken: string | null;
+  isLoggedIn: boolean;
+  user: User | null;
+  login: (data: AuthState) => void;
+  logout: () => void;
+}

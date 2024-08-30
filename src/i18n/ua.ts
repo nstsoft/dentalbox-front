@@ -2,7 +2,14 @@ import { ResourceLanguage } from "i18next";
 
 export const UA: ResourceLanguage = {
   translation: {
-    loginPage: {
+    buttons: {
+      cancel: "Відмінити",
+      next: "Вперед",
+      back: "Назад",
+      close: "Закрити",
+      submit: "Підтвердити",
+    },
+    login: {
       login: "Логін",
       loginPlaceholder: "Ваш емейл або телефон",
       passwordPlaceholder: "Пароль",
@@ -19,6 +26,8 @@ export const UA: ResourceLanguage = {
       resetPassword: "Скинути пароль",
       resetPasswordText:
         "Введіть свій емейл, і ми надішлемо вам посилання для скидання пароля.",
+      email: "Емейл",
+      invalidCredentials: "Неправильний логін або пароль",
     },
     navbar: {
       signIn: "Увійти",

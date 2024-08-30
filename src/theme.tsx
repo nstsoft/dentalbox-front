@@ -9,7 +9,9 @@ const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: {},
+        body: {
+          fontFamily: '"Inter regular", sans-serif',
+        },
       },
     },
   },

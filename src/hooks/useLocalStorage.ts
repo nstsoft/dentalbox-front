@@ -2,9 +2,12 @@ import { useState } from "react";
 
 export const AUTH_TOKEN = "auth-token";
 export const REFRESH_TOKEN = "refresh-token";
+export const USER = "user";
 
-export const useLocalStorage = (key: string, initialValue?: unknown) => {
-  const [storedValue, setStoredValue] = useState(() => {
+type KeyType = typeof AUTH_TOKEN | typeof REFRESH_TOKEN | typeof USER;
+
+export const useLocalStorage = <T>(key: KeyType, initialValue?: unknown) => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -14,7 +17,8 @@ export const useLocalStorage = (key: string, initialValue?: unknown) => {
     }
   });
 
-  const setValue = (value: unknown) => {
+  const setValue = (value: T) => {
+    if (!value) return;
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
@@ -25,5 +29,13 @@ export const useLocalStorage = (key: string, initialValue?: unknown) => {
     }
   };
 
-  return [storedValue, setValue];
+  const clear = () => {
+    window.localStorage.removeItem(key);
+  };
+
+  return [storedValue, setValue, clear] as [
+    T,
+    (value: T) => void,
+    clear: () => void
+  ];
 };

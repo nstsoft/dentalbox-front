@@ -4,7 +4,7 @@ import {
   LOGIN_CACHE_KEY,
   useLazyLoginWithGoogleQuery,
 } from "@api";
-import { useLocalStorage, AUTH_TOKEN, REFRESH_TOKEN } from "@hooks";
+import { useAuth } from "@hooks";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -13,12 +13,9 @@ import {
   Divider,
   FormControl,
   Link,
-  TextField,
   Typography,
-  FormLabel,
   InputAdornment,
   IconButton,
-  Input,
   OutlinedInput,
   InputLabel,
   FormHelperText,
@@ -28,35 +25,50 @@ import { ForgotPassword } from "./components";
 import { AuthContainer, Card } from "@components";
 import { validateLogin } from "@utils";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [loginForm, setLoginForm] = useState({ login: "", password: "" });
-  const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
-  const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
-  const [, setUser] = useLocalStorage("user");
-  const [login, { data, status }] = useLoginMutation({
+  const auth = useAuth();
+  const [login, { data, error, status }] = useLoginMutation({
     fixedCacheKey: LOGIN_CACHE_KEY,
   });
   const [loginWithGoogle, { data: googleRedirectUrl, status: googleStatus }] =
     useLazyLoginWithGoogleQuery();
-  const { t, i18n } = useTranslation("", { keyPrefix: "loginPage" });
+  const { t } = useTranslation("", { keyPrefix: "login" });
 
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoginError(null);
+    setAuthError(null);
+    setPasswordError(null);
+  }, [loginForm]);
 
   useEffect(() => {
     if (data && status === "fulfilled") {
-      setAuthToken(data.authToken);
-      setRefresh(data.refreshToken);
-      setUser(data.user);
+      auth.login(data);
+      navigate("/app");
     }
-  }, [data, setAuthToken, setRefresh, setUser, status]);
+  }, [data, status, error, auth, navigate]);
 
   useEffect(() => {
-    i18n.changeLanguage("ua");
-  });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const err = error as any;
+    if (err) {
+      const message =
+        err?.data?.error?.statusCode == 401
+          ? t("invalidCredentials")
+          : err?.data;
+
+      setAuthError(message);
+    }
+  }, [error, t]);
 
   useEffect(() => {
     if (googleRedirectUrl && googleStatus === "fulfilled") {
@@ -84,7 +96,56 @@ export const Login = () => {
 
   return (
     <section className="page">
-      <AuthContainer direction="column" justifyContent="space-between">
+      <AuthContainer direction="row" justifyContent="space-around">
+        <div style={{ maxWidth: "700px" }}>
+          <Typography variant="h5" gutterBottom textAlign="center">
+            {" "}
+            Welcome to Our Dental Management System{" "}
+          </Typography>
+          <Divider>{"!"}</Divider> <br></br>
+          <Typography gutterBottom textAlign="center">
+            Managing a dental practice has never been easier. Our comprehensive
+            platform helps you streamline every aspect of your dental practice,
+            from patient scheduling to billing and everything in between.
+          </Typography>
+          <Typography variant="h6" gutterBottom textAlign="left">
+            Key Features:
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Efficient Appointment Scheduling: Manage your appointments with an
+            intuitive calendar that integrates seamlessly with your practice’s
+            workflow. Reduce no-shows with automated reminders and optimize your
+            schedule to maximize patient visits.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Comprehensive Patient Records: Keep all your patient information in
+            one secure place. Our system allows you to easily access medical
+            histories, treatment plans, and digital x-rays, ensuring every visit
+            is smooth and personalized.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Automated Billing and Invoicing: Simplify your financial operations
+            with automated billing and invoicing. Our system supports multiple
+            payment methods, insurance claims processing, and provides real-time
+            financial insights to help you manage your practice’s cash flow
+            efficiently.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Patient Communication Tools: Enhance patient engagement with
+            built-in communication tools. Send appointment reminders, follow-up
+            care instructions, and health tips directly to your patients,
+            helping to build stronger relationships and improve overall care.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Secure and Compliant: Our system is designed with security and
+            compliance in mind. We ensure all patient data is protected with
+            state-of-the-art encryption and comply with all relevant healthcare
+            regulations.
+          </Typography>
+          Join hundreds of dental professionals who trust our system to help
+          them provide better care, improve practice efficiency, and grow their
+          business. Log in to get started!
+        </div>
         <Card variant="outlined">
           <Typography
             component="h1"
@@ -147,6 +208,7 @@ export const Login = () => {
               <FormHelperText error={!!passwordError}>
                 {passwordError}
               </FormHelperText>
+              <FormHelperText error={true}>{authError}</FormHelperText>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Link
                   component="button"
@@ -161,9 +223,10 @@ export const Login = () => {
                 </Link>
               </Box>
             </FormControl>
+
             <ForgotPassword open={open} handleClose={() => setOpen(false)} />
             <Button type="submit" fullWidth variant="contained">
-              Sign in
+              {t("signIn")}
             </Button>
             <Typography sx={{ textAlign: "center" }}>
               {t("dontHaveAccount")}{" "}
@@ -192,37 +255,6 @@ export const Login = () => {
           </Box>
         </Card>
       </AuthContainer>
-
-      {/* <form key="login__form" className="auth__form__login" onSubmit={onSubmit}>
-        <div className="login-for-block">
-          {signInInputs.map((input) => (
-            <div className="my-1" key={input.id}>
-              <label className="sr-only" htmlFor={input.id}>
-                {input.label}
-              </label>
-              <input
-                id={input.id}
-                className="form-control"
-                type={input.type}
-                required
-                value={input.value}
-                onChange={input.onChange}
-                placeholder={input.placeholder}
-              />
-            </div>
-          ))}
-          <div className="auth__form__login__submit">
-            <button className="btn btn-light" type="submit">
-              {t("signIn")}
-            </button>
-          </div>
-        </div>
-      </form>
-      <div className="auth__form__login__submit">
-        <button className="btn btn-light" onClick={() => loginWithGoogle()}>
-          {t("signInGoogle")}
-        </button>
-      </div> */}
     </section>
   );
 };

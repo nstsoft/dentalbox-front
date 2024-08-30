@@ -1,5 +1,6 @@
-import { useQuery, useLocalStorage, AUTH_TOKEN, REFRESH_TOKEN } from "@hooks";
+import { useQuery, useAuth } from "@hooks";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Query = {
   error?: string;
@@ -12,13 +13,22 @@ type Query = {
 
 export const Oauth2 = () => {
   const query: Query = useQuery();
-  const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
-  const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (query.status === "200") {
-      console.log(JSON.parse(query.user ?? "{}"));
-      setAuthToken(query.authToken);
-      setRefresh(query.refreshToken);
+    if (
+      query.status === "200" &&
+      query.authToken &&
+      query.refreshToken &&
+      query.user
+    ) {
+      login({
+        refreshToken: query.refreshToken,
+        authToken: query.authToken,
+        user: JSON.parse(query.user ?? "{}"),
+      });
+      navigate("/app");
     }
   });
 

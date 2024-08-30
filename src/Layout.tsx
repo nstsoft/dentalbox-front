@@ -5,6 +5,7 @@ export const Layout = () => {
   return (
     <section className="layout">
       <Navbar />
+
       <Outlet />
     </section>
   );

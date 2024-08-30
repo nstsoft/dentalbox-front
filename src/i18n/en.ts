@@ -2,7 +2,14 @@ import { ResourceLanguage } from "i18next";
 
 export const EN: ResourceLanguage = {
   translation: {
-    loginPage: {
+    buttons: {
+      cancel: "Cancel",
+      next: "Next",
+      back: "Back",
+      close: "Close",
+      submit: "Submit",
+    },
+    login: {
       login: "Login",
       loginPlaceholder: "Your email or phone number",
       passwordPlaceholder: "Password",
@@ -19,7 +26,10 @@ export const EN: ResourceLanguage = {
       resetPassword: "Reset Password",
       resetPasswordText:
         "Enter your account's email address, and we'll send you a link to reset your password.",
+      email: "Email",
+      invalidCredentials: "Invalid login or password",
     },
+
     navbar: {
       signIn: "Sign In",
       createCabinet: "Create Cabinet",
