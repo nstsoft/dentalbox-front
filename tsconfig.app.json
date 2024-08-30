@@ -25,7 +25,8 @@
       "@store": ["./src/store/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@components": ["./src/components/index.ts"],
-      "@utils": ["./src/utils/index.ts"]
+      "@utils": ["./src/utils/index.ts"],
+      "@assets": ["./src/assets/index.ts"]
     }
   },
   "include": ["src", "config"]
