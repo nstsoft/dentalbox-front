@@ -1,7 +1,17 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
 import type { UserForm } from "./types";
 import { useTranslation } from "react-i18next";
+import { Card } from "@components";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { validateLogin, validatePhone } from "@utils";
 
 interface IUserDataStepProps {
   userForm: UserForm;
@@ -13,6 +23,9 @@ export const UserData = (
 ) => {
   const { userForm, onUpdate, nextStep } = props;
   const { t } = useTranslation();
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const signUpInputs = [
     {
@@ -46,6 +59,17 @@ export const UserData = (
       },
     },
     {
+      id: "phone",
+      label: t("signUpWizard.userData.phone"),
+      type: "tel",
+      placeholder: t("signUpWizard.userData.phone"),
+      value: userForm.phone,
+      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+        onUpdate({ phone: ev.target.value });
+      },
+      error: phoneError,
+    },
+    {
       id: "email",
       label: t("signUpWizard.userData.email"),
       type: "email",
@@ -54,6 +78,7 @@ export const UserData = (
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ email: ev.target.value });
       },
+      error: emailError,
     },
     {
       id: "password",
@@ -64,43 +89,87 @@ export const UserData = (
       onChange: (ev: ChangeEvent<HTMLInputElement>) => {
         onUpdate({ password: ev.target.value });
       },
+      error: passwordError,
     },
   ];
 
   const onNext = (event: FormEvent) => {
     event.preventDefault();
 
-    if (userForm.name && userForm.email && userForm.password) {
+    if (validatePhone(userForm.phone)) {
+      setPhoneError(null);
+    } else {
+      setPhoneError("Please enter a valid phone number.");
+      return;
+    }
+
+    if (validateLogin(userForm.email)) {
+      setEmailError(null);
+    } else {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    if (userForm.password.length >= 6) {
+      setPasswordError(null);
       nextStep?.();
+    } else {
+      setPasswordError("Password must be at least 6 characters long.");
+      return;
     }
   };
 
   return (
-    <form className="auth__form__cabinet">
-      <div className="form-row">
-        {signUpInputs.map((input) => (
-          <div className="form-group col-sm-6 mb-2 w-100" key={input.id}>
-            <label htmlFor={input.id}>{input.label}</label>
-            <input
+    <Card variant="outlined">
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        {t("signUpWizard.userData.title")}
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={onNext}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 2,
+        }}
+      >
+        {signUpInputs.map((input, index) => (
+          <FormControl key={input.id}>
+            <FormLabel htmlFor={input.id}>{input.label}</FormLabel>
+            <TextField
+              error={!!input.error}
+              helperText={input.error}
               id={input.id}
-              className="form-control"
               type={input.type}
-              required
-              value={input.value}
-              onChange={input.onChange}
+              name={input.id}
               placeholder={input.placeholder}
+              autoFocus={index === 0}
+              required
+              fullWidth
+              onChange={input.onChange}
+              value={input.value}
+              variant="outlined"
+              color={input.error ? "error" : "primary"}
+              sx={{ ariaLabel: input.id }}
             />
-          </div>
+          </FormControl>
         ))}
-        <div className="form-group col-sm-12 mt-4 d-flex justify-content-end">
-          <button
-            className="btn btn-info auth__form__cabinet__submit"
-            onClick={onNext}
-          >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button type="submit" variant="contained">
             {t("signUpWizard.nextButton")}
-          </button>
-        </div>
-      </div>
-    </form>
+          </Button>
+        </Box>
+      </Box>
+    </Card>
   );
 };

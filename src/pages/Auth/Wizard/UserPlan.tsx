@@ -1,10 +1,11 @@
 import { useGetPlansQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
-import { Box, Paper, Grid2 } from "@mui/material";
+import { Box, Paper, Grid2, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
+import { Card } from "@components";
 
 import "../auth.scss";
-import { useTranslation } from "react-i18next";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -26,14 +27,28 @@ interface IUserWorkspaceStepProps {
 export const UserPlan = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { plan, onUpdate, onSubmit, previousStep, isActive } = props;
-  const { data, status } = useGetPlansQuery();
+  const { plan, onUpdate, onSubmit, previousStep } = props;
+  const { data } = useGetPlansQuery();
   const { t } = useTranslation();
 
   return (
-    <form className="auth__form__cabinet" onSubmit={onSubmit}>
-      <div className="form-row">
-        <h3>{t("signUpWizard.userPlan.title")}</h3>
+    <Card variant="outlined">
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        {t("signUpWizard.userPlan.title")}
+      </Typography>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 2,
+        }}
+      >
         <Box style={{ maxWidth: "900px" }} sx={{ flexGrow: 1 }}>
           <Grid2 container spacing={2}>
             {data?.map((availablePlan) => (
@@ -48,24 +63,20 @@ export const UserPlan = (
             ))}
           </Grid2>
         </Box>
-
-        <div className="col-sm-12 mt-4 d-flex justify-content-between">
-          <button
-            type="button"
-            className="btn btn-info auth__form__cabinet__submit"
-            onClick={previousStep}
-          >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button variant="contained" onClick={previousStep}>
             {t("signUpWizard.previousButton")}
-          </button>
-          <button
-            type="button"
-            className="btn btn-info auth__form__cabinet__submit"
-            onClick={() => plan && onSubmit()}
-          >
+          </Button>
+          <Button variant="contained" onClick={() => plan && onSubmit()}>
             {t("signUpWizard.userPlan.createAccount")}
-          </button>
-        </div>
-      </div>
-    </form>
+          </Button>
+        </Box>
+      </Box>
+    </Card>
   );
 };

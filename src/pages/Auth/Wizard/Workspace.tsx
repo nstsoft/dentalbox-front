@@ -2,6 +2,15 @@ import { ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { StepWizardChildProps } from "react-step-wizard";
 import { WorkspaceForm } from "./types";
+import { Card } from "@components";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 interface IUserWorkspaceStepProps {
   workspaceForm: WorkspaceForm;
@@ -44,56 +53,74 @@ export const Workspace = (
   const onNext = (event: FormEvent) => {
     event.preventDefault();
 
-    if (workspaceForm.name) {
-      nextStep?.();
-    }
+    nextStep?.();
   };
 
   return (
-    <form className="auth__form__cabinet">
-      <div className="form-row">
-        {signUpInputs.map((input) => (
-          <div className="form-group col-sm-6 mb-2 w-100" key={input.id}>
-            <label htmlFor={input.id}>{input.label}</label>
-            <input
+    <Card variant="outlined">
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        {t("signUpWizard.workspace.title")}
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={onNext}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 2,
+        }}
+      >
+        {signUpInputs.map((input, index) => (
+          <FormControl key={input.id}>
+            <FormLabel htmlFor={input.id}>{input.label}</FormLabel>
+            <TextField
               id={input.id}
-              className="form-control"
               type={input.type}
-              required={input.required}
-              value={input.value}
-              onChange={input.onChange}
+              name={input.id}
               placeholder={input.placeholder}
+              autoFocus={index === 0}
+              required={input.required}
+              fullWidth
+              onChange={input.onChange}
+              value={input.value}
+              variant="outlined"
+              sx={{ ariaLabel: input.id }}
             />
-          </div>
+          </FormControl>
         ))}
-        <div className="mt-4">
-          <label className="p-1">
+        <FormControl>
+          <FormLabel htmlFor="workspaceImage">
             {t("signUpWizard.workspace.image")}
-
-            <input
-              type="file"
-              onChange={({ target }) => {
-                target.files?.[0] && setWorkspaceImage(target.files?.[0]);
-              }}
-            />
-          </label>
-        </div>
-        <div className="form-group col-sm-12 mt-4 d-flex justify-content-between">
-          <button
-            type="button"
-            className="btn btn-info auth__form__cabinet__submit"
-            onClick={previousStep}
-          >
-            {t("signUpWizard.previousButton")}
-          </button>
-          <button
-            className="btn btn-info auth__form__cabinet__submit"
-            onClick={onNext}
-          >
+          </FormLabel>
+          <TextField
+            id="workspaceImage"
+            type="file"
+            name="workspaceImage"
+            required
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              e.target.files?.[0] && setWorkspaceImage(e.target.files?.[0]);
+            }}
+            variant="outlined"
+            sx={{ ariaLabel: "workspace image" }}
+          />
+        </FormControl>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button variant="outlined" onClick={previousStep}>{t("signUpWizard.previousButton")}</Button>
+          <Button type="submit" variant="contained">
             {t("signUpWizard.nextButton")}
-          </button>
-        </div>
-      </div>
-    </form>
+          </Button>
+        </Box>
+      </Box>
+    </Card>
   );
 };

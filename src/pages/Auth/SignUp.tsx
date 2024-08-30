@@ -13,6 +13,7 @@ import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
 import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 import { convertFileToBase64 } from "@utils";
+import { AuthContainer } from "../../components/AuthContainer";
 
 export const SignUp = () => {
   const [user, setUser] = useState<UserForm>({
@@ -21,6 +22,7 @@ export const SignUp = () => {
     password: "",
     surname: "",
     secondName: "",
+    phone: ""
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
@@ -60,35 +62,37 @@ export const SignUp = () => {
   };
 
   return (
-    <StepWizard transitions={transitions}>
-      <UserData
-        stepName="userData"
-        hashKey={"userData"}
-        userForm={user}
-        onUpdate={(value: Partial<UserForm>) =>
-          setUser((prevState) => ({ ...prevState, ...value }))
-        }
-      />
-      <Workspace
-        stepName="workspace"
-        hashKey={"workspace"}
-        workspaceForm={workspace}
-        onUpdate={(value: {
-          name?: string;
-          description?: string;
-          image?: null;
-        }) => {
-          setWorkspace((prevState) => ({ ...prevState, ...value }));
-        }}
-        setWorkspaceImage={setWorkspaceImage}
-      />
-      <UserPlan
-        hashKey={"userPlan"}
-        stepName="userPlan"
-        plan={plan}
-        onUpdate={(value: string) => setPlan(value)}
-        onSubmit={onSubmit}
-      />
-    </StepWizard>
+    <AuthContainer>
+      <StepWizard transitions={transitions}>
+        <UserData
+          stepName="userData"
+          hashKey={"userData"}
+          userForm={user}
+          onUpdate={(value: Partial<UserForm>) =>
+            setUser((prevState) => ({ ...prevState, ...value }))
+          }
+        />
+         <Workspace
+          stepName="workspace"
+          hashKey={"workspace"}
+          workspaceForm={workspace}
+          onUpdate={(value: {
+            name?: string;
+            description?: string;
+            image?: null;
+          }) => {
+            setWorkspace((prevState) => ({ ...prevState, ...value }));
+          }}
+          setWorkspaceImage={setWorkspaceImage}
+        />
+        <UserPlan
+          hashKey={"userPlan"}
+          stepName="userPlan"
+          plan={plan}
+          onUpdate={(value: string) => setPlan(value)}
+          onSubmit={onSubmit}
+        />
+      </StepWizard>
+    </AuthContainer>
   );
 };

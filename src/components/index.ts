@@ -1,3 +1,3 @@
 export * from "./Navbar";
-export * from "./SignInContainer";
+export * from "./AuthContainer";
 export * from "./Card";

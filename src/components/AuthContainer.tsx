@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 
 import { Stack } from "@mui/material";
 
-export const SignInContainer = styled(Stack)(({ theme }) => ({
+export const AuthContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
   padding: 20,
   backgroundImage:

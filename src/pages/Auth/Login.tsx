@@ -16,11 +16,18 @@ import {
   TextField,
   Typography,
   FormLabel,
+  InputAdornment,
+  IconButton,
+  Input,
+  OutlinedInput,
+  InputLabel,
+  FormHelperText,
 } from "@mui/material";
 import { GoogleIcon } from "@assets";
 import { ForgotPassword } from "./components";
-import { SignInContainer, Card } from "@components";
+import { AuthContainer, Card } from "@components";
 import { validateLogin } from "@utils";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const Login = () => {
   const [loginForm, setLoginForm] = useState({ login: "", password: "" });
@@ -32,10 +39,12 @@ export const Login = () => {
   });
   const [loginWithGoogle, { data: googleRedirectUrl, status: googleStatus }] =
     useLazyLoginWithGoogleQuery();
-  const { t } = useTranslation();
-  const [emailError, setEmailError] = useState<string | null>(null);
+  const { t, i18n } = useTranslation("", { keyPrefix: "loginPage" });
+
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (data && status === "fulfilled") {
@@ -46,6 +55,10 @@ export const Login = () => {
   }, [data, setAuthToken, setRefresh, setUser, status]);
 
   useEffect(() => {
+    i18n.changeLanguage("ua");
+  });
+
+  useEffect(() => {
     if (googleRedirectUrl && googleStatus === "fulfilled") {
       window.location.href = googleRedirectUrl;
     }
@@ -54,31 +67,31 @@ export const Login = () => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateLogin(loginForm.login)) {
-      setEmailError(null);
+      setLoginError(null);
     } else {
-      setEmailError("Please enter a valid email address.");
+      setLoginError(t("loginError"));
     }
     if (loginForm.password.length >= 6) {
       setPasswordError(null);
     } else {
-      setPasswordError("Password must be at least 6 characters long.");
+      setPasswordError(t("passwordError"));
     }
 
-    if (!passwordError && !emailError) {
+    if (!passwordError && !loginError) {
       login(loginForm);
     }
   };
 
   return (
     <section className="page">
-      <SignInContainer direction="column" justifyContent="space-between">
+      <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
             component="h1"
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Sign in
+            {t("signIn")}
           </Typography>
           <Box
             component="form"
@@ -91,30 +104,50 @@ export const Login = () => {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Login</FormLabel>
-              <TextField
-                error={!!emailError}
-                helperText={emailError}
-                id="login"
-                type="email"
-                name="email"
-                placeholder="Your email or phone"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                onChange={(el) => {
-                  setLoginForm((prev) => ({ ...prev, login: el.target.value }));
-                }}
+              <InputLabel htmlFor="login">{t("login")}</InputLabel>
+              <OutlinedInput
+                error={!!loginError}
+                id="outlined-login"
+                type="text"
+                onChange={(el) =>
+                  setLoginForm((p) => ({ ...p, login: el.target.value }))
+                }
                 value={loginForm.login}
-                variant="outlined"
-                color={emailError ? "error" : "primary"}
-                sx={{ ariaLabel: "email" }}
+                color={loginError ? "error" : "primary"}
+                name="login"
+                label="login"
               />
+              <FormHelperText error={!!loginError}>{loginError}</FormHelperText>
             </FormControl>
             <FormControl>
+              <InputLabel htmlFor="password">{t("password")}</InputLabel>
+              <OutlinedInput
+                error={!!passwordError}
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                onChange={(el) =>
+                  setLoginForm((p) => ({ ...p, password: el.target.value }))
+                }
+                value={loginForm.password}
+                color={passwordError ? "error" : "primary"}
+                name="password"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+              <FormHelperText error={!!passwordError}>
+                {passwordError}
+              </FormHelperText>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <FormLabel htmlFor="password">Password</FormLabel>
                 <Link
                   component="button"
                   onClick={(ev) => {
@@ -124,46 +157,28 @@ export const Login = () => {
                   variant="body2"
                   sx={{ alignSelf: "baseline" }}
                 >
-                  Forgot your password?
+                  {t("forgotPassword")}
                 </Link>
               </Box>
-              <TextField
-                error={!!passwordError}
-                helperText={passwordError}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                onChange={(el) =>
-                  setLoginForm((p) => ({ ...p, password: el.target.value }))
-                }
-                value={loginForm.password}
-                color={passwordError ? "error" : "primary"}
-              />
             </FormControl>
             <ForgotPassword open={open} handleClose={() => setOpen(false)} />
             <Button type="submit" fullWidth variant="contained">
               Sign in
             </Button>
             <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?
+              {t("dontHaveAccount")}{" "}
               <span>
                 <Link
                   href="/material-ui/getting-started/templates/sign-in/"
                   variant="body2"
                   sx={{ alignSelf: "center" }}
                 >
-                  Sign up
+                  {t("signUp")}
                 </Link>
               </span>
             </Typography>
           </Box>
-          <Divider>or</Divider>
+          <Divider>{t("or")}</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Button
               type="submit"
@@ -172,11 +187,11 @@ export const Login = () => {
               onClick={() => loginWithGoogle()}
               startIcon={<GoogleIcon />}
             >
-              Sign in with Google
+              {t("signInGoogle")}
             </Button>
           </Box>
         </Card>
-      </SignInContainer>
+      </AuthContainer>
 
       {/* <form key="login__form" className="auth__form__login" onSubmit={onSubmit}>
         <div className="login-for-block">
@@ -198,14 +213,14 @@ export const Login = () => {
           ))}
           <div className="auth__form__login__submit">
             <button className="btn btn-light" type="submit">
-              {t("loginPage.signIn")}
+              {t("signIn")}
             </button>
           </div>
         </div>
       </form>
       <div className="auth__form__login__submit">
         <button className="btn btn-light" onClick={() => loginWithGoogle()}>
-          {t("loginPage.signInGoogle")}
+          {t("signInGoogle")}
         </button>
       </div> */}
     </section>

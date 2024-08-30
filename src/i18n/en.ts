@@ -4,9 +4,21 @@ export const EN: ResourceLanguage = {
   translation: {
     loginPage: {
       login: "Login",
+      loginPlaceholder: "Your email or phone number",
+      passwordPlaceholder: "Password",
+      forgotPassword: "Forgot Password?",
+      loginError:
+        "Please enter a valid email address or phone number in the correct format.",
+      passwordError: "Password must be at least 6 characters long.",
       password: "Password",
       signIn: "Sign In",
+      or: "or",
+      dontHaveAccount: "Don't have an account?",
+      signUp: "Sign Up?",
       signInGoogle: "Sign In with Google",
+      resetPassword: "Reset Password",
+      resetPasswordText:
+        "Enter your account's email address, and we'll send you a link to reset your password.",
     },
     navbar: {
       signIn: "Sign In",
@@ -16,19 +28,22 @@ export const EN: ResourceLanguage = {
       nextButton: "Next",
       previousButton: "Previous",
       userData: {
+        title: "User Data",
         name: "Name",
         surname: "Surname",
         secondName: "Second Name",
         email: "Email",
         password: "Password",
+        phone: "Phone",
       },
       workspace: {
+        title: "Workspace Data",
         name: "Workspace Name",
         image: "Workspace Image",
         description: "Workspace Description",
       },
       userPlan: {
-        title: "Choose Plan",
+        title: "User Plan",
         createAccount: "Create User",
       },
     },

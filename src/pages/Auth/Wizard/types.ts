@@ -4,6 +4,7 @@ export type UserForm = {
   password: string;
   surname: string;
   secondName: string;
+  phone: string;
 };
 
 export type WorkspaceForm = {
