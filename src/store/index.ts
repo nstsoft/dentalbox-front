@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi, userApi } from "./api";
 import { planApi } from "./api/plan";
+import { workspaceApi } from "./api/workspace";
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [planApi.reducerPath]: planApi.reducer,
+    [workspaceApi.reducerPath]: workspaceApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -15,6 +17,7 @@ export const store = configureStore({
       authApi.middleware,
       userApi.middleware,
       planApi.middleware,
+      workspaceApi.middleware,
     ]),
 });
 

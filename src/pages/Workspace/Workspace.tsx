@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import { useLazyGetMeQuery, useLazyConfirmOtpQuery } from "@api";
+import {
+  useLazyGetMeQuery,
+  useLazyConfirmOtpQuery,
+  useLazyGetMyWorkspacesQuery,
+} from "@api";
 import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 
 export const WorkspacePage = () => {
-  const [getMe, { data: me, status }] = useLazyGetMeQuery();
-  const [confirmOtp, { isSuccess, error, status: confirmOtpStatus }] =
-    useLazyConfirmOtpQuery();
+  const [getMe, { status }] = useLazyGetMeQuery();
+  const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
+  const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
+    useLazyGetMyWorkspacesQuery();
   const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
 
-  const { workspaces, user, updateUser } = useAuth();
-
-  console.log({
-    confirmOtpStatus,
-    status,
-    user,
-  });
+  const { user, updateUser } = useAuth();
 
   useEffect(() => {
     if (user && isSuccess && !user?.isVerified) {
@@ -24,10 +23,16 @@ export const WorkspacePage = () => {
   }, [isSuccess, updateUser, user]);
 
   useEffect(() => {
-    if (status == "uninitialized" && user?.isVerified) {
+    if (!workspace && statusWorkspaces == "uninitialized") {
+      getMyWorkspaces();
+    }
+  }, [getMyWorkspaces, statusWorkspaces, workspace]);
+
+  useEffect(() => {
+    if (status == "uninitialized" && user?.isVerified && workspace) {
       getMe();
     }
-  }, [getMe, status, user?.isVerified]);
+  }, [getMe, status, user?.isVerified, workspace]);
 
   return (
     <section className="page workspace">

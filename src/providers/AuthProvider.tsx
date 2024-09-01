@@ -6,7 +6,7 @@ import { AuthContext } from "./context";
 const AUTH_TOKEN = "auth-token";
 const REFRESH_TOKEN = "refresh-token";
 const USER = "user";
-const WORKSPACES = "workspaces";
+const WORKSPACE = "workspace";
 
 export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(() => {
@@ -36,49 +36,34 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
       return null;
     }
   });
-  const [workspaces, setWorkspaces] = useState<
-    { name: string; _id: string }[] | null
-  >(() => {
-    try {
-      const item = localStorage.getItem(WORKSPACES);
-      return item ? JSON.parse(item) : null;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  });
 
   const login = useCallback(
     (data: AuthState) => {
       setAuthToken(data.authToken);
       setRefreshToken(data.refreshToken);
       setUser(data.user);
-      setWorkspaces(data.workspaces);
-      window.localStorage.setItem(
-        REFRESH_TOKEN,
-        JSON.stringify(data.refreshToken)
-      );
-      window.localStorage.setItem(AUTH_TOKEN, JSON.stringify(data.authToken));
-      window.localStorage.setItem(USER, JSON.stringify(data.user));
-      window.localStorage.setItem(WORKSPACES, JSON.stringify(data.workspaces));
+
+      localStorage.setItem(REFRESH_TOKEN, JSON.stringify(data.refreshToken));
+      localStorage.setItem(AUTH_TOKEN, JSON.stringify(data.authToken));
+      localStorage.setItem(USER, JSON.stringify(data.user));
     },
-    [setAuthToken, setRefreshToken, setUser, setWorkspaces]
+    [setAuthToken, setRefreshToken, setUser]
   );
 
   const logout = useCallback(() => {
     setAuthToken(null);
     setRefreshToken(null);
     setUser(null);
-    setWorkspaces(null);
-    window.localStorage.removeItem(REFRESH_TOKEN);
-    window.localStorage.removeItem(AUTH_TOKEN);
-    window.localStorage.removeItem(USER);
-    window.localStorage.removeItem(WORKSPACES);
+
+    localStorage.removeItem(REFRESH_TOKEN);
+    localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(USER);
+    localStorage.removeItem(WORKSPACE);
   }, []);
 
   const updateUser = useCallback((userData: User) => {
     setUser(userData);
-    window.localStorage.setItem(USER, JSON.stringify(userData));
+    localStorage.setItem(USER, JSON.stringify(userData));
   }, []);
 
   return (
@@ -86,7 +71,6 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
       value={{
         user,
         refreshToken,
-        workspaces,
         authToken,
         login,
         logout,

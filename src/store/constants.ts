@@ -3,12 +3,14 @@ export enum TAG {
   AUTH = "AUTH",
   LOGIN = "LOGIN",
   PLAN = "PLAN",
+  WORKSPACE = "WORKSPACE",
 }
 
 export enum REDUCER {
   USER = "USER",
   AUTH = "AUTH",
   PLAN = "PLAN",
+  WORKSPACE = "WORKSPACE",
 }
 
 export enum CACHE_KEYS {
