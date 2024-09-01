@@ -1,6 +1,6 @@
 import { type Subscription } from "./subscription";
 import { type User } from "./user";
-import { type Workspace } from "./workspace";
+import type { Workspace, WorkspaceShortenItem } from "./workspace";
 
 export type Auth = {
   authToken: string;
@@ -15,6 +15,7 @@ export type AuthState = {
   refreshToken: string;
   user: User;
   authToken: string;
+  workspaces: WorkspaceShortenItem[];
 };
 
 export interface AuthContextType {
@@ -22,6 +23,8 @@ export interface AuthContextType {
   refreshToken: string | null;
   isLoggedIn: boolean;
   user: User | null;
+  workspaces: WorkspaceShortenItem[] | null;
   login: (data: AuthState) => void;
+  updateUser: (user: User) => void;
   logout: () => void;
 }

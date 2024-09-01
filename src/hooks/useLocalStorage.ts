@@ -3,8 +3,13 @@ import { useState } from "react";
 export const AUTH_TOKEN = "auth-token";
 export const REFRESH_TOKEN = "refresh-token";
 export const USER = "user";
+export const WORKSPACE = "workspace";
 
-type KeyType = typeof AUTH_TOKEN | typeof REFRESH_TOKEN | typeof USER;
+type KeyType =
+  | typeof AUTH_TOKEN
+  | typeof REFRESH_TOKEN
+  | typeof USER
+  | typeof WORKSPACE;
 
 export const useLocalStorage = <T>(key: KeyType, initialValue?: unknown) => {
   const [storedValue, setStoredValue] = useState<T>(() => {

@@ -1,4 +1,4 @@
-import { useGetPlansQuery } from "@api";
+import { useGetPlansQuery } from "../../../store/api";
 import { StepWizardChildProps } from "react-step-wizard";
 import { Box, Paper, Grid2, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";

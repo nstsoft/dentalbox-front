@@ -16,18 +16,10 @@ export const authApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
     login: builder.mutation<Auth, { login: string; password: string }>({
-      query: (body) => ({
-        body,
-        url: "auth/login",
-        method: "POST",
-      }),
+      query: (body) => ({ body, url: "auth/login", method: "POST" }),
     }),
     register: builder.mutation<Auth, RegisterData>({
-      query: (body) => ({
-        body,
-        url: "auth/register",
-        method: "POST",
-      }),
+      query: (body) => ({ body, url: "auth/register", method: "POST" }),
     }),
 
     loginWithGoogle: builder.query<void, void>({ query: () => "/auth/google" }),

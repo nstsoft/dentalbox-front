@@ -22,7 +22,7 @@ export const SignUp = () => {
     password: "",
     surname: "",
     secondName: "",
-    phone: ""
+    phone: "",
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
@@ -72,7 +72,7 @@ export const SignUp = () => {
             setUser((prevState) => ({ ...prevState, ...value }))
           }
         />
-         <Workspace
+        <Workspace
           stepName="workspace"
           hashKey={"workspace"}
           workspaceForm={workspace}

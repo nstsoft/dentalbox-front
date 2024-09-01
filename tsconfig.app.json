@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@types": ["./src/types/index.ts"],
-      "@api": ["./src/store/services/index.ts"],
+      "@api": ["./src/store/api/index.ts"],
       "@store": ["./src/store/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@components": ["./src/components/index.ts"],

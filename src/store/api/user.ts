@@ -12,9 +12,19 @@ export const userApi = createApi({
       query: () => `/user/me`,
       providesTags: () => [{ type: TAG.USER }],
     }),
+    confirmOtp: builder.query<unknown, string>({
+      query: (otp) => ({
+        body: { otp },
+        url: `/user/verify-otp`,
+        method: "PATCH",
+      }),
+
+      providesTags: () => [{ type: TAG.USER }],
+    }),
   }),
 });
 
-export const { useGetMeQuery } = userApi;
+export const { useGetMeQuery, useLazyGetMeQuery, useLazyConfirmOtpQuery } =
+  userApi;
 
 export default { userApi };

@@ -8,6 +8,7 @@ export const EN: ResourceLanguage = {
       back: "Back",
       close: "Close",
       submit: "Submit",
+      resendOtp: "Resend otp",
     },
     login: {
       login: "Login",
@@ -29,7 +30,16 @@ export const EN: ResourceLanguage = {
       email: "Email",
       invalidCredentials: "Invalid login or password",
     },
-
+    selectWorkspace: {
+      workspaces: "Your Workspaces",
+      selectWorkspaceTest:
+        "Which workspace would you like to access? Please select one.",
+    },
+    confirmOtp: {
+      confirmOtp: "Confirm OTP Code",
+      confirmOtpText:
+        "To maintain access to the management platform and ensure your account's security, please verify your OTP code. This step is necessary to confirm your identity and continue using all the platform's features.",
+    },
     navbar: {
       signIn: "Sign In",
       createCabinet: "Create Cabinet",
