@@ -4,12 +4,14 @@ export const AUTH_TOKEN = "auth-token";
 export const REFRESH_TOKEN = "refresh-token";
 export const USER = "user";
 export const WORKSPACE = "workspace";
+export const LANGUAGE = "language";
 
 type KeyType =
   | typeof AUTH_TOKEN
   | typeof REFRESH_TOKEN
   | typeof USER
-  | typeof WORKSPACE;
+  | typeof WORKSPACE
+  | typeof LANGUAGE;
 
 export const useLocalStorage = <T>(key: KeyType, initialValue?: unknown) => {
   const [storedValue, setStoredValue] = useState<T>(() => {

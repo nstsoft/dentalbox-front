@@ -24,7 +24,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
           Component: Auth,
           children: [
             { path: "/auth/login", Component: Login },
-            { path: "/auth/cabinet", Component: SignUp },
+            { path: "/auth/sign-up", Component: SignUp },
             { path: "/auth/oauth2", Component: Oauth2 },
           ],
         },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   useLazyGetMeQuery,
   useLazyConfirmOtpQuery,
@@ -8,7 +8,7 @@ import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 
 export const WorkspacePage = () => {
-  const [getMe, { status }] = useLazyGetMeQuery();
+  const [getMe, { status, data: me }] = useLazyGetMeQuery();
   const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
     useLazyGetMyWorkspacesQuery();
@@ -33,6 +33,12 @@ export const WorkspacePage = () => {
       getMe();
     }
   }, [getMe, status, user?.isVerified, workspace]);
+
+  useEffect(() => {
+    if (me?.user?.role) {
+      updateUser(me?.user);
+    }
+  }, [me?.user, updateUser]);
 
   return (
     <section className="page workspace">

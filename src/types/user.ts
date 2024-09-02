@@ -22,7 +22,7 @@ export type UserRequest = {
 export type User = {
   email: string;
   password: string;
-  role: Role;
+  roles: Role[];
   _id: string;
   name: string;
   workspace: string;
@@ -37,4 +37,7 @@ export type User = {
   status: string;
   createdAt: Date;
   updatedAt: Date;
+  image?: string;
+  dob?: Date;
+  role?: UserRole;
 };

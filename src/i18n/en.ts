@@ -9,6 +9,8 @@ export const EN: ResourceLanguage = {
       close: "Close",
       submit: "Submit",
       resendOtp: "Resend otp",
+      login: "Login",
+      signUp: "Sign Up",
     },
     login: {
       login: "Login",
@@ -52,7 +54,7 @@ export const EN: ResourceLanguage = {
         secondName: "Second Name",
         email: "Email",
         password: "Password",
-        confirmPassword: 'Confirm Password',
+        confirmPassword: "Confirm Password",
         phone: "Phone",
         birthDate: "Birth Date",
       },
@@ -69,6 +71,12 @@ export const EN: ResourceLanguage = {
       subscriptionForm: {
         title: "Subscription Form",
       }
+    },
+    header: {
+      profile: "Profile",
+      dashboard: "Dashboard",
+      workspace: "workspace",
+      logout: "Logout",
     },
   },
 };

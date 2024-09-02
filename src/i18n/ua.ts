@@ -9,6 +9,8 @@ export const UA: ResourceLanguage = {
       close: "Закрити",
       submit: "Підтвердити",
       resendOtp: "Надіслати повторний код",
+      login: "Увійти",
+      signUp: "Зареєструватись",
     },
     login: {
       login: "Логін",
@@ -46,7 +48,7 @@ export const UA: ResourceLanguage = {
     },
     signUpWizard: {
       userData: {
-        title: "Дані користувача",
+        title: "Персональні дані",
         name: "Ім'я",
         surname: "Прізвище",
         secondName: "По батькові",
@@ -69,6 +71,12 @@ export const UA: ResourceLanguage = {
       subscriptionForm: {
         title: "Підписка",
       },
+    },
+    header: {
+      profile: "Профіль",
+      dashboard: "Дошка",
+      workspace: "Середовище",
+      logout: "Вийти",
     },
   },
 };

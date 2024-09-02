@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { User } from "@types";
+import type { User, Workspace, Subscription } from "@types";
 import { TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -8,7 +8,10 @@ export const userApi = createApi({
   tagTypes: [TAG.USER],
   baseQuery,
   endpoints: (builder) => ({
-    getMe: builder.query<User, void>({
+    getMe: builder.query<
+      { user: User; workspace: Workspace; subscription: Subscription },
+      void
+    >({
       query: () => `/user/me`,
       providesTags: () => [{ type: TAG.USER }],
     }),

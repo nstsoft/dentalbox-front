@@ -1,11 +1,10 @@
 import "./index.scss";
 import { Outlet } from "react-router-dom";
-import { Navbar } from "@components";
+import { Header } from "@components";
 export const Layout = () => {
   return (
     <section className="layout">
-      <Navbar />
-
+      <Header />
       <Outlet />
     </section>
   );

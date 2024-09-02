@@ -5,9 +5,11 @@ import { UA } from "./i18n/ua";
 
 const resources = { en: EN, ua: UA };
 
+const defaultLanguage = localStorage.getItem("language");
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en",
+  lng: defaultLanguage ? JSON.parse(defaultLanguage) : "ua",
   interpolation: { escapeValue: false },
 });
 
