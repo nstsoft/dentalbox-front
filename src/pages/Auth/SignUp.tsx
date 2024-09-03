@@ -3,7 +3,7 @@ import StepWizard from "react-step-wizard";
 
 import {
   UserData,
-  UserPlan,
+  UserProduct,
   Workspace,
   type UserForm,
   type WorkspaceForm,
@@ -22,14 +22,14 @@ export const SignUp = () => {
     password: "",
     surname: "",
     secondName: "",
-    phone: "",
+    phone: "+380",
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
     description: "",
   });
   const [workspaceImage, setWorkspaceImage] = useState<File>();
-  const [plan, setPlan] = useState("");
+  const [product, setProduct] = useState("");
   const transitions = {
     enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
     enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
@@ -56,7 +56,7 @@ export const SignUp = () => {
     register({
       user,
       workspace,
-      plan,
+      product,
       workspaceImage: imageBase64,
     });
   };
@@ -85,11 +85,11 @@ export const SignUp = () => {
           }}
           setWorkspaceImage={setWorkspaceImage}
         />
-        <UserPlan
-          hashKey={"userPlan"}
-          stepName="userPlan"
-          plan={plan}
-          onUpdate={(value: string) => setPlan(value)}
+        <UserProduct
+          hashKey={"userProduct"}
+          stepName="userProduct"
+          product={product}
+          onUpdate={(value: string) => setProduct(value)}
           onSubmit={onSubmit}
         />
       </StepWizard>

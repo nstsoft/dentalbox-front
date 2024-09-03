@@ -52,6 +52,7 @@ export const UA: ResourceLanguage = {
         secondName: "По батькові",
         email: "Електронна пошта",
         password: "Пароль",
+        confirmPassword: 'Підтвердіть пароль',
         phone: "Номер телефону",
       },
       workspace: {
@@ -59,8 +60,8 @@ export const UA: ResourceLanguage = {
         image: "Зображення кабінету",
         description: "Опис кабінету",
       },
-      userPlan: {
-        title: "Оберіть план",
+      userProduct: {
+        title: "Оберіть продукт",
         createAccount: "Створити користувача",
       },
     },

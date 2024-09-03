@@ -1,4 +1,4 @@
-import { useGetPlansQuery } from "../../../store/api";
+import { useGetProductsQuery } from "../../../store/api";
 import { StepWizardChildProps } from "react-step-wizard";
 import { Box, Paper, Grid2, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -19,16 +19,16 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 interface IUserWorkspaceStepProps {
-  plan: string;
+  product: string;
   onUpdate: (value: string) => void;
   onSubmit: () => void;
 }
 
-export const UserPlan = (
+export const UserProduct = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { plan, onUpdate, onSubmit, previousStep } = props;
-  const { data } = useGetPlansQuery();
+  const { product, onUpdate, onSubmit, previousStep } = props;
+  const { data } = useGetProductsQuery();
   const { t } = useTranslation();
 
   return (
@@ -38,7 +38,7 @@ export const UserPlan = (
         variant="h4"
         sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
       >
-        {t("signUpWizard.userPlan.title")}
+        {t("signUpWizard.userProduct.title")}
       </Typography>
       <Box
         component="form"
@@ -51,13 +51,13 @@ export const UserPlan = (
       >
         <Box style={{ maxWidth: "900px" }} sx={{ flexGrow: 1 }}>
           <Grid2 container spacing={2}>
-            {data?.map((availablePlan) => (
-              <Grid2 key={availablePlan._id} size={4}>
-                <Item onClick={() => onUpdate(availablePlan._id)}>
-                  <div>{availablePlan.name}</div>
-                  <div>{availablePlan.price}</div>
-                  <div>{availablePlan.totalMembers}</div>
-                  <div>{availablePlan.type}</div>
+            {data?.map((availableProduct) => (
+              <Grid2 key={availableProduct.id} size={4}>
+                <Item onClick={() => onUpdate(availableProduct.id)}>
+                  <div>{availableProduct.name}</div>
+                  <div>{availableProduct.amount}</div>
+                  <div>{availableProduct.currency}</div>
+                  <div>{availableProduct.interval}</div>
                 </Item>
               </Grid2>
             ))}
@@ -72,8 +72,8 @@ export const UserPlan = (
           <Button variant="contained" onClick={previousStep}>
             {t("signUpWizard.previousButton")}
           </Button>
-          <Button variant="contained" onClick={() => plan && onSubmit()}>
-            {t("signUpWizard.userPlan.createAccount")}
+          <Button variant="contained" onClick={() => product && onSubmit()}>
+            {t("signUpWizard.userProduct.createAccount")}
           </Button>
         </Box>
       </Box>

@@ -54,6 +54,7 @@ export const EN: ResourceLanguage = {
         secondName: "Second Name",
         email: "Email",
         password: "Password",
+        confirmPassword: 'Confirm Password',
         phone: "Phone",
       },
       workspace: {
@@ -62,8 +63,8 @@ export const EN: ResourceLanguage = {
         image: "Workspace Image",
         description: "Workspace Description",
       },
-      userPlan: {
-        title: "User Plan",
+      userProduct: {
+        title: "User Product",
         createAccount: "Create User",
       },
     },

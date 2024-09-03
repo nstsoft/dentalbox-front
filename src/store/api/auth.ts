@@ -1,12 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Auth, UserRequest, Workspace } from "@types";
+import type { Auth, UserRequest } from "@types";
 import { TAG, REDUCER, CACHE_KEYS } from "../constants";
 import { baseQuery } from "./baseQuery";
+import { WorkspaceForm } from "../../pages";
 
 type RegisterData = {
   user: UserRequest;
-  workspace: Workspace;
-  plan: string;
+  workspace: WorkspaceForm;
+  product: string;
   workspaceImage?: string;
 };
 

@@ -8,6 +8,8 @@ import {
   Button,
   FormControl,
   FormLabel,
+  InputLabel,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
@@ -75,20 +77,17 @@ export const Workspace = (
           gap: 2,
         }}
       >
-        {signUpInputs.map((input, index) => (
+        {signUpInputs.map((input) => (
           <FormControl key={input.id}>
-            <FormLabel htmlFor={input.id}>{input.label}</FormLabel>
-            <TextField
+            <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
+            <OutlinedInput
               id={input.id}
               type={input.type}
               name={input.id}
-              placeholder={input.placeholder}
-              autoFocus={index === 0}
+              label={input.label}
               required={input.required}
-              fullWidth
               onChange={input.onChange}
               value={input.value}
-              variant="outlined"
               sx={{ ariaLabel: input.id }}
             />
           </FormControl>
@@ -115,7 +114,9 @@ export const Workspace = (
             justifyContent: "space-between",
           }}
         >
-          <Button variant="outlined" onClick={previousStep}>{t("signUpWizard.previousButton")}</Button>
+          <Button variant="outlined" onClick={previousStep}>
+            {t("signUpWizard.previousButton")}
+          </Button>
           <Button type="submit" variant="contained">
             {t("signUpWizard.nextButton")}
           </Button>

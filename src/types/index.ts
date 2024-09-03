@@ -3,4 +3,4 @@ export * from "./user";
 export * from "./subscription";
 export * from "./workspace";
 export * from "./cabinet";
-export * from "./plan";
+export * from "./product";

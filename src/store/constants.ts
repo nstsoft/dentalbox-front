@@ -2,14 +2,14 @@ export enum TAG {
   USER = "USER",
   AUTH = "AUTH",
   LOGIN = "LOGIN",
-  PLAN = "PLAN",
+  PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
 }
 
 export enum REDUCER {
   USER = "USER",
   AUTH = "AUTH",
-  PLAN = "PLAN",
+  PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
 }
 

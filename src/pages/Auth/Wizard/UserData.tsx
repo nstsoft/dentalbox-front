@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
 import type { UserForm } from "./types";
 import { useTranslation } from "react-i18next";
@@ -7,11 +7,13 @@ import {
   Box,
   Button,
   FormControl,
-  FormLabel,
-  TextField,
+  FormHelperText,
+  InputLabel,
+  OutlinedInput,
   Typography,
 } from "@mui/material";
-import { validateLogin, validatePhone } from "@utils";
+import { validateLogin } from "@utils";
+import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 
 interface IUserDataStepProps {
   userForm: UserForm;
@@ -26,77 +28,98 @@ export const UserData = (
   const [emailError, setEmailError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<
+    string | null
+  >(null);
   const signUpInputs = [
     {
-      id: "name",
-      label: t("signUpWizard.userData.name"),
-      type: "text",
-      placeholder: t("signUpWizard.userData.name"),
-      value: userForm.name,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ name: ev.target.value });
-      },
+      name: "section1",
+      direction: "row",
+      content: [
+        {
+          id: "name",
+          label: t("signUpWizard.userData.name"),
+          type: "text",
+          value: userForm.name,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ name: ev.target.value });
+          },
+        },
+        {
+          id: "surname",
+          label: t("signUpWizard.userData.surname"),
+          type: "text",
+          value: userForm.surname,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ surname: ev.target.value });
+          },
+        },
+      ],
     },
     {
-      id: "surname",
-      label: t("signUpWizard.userData.surname"),
-      type: "text",
-      placeholder: t("signUpWizard.userData.surname"),
-      value: userForm.surname,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ surname: ev.target.value });
-      },
+      name: "section2",
+      direction: "row",
+      content: [
+        {
+          id: "secondName",
+          label: t("signUpWizard.userData.secondName"),
+          type: "text",
+          value: userForm.secondName,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ secondName: ev.target.value });
+          },
+        },
+        {
+          id: "phone",
+          label: t("signUpWizard.userData.phone"),
+          value: userForm.phone,
+          error: phoneError,
+        },
+      ],
     },
     {
-      id: "secondName",
-      label: t("signUpWizard.userData.secondName"),
-      type: "text",
-      placeholder: t("signUpWizard.userData.secondName"),
-      value: userForm.secondName,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ secondName: ev.target.value });
-      },
-    },
-    {
-      id: "phone",
-      label: t("signUpWizard.userData.phone"),
-      type: "tel",
-      placeholder: t("signUpWizard.userData.phone"),
-      value: userForm.phone,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ phone: ev.target.value });
-      },
-      error: phoneError,
-    },
-    {
-      id: "email",
-      label: t("signUpWizard.userData.email"),
-      type: "email",
-      placeholder: t("signUpWizard.userData.email"),
-      value: userForm.email,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ email: ev.target.value });
-      },
-      error: emailError,
-    },
-    {
-      id: "password",
-      label: t("signUpWizard.userData.password"),
-      type: "password",
-      placeholder: t("signUpWizard.userData.password"),
-      value: userForm.password,
-      onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        onUpdate({ password: ev.target.value });
-      },
-      error: passwordError,
+      name: "section3",
+      direction: "column",
+      content: [
+        {
+          id: "email",
+          label: t("signUpWizard.userData.email"),
+          type: "email",
+          value: userForm.email,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ email: ev.target.value });
+          },
+          error: emailError,
+        },
+        {
+          id: "password",
+          label: t("signUpWizard.userData.password"),
+          type: "password",
+          value: userForm.password,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ password: ev.target.value });
+          },
+          error: passwordError,
+        },
+        {
+          id: "confirmPassword",
+          label: t("signUpWizard.userData.confirmPassword"),
+          type: "password",
+          value: confirmPassword,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            setConfirmPassword(ev.target.value);
+          },
+          error: confirmPasswordError,
+        },
+      ],
     },
   ];
 
   const onNext = (event: FormEvent) => {
     event.preventDefault();
 
-    if (validatePhone(userForm.phone)) {
+    if (matchIsValidTel(userForm.phone)) {
       setPhoneError(null);
     } else {
       setPhoneError("Please enter a valid phone number.");
@@ -112,9 +135,16 @@ export const UserData = (
 
     if (userForm.password.length >= 6) {
       setPasswordError(null);
-      nextStep?.();
     } else {
       setPasswordError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    if (confirmPassword === userForm.password) {
+      setConfirmPasswordError(null);
+      nextStep?.();
+    } else {
+      setConfirmPasswordError("Password must be the same.");
       return;
     }
   };
@@ -138,26 +168,56 @@ export const UserData = (
           gap: 2,
         }}
       >
-        {signUpInputs.map((input, index) => (
-          <FormControl key={input.id}>
-            <FormLabel htmlFor={input.id}>{input.label}</FormLabel>
-            <TextField
-              error={!!input.error}
-              helperText={input.error}
-              id={input.id}
-              type={input.type}
-              name={input.id}
-              placeholder={input.placeholder}
-              autoFocus={index === 0}
-              required
-              fullWidth
-              onChange={input.onChange}
-              value={input.value}
-              variant="outlined"
-              color={input.error ? "error" : "primary"}
-              sx={{ ariaLabel: input.id }}
-            />
-          </FormControl>
+        {signUpInputs.map((section) => (
+          <Box
+            key={section.name}
+            sx={{
+              display: "flex",
+              gap: 1,
+              flexDirection: section.direction,
+              justifyContent: "space-between",
+            }}
+          >
+            {section.content.map((input) => (
+              <FormControl key={input.id}>
+                {input.id === "phone" ? (
+                  <Fragment key={input.id}>
+                    <MuiTelInput
+                      value={input.value}
+                      onChange={(newValue: string) =>
+                        onUpdate({ phone: newValue })
+                      }
+                      error={!!input.error}
+                      placeholder={input?.label}
+                      color={input.error ? "error" : "primary"}
+                    />
+                    <FormHelperText error={!!input.error}>
+                      {input.error}
+                    </FormHelperText>
+                  </Fragment>
+                ) : (
+                  <Fragment key={input.id}>
+                    <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
+                    <OutlinedInput
+                      error={!!input.error}
+                      id={input.id}
+                      type={input.type}
+                      required
+                      onChange={input.onChange}
+                      value={input.value}
+                      color={input.error ? "error" : "primary"}
+                      name={input.id}
+                      label={input.label}
+                      sx={{ ariaLabel: input.id }}
+                    />
+                    <FormHelperText error={!!input.error}>
+                      {input.error}
+                    </FormHelperText>
+                  </Fragment>
+                )}
+              </FormControl>
+            ))}
+          </Box>
         ))}
         <Box
           sx={{

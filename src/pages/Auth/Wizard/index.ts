@@ -1,4 +1,4 @@
 export * from "./UserData";
-export * from "./UserPlan";
+export * from "./UserProduct";
 export * from "./Workspace";
 export * from "./types";
