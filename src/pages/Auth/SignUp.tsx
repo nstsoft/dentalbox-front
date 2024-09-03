@@ -18,7 +18,6 @@ import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 import { convertFileToBase64 } from "@utils";
 import { AuthContainer } from "../../components/AuthContainer";
 
-
 export const SignUp = () => {
   const stripePromise = loadStripe("your-publishable-key-here");
   const [user, setUser] = useState<UserForm>({

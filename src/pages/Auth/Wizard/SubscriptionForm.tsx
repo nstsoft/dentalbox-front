@@ -9,7 +9,7 @@ import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { StripeCardElementOptions } from "@stripe/stripe-js";
 
-const SubscriptionForm = () => {
+export const SubscriptionForm = () => {
   const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
@@ -35,7 +35,7 @@ const SubscriptionForm = () => {
     });
 
     if (error) {
-      setMessage(error.message);
+      setMessage(error.message ?? '');
       return;
     }
 
@@ -114,5 +114,3 @@ const SubscriptionForm = () => {
     </Card>
   );
 };
-
-export default SubscriptionForm;
