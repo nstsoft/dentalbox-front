@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { validateLogin } from "@utils";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
+import { DatePicker } from "@mui/x-date-pickers";
+import moment, { Moment } from "moment";
 
 interface IUserDataStepProps {
   userForm: UserForm;
@@ -32,6 +34,7 @@ export const UserData = (
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
+  const [birthDateError, setBirthDateError] = useState<string | null>(null);
   const signUpInputs = [
     {
       name: "section1",
@@ -83,6 +86,15 @@ export const UserData = (
       direction: "column",
       content: [
         {
+          id: "birthDate",
+          label: t("signUpWizard.userData.birthDate"),
+          value: userForm.birthDate,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ email: ev.target.value });
+          },
+          error: birthDateError,
+        },
+        {
           id: "email",
           label: t("signUpWizard.userData.email"),
           type: "email",
@@ -123,6 +135,13 @@ export const UserData = (
       setPhoneError(null);
     } else {
       setPhoneError("Please enter a valid phone number.");
+      return;
+    }
+
+    if (userForm.birthDate && moment(userForm.birthDate).isValid()) {
+      setBirthDateError(null);
+    } else {
+      setBirthDateError("Please enter valid date.");
       return;
     }
 
@@ -180,22 +199,32 @@ export const UserData = (
           >
             {section.content.map((input) => (
               <FormControl key={input.id}>
-                {input.id === "phone" ? (
-                  <Fragment key={input.id}>
-                    <MuiTelInput
-                      value={input.value}
-                      onChange={(newValue: string) =>
-                        onUpdate({ phone: newValue })
-                      }
-                      error={!!input.error}
-                      placeholder={input?.label}
-                      color={input.error ? "error" : "primary"}
-                    />
-                    <FormHelperText error={!!input.error}>
-                      {input.error}
-                    </FormHelperText>
-                  </Fragment>
-                ) : (
+                {input.id === "phone" && (
+                  <MuiTelInput
+                    key={input.id}
+                    value={input.value}
+                    onChange={(newValue: string) =>
+                      onUpdate({ phone: newValue })
+                    }
+                    error={!!input.error}
+                    placeholder={input?.label}
+                    color={input.error ? "error" : "primary"}
+                  />
+                )}
+                {input.id === "birthDate" && (
+                  <DatePicker
+                    key={input.id}
+                    value={input.value ? moment(input.value) : null}
+                    onChange={(newValue: Moment | null) =>
+                      onUpdate({ birthDate: newValue?.toString() })
+                    }
+                    disableFuture
+                    onError={(err) =>
+                      setBirthDateError(err ? "Please enter valid date." : null)
+                    }
+                  />
+                )}
+                {input.id !== "phone" && input.id !== "birthDate" && (
                   <Fragment key={input.id}>
                     <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
                     <OutlinedInput
@@ -210,11 +239,11 @@ export const UserData = (
                       label={input.label}
                       sx={{ ariaLabel: input.id }}
                     />
-                    <FormHelperText error={!!input.error}>
-                      {input.error}
-                    </FormHelperText>
                   </Fragment>
                 )}
+                <FormHelperText error={!!input.error}>
+                  {input.error}
+                </FormHelperText>
               </FormControl>
             ))}
           </Box>

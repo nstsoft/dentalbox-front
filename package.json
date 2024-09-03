@@ -17,6 +17,8 @@
     "@mui/styled-engine-sc": "^6.0.1",
     "@mui/x-date-pickers": "^7.15.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.4.0",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",

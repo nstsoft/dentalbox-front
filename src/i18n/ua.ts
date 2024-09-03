@@ -8,6 +8,7 @@ export const UA: ResourceLanguage = {
       back: "Назад",
       close: "Закрити",
       submit: "Підтвердити",
+      resendOtp: "Надіслати повторний код",
     },
     login: {
       login: "Логін",
@@ -47,15 +48,18 @@ export const UA: ResourceLanguage = {
       nextButton: "Далі",
       previousButton: "Назад",
       userData: {
+        title: "Дані користувача",
         name: "Ім'я",
         surname: "Прізвище",
         secondName: "По батькові",
         email: "Електронна пошта",
         password: "Пароль",
-        confirmPassword: 'Підтвердіть пароль',
+        confirmPassword: "Підтвердіть пароль",
         phone: "Номер телефону",
+        birthDate: "Дата народження",
       },
       workspace: {
+        title: "Виберіть кабінет",
         name: "Назва кабінету",
         image: "Зображення кабінету",
         description: "Опис кабінету",
@@ -63,6 +67,9 @@ export const UA: ResourceLanguage = {
       userProduct: {
         title: "Оберіть продукт",
         createAccount: "Створити користувача",
+      },
+      subscriptionForm: {
+        title: "Підписка",
       },
     },
   },

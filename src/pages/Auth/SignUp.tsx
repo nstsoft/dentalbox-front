@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import StepWizard from "react-step-wizard";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 import {
   UserData,
   UserProduct,
   Workspace,
+  SubscriptionForm,
   type UserForm,
   type WorkspaceForm,
 } from "./Wizard";
@@ -15,7 +18,9 @@ import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 import { convertFileToBase64 } from "@utils";
 import { AuthContainer } from "../../components/AuthContainer";
 
+
 export const SignUp = () => {
+  const stripePromise = loadStripe("your-publishable-key-here");
   const [user, setUser] = useState<UserForm>({
     name: "",
     email: "",
@@ -23,6 +28,7 @@ export const SignUp = () => {
     surname: "",
     secondName: "",
     phone: "+380",
+    birthDate: "",
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
@@ -92,6 +98,9 @@ export const SignUp = () => {
           onUpdate={(value: string) => setProduct(value)}
           onSubmit={onSubmit}
         />
+        <Elements stripe={stripePromise}>
+          <SubscriptionForm />
+        </Elements>
       </StepWizard>
     </AuthContainer>
   );

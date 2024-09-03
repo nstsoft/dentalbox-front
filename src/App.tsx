@@ -1,4 +1,6 @@
 import { RouterProvider } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import "./i18n";
 
 import { getRoutes } from "./Router";
@@ -9,7 +11,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={getRoutes(isLoggedIn)} />
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <RouterProvider router={getRoutes(isLoggedIn)} />
+      </LocalizationProvider>
     </>
   );
 }

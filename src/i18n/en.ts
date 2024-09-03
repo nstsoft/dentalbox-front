@@ -56,6 +56,7 @@ export const EN: ResourceLanguage = {
         password: "Password",
         confirmPassword: 'Confirm Password',
         phone: "Phone",
+        birthDate: "Birth Date",
       },
       workspace: {
         title: "Workspace Data",
@@ -67,6 +68,9 @@ export const EN: ResourceLanguage = {
         title: "User Product",
         createAccount: "Create User",
       },
+      subscriptionForm: {
+        title: "Subscription Form",
+      }
     },
   },
 };
