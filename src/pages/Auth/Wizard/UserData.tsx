@@ -222,6 +222,12 @@ export const UserData = (
                     onError={(err) =>
                       setBirthDateError(err ? "Please enter valid date." : null)
                     }
+                    sx={{
+                      '& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline':
+                        {
+                          borderColor: birthDateError ? "red" : "none",
+                        },
+                    }}
                   />
                 )}
                 {input.id !== "phone" && input.id !== "birthDate" && (
@@ -255,7 +261,7 @@ export const UserData = (
           }}
         >
           <Button type="submit" variant="contained">
-            {t("signUpWizard.nextButton")}
+            {t("buttons.next")}
           </Button>
         </Box>
       </Box>

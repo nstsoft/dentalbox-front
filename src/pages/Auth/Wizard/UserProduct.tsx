@@ -4,6 +4,7 @@ import { Box, Paper, Grid2, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { Card } from "@components";
+import { Product } from "@types";
 
 import "../auth.scss";
 
@@ -19,15 +20,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 interface IUserWorkspaceStepProps {
-  product: string;
-  onUpdate: (value: string) => void;
-  onSubmit: () => void;
+  product: Product | null;
+  onUpdate: (product: Product) => void;
 }
 
 export const UserProduct = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { product, onUpdate, onSubmit, previousStep } = props;
+  const { product, onUpdate, previousStep, nextStep } = props;
   const { data } = useGetProductsQuery();
   const { t } = useTranslation();
 
@@ -53,7 +53,7 @@ export const UserProduct = (
           <Grid2 container spacing={2}>
             {data?.map((availableProduct) => (
               <Grid2 key={availableProduct.id} size={4}>
-                <Item onClick={() => onUpdate(availableProduct.id)}>
+                <Item onClick={() => onUpdate(availableProduct)}>
                   <div>{availableProduct.name}</div>
                   <div>{availableProduct.amount}</div>
                   <div>{availableProduct.currency}</div>
@@ -70,10 +70,10 @@ export const UserProduct = (
           }}
         >
           <Button variant="contained" onClick={previousStep}>
-            {t("signUpWizard.previousButton")}
+            {t("buttons.back")}
           </Button>
-          <Button variant="contained" onClick={() => product && onSubmit()}>
-            {t("signUpWizard.userProduct.createAccount")}
+          <Button variant="contained" onClick={nextStep}>
+            {t("buttons.next")}
           </Button>
         </Box>
       </Box>

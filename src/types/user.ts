@@ -14,6 +14,7 @@ export type UserRequest = {
   name: string;
   email: string;
   password: string;
+  phone: string;
   surname: string;
   secondName: string;
 };
@@ -30,7 +31,7 @@ export type User = {
   enableNotifications: boolean;
   isVerified: boolean;
   address?: string;
-  phone?: string;
+  phone: string;
   otp: number;
   notes?: string;
   status: string;

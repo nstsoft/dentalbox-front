@@ -115,10 +115,10 @@ export const Workspace = (
           }}
         >
           <Button variant="outlined" onClick={previousStep}>
-            {t("signUpWizard.previousButton")}
+            {t("buttons.back")}
           </Button>
           <Button type="submit" variant="contained">
-            {t("signUpWizard.nextButton")}
+            {t("buttons.next")}
           </Button>
         </Box>
       </Box>

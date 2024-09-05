@@ -1,6 +1,6 @@
 import { type Subscription } from "./subscription";
 import { type User } from "./user";
-import type { Workspace, WorkspaceShortenItem } from "./workspace";
+import type { Workspace } from "./workspace";
 
 export type Auth = {
   authToken: string;

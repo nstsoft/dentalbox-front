@@ -17,9 +17,12 @@ import { useRegisterMutation } from "@api";
 import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
 import { convertFileToBase64 } from "@utils";
 import { AuthContainer } from "../../components/AuthContainer";
+import { StripeElementsOptions } from "@stripe/stripe-js";
+import { Product } from "@types";
+import { SignalCellularNullRounded } from "@mui/icons-material";
 
 export const SignUp = () => {
-  const stripePromise = loadStripe("your-publishable-key-here");
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   const [user, setUser] = useState<UserForm>({
     name: "",
     email: "",
@@ -34,7 +37,7 @@ export const SignUp = () => {
     description: "",
   });
   const [workspaceImage, setWorkspaceImage] = useState<File>();
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState<Product | null>(null);
   const transitions = {
     enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
     enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
@@ -55,21 +58,27 @@ export const SignUp = () => {
     }
   }, [data, setAuthToken, setRefresh, setUserToStorage, status]);
 
-  const onSubmit = async () => {
-    const imageBase64 =
-      workspaceImage && (await convertFileToBase64(workspaceImage));
-    register({
-      user,
-      workspace,
-      product,
-      workspaceImage: imageBase64,
-    });
+  const options: StripeElementsOptions = {
+    mode: "payment",
+    amount: product?.amount ?? 100,
+    currency: product?.currency ?? "usd"
   };
+
+  // const onSubmit = async () => {
+  //   const imageBase64 =
+  //     workspaceImage && (await convertFileToBase64(workspaceImage));
+  //   register({
+  //     user,
+  //     workspace,
+  //     product,
+  //     workspaceImage: imageBase64,
+  //   });
+  // };
 
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        <UserData
+        {/* <UserData
           stepName="userData"
           hashKey={"userData"}
           userForm={user}
@@ -94,10 +103,9 @@ export const SignUp = () => {
           hashKey={"userProduct"}
           stepName="userProduct"
           product={product}
-          onUpdate={(value: string) => setProduct(value)}
-          onSubmit={onSubmit}
-        />
-        <Elements stripe={stripePromise}>
+          onUpdate={(value: Product) => setProduct(value)}
+        /> */}
+        <Elements stripe={stripePromise} options={options}>
           <SubscriptionForm />
         </Elements>
       </StepWizard>

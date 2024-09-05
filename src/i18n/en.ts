@@ -45,8 +45,6 @@ export const EN: ResourceLanguage = {
       createCabinet: "Create Cabinet",
     },
     signUpWizard: {
-      nextButton: "Next",
-      previousButton: "Previous",
       userData: {
         title: "User Data",
         name: "Name",

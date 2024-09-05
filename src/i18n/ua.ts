@@ -45,8 +45,6 @@ export const UA: ResourceLanguage = {
       createCabinet: "Створити кабінет",
     },
     signUpWizard: {
-      nextButton: "Далі",
-      previousButton: "Назад",
       userData: {
         title: "Дані користувача",
         name: "Ім'я",

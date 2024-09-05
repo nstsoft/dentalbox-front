@@ -7,8 +7,9 @@ import { WorkspaceForm } from "../../pages";
 type RegisterData = {
   user: UserRequest;
   workspace: WorkspaceForm;
-  product: string;
-  workspaceImage?: string;
+  productId: string;
+  workspaceImage: string;
+  defaultPaymentMethodId: string;
 };
 
 export const authApi = createApi({
