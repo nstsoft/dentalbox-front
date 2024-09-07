@@ -100,7 +100,6 @@ export const Workspace = (
             id="workspaceImage"
             type="file"
             name="workspaceImage"
-            required
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               e.target.files?.[0] && setWorkspaceImage(e.target.files?.[0]);
             }}

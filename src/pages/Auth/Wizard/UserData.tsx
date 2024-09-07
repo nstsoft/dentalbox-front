@@ -88,9 +88,9 @@ export const UserData = (
         {
           id: "birthDate",
           label: t("signUpWizard.userData.birthDate"),
-          value: userForm.birthDate,
+          value: userForm.dob,
           onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ email: ev.target.value });
+            onUpdate({ dob: ev.target.value });
           },
           error: birthDateError,
         },
@@ -138,7 +138,7 @@ export const UserData = (
       return;
     }
 
-    if (userForm.birthDate && moment(userForm.birthDate).isValid()) {
+    if (userForm.dob && moment(userForm.dob).isValid()) {
       setBirthDateError(null);
     } else {
       setBirthDateError("Please enter valid date.");
@@ -216,14 +216,14 @@ export const UserData = (
                     key={input.id}
                     value={input.value ? moment(input.value) : null}
                     onChange={(newValue: Moment | null) =>
-                      onUpdate({ birthDate: newValue?.toString() })
+                      onUpdate({ dob: newValue?.toString() })
                     }
                     disableFuture
                     onError={(err) =>
                       setBirthDateError(err ? "Please enter valid date." : null)
                     }
                     sx={{
-                      '& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline':
+                      "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
                         {
                           borderColor: birthDateError ? "red" : "none",
                         },

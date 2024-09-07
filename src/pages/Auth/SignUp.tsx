@@ -7,7 +7,7 @@ import {
   UserData,
   UserProduct,
   Workspace,
-  SubscriptionForm,
+  CheckoutForm,
   type UserForm,
   type WorkspaceForm,
 } from "./Wizard";
@@ -15,14 +15,20 @@ import {
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
 import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
-import { convertFileToBase64 } from "@utils";
-import { AuthContainer } from "../../components/AuthContainer";
-import { StripeElementsOptions } from "@stripe/stripe-js";
+import { AuthContainer } from "@components";
 import { Product } from "@types";
-import { SignalCellularNullRounded } from "@mui/icons-material";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
+const transitions = {
+  enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
+  enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
+  exitRight: `${transitionsStyles.animated} ${transitionsStyles.exitRight}`,
+  exitLeft: `${transitionsStyles.animated} ${transitionsStyles.exitLeft}`,
+  intro: `${transitionsStyles.animated} ${transitionsStyles.intro}`,
+};
 
 export const SignUp = () => {
-  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   const [user, setUser] = useState<UserForm>({
     name: "",
     email: "",
@@ -30,7 +36,7 @@ export const SignUp = () => {
     surname: "",
     secondName: "",
     phone: "+380",
-    birthDate: "",
+    dob: "",
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
@@ -38,13 +44,7 @@ export const SignUp = () => {
   });
   const [workspaceImage, setWorkspaceImage] = useState<File>();
   const [product, setProduct] = useState<Product | null>(null);
-  const transitions = {
-    enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
-    enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
-    exitRight: `${transitionsStyles.animated} ${transitionsStyles.exitRight}`,
-    exitLeft: `${transitionsStyles.animated} ${transitionsStyles.exitLeft}`,
-    intro: `${transitionsStyles.animated} ${transitionsStyles.intro}`,
-  };
+
   const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
   const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
   const [, setUserToStorage] = useLocalStorage("user");
@@ -58,19 +58,15 @@ export const SignUp = () => {
     }
   }, [data, setAuthToken, setRefresh, setUserToStorage, status]);
 
-  const options: StripeElementsOptions = {
-    mode: "payment",
-    amount: product?.amount ?? 100,
-    currency: product?.currency ?? "usd"
-  };
-
-  // const onSubmit = async () => {
+  // const beforeSubmitIntent = async () => {
   //   const imageBase64 =
   //     workspaceImage && (await convertFileToBase64(workspaceImage));
-  //   register({
+  //   if (!product) return null;
+
+  //   const r = await register({
   //     user,
   //     workspace,
-  //     product,
+  //     productId: product.id,
   //     workspaceImage: imageBase64,
   //   });
   // };
@@ -78,7 +74,7 @@ export const SignUp = () => {
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        {/* <UserData
+        <UserData
           stepName="userData"
           hashKey={"userData"}
           userForm={user}
@@ -102,12 +98,29 @@ export const SignUp = () => {
         <UserProduct
           hashKey={"userProduct"}
           stepName="userProduct"
-          product={product}
           onUpdate={(value: Product) => setProduct(value)}
-        /> */}
-        <Elements stripe={stripePromise} options={options}>
-          <SubscriptionForm />
-        </Elements>
+        />
+        {product ? (
+          <Elements
+            stripe={stripePromise}
+            options={{
+              locale: "ru",
+              mode: "subscription",
+              amount: product?.amount,
+              currency: product?.currency,
+              appearance: { labels: "above", theme: "stripe" },
+            }}
+          >
+            <CheckoutForm
+              user={user}
+              workspace={workspace}
+              workspaceImage={workspaceImage}
+              productId={product.id}
+            />
+          </Elements>
+        ) : (
+          <></>
+        )}
       </StepWizard>
     </AuthContainer>
   );

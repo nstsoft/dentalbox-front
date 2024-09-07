@@ -41,3 +41,10 @@ export type User = {
   dob?: Date;
   role?: UserRole;
 };
+
+export type RegisterData = {
+  user: UserRequest;
+  workspace: { name: string; description?: string };
+  productId: string;
+  workspaceImage?: string;
+};

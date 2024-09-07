@@ -1,16 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Auth, UserRequest } from "@types";
+import type { Auth, RegisterData } from "@types";
 import { TAG, REDUCER, CACHE_KEYS } from "../constants";
 import { baseQuery } from "./baseQuery";
-import { WorkspaceForm } from "../../pages";
-
-type RegisterData = {
-  user: UserRequest;
-  workspace: WorkspaceForm;
-  productId: string;
-  workspaceImage: string;
-  defaultPaymentMethodId: string;
-};
 
 export const authApi = createApi({
   reducerPath: REDUCER.AUTH,

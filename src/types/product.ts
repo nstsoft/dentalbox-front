@@ -9,4 +9,8 @@ export type Product = {
   name: string;
   priceActive: boolean;
   priceId: string;
+  metadata: {
+    "team-min": number;
+    "team-max": number;
+  };
 };
