@@ -1,16 +1,19 @@
-export type Product = {
-  active: boolean;
+export type Price = {
   amount: number;
   currency: string;
-  description: string;
-  id: string;
-  image: string;
   interval: string;
-  name: string;
-  priceActive: boolean;
   priceId: string;
+  productId: string;
+};
+export type Product = {
+  productId: string;
+  image: string;
   metadata: {
-    "team-min": number;
-    "team-max": number;
+    team: number;
+    en_description: string;
+    ua_description: string;
+    en_name: string;
+    ua_name: string;
   };
+  prices: Price[];
 };

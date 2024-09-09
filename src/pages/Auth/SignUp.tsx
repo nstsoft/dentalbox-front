@@ -58,23 +58,10 @@ export const SignUp = () => {
     }
   }, [data, setAuthToken, setRefresh, setUserToStorage, status]);
 
-  // const beforeSubmitIntent = async () => {
-  //   const imageBase64 =
-  //     workspaceImage && (await convertFileToBase64(workspaceImage));
-  //   if (!product) return null;
-
-  //   const r = await register({
-  //     user,
-  //     workspace,
-  //     productId: product.id,
-  //     workspaceImage: imageBase64,
-  //   });
-  // };
-
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        <UserData
+        {/* <UserData
           stepName="userData"
           hashKey={"userData"}
           userForm={user}
@@ -94,7 +81,7 @@ export const SignUp = () => {
             setWorkspace((prevState) => ({ ...prevState, ...value }));
           }}
           setWorkspaceImage={setWorkspaceImage}
-        />
+        /> */}
         <UserProduct
           hashKey={"userProduct"}
           stepName="userProduct"
@@ -106,8 +93,8 @@ export const SignUp = () => {
             options={{
               locale: "ru",
               mode: "subscription",
-              amount: product?.amount,
-              currency: product?.currency,
+              amount: product?.prices[0].amount,
+              currency: product?.prices[0].currency,
               appearance: { labels: "above", theme: "stripe" },
             }}
           >
@@ -115,7 +102,7 @@ export const SignUp = () => {
               user={user}
               workspace={workspace}
               workspaceImage={workspaceImage}
-              productId={product.id}
+              product={product}
             />
           </Elements>
         ) : (

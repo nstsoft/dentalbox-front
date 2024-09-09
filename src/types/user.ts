@@ -47,4 +47,5 @@ export type RegisterData = {
   workspace: { name: string; description?: string };
   productId: string;
   workspaceImage?: string;
+  priceId: string;
 };

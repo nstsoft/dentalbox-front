@@ -10,18 +10,19 @@ import { convertFileToBase64 } from "@utils";
 import type { WorkspaceForm, UserForm } from "./types";
 import { Box, FormControl, Button } from "@mui/material";
 import { Card } from "@components";
+import { Product } from "@types";
 
 type Props = {
   workspaceImage?: File;
   workspace: WorkspaceForm;
   user: UserForm;
-  productId: string;
+  product: Product;
 };
 
 export const CheckoutForm: FC<Props> = ({
   workspace,
   workspaceImage,
-  productId,
+  product,
   user,
 }) => {
   const stripe = useStripe();
@@ -62,7 +63,8 @@ export const CheckoutForm: FC<Props> = ({
         phone: user.phone.replace(/\s/g, ""),
       },
       workspaceImage: imageBase64,
-      productId,
+      productId: product.productId,
+      priceId: product.prices[0].priceId,
     });
 
     const stripeSubscription = registerResponse.data?.stripeSubscription;
@@ -87,13 +89,9 @@ export const CheckoutForm: FC<Props> = ({
     });
 
     if (error) {
-      // This point is only reached if there's an immediate error when confirming the Intent.
-      // Show the error to your customer (for example, "payment details incomplete").
       handleError(error);
     } else {
-      // Your customer is redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer is redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+      console.log("success");
     }
   };
   return (
