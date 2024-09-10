@@ -93,8 +93,8 @@ export const SignUp = () => {
             options={{
               locale: "ru",
               mode: "subscription",
-              amount: product?.prices[0].amount,
-              currency: product?.prices[0].currency,
+              // amount: product?.prices[0].amount,
+              // currency: product?.prices[0].currency,
               appearance: { labels: "above", theme: "stripe" },
             }}
           >

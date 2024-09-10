@@ -1,4 +1,4 @@
-import { useState, type FC, type FormEvent } from "react";
+import { useEffect, useState, type FC, type FormEvent } from "react";
 import {
   useStripe,
   useElements,
@@ -11,6 +11,7 @@ import type { WorkspaceForm, UserForm } from "./types";
 import { Box, FormControl, Button } from "@mui/material";
 import { Card } from "@components";
 import { Product } from "@types";
+import { useAuth } from "@hooks";
 
 type Props = {
   workspaceImage?: File;
@@ -28,6 +29,7 @@ export const CheckoutForm: FC<Props> = ({
   const stripe = useStripe();
   const elements = useElements();
   const [register, { data, status }] = useRegisterMutation();
+  const auth = useAuth();
 
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,12 @@ export const CheckoutForm: FC<Props> = ({
     setLoading(false);
     setErrorMessage(error?.message);
   };
+
+  useEffect(() => {
+    if (data && status === "fulfilled") {
+      auth.login(data);
+    }
+  }, [data, status, auth]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,6 +85,7 @@ export const CheckoutForm: FC<Props> = ({
     const clientSecret =
       stripeSubscription?.pending_setup_intent?.client_secret ??
       stripeSubscription?.latest_invoice?.payment_intent.client_secret;
+
     if (!clientSecret) {
       return null;
     }
@@ -84,7 +93,7 @@ export const CheckoutForm: FC<Props> = ({
       elements,
       clientSecret,
       confirmParams: {
-        return_url: "https://localhost:5173/auth/sign-up",
+        return_url: "http://localhost:5173/app",
       },
     });
 
@@ -100,12 +109,7 @@ export const CheckoutForm: FC<Props> = ({
       <Box
         component="form"
         onSubmit={onSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          gap: 2,
-        }}
+        sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
         <FormControl>
           <PaymentElement />

@@ -10,6 +10,7 @@ import {
   Oauth2,
   HomePage,
   WorkspacePage,
+  CheckoutPage,
 } from "./pages";
 
 export const getRoutes = (isAuthenticated: boolean) => {
@@ -45,6 +46,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
               ),
             },
             { path: "/app/dashboard", Component: Dashboard },
+            { path: "/app/checkout", Component: CheckoutPage },
           ],
         },
       ],

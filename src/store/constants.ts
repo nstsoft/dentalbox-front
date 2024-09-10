@@ -1,9 +1,12 @@
 export enum TAG {
   USER = "USER",
+  CONFIRM_OTP = "CONFIRM_OTP",
   AUTH = "AUTH",
   LOGIN = "LOGIN",
   PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
+  SUBSCRIPTION = "SUBSCRIPTION",
+  INTENT = "INTENT",
 }
 
 export enum REDUCER {
@@ -11,6 +14,7 @@ export enum REDUCER {
   AUTH = "AUTH",
   PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
+  SUBSCRIPTION = "SUBSCRIPTION",
 }
 
 export enum CACHE_KEYS {

@@ -1,16 +1,6 @@
-import { type Subscription } from "./subscription";
+import { type Subscription, SubscriptionStatus } from "./subscription";
 import { type User } from "./user";
 import type { Workspace } from "./workspace";
-
-type SubscriptionStatus =
-  | "active"
-  | "canceled"
-  | "incomplete"
-  | "incomplete_expired"
-  | "past_due"
-  | "paused"
-  | "trialing"
-  | "unpaid";
 
 export type Auth = {
   authToken: string;

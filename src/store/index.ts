@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { authApi, userApi } from "./api";
-import { productApi } from "./api/product";
+import { authApi, userApi, productApi, subscriptionApi } from "./api";
+
 import { workspaceApi } from "./api/workspace";
 
 export const store = configureStore({
@@ -10,6 +10,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [workspaceApi.reducerPath]: workspaceApi.reducer,
+    [subscriptionApi.reducerPath]: subscriptionApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -18,6 +19,7 @@ export const store = configureStore({
       userApi.middleware,
       productApi.middleware,
       workspaceApi.middleware,
+      subscriptionApi.middleware,
     ]),
 });
 

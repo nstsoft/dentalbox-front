@@ -5,7 +5,7 @@ import { baseQuery } from "./baseQuery";
 
 export const userApi = createApi({
   reducerPath: REDUCER.USER,
-  tagTypes: [TAG.USER],
+  tagTypes: [TAG.USER, TAG.CONFIRM_OTP],
   baseQuery,
   endpoints: (builder) => ({
     getMe: builder.query<
@@ -22,7 +22,7 @@ export const userApi = createApi({
         method: "PATCH",
       }),
 
-      providesTags: () => [{ type: TAG.USER }],
+      providesTags: () => [{ type: TAG.CONFIRM_OTP }],
     }),
   }),
 });
