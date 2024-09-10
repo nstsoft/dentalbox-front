@@ -68,7 +68,13 @@ export const UserBadge: FC = () => {
             <Typography sx={{ textAlign: "center" }}>{t(menu.id)}</Typography>
           </MenuItem>
         ))}
-        <MenuItem key="logout" onClick={logout}>
+        <MenuItem
+          key="logout"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
           <Typography sx={{ textAlign: "center" }}>{t("logout")}</Typography>
         </MenuItem>
       </Menu>

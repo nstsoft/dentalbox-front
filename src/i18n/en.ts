@@ -11,7 +11,8 @@ export const EN: ResourceLanguage = {
       resendOtp: "Resend otp",
       login: "Login",
       signUp: "Sign Up",
-      select: "Select"
+      select: "Select",
+      returnToLogin: "Back to Login",
     },
     login: {
       login: "Login",
@@ -32,6 +33,9 @@ export const EN: ResourceLanguage = {
         "Enter your account's email address, and we'll send you a link to reset your password.",
       email: "Email",
       invalidCredentials: "Invalid login or password",
+      authenticationErrorHeader: "Authentication Error",
+      authenticationErrorText:
+        "We’re having trouble verifying your credentials. Please check your username and password and try again. If you continue to experience issues, you might need to reset your password or contact support for assistance.",
     },
     selectWorkspace: {
       workspaces: "Your Workspaces",
@@ -68,15 +72,15 @@ export const EN: ResourceLanguage = {
       userProduct: {
         title: "User Product",
         intervals: {
-          week: 'Week',
-          month: 'Month',
-          year: 'Year',
+          week: "Week",
+          month: "Month",
+          year: "Year",
         },
-        people: 'people'
+        people: "people",
       },
       subscriptionForm: {
         title: "Subscription Form",
-      }
+      },
     },
     header: {
       profile: "Profile",

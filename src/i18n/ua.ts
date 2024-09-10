@@ -11,7 +11,8 @@ export const UA: ResourceLanguage = {
       resendOtp: "Надіслати повторний код",
       login: "Увійти",
       signUp: "Зареєструватись",
-      select: "Вибрати"
+      select: "Вибрати",
+      returnToLogin: "Повернутись до лігін-сторінки",
     },
     login: {
       login: "Логін",
@@ -32,6 +33,9 @@ export const UA: ResourceLanguage = {
         "Введіть свій емейл, і ми надішлемо вам посилання для скидання пароля.",
       email: "Емейл",
       invalidCredentials: "Неправильний логін або пароль",
+      authenticationErrorHeader: "Помилка автентифікації",
+      authenticationErrorText:
+        "Ми маємо труднощі з перевіркою ваших облікових даних. Будь ласка, перевірте своє ім'я користувача та пароль і спробуйте знову. Якщо проблема продовжується, можливо, вам потрібно скинути пароль або звернутися до служби підтримки для отримання допомоги.",
     },
     selectWorkspace: {
       workspaces: "Ваші середовища",
@@ -68,11 +72,11 @@ export const UA: ResourceLanguage = {
       userProduct: {
         title: "Оберіть продукт",
         intervals: {
-          week: 'Тиждень',
-          month: 'Місяць',
-          year: 'Рік',
+          week: "Тиждень",
+          month: "Місяць",
+          year: "Рік",
         },
-        people: 'людей'
+        people: "людей",
       },
       subscriptionForm: {
         title: "Підписка",
