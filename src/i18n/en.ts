@@ -68,6 +68,7 @@ export const EN: ResourceLanguage = {
         name: "Workspace Name",
         image: "Workspace Image",
         description: "Workspace Description",
+        upload: 'Upload',
       },
       userProduct: {
         title: "User Product",

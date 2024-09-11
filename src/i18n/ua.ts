@@ -68,6 +68,7 @@ export const UA: ResourceLanguage = {
         name: "Назва кабінету",
         image: "Зображення кабінету",
         description: "Опис кабінету",
+        upload: 'Завантажити',
       },
       userProduct: {
         title: "Оберіть продукт",

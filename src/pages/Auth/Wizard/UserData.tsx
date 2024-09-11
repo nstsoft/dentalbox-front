@@ -25,7 +25,7 @@ interface IUserDataStepProps {
 export const UserData = (
   props: IUserDataStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { userForm, onUpdate, nextStep } = props;
+  const { userForm, onUpdate, nextStep, previousStep } = props;
   const { t } = useTranslation();
   const [emailError, setEmailError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -198,7 +198,7 @@ export const UserData = (
             }}
           >
             {section.content.map((input) => (
-              <FormControl key={input.id}>
+              <FormControl key={input.id} fullWidth>
                 {input.id === "phone" && (
                   <MuiTelInput
                     key={input.id}
@@ -257,9 +257,12 @@ export const UserData = (
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
           }}
         >
+          <Button type="button" variant="outlined" onClick={previousStep}>
+            {t("buttons.back")}
+          </Button>
           <Button type="submit" variant="contained">
             {t("buttons.next")}
           </Button>

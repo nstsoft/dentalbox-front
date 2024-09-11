@@ -10,9 +10,10 @@ import {
   FormLabel,
   InputLabel,
   OutlinedInput,
-  TextField,
+  styled,
   Typography,
 } from "@mui/material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 interface IUserWorkspaceStepProps {
   workspaceForm: WorkspaceForm;
@@ -52,9 +53,20 @@ export const Workspace = (
     },
   ];
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+
   const onNext = (event: FormEvent) => {
     event.preventDefault();
-
     nextStep?.();
   };
 
@@ -96,16 +108,23 @@ export const Workspace = (
           <FormLabel htmlFor="workspaceImage">
             {t("signUpWizard.workspace.image")}
           </FormLabel>
-          <TextField
-            id="workspaceImage"
-            type="file"
-            name="workspaceImage"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              e.target.files?.[0] && setWorkspaceImage(e.target.files?.[0]);
-            }}
-            variant="outlined"
-            sx={{ ariaLabel: "workspace image" }}
-          />
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            {t("signUpWizard.workspace.upload")}
+            <VisuallyHiddenInput
+              id="workspaceImage"
+              name="workspaceImage"
+              type="file"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                e.target.files?.[0] && setWorkspaceImage(e.target.files?.[0]);
+              }}
+            />
+          </Button>
         </FormControl>
         <Box
           sx={{

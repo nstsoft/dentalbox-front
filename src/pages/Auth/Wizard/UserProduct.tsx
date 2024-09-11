@@ -1,7 +1,6 @@
 import { useGetProductsQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
-import { Grid2, Button } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { Grid2 } from "@mui/material";
 import { Product } from "@types";
 import { ProductItem } from "../components";
 import { useState } from "react";
@@ -15,9 +14,8 @@ interface IUserWorkspaceStepProps {
 export const UserProduct = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { onProductSelect, previousStep, nextStep } = props;
+  const { onProductSelect, nextStep } = props;
   const { data } = useGetProductsQuery();
-  const { t } = useTranslation();
   const [interval, setInterval] = useState<"week" | "month" | "year">("week");
 
   const filteredProductList =
@@ -29,9 +27,6 @@ export const UserProduct = (
   if (!data) return null;
   return (
     <>
-      <Button variant="contained" onClick={previousStep} sx={{ mb: 2 }}>
-        {t("buttons.back")}
-      </Button>
       <Grid2
         container
         spacing={2}

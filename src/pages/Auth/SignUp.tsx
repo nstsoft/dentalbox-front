@@ -75,7 +75,7 @@ export const SignUp = () => {
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        <UserProduct
+        {/* <UserProduct
           hashKey={"userProduct"}
           stepName="userProduct"
           onProductSelect={(value: Product) => setProduct(value)}
@@ -87,7 +87,7 @@ export const SignUp = () => {
           onUpdate={(value: Partial<UserForm>) =>
             setUser((prevState) => ({ ...prevState, ...value }))
           }
-        />
+        /> */}
         <Workspace
           stepName="workspace"
           hashKey={"workspace"}
