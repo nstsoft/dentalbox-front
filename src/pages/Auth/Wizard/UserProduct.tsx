@@ -9,13 +9,13 @@ import { useState } from "react";
 import "../auth.scss";
 
 interface IUserWorkspaceStepProps {
-  onUpdate: (product: Product) => void;
+  onProductSelect: (product: Product) => void;
 }
 
 export const UserProduct = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { onUpdate, previousStep, nextStep } = props;
+  const { onProductSelect, previousStep, nextStep } = props;
   const { data } = useGetProductsQuery();
   const { t } = useTranslation();
   const [interval, setInterval] = useState<"week" | "month" | "year">("week");
@@ -53,9 +53,9 @@ export const UserProduct = (
               key={product.productId}
               nextStep={nextStep}
               product={product}
-              onUpdate={onUpdate}
               interval={interval}
               onSetInterval={setInterval}
+              onProductSelect={onProductSelect}
             />
           </Grid2>
         ))}

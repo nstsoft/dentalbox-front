@@ -20,16 +20,15 @@ import { MouseEvent } from "react";
 
 interface IUserWorkspaceStepProps {
   product: Product;
-  onUpdate: (product: Product) => void;
   interval: "week" | "month" | "year";
   onSetInterval: (interval: "week" | "month" | "year") => void;
+  onProductSelect: (product: Product) => void;
 }
 
 export const ProductItem = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { product, onUpdate, nextStep, interval, onSetInterval } =
-    props;
+  const { product, onProductSelect, nextStep, interval, onSetInterval } = props;
   const { t, i18n } = useTranslation();
 
   return (
@@ -127,7 +126,7 @@ export const ProductItem = (
         <Button
           variant="contained"
           onClick={() => {
-            onUpdate(product);
+            onProductSelect(product);
             nextStep?.();
           }}
         >

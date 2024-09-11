@@ -12,9 +12,14 @@ import { Card } from "@components";
 type Props = {
   type: "setup" | "payment" | "payment-added";
   clientSecret: string;
+  clearSecret: () => void;
 };
 
-export const CheckoutForm: FC<Props> = ({ type, clientSecret }) => {
+export const CheckoutForm: FC<Props> = ({
+  type,
+  clientSecret,
+  clearSecret,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -37,11 +42,7 @@ export const CheckoutForm: FC<Props> = ({ type, clientSecret }) => {
 
     const resp = await elements.submit();
 
-    console.log(resp);
-
     const { error: submitError } = resp;
-
-    console.log(submitError);
 
     if (submitError) {
       handleError(submitError);
@@ -66,6 +67,7 @@ export const CheckoutForm: FC<Props> = ({ type, clientSecret }) => {
     }
 
     setLoading(false);
+    clearSecret();
   };
   return (
     <Card variant="outlined">
@@ -79,14 +81,15 @@ export const CheckoutForm: FC<Props> = ({ type, clientSecret }) => {
           <PaymentElement />
         </FormControl>
         <FormControl>
-          {loading && (
+          {loading ? (
             <Box sx={{ display: "flex" }}>
               <CircularProgress />
             </Box>
+          ) : (
+            <Button type="submit" fullWidth variant="contained">
+              submit
+            </Button>
           )}
-          <Button type="submit" fullWidth variant="contained">
-            submit
-          </Button>
         </FormControl>
       </Box>
     </Card>

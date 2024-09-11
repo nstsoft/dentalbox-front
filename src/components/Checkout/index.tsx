@@ -13,8 +13,11 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 export const Checkout = () => {
   const [clientSecret, setClientSecret] = useState<string | undefined>();
-  const { data, status: subscriptionRequestStatus } =
-    useGetMySubscriptionQuery();
+  const {
+    data,
+    status: subscriptionRequestStatus,
+    error: subscriptionError,
+  } = useGetMySubscriptionQuery();
 
   const [
     createPaymentIntent,
@@ -22,10 +25,10 @@ export const Checkout = () => {
   ] = useLazyCreatePaymentIntentQuery();
 
   useEffect(() => {
-    if (data?.type !== "payment-added") {
+    if (data?.type === "payment-added" && !subscriptionError) {
       createPaymentIntent();
     }
-  }, [data?.type, createPaymentIntent]);
+  }, [data?.type, createPaymentIntent, subscriptionError]);
 
   useEffect(() => {
     if (subscriptionRequestStatus === "fulfilled" && !clientSecret) {
@@ -48,25 +51,19 @@ export const Checkout = () => {
     return null;
   }
 
-  const isFirstPayment = data?.type !== "payment-added";
-
   const options: StripeElementsOptions = {
     locale: "ru",
     clientSecret,
+    appearance: { labels: "above", theme: "stripe" },
   };
-
-  if (isFirstPayment) {
-    Object.assign(options, {
-      amount: data?.price.unit_amount,
-      currency: data?.price.currency,
-      mode: "subscription",
-      appearance: { labels: "above", theme: "stripe" },
-    });
-  }
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <CheckoutForm clientSecret={clientSecret} type={data.type} />
+      <CheckoutForm
+        clearSecret={() => setClientSecret(undefined)}
+        clientSecret={clientSecret}
+        type={data.type}
+      />
     </Elements>
   );
 };

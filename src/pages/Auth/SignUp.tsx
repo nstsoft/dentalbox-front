@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import StepWizard from "react-step-wizard";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 
 import {
   UserData,
   UserProduct,
   Workspace,
-  CheckoutForm,
+  ConfirmRegister,
   type UserForm,
   type WorkspaceForm,
 } from "./Wizard";
 
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
-import { AUTH_TOKEN, REFRESH_TOKEN, useLocalStorage } from "@hooks";
+import { WORKSPACE, useLocalStorage, useAuth } from "@hooks";
 import { AuthContainer } from "@components";
 import { Product } from "@types";
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+import { convertFileToBase64 } from "@utils";
+import { useNavigate } from "react-router-dom";
 
 const transitions = {
   enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
@@ -29,6 +27,7 @@ const transitions = {
 };
 
 export const SignUp = () => {
+  const [, setWorkspaceId] = useLocalStorage(WORKSPACE, null);
   const [user, setUser] = useState<UserForm>({
     name: "",
     email: "",
@@ -43,24 +42,44 @@ export const SignUp = () => {
     description: "",
   });
   const [workspaceImage, setWorkspaceImage] = useState<File>();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<Product | undefined>();
 
-  const [, setAuthToken] = useLocalStorage(AUTH_TOKEN);
-  const [, setRefresh] = useLocalStorage(REFRESH_TOKEN);
-  const [, setUserToStorage] = useLocalStorage("user");
   const [register, { data, status }] = useRegisterMutation();
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const confirmRegister = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!product) return;
+
+    const imageBase64 =
+      workspaceImage && (await convertFileToBase64(workspaceImage));
+
+    register({
+      workspace,
+      user: { ...user, phone: user.phone.replace(/\s/g, "") },
+      workspaceImage: imageBase64,
+      productId: product.productId,
+      priceId: product.prices[0].priceId,
+    });
+  };
 
   useEffect(() => {
-    if (status === "fulfilled") {
-      setAuthToken(data.authToken);
-      setRefresh(data.refreshToken);
-      setUserToStorage(data.user);
+    if (status === "fulfilled" && !auth.isLoggedIn) {
+      auth.login(data);
+      setWorkspaceId(data.workspace._id);
+      navigate("/app/checkout");
     }
-  }, [data, setAuthToken, setRefresh, setUserToStorage, status]);
+  }, [auth, data, navigate, setWorkspaceId, status]);
 
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
+        <UserProduct
+          hashKey={"userProduct"}
+          stepName="userProduct"
+          onProductSelect={(value: Product) => setProduct(value)}
+        />
         <UserData
           stepName="userData"
           hashKey={"userData"}
@@ -82,29 +101,13 @@ export const SignUp = () => {
           }}
           setWorkspaceImage={setWorkspaceImage}
         />
-        <UserProduct
-          hashKey={"userProduct"}
-          stepName="userProduct"
-          onUpdate={(value: Product) => setProduct(value)}
-        />
         {product ? (
-          <Elements
-            stripe={stripePromise}
-            options={{
-              locale: "ru",
-              mode: "subscription",
-              // amount: product?.prices[0].amount,
-              // currency: product?.prices[0].currency,
-              appearance: { labels: "above", theme: "stripe" },
-            }}
-          >
-            <CheckoutForm
-              user={user}
-              workspace={workspace}
-              workspaceImage={workspaceImage}
-              product={product}
-            />
-          </Elements>
+          <ConfirmRegister
+            user={user}
+            workspace={workspace}
+            product={product}
+            confirmRegister={confirmRegister}
+          />
         ) : (
           <></>
         )}
