@@ -1,123 +1,139 @@
-import { useGetProductsQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
 import {
-  Box,
-  Paper,
-  Grid2,
   Typography,
   Button,
   CardHeader,
-  Avatar,
-  IconButton,
-  CardMedia,
   CardContent,
   CardActions,
-  type IconButtonProps,
-  Collapse,
+  Box,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
-import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Card } from "@components";
 import { Product } from "@types";
 
-import { red } from "@mui/material/colors";
+import icons from "currency-icons";
 import "../auth.scss";
+import { MouseEvent } from "react";
 
 interface IUserWorkspaceStepProps {
   product: Product;
   onUpdate: (product: Product) => void;
+  interval: "week" | "month" | "year";
+  onSetInterval: (interval: "week" | "month" | "year") => void;
 }
 
 export const ProductItem = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { product, onUpdate, previousStep, nextStep } = props;
-  const { data } = useGetProductsQuery();
-  const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const { product, onUpdate, nextStep, interval, onSetInterval } =
+    props;
+  const { t, i18n } = useTranslation();
 
   return (
-    // <Card variant="outlined">
-
-    <Box
-      component="form"
+    <Card
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        gap: 2,
+        padding: "10px",
+        background: `url(${product.image})`,
+        backgroundClip: "border-box",
+        backgroundSize: "contain",
+        backgroundPosition: "center",
       }}
     >
-      <Card sx={{ maxWidth: 345 }}>
-        <CardHeader
-          avatar={
-            <Avatar
-              sx={{ bgcolor: red[500], width: "100px" }}
-              aria-label="recipe"
-            >
-              {product.prices[0].interval}
-            </Avatar>
-          }
-          title={product.metadata.ua_name}
-          subheader={`${product.prices[0].amount / 100} ${
-            product.prices[0].currency
-          }`}
-        />
-        <CardMedia
-          component="img"
-          height="194"
-          image={product.image}
-          alt={product.metadata.ua_name}
-        />
-        <CardContent>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {product.metadata.en_description}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Button
-            variant="contained"
-            onClick={() => {
-              onUpdate(product);
-              nextStep?.();
-            }}
-          >
-            select
-          </Button>
-        </CardActions>
-      </Card>
-      {/* <Box style={{ maxWidth: "900px" }} sx={{ flexGrow: 1 }}>
-          <Grid2 container spacing={2}>
-            {data?.map((availableProduct) => (
-              <Grid2 key={availableProduct.id} size={4}>
-                <Item onClick={() => onUpdate(availableProduct)}>
-                  <div>{availableProduct.name}</div>
-                  <div>{availableProduct.amount}</div>
-                  <div>{availableProduct.currency}</div>
-                  <div>{availableProduct.interval}</div>
-                </Item>
-              </Grid2>
-            ))}
-          </Grid2>
-        </Box>
+      <CardHeader
+        disableTypography
+        title={
+          i18n.language === "ua"
+            ? product.metadata.ua_name
+            : product.metadata.en_name
+        }
+        sx={{
+          padding: 0,
+          "& .MuiCardHeader-content": {
+            textAlign: "center",
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <CardContent sx={{ padding: "0 16px" }}>
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 2,
           }}
         >
-          <Button variant="contained" onClick={previousStep}>
-            {t("buttons.back")}
-          </Button>
-          <Button variant="contained" onClick={nextStep}>
-            {t("buttons.next")}
-          </Button>
-        </Box> */}
-    </Box>
+          {product.metadata.team && (
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
+              {product.metadata.team} {t("signUpWizard.userProduct.people")}
+            </Typography>
+          )}
+          <ToggleButtonGroup
+            color="primary"
+            value={interval}
+            exclusive
+            aria-label="Interval toggle button group"
+            onChange={(event: MouseEvent<HTMLElement>) => {
+              const value = (event.target as HTMLButtonElement).value;
+              onSetInterval(value as "week" | "month" | "year");
+            }}
+            sx={{
+              backgroundColor: "#008fba",
+              "& .MuiToggleButtonGroup-grouped.Mui-selected": {
+                color: "white",
+              },
+            }}
+          >
+            <ToggleButton value="week">
+              {t("signUpWizard.userProduct.intervals.week")}
+            </ToggleButton>
+            <ToggleButton value="month">
+              {t("signUpWizard.userProduct.intervals.month")}
+            </ToggleButton>
+            <ToggleButton value="year">
+              {t("signUpWizard.userProduct.intervals.year")}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5">
+            {product.prices[0].amount}
+            {icons[product.prices[0].currency?.toUpperCase()]?.symbol} /{" "}
+            {t(`signUpWizard.userProduct.intervals.${interval}`).toLowerCase()}
+          </Typography>
+
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {i18n.language === "ua"
+              ? product.metadata.ua_description
+              : product.metadata.en_description}
+          </Typography>
+        </Box>
+      </CardContent>
+      <CardActions
+        sx={{
+          justifyContent: "center",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => {
+            onUpdate(product);
+            nextStep?.();
+          }}
+        >
+          {t("buttons.select")}
+        </Button>
+      </CardActions>
+    </Card>
   );
 };

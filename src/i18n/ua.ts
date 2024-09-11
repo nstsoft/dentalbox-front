@@ -11,6 +11,7 @@ export const UA: ResourceLanguage = {
       resendOtp: "Надіслати повторний код",
       login: "Увійти",
       signUp: "Зареєструватись",
+      select: "Вибрати"
     },
     login: {
       login: "Логін",
@@ -23,7 +24,7 @@ export const UA: ResourceLanguage = {
       password: "Пароль",
       signIn: "Увійти",
       or: "або",
-      dontHaveAccount: "Не маеш акаунту?",
+      dontHaveAccount: "Не маєш акаунту?",
       signUp: "Зареєструватися?",
       signInGoogle: "Увійти за  допомогою Google",
       resetPassword: "Скинути пароль",
@@ -66,7 +67,12 @@ export const UA: ResourceLanguage = {
       },
       userProduct: {
         title: "Оберіть продукт",
-        createAccount: "Створити користувача",
+        intervals: {
+          week: 'Тиждень',
+          month: 'Місяць',
+          year: 'Рік',
+        },
+        people: 'людей'
       },
       subscriptionForm: {
         title: "Підписка",

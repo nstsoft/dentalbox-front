@@ -11,6 +11,7 @@ export const EN: ResourceLanguage = {
       resendOtp: "Resend otp",
       login: "Login",
       signUp: "Sign Up",
+      select: "Select"
     },
     login: {
       login: "Login",
@@ -66,7 +67,12 @@ export const EN: ResourceLanguage = {
       },
       userProduct: {
         title: "User Product",
-        createAccount: "Create User",
+        intervals: {
+          week: 'Week',
+          month: 'Month',
+          year: 'Year',
+        },
+        people: 'people'
       },
       subscriptionForm: {
         title: "Subscription Form",

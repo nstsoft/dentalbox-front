@@ -61,7 +61,7 @@ export const SignUp = () => {
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        {/* <UserData
+        <UserData
           stepName="userData"
           hashKey={"userData"}
           userForm={user}
@@ -81,7 +81,7 @@ export const SignUp = () => {
             setWorkspace((prevState) => ({ ...prevState, ...value }));
           }}
           setWorkspaceImage={setWorkspaceImage}
-        /> */}
+        />
         <UserProduct
           hashKey={"userProduct"}
           stepName="userProduct"

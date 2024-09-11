@@ -1,17 +1,7 @@
 import { useGetProductsQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
-import {
-  Box,
-  Paper,
-  Grid2,
-  Typography,
-  Button,
-  Switch,
-  ButtonGroup,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Grid2, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Card } from "@components";
 import { Product } from "@types";
 import { ProductItem } from "../components";
 import { useState } from "react";
@@ -39,11 +29,9 @@ export const UserProduct = (
   if (!data) return null;
   return (
     <>
-      <ButtonGroup variant="contained" aria-label="Basic button group">
-        <Button onClick={() => setInterval("week")}>Week</Button>
-        <Button onClick={() => setInterval("month")}>Month</Button>
-        <Button onClick={() => setInterval("year")}>Year</Button>
-      </ButtonGroup>
+      <Button variant="contained" onClick={previousStep} sx={{ mb: 2 }}>
+        {t("buttons.back")}
+      </Button>
       <Grid2
         container
         spacing={2}
@@ -66,6 +54,8 @@ export const UserProduct = (
               nextStep={nextStep}
               product={product}
               onUpdate={onUpdate}
+              interval={interval}
+              onSetInterval={setInterval}
             />
           </Grid2>
         ))}
