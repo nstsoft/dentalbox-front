@@ -66,8 +66,7 @@ export const ConfirmOtpDialog = ({
         <DialogTitle>{t("confirmOtp")}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t("confirmOtpText")}</DialogContentText>
-          <br></br>
-          <Box display="flex" justifyContent="center" gap={2}>
+          <Box display="flex" justifyContent="center" mt={3}>
             {otp.map((digit, index) => (
               <TextField
                 key={index}
@@ -83,6 +82,15 @@ export const ConfirmOtpDialog = ({
                       fontSize: "1.5rem",
                       width: "3rem",
                     },
+                  },
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderRadius: 0,
+                    borderTopLeftRadius: index === 0 ? 4 : 0,
+                    borderBottomLeftRadius: index === 0 ? 4 : 0,
+                    borderTopRightRadius: index === otp.length - 1 ? 4 : 0,
+                    borderBottomRightRadius: index === otp.length - 1 ? 4 : 0,
                   },
                 }}
                 inputRef={(el) => (inputRefs.current[index] = el)}
