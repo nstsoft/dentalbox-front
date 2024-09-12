@@ -11,7 +11,7 @@ export const UA: ResourceLanguage = {
       resendOtp: "Надіслати повторний код",
       login: "Увійти",
       signUp: "Зареєструватись",
-      select: "Вибрати",
+      select: "Обрати",
       returnToLogin: "Повернутись до лігін-сторінки",
     },
     login: {
@@ -68,7 +68,7 @@ export const UA: ResourceLanguage = {
         name: "Назва кабінету",
         image: "Зображення кабінету",
         description: "Опис кабінету",
-        upload: 'Завантажити',
+        upload: "Завантажити",
       },
       userProduct: {
         title: "Оберіть продукт",
@@ -81,6 +81,11 @@ export const UA: ResourceLanguage = {
       },
       subscriptionForm: {
         title: "Підписка",
+      },
+      packageIntervals: {
+        week: "Тижневий абонемент",
+        month: "Місчний абонемент",
+        year: "Річний абонементe",
       },
     },
     header: {

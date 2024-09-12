@@ -68,7 +68,7 @@ export const EN: ResourceLanguage = {
         name: "Workspace Name",
         image: "Workspace Image",
         description: "Workspace Description",
-        upload: 'Upload',
+        upload: "Upload",
       },
       userProduct: {
         title: "User Product",
@@ -81,6 +81,11 @@ export const EN: ResourceLanguage = {
       },
       subscriptionForm: {
         title: "Subscription Form",
+      },
+      packageIntervals: {
+        week: "Weekly  package",
+        month: "Monthly  package",
+        year: "Annual  package",
       },
     },
     header: {

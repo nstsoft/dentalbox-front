@@ -6,9 +6,9 @@ import {
   CardContent,
   CardActions,
   Box,
-  ToggleButtonGroup,
-  ToggleButton,
 } from "@mui/material";
+
+import GroupsIcon from "@mui/icons-material/Groups";
 
 import { useTranslation } from "react-i18next";
 import { Card } from "@components";
@@ -16,31 +16,48 @@ import { Product } from "@types";
 
 import icons from "currency-icons";
 import "../auth.scss";
-import { MouseEvent } from "react";
 
 interface IUserWorkspaceStepProps {
   product: Product;
   interval: "week" | "month" | "year";
-  onSetInterval: (interval: "week" | "month" | "year") => void;
+  color: string;
   onProductSelect: (product: Product) => void;
 }
 
 export const ProductItem = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { product, onProductSelect, nextStep, interval, onSetInterval } = props;
+  const { product, onProductSelect, nextStep, interval, color } = props;
   const { t, i18n } = useTranslation();
 
   return (
     <Card
       sx={{
-        padding: "10px",
-        background: `url(${product.image})`,
+        padding: 0,
+        backfaceVisibility: "",
         backgroundClip: "border-box",
         backgroundSize: "contain",
         backgroundPosition: "center",
+        height: "100%",
+        position: "relative",
+        zIndex: 1,
+        maxWidth: "300px",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${product.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: "0.2",
+          zIndex: -10,
+        }}
+      ></div>
       <CardHeader
         disableTypography
         title={
@@ -52,7 +69,9 @@ export const ProductItem = (
           padding: 0,
           "& .MuiCardHeader-content": {
             textAlign: "center",
-            fontWeight: "bold",
+            fontWeight: "900",
+            padding: 1,
+            background: color,
           },
         }}
       />
@@ -64,39 +83,7 @@ export const ProductItem = (
             alignItems: "center",
             mb: 2,
           }}
-        >
-          {product.metadata.team && (
-            <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
-              {product.metadata.team} {t("signUpWizard.userProduct.people")}
-            </Typography>
-          )}
-          <ToggleButtonGroup
-            color="primary"
-            value={interval}
-            exclusive
-            aria-label="Interval toggle button group"
-            onChange={(event: MouseEvent<HTMLElement>) => {
-              const value = (event.target as HTMLButtonElement).value;
-              onSetInterval(value as "week" | "month" | "year");
-            }}
-            sx={{
-              backgroundColor: "#008fba",
-              "& .MuiToggleButtonGroup-grouped.Mui-selected": {
-                color: "white",
-              },
-            }}
-          >
-            <ToggleButton value="week">
-              {t("signUpWizard.userProduct.intervals.week")}
-            </ToggleButton>
-            <ToggleButton value="month">
-              {t("signUpWizard.userProduct.intervals.month")}
-            </ToggleButton>
-            <ToggleButton value="year">
-              {t("signUpWizard.userProduct.intervals.year")}
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+        ></Box>
 
         <Box
           sx={{
@@ -106,15 +93,14 @@ export const ProductItem = (
           }}
         >
           <Typography variant="h5">
-            {product.prices[0].amount}
+            {product.prices[0].amount / 100}
             {icons[product.prices[0].currency?.toUpperCase()]?.symbol} /{" "}
             {t(`signUpWizard.userProduct.intervals.${interval}`).toLowerCase()}
           </Typography>
-
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {i18n.language === "ua"
-              ? product.metadata.ua_description
-              : product.metadata.en_description}
+          <GroupsIcon />
+          <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
+            {product.metadata.team > 0 ? product.metadata.team : "~"}{" "}
+            {t("signUpWizard.userProduct.people")}
           </Typography>
         </Box>
       </CardContent>
@@ -133,6 +119,18 @@ export const ProductItem = (
           {t("buttons.select")}
         </Button>
       </CardActions>
+      <CardContent>
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", textAlign: "center" }}
+          >
+            {i18n.language === "ua"
+              ? product.metadata.ua_description
+              : product.metadata.en_description}
+          </Typography>
+        </Box>
+      </CardContent>
     </Card>
   );
 };

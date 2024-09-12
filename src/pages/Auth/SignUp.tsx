@@ -15,7 +15,6 @@ import { useRegisterMutation } from "@api";
 import { WORKSPACE, useLocalStorage, useAuth } from "@hooks";
 import { AuthContainer } from "@components";
 import { Product } from "@types";
-import { convertFileToBase64 } from "@utils";
 import { useNavigate } from "react-router-dom";
 
 const transitions = {
@@ -52,15 +51,12 @@ export const SignUp = () => {
     event.preventDefault();
     if (!product) return;
 
-    const imageBase64 =
-      workspaceImage && (await convertFileToBase64(workspaceImage));
-
     register({
       workspace,
       user: { ...user, phone: user.phone.replace(/\s/g, "") },
-      workspaceImage: imageBase64,
       productId: product.productId,
       priceId: product.prices[0].priceId,
+      workspaceImage,
     });
   };
 
@@ -75,7 +71,7 @@ export const SignUp = () => {
   return (
     <AuthContainer>
       <StepWizard transitions={transitions}>
-        {/* <UserProduct
+        <UserProduct
           hashKey={"userProduct"}
           stepName="userProduct"
           onProductSelect={(value: Product) => setProduct(value)}
@@ -87,7 +83,7 @@ export const SignUp = () => {
           onUpdate={(value: Partial<UserForm>) =>
             setUser((prevState) => ({ ...prevState, ...value }))
           }
-        /> */}
+        />
         <Workspace
           stepName="workspace"
           hashKey={"workspace"}

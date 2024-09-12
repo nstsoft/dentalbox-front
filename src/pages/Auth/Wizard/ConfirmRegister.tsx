@@ -1,7 +1,6 @@
 import { type FC, type FormEvent, useEffect, useState } from "react";
 
 import { useRegisterMutation } from "@api";
-import { convertFileToBase64 } from "@utils";
 import type { WorkspaceForm, UserForm } from "./types";
 import {
   Box,
@@ -17,8 +16,6 @@ import {
 } from "@mui/material";
 import { Card, ErrorTypography } from "@components";
 import { Product } from "@types";
-import { useAuth } from "@hooks";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -46,6 +43,7 @@ export const ConfirmRegister: FC<Props> = ({
     const err = registerError as Error;
     if (registerError) {
       setError(err?.message ?? err);
+      setLoading(false);
     }
   }, [registerError]);
 
@@ -154,6 +152,7 @@ export const ConfirmRegister: FC<Props> = ({
               onChange={() => {
                 setError(undefined);
                 setCheckedTOS((p) => !p);
+                setLoading(false);
               }}
               label={t("checkbox")}
             />

@@ -14,10 +14,8 @@ export const WorkspacePage = () => {
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
     useLazyGetMyWorkspacesQuery();
 
-  const [
-    getMySubscription,
-    { data: subscription, status: statusSubscription },
-  ] = useLazyGetMySubscriptionQuery();
+  const [getMySubscription, { status: statusSubscription }] =
+    useLazyGetMySubscriptionQuery();
 
   const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
   const { user, updateUser } = useAuth();

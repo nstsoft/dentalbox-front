@@ -12,7 +12,27 @@ export const authApi = createApi({
       query: (body) => ({ body, url: "auth/login", method: "POST" }),
     }),
     register: builder.mutation<Auth, RegisterData>({
-      query: (body) => ({ body, url: "auth/register", method: "POST" }),
+      query: ({ user, workspace, productId, priceId, workspaceImage }) => {
+        const formData = new FormData();
+        if (workspaceImage) {
+          formData.append("file", workspaceImage);
+        }
+
+        const stringData = JSON.stringify({
+          workspace,
+          user,
+          productId,
+          priceId,
+        });
+
+        formData.append("data", stringData);
+
+        return {
+          body: formData,
+          url: "auth/register",
+          method: "POST",
+        };
+      },
     }),
 
     loginWithGoogle: builder.query<void, void>({ query: () => "/auth/google" }),

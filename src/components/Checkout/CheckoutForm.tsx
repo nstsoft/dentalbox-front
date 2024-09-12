@@ -23,12 +23,12 @@ export const CheckoutForm: FC<Props> = ({
   const stripe = useStripe();
   const elements = useElements();
 
-  const [errorMessage, setErrorMessage] = useState();
+  const [, setErrorMessage] = useState<string>();
   const [loading, setLoading] = useState(false);
 
   const handleError = (error: StripeError) => {
     setLoading(false);
-    setErrorMessage(error?.message);
+    setErrorMessage(error?.message as string);
   };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
