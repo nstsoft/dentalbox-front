@@ -1,16 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { Workspace } from "@types";
-import { TAG, REDUCER } from "../constants";
+import { WORKSPACE_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
 export const workspaceApi = createApi({
   reducerPath: REDUCER.WORKSPACE,
-  tagTypes: [TAG.WORKSPACE],
+  tagTypes: Object.values(WORKSPACE_TAG),
   baseQuery,
   endpoints: (builder) => ({
     getMyWorkspaces: builder.query<Workspace[], void>({
       query: () => `/workspace`,
-      providesTags: () => [{ type: TAG.WORKSPACE }],
+      providesTags: () => [{ type: WORKSPACE_TAG.WORKSPACE }],
     }),
   }),
 });

@@ -3,17 +3,23 @@ import {
   useLazyGetMeQuery,
   useLazyConfirmOtpQuery,
   useLazyGetMyWorkspacesQuery,
+  useLazyGetMySubscriptionQuery,
 } from "@api";
 import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 
 export const WorkspacePage = () => {
-  const [getMe, { status, data: me }] = useLazyGetMeQuery();
+  const [getMe, { status: meStatus, data: me }] = useLazyGetMeQuery();
   const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
     useLazyGetMyWorkspacesQuery();
-  const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
 
+  const [
+    getMySubscription,
+    { data: subscription, status: statusSubscription },
+  ] = useLazyGetMySubscriptionQuery();
+
+  const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
   const { user, updateUser } = useAuth();
 
   useEffect(() => {
@@ -29,10 +35,20 @@ export const WorkspacePage = () => {
   }, [getMyWorkspaces, statusWorkspaces, workspace]);
 
   useEffect(() => {
-    if (status == "uninitialized" && user?.isVerified && workspace) {
+    if (meStatus == "uninitialized" && user?.isVerified && workspace) {
       getMe();
     }
-  }, [getMe, status, user?.isVerified, workspace]);
+  }, [getMe, meStatus, user?.isVerified, workspace]);
+
+  useEffect(() => {
+    if (
+      meStatus == "fulfilled" &&
+      workspace &&
+      statusSubscription === "uninitialized"
+    ) {
+      getMySubscription();
+    }
+  }, [getMySubscription, meStatus, statusSubscription, workspace]);
 
   useEffect(() => {
     if (me?.user?.role) {

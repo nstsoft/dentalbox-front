@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { User, Workspace, Subscription } from "@types";
-import { TAG, REDUCER } from "../constants";
+import { USER_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
 export const userApi = createApi({
   reducerPath: REDUCER.USER,
-  tagTypes: [TAG.USER, TAG.CONFIRM_OTP],
+  tagTypes: Object.values(USER_TAG),
   baseQuery,
   endpoints: (builder) => ({
     getMe: builder.query<
@@ -13,7 +13,7 @@ export const userApi = createApi({
       void
     >({
       query: () => `/user/me`,
-      providesTags: () => [{ type: TAG.USER }],
+      providesTags: () => [{ type: USER_TAG.USER }],
     }),
     confirmOtp: builder.query<unknown, string>({
       query: (otp) => ({
@@ -22,7 +22,7 @@ export const userApi = createApi({
         method: "PATCH",
       }),
 
-      providesTags: () => [{ type: TAG.CONFIRM_OTP }],
+      providesTags: () => [{ type: USER_TAG.CONFIRM_OTP }],
     }),
   }),
 });

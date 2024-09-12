@@ -55,9 +55,7 @@ export const CheckoutForm: FC<Props> = ({
     const { error } = await confirmIntent({
       elements,
       clientSecret,
-      confirmParams: {
-        return_url: "http://localhost:5173/app",
-      },
+      confirmParams: { return_url: window.location.origin + "/app" },
     });
 
     if (error) {

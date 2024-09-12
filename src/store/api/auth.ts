@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { Auth, RegisterData } from "@types";
-import { TAG, REDUCER, CACHE_KEYS } from "../constants";
+import { AUTH_TAG, REDUCER, CACHE_KEYS } from "../constants";
 import { baseQuery } from "./baseQuery";
 
 export const authApi = createApi({
   reducerPath: REDUCER.AUTH,
-  tagTypes: [TAG.AUTH],
+  tagTypes: Object.keys(AUTH_TAG),
   baseQuery,
   endpoints: (builder) => ({
     login: builder.mutation<Auth, { login: string; password: string }>({

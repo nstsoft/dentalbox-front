@@ -1,12 +1,22 @@
-export enum TAG {
+export enum USER_TAG {
   USER = "USER",
-  CONFIRM_OTP = "CONFIRM_OTP",
   AUTH = "AUTH",
   LOGIN = "LOGIN",
-  PRODUCT = "PRODUCT",
-  WORKSPACE = "WORKSPACE",
+  CONFIRM_OTP = "CONFIRM_OTP",
+}
+
+export enum SUBSCRIPTION_TAG {
   SUBSCRIPTION = "SUBSCRIPTION",
   INTENT = "INTENT",
+}
+export enum PRODUCT_TAG {
+  PRODUCT = "PRODUCT",
+}
+export enum AUTH_TAG {
+  AUTH = "AUTH",
+}
+export enum WORKSPACE_TAG {
+  WORKSPACE = "WORKSPACE",
 }
 
 export enum REDUCER {
