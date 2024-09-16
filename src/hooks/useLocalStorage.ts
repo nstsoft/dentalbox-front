@@ -25,7 +25,6 @@ export const useLocalStorage = <T>(key: KeyType, initialValue?: unknown) => {
   });
 
   const setValue = (value: T) => {
-    console.log("================", { key, value });
     if (!value) return;
     try {
       const valueToStore =
