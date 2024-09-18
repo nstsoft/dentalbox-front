@@ -51,7 +51,9 @@ export interface AuthContextType {
   refreshToken: string | null;
   isLoggedIn: boolean;
   user: User | null;
+  workspace: Workspace | null;
   login: (data: AuthState) => void;
   updateUser: (user: User) => void;
+  setWorkspace: (workspace: Workspace) => void;
   logout: () => void;
 }

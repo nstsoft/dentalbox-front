@@ -1,10 +1,10 @@
 export type Workspace = {
-  _id: string;
+  currentMembersCount: number;
+  notes: string;
+  image: string;
+  maxMembersCount: number;
   name: string;
-  image?: string;
-  description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  _id: string;
 };
 
 export type WorkspaceShortenItem = {

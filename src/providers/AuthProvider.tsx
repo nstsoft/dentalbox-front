@@ -1,6 +1,6 @@
 import { useState, useCallback, type FC, type ReactElement } from "react";
 
-import { User, AuthState } from "@types";
+import { User, AuthState, Workspace } from "@types";
 import { AuthContext } from "./context";
 
 const AUTH_TOKEN = "auth-token";
@@ -37,6 +37,8 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
     }
   });
 
+  const [workspace, setWorkspaceData] = useState<Workspace | null>(null);
+
   const login = useCallback(
     (data: AuthState) => {
       setAuthToken(data.authToken);
@@ -54,6 +56,7 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
     setAuthToken(null);
     setRefreshToken(null);
     setUser(null);
+    setWorkspaceData(null);
 
     localStorage.removeItem(REFRESH_TOKEN);
     localStorage.removeItem(AUTH_TOKEN);
@@ -66,15 +69,21 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
     localStorage.setItem(USER, JSON.stringify(userData));
   }, []);
 
+  const setWorkspace = useCallback((workspace: Workspace) => {
+    setWorkspaceData(workspace);
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         user,
         refreshToken,
+        workspace,
         authToken,
         login,
         logout,
         updateUser,
+        setWorkspace,
         isLoggedIn: !!authToken,
       }}
     >

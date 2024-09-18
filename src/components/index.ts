@@ -5,3 +5,4 @@ export * from "./SelectWorkspace";
 export * from "./Header";
 export * from "./Checkout";
 export * from "./ErrorText";
+export * from "./SideMenu";

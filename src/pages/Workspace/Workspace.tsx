@@ -1,81 +1,31 @@
 import { Fragment, useEffect } from "react";
-import {
-  useLazyGetMeQuery,
-  useLazyConfirmOtpQuery,
-  useLazyGetMyWorkspacesQuery,
-  useLazyGetMySubscriptionQuery,
-} from "@api";
+import { useLazyGetMyWorkspacesQuery } from "@api";
 import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
-import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 import { Box, Button, ImageListItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export const WorkspacePage = () => {
-  const [getMe, { status: meStatus, data: me }] = useLazyGetMeQuery();
-  const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
+  const navigate = useNavigate();
+
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
     useLazyGetMyWorkspacesQuery();
 
-  const [
-    getMySubscription,
-    { data: subscriptions, status: statusSubscription },
-  ] = useLazyGetMySubscriptionQuery();
-  const navigate = useNavigate();
+  const [workspace] = useLocalStorage<string>(WORKSPACE, null);
+  const { user } = useAuth();
 
-  const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
-  const { user, updateUser } = useAuth();
   const isOwner =
     user?.roles.find((role) => role.workspace === workspace)?.role === "admin";
 
-  console.log(subscriptions);
+  console.log(workspaces);
 
   useEffect(() => {
-    if (user && isSuccess && !user?.isVerified) {
-      updateUser({ ...user, isVerified: true });
-    }
-  }, [isSuccess, updateUser, user]);
-
-  useEffect(() => {
-    if (!workspace && statusWorkspaces == "uninitialized") {
+    if (!workspaces && statusWorkspaces == "uninitialized") {
       getMyWorkspaces();
     }
-  }, [getMyWorkspaces, statusWorkspaces, workspace]);
-
-  useEffect(() => {
-    if (meStatus == "uninitialized" && user?.isVerified && workspace) {
-      getMe();
-    }
-  }, [getMe, meStatus, user?.isVerified, workspace]);
-
-  useEffect(() => {
-    if (
-      meStatus == "fulfilled" &&
-      workspace &&
-      statusSubscription === "uninitialized"
-    ) {
-      getMySubscription();
-    }
-  }, [getMySubscription, meStatus, statusSubscription, workspace]);
-
-  useEffect(() => {
-    if (me?.user?.role) {
-      updateUser(me?.user);
-    }
-  }, [me?.user, updateUser]);
+  }, [getMyWorkspaces, statusWorkspaces, workspaces]);
 
   return (
     <Box component="section" className="page workspace">
-      <SelectWorkspaceDialog
-        isActive={!workspace}
-        workspaces={workspaces ?? []}
-        selectWorkspace={setWorkspace}
-      />
-      <ConfirmOtpDialog
-        resendOtp={() => {}}
-        isActive={!user?.isVerified && !!workspace}
-        confirmOtp={confirmOtp}
-        error={(error as { data: { message: string } })?.data?.message}
-      />
       <Box
         sx={{
           padding: "20px",

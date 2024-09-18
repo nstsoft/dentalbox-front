@@ -110,5 +110,15 @@ export const UA: ResourceLanguage = {
       checkbox: "Я погоджуюсь з умовами користування платформою",
       acceptTos: "Будь ласка, підтвердіть умови користування платформою",
     },
+    sideMenu: {
+      pages: {
+        workspace: "Середовище",
+        cabinets: "Кабінети",
+        calendar: "Календар",
+        staff: "Персонал",
+        profile: "Профіль",
+        patients: "Пацієнти",
+      },
+    },
   },
 };

@@ -110,5 +110,15 @@ export const EN: ResourceLanguage = {
       checkbox: "I agree to the terms and conditions",
       acceptTos: "Please accept the TOS",
     },
+    sideMenu: {
+      pages: {
+        workspace: "Workspace",
+        cabinets: "Cabinets",
+        calendar: "Calendar",
+        staff: "Staff",
+        profile: "Profile",
+        patients: "Patients",
+      },
+    },
   },
 };
