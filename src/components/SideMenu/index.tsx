@@ -1,6 +1,4 @@
 import { type FC, type Dispatch, type SetStateAction, useState } from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 
 import {
   List,
@@ -9,10 +7,11 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Box,
+  SwipeableDrawer,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-
 import { PAGES } from "@utils";
 import { useTranslation } from "react-i18next";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
@@ -34,6 +33,7 @@ const icons: { [key in Pages]: JSX.Element } = {
   staff: <GroupIcon />,
   profile: <SettingsIcon />,
 };
+
 import ForumIcon from "@mui/icons-material/Forum";
 export const SideMenu: FC<{
   isOpen: boolean;
@@ -53,15 +53,22 @@ export const SideMenu: FC<{
   const navigate = useNavigate();
 
   const DrawerList = (
-    <Box sx={{ width: 180 }} role="presentation">
+    <Box sx={{ width: 200 }} role="presentation">
       <List>
-        <ListItem disablePadding onClick={() => setIsOpen((prev) => !prev)}>
+        <ListItem
+          sx={{
+            display: "flex",
+            justifyContent: isOpen ? "flex-end" : "flex-start",
+          }}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
         </ListItem>
         {PAGES.map((text) => (
           <ListItem
             key={text}
             disablePadding
+            className={page === text ? "Mui-selected" : ""}
             onClick={() => {
               setPage(text);
               navigate(`${text}`);
@@ -69,16 +76,16 @@ export const SideMenu: FC<{
           >
             <ListItemButton>
               <ListItemIcon
-                sx={{
-                  color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
-                }}
+              // sx={{
+              //   color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
+              // }}
               >
                 {icons[text]}
               </ListItemIcon>
               <ListItemText
-                sx={{
-                  color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
-                }}
+                // sx={{
+                //   color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
+                // }}
                 primary={t(`pages.${text}`)}
               />
             </ListItemButton>
@@ -103,7 +110,8 @@ export const SideMenu: FC<{
 
   return (
     <Box sx={{ display: "flex" }}>
-      <Drawer
+      <SwipeableDrawer
+        onOpen={toggleDrawer(true)}
         sx={{
           width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
           transition: "width 0.3s",
@@ -112,7 +120,6 @@ export const SideMenu: FC<{
             marginTop: "64px",
             overflowX: "hidden",
             transition: "width 0.3s",
-            height: "calc(100vh - 64px)",
             display: "flex",
             position: "absolute",
             top: 0,
@@ -124,7 +131,7 @@ export const SideMenu: FC<{
         onClose={toggleDrawer(false)}
       >
         {DrawerList}
-      </Drawer>
+      </SwipeableDrawer>
     </Box>
   );
 };

@@ -40,11 +40,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
           children: [
             {
               index: true,
-              element: (
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Navigate to="/app/workspace" />
-                </Suspense>
-              ),
+              element: <Navigate to="/app/workspace" />,
             },
             { path: "/app/checkout", Component: CheckoutPage },
             { path: "/app/workspace", Component: WorkspacePage },

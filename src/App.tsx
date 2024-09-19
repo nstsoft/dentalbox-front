@@ -10,11 +10,11 @@ function App() {
   const { isLoggedIn } = useAuth();
 
   return (
-    <>
+    <div className="App">
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <RouterProvider router={getRoutes(isLoggedIn)} />
       </LocalizationProvider>
-    </>
+    </div>
   );
 }
 

@@ -78,7 +78,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   }
 
   return (
-    <section>
+    <section className="app-layout">
       <SelectWorkspaceDialog
         isActive={!workspace}
         workspaces={workspaces ?? []}
@@ -94,10 +94,9 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
         <>
           <SideMenu setIsOpen={setIsOpenMenu} isOpen={isOpenMenu} />
           <Box
-            component="main"
             sx={{
               flexGrow: 1,
-              p: 0,
+              p: 3,
               marginLeft: isOpenMenu
                 ? `${OPENED_MENU_WIDTH}px`
                 : `${CLOSED_MENU_WIDTH}px`,
