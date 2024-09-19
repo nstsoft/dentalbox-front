@@ -11,7 +11,7 @@ export const Payments = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <Container sx={{ margin: 0 }}>
       <Typography variant="h4">Payment methods:</Typography>
       {payments?.map((payment) => (
         <Card

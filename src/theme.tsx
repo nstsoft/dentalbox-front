@@ -11,6 +11,15 @@ const theme = createTheme({
     //   disabled: "#b0b0b0",
     // },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -38,6 +47,46 @@ const theme = createTheme({
           },
         },
       },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          "&.highlighted": { color: "#008fba" },
+        },
+      },
+    },
+  },
+  typography: {
+    fontSize: 14,
+    h1: {
+      fontSize: "2rem",
+      "@media (max-width:600px)": { fontSize: "2.5rem" },
+      "@media (max-width:960px)": { fontSize: "3rem" },
+    },
+    h4: {
+      fontSize: "2rem",
+      "@media (max-width:600px)": { fontSize: "1.5rem" },
+      // "@media (min-width:960px)": { fontSize: "2rem" },
+    },
+    h5: {
+      fontSize: "1.8rem",
+      "@media (max-width:600px)": { fontSize: "1.2rem" },
+      // "@media (min-width:960px)": { fontSize: "2rem" },
+    },
+    h6: {
+      fontSize: "1.2rem",
+      "@media (max-width:600px)": { fontSize: "0.9rem" },
+      // "@media (min-width:960px)": { fontSize: "2rem" },
+    },
+    body1: {
+      fontSize: "1rem",
+      "@media (max-width:600px)": { fontSize: "0.8rem" },
+      "@media (max-width:960px)": { fontSize: "0.9rem" },
+    },
+    body2: {
+      fontSize: "0.875rem",
+      "@media (max-width:600px)": { fontSize: "0.95rem" },
+      "@media (max-width:960px)": { fontSize: "1rem" },
     },
   },
 });

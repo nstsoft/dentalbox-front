@@ -96,7 +96,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
           <Box
             sx={{
               flexGrow: 1,
-              p: 3,
+              p: { xs: 1, sx: 1.5, md: 1.5, lg: 3, xl: 3 },
               marginLeft: isOpenMenu
                 ? `${OPENED_MENU_WIDTH}px`
                 : `${CLOSED_MENU_WIDTH}px`,

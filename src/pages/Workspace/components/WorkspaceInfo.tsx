@@ -1,53 +1,60 @@
 import { Card } from "@components";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardActions,
+} from "@mui/material";
 import { Workspace } from "@types";
 import { FC } from "react";
+import { ClinicIconIcon } from "@assets";
 
 type WorkspaceInfoProps = {
   workspace: Workspace | null;
 };
 
-export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
-  return (
-    <Card sx={{ m: 0 }}>
-      <Typography variant="h4" sx={{ marginBottom: "10px" }}>
-        {workspace?.name}
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          gap: "30px",
-          mb: 2,
-        }}
-      >
-        <img
-          style={{ width: "150px", height: "150px" }}
-          src={workspace?.image}
-          alt={workspace?.name}
-        />
-        <Box sx={{ width: "100%" }}>
-          <Box sx={{ display: "flex", gap: "15px" }}>
-            <Typography variant="h6">Notes:</Typography>
-            <Typography variant="body1">{workspace?.notes}</Typography>
-          </Box>
-          <Divider
-            color="black"
-            sx={{
-              mb: 1,
-            }}
-          />
+const sx = { width: "100%", maxWidth: 200, height: 140 };
 
-          <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <Typography variant="h6">Members:</Typography>
-            <Typography variant="body1" sx={{ fontSize: "16px" }}>
-              {workspace?.currentMembersCount}/{workspace?.maxMembersCount}
-            </Typography>
-          </Box>
+export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
+  if (!workspace) return null;
+  return (
+    <Card sx={{ maxWidth: 345, m: 0, width: "100%" }}>
+      <Typography
+        className="highlighted"
+        gutterBottom
+        variant="h5"
+        component="div"
+      >
+        Workspace
+      </Typography>
+      {workspace.image ? (
+        <CardMedia sx={sx} component="img" image={workspace.image} />
+      ) : (
+        <ClinicIconIcon sx={sx} />
+      )}
+
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {workspace?.name}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          {workspace.notes}
+        </Typography>
+        <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
+          <Typography variant="h6">Members:</Typography>
+          <Typography variant="body1" sx={{ fontSize: "16px" }}>
+            {workspace?.currentMembersCount}/{workspace?.maxMembersCount}
+          </Typography>
         </Box>
-      </Box>
-      <Button fullWidth variant="contained">
-        Invite users
-      </Button>
+      </CardContent>
+      <CardActions>
+        <Button fullWidth variant="contained">
+          Invite users
+        </Button>
+      </CardActions>
     </Card>
   );
 };

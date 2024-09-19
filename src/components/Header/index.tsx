@@ -9,19 +9,18 @@ import {
 } from "./components";
 import { type FC } from "react";
 
+const style = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexDirection: "row",
+  overflow: "hidden",
+};
+
 export const Header: FC = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          flexDirection: "row",
-        }}
-        position="static"
-      >
+    <Box>
+      <AppBar sx={style} position="static">
         <Toolbar>
           <WorkspaceBadge />
         </Toolbar>

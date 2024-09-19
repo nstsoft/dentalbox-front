@@ -1,30 +1,40 @@
-import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
+import { useAuth } from "@hooks";
 import { Box } from "@mui/material";
 import { Payments, SubscriptionInfo, WorkspaceInfo } from "./components";
 
 export const WorkspacePage = () => {
-  const [workspaceId] = useLocalStorage<string>(WORKSPACE, null);
-  const { user, workspace } = useAuth();
-
-  const isOwner =
-    user?.roles.find((role) => role.workspace === workspaceId)?.role ===
-    "admin";
+  const { workspace } = useAuth();
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           width: "100%",
-          gap: "50px",
+          gap: "24px",
           marginBottom: "20px",
+          flexWrap: "wrap",
         }}
       >
         <WorkspaceInfo workspace={workspace} />
-        {isOwner && <SubscriptionInfo />}
+        <SubscriptionInfo />
       </Box>
-      <Payments />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignContent: "flex-start",
+          alignItems: "flex-start",
+          width: "100%",
+          gap: "24px",
+          marginBottom: "20px",
+          flexWrap: "wrap",
+          flexDirection: "row",
+        }}
+      >
+        <Payments />
+      </Box>
     </Box>
   );
 };

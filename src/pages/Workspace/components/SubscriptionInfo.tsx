@@ -14,8 +14,8 @@ export const SubscriptionInfo = () => {
       title: "Name",
       value:
         i18n.language === "en"
-          ? subscription?.product.metadata.ua_name
-          : subscription?.product.metadata.en_name,
+          ? subscription?.product.metadata.en_name
+          : subscription?.product.metadata.ua_name,
     },
     {
       id: "status",
@@ -27,8 +27,8 @@ export const SubscriptionInfo = () => {
       title: "Description",
       value:
         i18n.language === "en"
-          ? subscription?.product.metadata.ua_description
-          : subscription?.product.metadata.en_description,
+          ? subscription?.product.metadata.en_description
+          : subscription?.product.metadata.ua_description,
     },
     {
       id: "price",
@@ -56,9 +56,13 @@ export const SubscriptionInfo = () => {
   ];
 
   return (
-    <Card sx={{ m: 0 }}>
+    <Card sx={{ m: 0, alignSelf: "flex-start" }}>
       <Box>
-        <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+        <Typography
+          className="highlighted"
+          variant="h5"
+          sx={{ marginBottom: "20px" }}
+        >
           Subscription info
         </Typography>
         {subscriptionDataMap.map((data) => (
@@ -74,7 +78,7 @@ export const SubscriptionInfo = () => {
             </Typography>
             <Tooltip title={data.value}>
               <Typography
-                component="p"
+                variant="body2"
                 sx={{
                   overflow: "hidden",
                   display: "-webkit-box",
