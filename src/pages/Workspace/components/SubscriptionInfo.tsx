@@ -1,20 +1,12 @@
 import { Card } from "@components";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
-import { SubscriptionResponse } from "@types";
-import { FC } from "react";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import icons from "currency-icons";
 import moment from "moment";
+import { useGetMySubscriptionQuery } from "@api";
 
-type SubscriptionInfoProps = {
-  subscription: SubscriptionResponse | null;
-};
-
-export const SubscriptionInfo: FC<SubscriptionInfoProps> = ({
-  subscription,
-}) => {
-  const navigate = useNavigate();
+export const SubscriptionInfo = () => {
+  const { data: subscription } = useGetMySubscriptionQuery();
   const { i18n } = useTranslation();
   const subscriptionDataMap = [
     {
@@ -28,7 +20,7 @@ export const SubscriptionInfo: FC<SubscriptionInfoProps> = ({
     {
       id: "status",
       title: "Status",
-      value: subscription?.price.active ? "Active" : "Inactive",
+      value: subscription?.status,
     },
     {
       id: "description",
@@ -41,7 +33,7 @@ export const SubscriptionInfo: FC<SubscriptionInfoProps> = ({
     {
       id: "price",
       title: "Price",
-      value: `${subscription?.price.unit_amount}${
+      value: `${(subscription?.price.unit_amount ?? 0) / 100}${
         subscription
           ? icons[subscription?.price.currency.toUpperCase()]?.symbol
           : ""
@@ -50,28 +42,36 @@ export const SubscriptionInfo: FC<SubscriptionInfoProps> = ({
     {
       id: "periodStart",
       title: "Period start",
-      value: moment(subscription?.current_period_start).format("DD.MM.YYYY"),
+      value: moment((subscription?.current_period_start ?? 0) * 1000).format(
+        "DD.MM.YYYY"
+      ),
     },
     {
       id: "periodEnd",
       title: "Period end",
-      value: moment(subscription?.current_period_end).format("DD.MM.YYYY"),
+      value: moment((subscription?.current_period_end ?? 0) * 1000).format(
+        "DD.MM.YYYY"
+      ),
     },
   ];
-  console.log(subscription);
 
   return (
-    <Card>
+    <Card sx={{ m: 0 }}>
       <Box>
         <Typography variant="h4" sx={{ marginBottom: "20px" }}>
           Subscription info
         </Typography>
         {subscriptionDataMap.map((data) => (
-          <Box
-            key={data.id}
-            sx={{ display: "flex", gap: "15px", alignItems: "center" }}
-          >
-            <Typography variant="h6">{data.title}:</Typography>
+          <Box key={data.id} sx={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                width: "130px",
+                marginRight: data.id === "description" ? "20px" : 0,
+              }}
+            >
+              {data.title}:
+            </Typography>
             <Tooltip title={data.value}>
               <Typography
                 component="p"
@@ -89,19 +89,6 @@ export const SubscriptionInfo: FC<SubscriptionInfoProps> = ({
           </Box>
         ))}
       </Box>
-      <Box>
-        <Typography variant="h6" sx={{ marginBottom: "20px" }}>
-          Current payment method:
-        </Typography>
-        <Box></Box>
-      </Box>
-      <Button
-        variant="outlined"
-        fullWidth
-        onClick={() => navigate("/app/checkout")}
-      >
-        Add payment card
-      </Button>
     </Card>
   );
 };

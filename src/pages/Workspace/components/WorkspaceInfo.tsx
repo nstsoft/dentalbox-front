@@ -9,7 +9,7 @@ type WorkspaceInfoProps = {
 
 export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
   return (
-    <Card>
+    <Card sx={{ m: 0 }}>
       <Typography variant="h4" sx={{ marginBottom: "10px" }}>
         {workspace?.name}
       </Typography>

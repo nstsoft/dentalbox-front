@@ -11,7 +11,7 @@ import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 import { Box } from "@mui/material";
 import { SideMenu } from "@components";
-import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
+import { OPENED_MENU_WIDTH } from "@utils";
 
 type Props = {
   isAuthenticated: boolean;

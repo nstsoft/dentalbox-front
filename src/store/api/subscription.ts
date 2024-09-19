@@ -26,7 +26,7 @@ export const subscriptionApi = createApi({
   }),
 });
 
-export const { useLazyGetMySubscriptionQuery, useGetClientSecretQuery } =
+export const { useLazyGetMySubscriptionQuery, useGetClientSecretQuery, useGetMySubscriptionQuery } =
   subscriptionApi;
 
 export default { subscriptionApi };

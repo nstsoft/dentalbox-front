@@ -20,14 +20,19 @@ export enum WORKSPACE_TAG {
   WORKSPACE = "WORKSPACE",
 }
 
+export enum PAYMENT_TAG {
+  PAYMENT = "PAYMENT",
+}
+
 export enum REDUCER {
   USER = "USER",
   AUTH = "AUTH",
   PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
   SUBSCRIPTION = "SUBSCRIPTION",
+  PAYMENT= "PAYMENT",
 }
 
 export enum CACHE_KEYS {
-  LOGIN = "LOGIN",
+  LOGIN = "LOGIN"
 }

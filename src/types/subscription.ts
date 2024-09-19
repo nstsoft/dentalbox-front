@@ -21,9 +21,24 @@ export type SubscriptionStatus =
   | "trialing"
   | "unpaid";
 
+export type PriceGeneral = {
+  active: boolean;
+  created: number;
+  currency: string;
+  custom_unit_amount: string;
+  id: string;
+  livemode: boolean;
+  product: string;
+  recurring: {
+    interval: "week" | "month" | "year";
+    interval_count: 1;
+  };
+  type: string;
+  unit_amount: number;
+  unit_amount_decimal: string;
+};
+
 export type SubscriptionResponse = {
-  // clientSecret: string;
-  // type: "setup" | "payment" | "payment-added";
   billing_cycle_anchor: number;
   cancel_at: string | null;
   canceled_at: string | null;
@@ -38,32 +53,11 @@ export type SubscriptionResponse = {
   current_period_start: number;
   customer: number;
   id: string;
-  price: {
-    id: string;
-    active: boolean;
-    currency: string;
-    livemode: boolean;
-    product: string;
-    recurring: {
-      interval: "week" | "month" | "year";
-      interval_count: 1;
-    };
-    unit_amount: number;
-  };
-
-  start_date: number;
+  price: PriceGeneral;
   status: SubscriptionStatus;
-  trial_end: number;
-  trial_settings: {
-    end_behavior: {
-      missing_payment_method: string;
-    };
-  };
-  trial_start: number;
   _id: string;
   workspace: string;
   product: Product;
   priceId: string;
   stripeSubscription: string;
-
 };
