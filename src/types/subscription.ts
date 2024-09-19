@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 export type Subscription = {
   _id: string;
   workspace: string;
@@ -20,34 +22,33 @@ export type SubscriptionStatus =
   | "unpaid";
 
 export type SubscriptionResponse = {
-  clientSecret: string;
-  type: "setup" | "payment" | "payment-added";
-  id: string;
-  created: string;
+  // clientSecret: string;
+  // type: "setup" | "payment" | "payment-added";
+  billing_cycle_anchor: number;
+  cancel_at: string | null;
+  canceled_at: string | null;
+  cancellation_details: {
+    comment: string | null;
+    feedback: string | null;
+    reason: string | null;
+  };
+  created: number;
   currency: string;
   current_period_end: number;
   current_period_start: number;
-  customer: string;
-  items: {
-    data: {
-      plan: {
-        id: "price_1PwgmzLUELz5qmte8VBmygkO";
-        aggregate_usage: null;
-        amount: 60000;
-        currency: "uah";
-        interval: "week";
-        interval_count: 1;
-        livemode: false;
-        metadata: {};
-        meter: null;
-        nickname: null;
-        product: "prod_QoJP4zuiRhMSO0";
-        tiers_mode: null;
-        transform_usage: null;
-        trial_period_days: null;
-        usage_type: "licensed";
-      };
-    }[];
+  customer: number;
+  id: string;
+  price: {
+    id: string;
+    active: boolean;
+    currency: string;
+    livemode: boolean;
+    product: string;
+    recurring: {
+      interval: "week" | "month" | "year";
+      interval_count: 1;
+    };
+    unit_amount: number;
   };
 
   start_date: number;
@@ -61,19 +62,8 @@ export type SubscriptionResponse = {
   trial_start: number;
   _id: string;
   workspace: string;
-  product: string;
+  product: Product;
   priceId: string;
   stripeSubscription: string;
-  price: {
-    id: string;
-    active: boolean;
-    currency: string;
-    livemode: boolean;
-    product: string;
-    recurring: {
-      interval: "week" | "month" | "year";
-      interval_count: 1;
-    };
-    unit_amount: number;
-  };
+
 };
