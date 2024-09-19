@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { type FC, type Dispatch, type SetStateAction, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
@@ -20,6 +20,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
 
 type Pages = (typeof PAGES)[number];
 
@@ -34,30 +37,50 @@ const icons: { [key in Pages]: JSX.Element } = {
 import ForumIcon from "@mui/icons-material/Forum";
 export const SideMenu: FC<{
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  setPage: (page: (typeof PAGES)[number]) => void;
-}> = ({ isOpen, setIsOpen, setPage }) => {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation("", { keyPrefix: "sideMenu" });
+
+  const [page, setPage] = useState<(typeof PAGES)[number]>(
+    PAGES.find((page) => page === location.pathname.split("/")[2]) ??
+      "workspace"
+  );
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setIsOpen(newOpen);
   };
+
   const navigate = useNavigate();
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 180 }} role="presentation">
       <List>
+        <ListItem disablePadding onClick={() => setIsOpen((prev) => !prev)}>
+          {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+        </ListItem>
         {PAGES.map((text) => (
           <ListItem
             key={text}
             disablePadding
             onClick={() => {
               setPage(text);
-              navigate(`app/${text}`);
+              navigate(`${text}`);
             }}
           >
             <ListItemButton>
-              <ListItemIcon>{icons[text]}</ListItemIcon>
-              <ListItemText primary={t(`pages.${text}`)} />
+              <ListItemIcon
+                sx={{
+                  color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
+                }}
+              >
+                {icons[text]}
+              </ListItemIcon>
+              <ListItemText
+                sx={{
+                  color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
+                }}
+                primary={t(`pages.${text}`)}
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -79,8 +102,29 @@ export const SideMenu: FC<{
   );
 
   return (
-    <Drawer open={isOpen} onClose={toggleDrawer(false)}>
-      {DrawerList}
-    </Drawer>
+    <Box sx={{ display: "flex" }}>
+      <Drawer
+        sx={{
+          width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
+          transition: "width 0.3s",
+          "& .MuiDrawer-paper": {
+            width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
+            marginTop: "64px",
+            overflowX: "hidden",
+            transition: "width 0.3s",
+            height: "calc(100vh - 64px)",
+            display: "flex",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          },
+        }}
+        variant="permanent"
+        open={isOpen}
+        onClose={toggleDrawer(false)}
+      >
+        {DrawerList}
+      </Drawer>
+    </Box>
   );
 };

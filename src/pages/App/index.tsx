@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { type FC, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
@@ -9,12 +9,17 @@ import {
 } from "@api";
 import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
+import { Box } from "@mui/material";
+import { SideMenu } from "@components";
+import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
 
 type Props = {
   isAuthenticated: boolean;
 };
 
 export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
   const [getMe, { status: meStatus, data: me }] = useLazyGetMeQuery();
   const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
@@ -85,7 +90,24 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
         confirmOtp={confirmOtp}
         error={(error as { data: { message: string } })?.data?.message}
       />
-      {!subscription || !workspace || !user?.isVerified ? null : <Outlet />}
+      {!subscription || !workspace || !user?.isVerified ? null : (
+        <>
+          <SideMenu setIsOpen={setIsOpenMenu} isOpen={isOpenMenu} />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 0,
+              marginLeft: isOpenMenu
+                ? `${OPENED_MENU_WIDTH}px`
+                : `${CLOSED_MENU_WIDTH}px`,
+              transition: "margin-left 0.3s",
+            }}
+          >
+            <Outlet />
+          </Box>
+        </>
+      )}
     </section>
   );
 };

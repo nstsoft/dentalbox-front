@@ -4,6 +4,10 @@ import { Header, SideMenu } from "@components";
 import { useState } from "react";
 import { PAGES } from "@utils";
 import { useLocation } from "react-router-dom";
+import { Box } from "@mui/material";
+
+const drawerWidthOpen = 200;
+const drawerWidthClosed = 56;
 
 export const Layout = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -15,13 +19,21 @@ export const Layout = () => {
 
   return (
     <section className="layout">
-      <Header currentPage={page} setIsOpenMenu={setIsOpenMenu} />
-      <SideMenu
-        setPage={setPage}
-        setIsOpen={setIsOpenMenu}
-        isOpen={isOpenMenu}
-      />
-      <Outlet />
+      <Header setIsOpenMenu={setIsOpenMenu} />
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: isOpenMenu
+            ? `${drawerWidthOpen}px`
+            : `${drawerWidthClosed}px`,
+          transition: "margin-left 0.3s",
+        }}
+      >
+        <Outlet />
+      </Box>
     </section>
   );
 };
