@@ -8,6 +8,7 @@ export enum USER_TAG {
 export enum SUBSCRIPTION_TAG {
   SUBSCRIPTION = "SUBSCRIPTION",
   INTENT = "INTENT",
+  SECRET = "SECRET",
 }
 export enum PRODUCT_TAG {
   PRODUCT = "PRODUCT",

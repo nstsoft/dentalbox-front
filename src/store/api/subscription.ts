@@ -3,6 +3,9 @@ import type { SubscriptionResponse } from "@types";
 import { SUBSCRIPTION_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
+type CreatePaymentParam = { id: string; client_secret: string };
+type GetSecretParam = { type: "setup" | "payment"; clientSecret: string };
+
 export const subscriptionApi = createApi({
   reducerPath: REDUCER.SUBSCRIPTION,
   tagTypes: Object.values(SUBSCRIPTION_TAG),
@@ -12,19 +15,13 @@ export const subscriptionApi = createApi({
       query: () => `/subscription`,
       providesTags: () => [{ type: SUBSCRIPTION_TAG.SUBSCRIPTION }],
     }),
-    createPaymentIntent: builder.query<
-      { id: string; client_secret: string },
-      void
-    >({
+    createPaymentIntent: builder.query<CreatePaymentParam, void>({
       query: () => `/payment/create-payment-intent`,
       providesTags: () => [{ type: SUBSCRIPTION_TAG.INTENT }],
     }),
-    getClientSecret: builder.query<
-      { type: "setup" | "payment"; clientSecret: string },
-      void
-    >({
+    getClientSecret: builder.query<GetSecretParam, void>({
       query: () => `/payment/client-secret`,
-      providesTags: () => [{ type: SUBSCRIPTION_TAG.INTENT }],
+      providesTags: () => [{ type: SUBSCRIPTION_TAG.SECRET }],
     }),
   }),
 });
