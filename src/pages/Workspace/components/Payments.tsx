@@ -4,9 +4,11 @@ import { Card as Container } from "@components";
 import "react-credit-cards-2/dist/lib/styles.scss";
 import { Button, Typography } from "@mui/material";
 import { useGetMyPaymentMethodsQuery } from "../../../store/api/payment";
+import { useNavigate } from "react-router-dom";
 
 export const Payments = () => {
   const { data: payments } = useGetMyPaymentMethodsQuery();
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -21,7 +23,9 @@ export const Payments = () => {
           issuer={payment.brand}
         />
       ))}
-      <Button variant="contained">Add payment method</Button>
+      <Button variant="contained" onClick={() => navigate("/app/checkout")}>
+        Add payment method
+      </Button>
     </Container>
   );
 };
