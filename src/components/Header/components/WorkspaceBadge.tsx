@@ -3,9 +3,9 @@ import { useAuth } from "@hooks";
 import { Box, Typography, IconButton, Tooltip, Avatar } from "@mui/material";
 
 export const WorkspaceBadge: FC = () => {
-  const { workspace } = useAuth();
+  const { workspace, isLoggedIn } = useAuth();
 
-  if (!workspace) return null;
+  if (!workspace || !isLoggedIn) return null;
 
   return (
     <>

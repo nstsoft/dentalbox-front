@@ -75,19 +75,8 @@ export const SideMenu: FC<{
             }}
           >
             <ListItemButton>
-              <ListItemIcon
-              // sx={{
-              //   color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
-              // }}
-              >
-                {icons[text]}
-              </ListItemIcon>
-              <ListItemText
-                // sx={{
-                //   color: page === text ? "#4393bb" : "rgba(0, 0, 0, 0.54)",
-                // }}
-                primary={t(`pages.${text}`)}
-              />
+              <ListItemIcon>{icons[text]}</ListItemIcon>
+              <ListItemText primary={t(`pages.${text}`)} />
             </ListItemButton>
           </ListItem>
         ))}

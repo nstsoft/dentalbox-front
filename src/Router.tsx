@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./Layout";
 import { Navigate } from "react-router-dom";
-import { Suspense } from "react";
+
 import {
   Auth,
   Login,

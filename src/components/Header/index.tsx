@@ -1,39 +1,34 @@
-import { useAuth } from "@hooks";
-import { AppBar, Box, Toolbar, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { AppBar, Box, Toolbar } from "@mui/material";
 
 import {
   UserBadge,
   RightToolbar,
   LanguageSelector,
   WorkspaceBadge,
+  AuthButtons,
 } from "./components";
 import { type FC } from "react";
 
 export const Header: FC = () => {
-  const { isLoggedIn } = useAuth();
-
-  const navigate = useNavigate();
-  const { t } = useTranslation("", { keyPrefix: "header" });
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "row",
+        }}
+        position="static"
+      >
         <Toolbar>
-          {isLoggedIn && <WorkspaceBadge />}
-          {!isLoggedIn && (
-            <>
-              {" "}
-              <Button onClick={() => navigate("/auth/login")} color="inherit">
-                {t("login", { keyPrefix: "buttons" })}
-              </Button>
-              <Button onClick={() => navigate("/auth/sign-up")} color="inherit">
-                {t("signUp", { keyPrefix: "buttons" })}
-              </Button>
-            </>
-          )}
+          <WorkspaceBadge />
+        </Toolbar>
+        <Toolbar>
           <RightToolbar mailContentCount={10} />
           <UserBadge />
+          <AuthButtons />
           <LanguageSelector />
         </Toolbar>
       </AppBar>
