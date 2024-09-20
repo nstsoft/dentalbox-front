@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
@@ -7,18 +7,26 @@ import {
   useLazyGetMyWorkspacesQuery,
   useLazyGetMySubscriptionQuery,
 } from "@api";
-import { useLocalStorage, WORKSPACE, useAuth } from "@hooks";
+import { useLocalStorage, WORKSPACE, useAuth, useSideMenu } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 import { Box } from "@mui/material";
 import { SideMenu } from "@components";
 import { CLOSED_MENU_WIDTH, OPENED_MENU_WIDTH } from "@utils";
+import { isMobile, isTablet } from "react-device-detect";
+
+const isMobileMenu = isMobile || isTablet;
+
+const getPageLeftMargin = (isOpenMenu: boolean) => {
+  if (isMobileMenu) return 0;
+  return isOpenMenu ? `${OPENED_MENU_WIDTH}px` : `${CLOSED_MENU_WIDTH}px`;
+};
 
 type Props = {
   isAuthenticated: boolean;
 };
 
 export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const { isOpenMenu } = useSideMenu();
 
   const [getMe, { status: meStatus, data: me }] = useLazyGetMeQuery();
   const [confirmOtp, { isSuccess, error }] = useLazyConfirmOtpQuery();
@@ -92,14 +100,12 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
       />
       {!subscription || !workspace || !user?.isVerified ? null : (
         <>
-          <SideMenu setIsOpen={setIsOpenMenu} isOpen={isOpenMenu} />
+          <SideMenu />
           <Box
             sx={{
               flexGrow: 1,
               p: { xs: 1, sx: 1.5, md: 1.5, lg: 3, xl: 3 },
-              marginLeft: isOpenMenu
-                ? `${OPENED_MENU_WIDTH}px`
-                : `${CLOSED_MENU_WIDTH}px`,
+              marginLeft: getPageLeftMargin(isOpenMenu),
               transition: "margin-left 0.3s",
             }}
           >

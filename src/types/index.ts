@@ -5,3 +5,4 @@ export * from "./workspace";
 export * from "./cabinet";
 export * from "./product";
 export * from "./payment";
+export * from "./common";

@@ -39,7 +39,7 @@ export type User = {
   updatedAt: Date;
   image?: string;
   dob?: Date;
-  role?: UserRole;
+  role: UserRole;
 };
 
 export type RegisterData = {

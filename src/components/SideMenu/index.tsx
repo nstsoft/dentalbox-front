@@ -1,19 +1,13 @@
-import { type FC, type Dispatch, type SetStateAction, useState } from "react";
+import { type FC, useState } from "react";
 
-import {
-  List,
-  Divider,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Box,
-  SwipeableDrawer,
-} from "@mui/material";
-
-import { useNavigate } from "react-router-dom";
-import { PAGES } from "@utils";
-import { useTranslation } from "react-i18next";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
@@ -21,7 +15,15 @@ import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
+import { useNavigate } from "react-router-dom";
+import { PAGES } from "@utils";
+import { useTranslation } from "react-i18next";
 import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
+import { isMobile, isTablet } from "react-device-detect";
+import { useSideMenu } from "@hooks";
+
+const isMenuMobile = isMobile || isTablet;
 
 type Pages = (typeof PAGES)[number];
 
@@ -34,11 +36,26 @@ const icons: { [key in Pages]: JSX.Element } = {
   profile: <SettingsIcon />,
 };
 
+const getDrawerStyle = (isOpen: boolean) =>
+  isMenuMobile
+    ? {}
+    : {
+        transition: "width 0.3s",
+        "& .MuiDrawer-paper": {
+          width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
+          marginTop: "64px",
+          overflowX: "hidden",
+          transition: "width 0.3s",
+          display: "flex",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        },
+      };
+
 import ForumIcon from "@mui/icons-material/Forum";
-export const SideMenu: FC<{
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ isOpen, setIsOpen }) => {
+export const SideMenu: FC = () => {
+  const { isOpenMenu, setIsOpen, toggle } = useSideMenu();
   const { t } = useTranslation("", { keyPrefix: "sideMenu" });
 
   const [page, setPage] = useState<(typeof PAGES)[number]>(
@@ -58,11 +75,11 @@ export const SideMenu: FC<{
         <ListItem
           sx={{
             display: "flex",
-            justifyContent: isOpen ? "flex-end" : "flex-start",
+            justifyContent: isOpenMenu ? "flex-end" : "flex-start",
           }}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={toggle}
         >
-          {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+          {isOpenMenu ? <ArrowBackIcon /> : <ArrowForwardIcon />}
         </ListItem>
         {PAGES.map((text) => (
           <ListItem
@@ -101,22 +118,9 @@ export const SideMenu: FC<{
     <Box sx={{ display: "flex" }}>
       <SwipeableDrawer
         onOpen={toggleDrawer(true)}
-        sx={{
-          width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
-          transition: "width 0.3s",
-          "& .MuiDrawer-paper": {
-            width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
-            marginTop: "64px",
-            overflowX: "hidden",
-            transition: "width 0.3s",
-            display: "flex",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          },
-        }}
-        variant="permanent"
-        open={isOpen}
+        sx={getDrawerStyle(isOpenMenu)}
+        variant={isMenuMobile ? "temporary" : "permanent"}
+        open={isOpenMenu}
         onClose={toggleDrawer(false)}
       >
         {DrawerList}
