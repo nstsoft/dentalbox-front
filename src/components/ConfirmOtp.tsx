@@ -1,15 +1,14 @@
 import { useState, useRef, type KeyboardEvent, type ChangeEvent } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Box,
-  FormHelperText,
-} from "@mui/material";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import DialogContentText from "@mui/material/DialogContentText";
+import FormHelperText from "@mui/material/FormHelperText";
 
 import { useTranslation } from "react-i18next";
 

@@ -2,18 +2,17 @@ import { ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { StepWizardChildProps } from "react-step-wizard";
 import { WorkspaceForm } from "./types";
-import { Card } from "@components";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  InputLabel,
-  OutlinedInput,
-  styled,
-  Typography,
-} from "@mui/material";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Card } from "@elements";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 interface IUserWorkspaceStepProps {
   workspaceForm: WorkspaceForm;

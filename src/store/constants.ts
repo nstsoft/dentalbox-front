@@ -3,6 +3,7 @@ export enum USER_TAG {
   AUTH = "AUTH",
   LOGIN = "LOGIN",
   CONFIRM_OTP = "CONFIRM_OTP",
+  USER_LIST = "USER_LIST",
 }
 
 export enum SUBSCRIPTION_TAG {
@@ -30,9 +31,9 @@ export enum REDUCER {
   PRODUCT = "PRODUCT",
   WORKSPACE = "WORKSPACE",
   SUBSCRIPTION = "SUBSCRIPTION",
-  PAYMENT= "PAYMENT",
+  PAYMENT = "PAYMENT",
 }
 
 export enum CACHE_KEYS {
-  LOGIN = "LOGIN"
+  LOGIN = "LOGIN",
 }

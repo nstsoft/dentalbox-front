@@ -27,7 +27,8 @@
       "@components": ["./src/components/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@assets": ["./src/assets/index.ts"],
-      "@providers": ["./src/providers/index.ts"]
+      "@providers": ["./src/providers/index.ts"],
+      "@elements": ["./src/elements/index.ts"]
     }
   },
   "include": ["src", "config"]

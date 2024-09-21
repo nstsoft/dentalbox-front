@@ -3,17 +3,22 @@ import { createTheme } from "@mui/material/styles";
 // const xs = "@media (min-width:600px)";
 // const sm = "@media (min-width:960px)";
 
+const commonGrey = "#757575";
+
 const theme = createTheme({
   palette: {
     primary: { main: "#008fba" },
     secondary: { main: "#7adb30" },
     error: { main: "#f44336" },
     warning: { main: "#f38a4a" },
-    // text: {
-    //   primary: "#757575",
-    //   secondary: "#008fba",
-    //   disabled: "#b0b0b0",
-    // },
+    background: {
+      default: "#f5f5f5",
+      paper: "#ffffff",
+    },
+    grey: {
+      50: "#44444412",
+      100: commonGrey,
+    },
   },
   breakpoints: { values: { xs: 0, sm: 600, md: 960, lg: 1280, xl: 1920 } },
   components: {
@@ -27,9 +32,9 @@ const theme = createTheme({
     MuiListItem: {
       styleOverrides: {
         root: {
-          color: "#757575",
+          color: commonGrey,
           "& .MuiListItemIcon-root": {
-            color: "#757575",
+            color: commonGrey,
           },
           "&.Mui-selected": {
             color: "#008fba",

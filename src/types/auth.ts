@@ -52,8 +52,11 @@ export interface AuthContextType {
   isLoggedIn: boolean;
   user: User | null;
   workspace: Workspace | null;
+  availableWorkspaces: Workspace[];
   login: (data: AuthState) => void;
   updateUser: (user: User) => void;
+  setAvailableWorkspaces: (workspaces: Workspace[]) => void;
   setWorkspace: (workspace: Workspace) => void;
   logout: () => void;
+  changeWorkspace: (workspace: string) => void;
 }

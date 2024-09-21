@@ -3,6 +3,7 @@ export enum UserRole {
   manager = "manager",
   doctor = "doctor",
   assistant = "assistant",
+  owner = "owner",
 }
 
 export type Role = {

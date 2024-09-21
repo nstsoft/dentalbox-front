@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { ThemeProvider } from "@emotion/react";
-import { CssBaseline } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import i18n from "./i18n.ts";
 import { I18nextProvider } from "react-i18next";

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 export const AuthContainer = styled(Stack)(({ theme }) => ({
   height: "100%",

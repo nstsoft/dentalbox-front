@@ -1,7 +1,11 @@
 import "../auth.scss";
 import { useGetProductsQuery } from "@api";
 import { StepWizardChildProps } from "react-step-wizard";
-import { Grid2, Tabs, Tab } from "@mui/material";
+
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Grid2 from "@mui/material/Grid2";
+
 import { Product } from "@types";
 import { ProductItem } from "../components";
 import { useState } from "react";

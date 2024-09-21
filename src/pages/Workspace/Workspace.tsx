@@ -1,5 +1,5 @@
 import { useAuth } from "@hooks";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { Payments, SubscriptionInfo, WorkspaceInfo } from "./components";
 
 export const WorkspacePage = () => {

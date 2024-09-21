@@ -9,7 +9,7 @@ import {
 } from "@api";
 import { useLocalStorage, WORKSPACE, useAuth, useSideMenu } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { SideMenu } from "@components";
 import { CLOSED_MENU_WIDTH, OPENED_MENU_WIDTH } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
@@ -39,7 +39,13 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   ] = useLazyGetMySubscriptionQuery();
 
   const [workspace, setWorkspace] = useLocalStorage<string>(WORKSPACE, null);
-  const { user, updateUser, setWorkspace: setAuthWorkspace } = useAuth();
+  const {
+    user,
+    updateUser,
+    setWorkspace: setAuthWorkspace,
+    availableWorkspaces,
+    setAvailableWorkspaces,
+  } = useAuth();
 
   useEffect(() => {
     if (user && isSuccess && !user?.isVerified) {
@@ -48,13 +54,19 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   }, [isSuccess, updateUser, user]);
 
   useEffect(() => {
-    if (!workspace && statusWorkspaces == "uninitialized") {
+    if (statusWorkspaces == "uninitialized") {
       getMyWorkspaces();
     }
   }, [getMyWorkspaces, statusWorkspaces, workspace]);
 
   useEffect(() => {
-    if (meStatus == "uninitialized" && user?.isVerified && workspace) {
+    if (!availableWorkspaces.length && workspaces) {
+      setAvailableWorkspaces(workspaces);
+    }
+  }, [availableWorkspaces, setAvailableWorkspaces, workspaces]);
+
+  useEffect(() => {
+    if (meStatus == "uninitialized" && workspace) {
       getMe();
     }
   }, [getMe, meStatus, user?.isVerified, workspace]);
@@ -94,7 +106,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
       />
       <ConfirmOtpDialog
         resendOtp={() => {}}
-        isActive={!user?.isVerified && !!workspace}
+        isActive={!!user && !user?.isVerified && !!workspace}
         confirmOtp={confirmOtp}
         error={(error as { data: { message: string } })?.data?.message}
       />

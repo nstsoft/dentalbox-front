@@ -6,8 +6,12 @@ import {
 } from "@stripe/react-stripe-js";
 import { type StripeError } from "@stripe/stripe-js";
 
-import { Box, FormControl, Button, CircularProgress } from "@mui/material";
-import { Card } from "@components";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { Card } from "@elements";
 
 type Props = {
   type: "setup" | "payment" | "payment-added";

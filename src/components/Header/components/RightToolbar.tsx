@@ -1,5 +1,8 @@
 import { type FC } from "react";
-import { Toolbar, IconButton, Badge } from "@mui/material";
+
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAuth } from "@hooks";

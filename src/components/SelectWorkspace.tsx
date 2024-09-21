@@ -1,15 +1,13 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  CardActionArea,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Dialog,
-  Grid2,
-} from "@mui/material";
+import { Card } from "@elements";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import CardActionArea from "@mui/material/CardActionArea";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import Grid2 from "@mui/material/Grid2";
 import { useTranslation } from "react-i18next";
 import { WorkspaceShortenItem } from "@types";
 import { ClinicIconIcon } from "@assets";

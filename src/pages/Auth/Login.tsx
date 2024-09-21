@@ -7,24 +7,24 @@ import {
 import { useAuth } from "@hooks";
 import { useTranslation } from "react-i18next";
 
-import {
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  Link,
-  Typography,
-  InputAdornment,
-  IconButton,
-  OutlinedInput,
-  InputLabel,
-  FormHelperText,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+
 import { GoogleIcon } from "@assets";
 import { ForgotPassword } from "./components";
-import { AuthContainer } from "@components";
+import { AuthContainer } from "@elements";
 import { validateLogin } from "@utils";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {

@@ -36,6 +36,7 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
       return null;
     }
   });
+  const [availableWorkspaces, setWorkspacesList] = useState<Workspace[]>([]);
 
   const [workspace, setWorkspaceData] = useState<Workspace | null>(null);
 
@@ -64,6 +65,16 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
     localStorage.removeItem(WORKSPACE);
   }, []);
 
+  const changeWorkspace = useCallback((workspaceId: string) => {
+    setUser(null);
+    setWorkspaceData(null);
+
+    localStorage.removeItem(USER);
+    localStorage.removeItem(WORKSPACE);
+    localStorage.setItem(WORKSPACE, JSON.stringify(workspaceId));
+    window.location.reload();
+  }, []);
+
   const updateUser = useCallback((userData: User) => {
     setUser(userData);
     localStorage.setItem(USER, JSON.stringify(userData));
@@ -71,6 +82,10 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const setWorkspace = useCallback((workspace: Workspace) => {
     setWorkspaceData(workspace);
+  }, []);
+
+  const setAvailableWorkspaces = useCallback((workspace: Workspace[]) => {
+    setWorkspacesList(workspace);
   }, []);
 
   return (
@@ -84,7 +99,10 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
         logout,
         updateUser,
         setWorkspace,
+        availableWorkspaces,
+        setAvailableWorkspaces,
         isLoggedIn: !!authToken,
+        changeWorkspace,
       }}
     >
       {children}

@@ -1,17 +1,16 @@
 import { StepWizardChildProps } from "react-step-wizard";
-import {
-  Typography,
-  Button,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Box,
-} from "@mui/material";
+
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Box from "@mui/material/Box";
 
 import GroupsIcon from "@mui/icons-material/Groups";
 
 import { useTranslation } from "react-i18next";
-import { Card } from "@components";
+import { Card } from "@elements";
 import { Product } from "@types";
 
 import icons from "currency-icons";

@@ -1,8 +1,12 @@
 import { useQuery, useAuth } from "@hooks";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@components";
-import { Grid2, Typography, Button, CardHeader } from "@mui/material";
+import { Card } from "@elements";
+import Grid2 from "@mui/material/Grid2";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import CardHeader from "@mui/material/CardHeader";
+
 import { useTranslation } from "react-i18next";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { useTheme } from "@mui/material/styles";

@@ -2,16 +2,16 @@ import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
 import type { UserForm } from "./types";
 import { useTranslation } from "react-i18next";
-import { Card } from "@components";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  Typography,
-} from "@mui/material";
+import { Card } from "@elements";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
+
 import { validateLogin } from "@utils";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";

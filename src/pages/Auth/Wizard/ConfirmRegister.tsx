@@ -2,19 +2,19 @@ import { type FC, type FormEvent, useEffect, useState } from "react";
 
 import { useRegisterMutation } from "@api";
 import type { WorkspaceForm, UserForm } from "./types";
-import {
-  Box,
-  Button,
-  Grid2,
-  CardActionArea,
-  CardContent,
-  Typography,
-  CardHeader,
-  FormControlLabel,
-  Checkbox,
-  CircularProgress,
-} from "@mui/material";
-import { Card, ErrorTypography } from "@components";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid2 from "@mui/material/Grid2";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CardHeader from "@mui/material/CardHeader";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { Card, ErrorTypography } from "@elements";
 import { Product } from "@types";
 import { useTranslation } from "react-i18next";
 

@@ -1,5 +1,6 @@
-import { Select, MenuItem } from "@mui/material";
-import { styled } from "@mui/system";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
 import { useLocalStorage, LANGUAGE } from "@hooks";
 import { useTranslation } from "react-i18next";
 

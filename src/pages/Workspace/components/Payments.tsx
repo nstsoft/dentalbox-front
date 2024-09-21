@@ -1,8 +1,10 @@
 import Card from "react-credit-cards-2";
-import { Card as Container } from "@components";
+import { Card as Container } from "@elements";
 
 import "react-credit-cards-2/dist/lib/styles.scss";
-import { Button, Typography } from "@mui/material";
+
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { useGetMyPaymentMethodsQuery } from "../../../store/api/payment";
 import { useNavigate } from "react-router-dom";
 

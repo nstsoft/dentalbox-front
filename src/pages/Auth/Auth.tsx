@@ -11,7 +11,7 @@ export const Auth = () => {
     if (location.pathname === "/auth") {
       navigate("/auth/login");
     }
-  }, [location]);
+  }, [location, navigate]);
 
   return (
     <div className="auth">

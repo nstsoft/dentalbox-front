@@ -13,7 +13,7 @@ import {
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
 import { WORKSPACE, useLocalStorage, useAuth } from "@hooks";
-import { AuthContainer } from "@components";
+import { AuthContainer } from "@elements";
 import { Product } from "@types";
 import { useNavigate } from "react-router-dom";
 

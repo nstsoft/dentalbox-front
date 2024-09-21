@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card } from "@components";
+import { Card } from "@elements";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";

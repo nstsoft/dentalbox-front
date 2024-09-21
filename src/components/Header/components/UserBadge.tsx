@@ -1,37 +1,21 @@
 import { type FC, useState } from "react";
 import { useAuth } from "@hooks";
-import {
-  Box,
-  Typography,
-  IconButton,
-  MenuItem,
-  Menu,
-  Tooltip,
-  Avatar,
-} from "@mui/material";
-import { UserRole } from "@types";
+
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
+
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const getUserMenu = (role?: UserRole) => {
-  if (!role) return [];
-  const menus = [
-    { id: "profile", link: "/app/profile" },
-    { id: "dashboard", link: "/app/dashboard" },
-  ];
-  if (role === UserRole.admin) {
-    menus.push({
-      id: "workspace",
-      link: "/app/workspace",
-    });
-  }
-
-  return menus;
-};
-
 export const UserBadge: FC = () => {
   const { t } = useTranslation("", { keyPrefix: "header" });
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, availableWorkspaces, changeWorkspace } =
+    useAuth();
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement>();
   const navigate = useNavigate();
 
@@ -49,7 +33,6 @@ export const UserBadge: FC = () => {
       </Tooltip>
       <Menu
         sx={{ mt: "45px" }}
-        id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
           vertical: "top",
@@ -63,11 +46,26 @@ export const UserBadge: FC = () => {
         open={Boolean(anchorElUser)}
         onClose={() => setAnchorElUser(undefined)}
       >
-        {getUserMenu(user.role).map((menu) => (
-          <MenuItem key={menu.id} onClick={() => navigate(menu.link)}>
-            <Typography sx={{ textAlign: "center" }}>{t(menu.id)}</Typography>
-          </MenuItem>
-        ))}
+        {availableWorkspaces.length > 1 &&
+          availableWorkspaces.map((workspace) => (
+            <MenuItem key={workspace._id} onClick={() => {}}>
+              <IconButton
+                onClick={(event) => {
+                  setAnchorElUser(event.currentTarget);
+                  changeWorkspace(workspace._id);
+                }}
+                sx={{ p: 0 }}
+              >
+                <Avatar
+                  alt={workspace.name}
+                  src={workspace.image}
+                  sx={{ mr: 1 }}
+                />
+                <Typography variant="body1">{workspace.name}</Typography>
+              </IconButton>
+            </MenuItem>
+          ))}
+
         <MenuItem
           key="logout"
           onClick={() => {

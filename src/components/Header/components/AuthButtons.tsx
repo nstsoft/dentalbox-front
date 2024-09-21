@@ -1,12 +1,11 @@
 import { type FC, useState } from "react";
-import {
-  Box,
-  Button,
-  ListItemIcon,
-  MenuItem,
-  Menu,
-  ListItemText,
-} from "@mui/material";
+
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import { useAuth } from "@hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
