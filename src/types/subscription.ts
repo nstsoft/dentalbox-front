@@ -60,4 +60,5 @@ export type SubscriptionResponse = {
   product: Product;
   priceId: string;
   stripeSubscription: string;
+  defaultPaymentMethod: string;
 };

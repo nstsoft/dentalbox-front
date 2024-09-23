@@ -151,6 +151,10 @@ export const EN: ResourceLanguage = {
         period: "Period",
         cancel: "Cancel",
         pause: "Pause",
+        paymentsSection: {
+          payments: "Payments",
+          default: "Default card",
+        },
       },
       staff: {
         staff: "Stuff",

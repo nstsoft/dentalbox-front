@@ -150,6 +150,10 @@ export const UA: ResourceLanguage = {
         period: "Період",
         cancel: "Скасувати",
         pause: "Пауза",
+        paymentsSection: {
+          payments: "Payments",
+          default: "Картка по замовчуванню",
+        },
       },
       staff: {
         staff: "Персонал",

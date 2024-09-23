@@ -26,7 +26,7 @@ export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
 
   const canInviteUser =
     workspace.currentMembersCount < workspace.maxMembersCount &&
-    ["admin", "manager"].includes(user.role);
+    ["admin", "manager", "owner"].includes(user.role);
 
   return (
     <Card sx={{ m: 0, width: "100%", position: "relative" }}>
