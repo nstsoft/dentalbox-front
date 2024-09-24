@@ -151,6 +151,18 @@ export const EN: ResourceLanguage = {
         period: "Period",
         cancel: "Cancel",
         pause: "Pause",
+
+        popover: {
+          email: "Email",
+          role: "Role"
+        },
+        roleItems: {
+          admin: "Admin",
+          manager: "Manager",
+          doctor: "Doctor",
+          assistant: "Assistant",
+          owner: "Owner",
+        },
       },
       staff: {
         staff: "Stuff",
@@ -176,6 +188,11 @@ export const EN: ResourceLanguage = {
       },
       cabinet: {
         cabinet: "Cabinet",
+        name: "Name",
+        phone: "Phone",
+        address: "Address",
+        notes: "Notes",
+        actions: "Actions",
       }
     },
   },

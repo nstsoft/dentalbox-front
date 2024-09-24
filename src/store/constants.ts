@@ -4,6 +4,7 @@ export enum USER_TAG {
   LOGIN = "LOGIN",
   CONFIRM_OTP = "CONFIRM_OTP",
   USER_LIST = "USER_LIST",
+  INVITE = "INVITE"
 }
 
 export enum SUBSCRIPTION_TAG {

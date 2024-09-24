@@ -17,6 +17,7 @@ export const Payments = () => {
       <Typography variant="h4">Payment methods:</Typography>
       {payments?.map((payment) => (
         <Card
+          key={payment.id}
           name=" "
           number={`**** **** **** ${payment.last4}`}
           expiry={`${payment.exp_month}/${payment.exp_year}`}
