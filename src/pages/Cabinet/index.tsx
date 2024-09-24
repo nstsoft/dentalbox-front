@@ -22,10 +22,6 @@ export const CabinetPage = () => {
     },
   });
 
-  const applyFilters = () => {
-    setSearchValue(search);
-  };
-
   if (!data) return null;
   if (["uninitialized", "loading"].includes(status)) {
     return null;
@@ -37,7 +33,7 @@ export const CabinetPage = () => {
       <CabinetFilter
         search={search}
         setSearch={setSearch}
-        applyFilters={applyFilters}
+        applyFilters={() => setSearchValue(search)}
       />
       <CabinetsTable
         data={data}

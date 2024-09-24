@@ -150,6 +150,18 @@ export const UA: ResourceLanguage = {
         period: "Період",
         cancel: "Скасувати",
         pause: "Пауза",
+
+        popover: {
+          email: "Емейл",
+          role: "Роль",
+        },
+        roleItems: {
+          admin: "Адміністратор",
+          manager: "Менеджер",
+          doctor: "Лікар",
+          assistant: "Асистент",
+          owner: "Власник акаунту",
+        },
       },
       staff: {
         staff: "Персонал",
@@ -178,7 +190,12 @@ export const UA: ResourceLanguage = {
       },
       cabinet: {
         cabinet: "Кабінет",
-      }
+        name: "Назва",
+        phone: "Телефон",
+        address: "Адреса",
+        notes: "Замітки",
+        actions: "Дії",
+      },
     },
   },
 };

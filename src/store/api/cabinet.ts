@@ -26,7 +26,7 @@ export const cabinetApi = createApi({
           params.limit ?? 20
         }${quey}`;
       },
-      providesTags: () => [{ type: CABINET_TAG.CABINET }],
+      providesTags: () => [{ type: CABINET_TAG.CABINET_LIST }],
     }),
   }),
 });
