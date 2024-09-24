@@ -25,6 +25,10 @@ export enum PAYMENT_TAG {
   PAYMENT = "PAYMENT",
 }
 
+export enum CABINET_TAG {
+  CABINET = "CABINET",
+}
+
 export enum REDUCER {
   USER = "USER",
   AUTH = "AUTH",
@@ -32,6 +36,7 @@ export enum REDUCER {
   WORKSPACE = "WORKSPACE",
   SUBSCRIPTION = "SUBSCRIPTION",
   PAYMENT = "PAYMENT",
+  CABINET ="CABINET"
 }
 
 export enum CACHE_KEYS {

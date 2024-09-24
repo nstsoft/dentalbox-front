@@ -45,7 +45,7 @@ export const StaffPage = () => {
   }
 
   return (
-    <div>
+    <>
       <Typography variant="h4">{t("staff")}</Typography>
       <Filter
         search={search}
@@ -62,6 +62,6 @@ export const StaffPage = () => {
         paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
       />
-    </div>
+    </>
   );
 };
