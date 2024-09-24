@@ -23,7 +23,7 @@ export const CabinetFilter: FC<Props> = ({
       container
       gap={1}
       alignContent="center"
-      alignItems={"center"}
+      alignItems="center"
     >
       <SearchInput value={search} onChange={setSearch} />
       <Button onClick={applyFilters}>

@@ -51,6 +51,10 @@ export const userApi = createApi({
 
       providesTags: () => [{ type: USER_TAG.CONFIRM_OTP }],
     }),
+    inviteUser: builder.query<unknown, { email: string; role: string }>({
+      query: (body) => ({ body, url: "user/invite", method: "POST" }),
+      providesTags: () => [{ type: USER_TAG.INVITE }],
+    }),
   }),
 });
 
@@ -59,6 +63,7 @@ export const {
   useLazyGetMeQuery,
   useLazyConfirmOtpQuery,
   useGetUserListQuery,
+  useLazyInviteUserQuery,
 } = userApi;
 
 export default { userApi };

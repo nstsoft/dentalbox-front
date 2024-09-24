@@ -4,6 +4,7 @@ export enum USER_TAG {
   LOGIN = "LOGIN",
   CONFIRM_OTP = "CONFIRM_OTP",
   USER_LIST = "USER_LIST",
+  INVITE = "INVITE"
 }
 
 export enum SUBSCRIPTION_TAG {
@@ -27,6 +28,7 @@ export enum PAYMENT_TAG {
 
 export enum CABINET_TAG {
   CABINET = "CABINET",
+  CABINET_LIST = "CABINET_LIST",
 }
 
 export enum REDUCER {

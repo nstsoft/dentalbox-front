@@ -151,8 +151,21 @@ export const UA: ResourceLanguage = {
         cancel: "Скасувати",
         pause: "Пауза",
         paymentsSection: {
-          payments: "Payments",
+          payments: "Платіжні методи",
           default: "Картка по замовчуванню",
+          delete: "Видалити",
+          makeDefault: "Зробити картку по замовчуванню",
+        },
+        popover: {
+          email: "Емейл",
+          role: "Роль",
+        },
+        roleItems: {
+          admin: "Адміністратор",
+          manager: "Менеджер",
+          doctor: "Лікар",
+          assistant: "Асистент",
+          owner: "Власник акаунту",
         },
       },
       staff: {
@@ -182,7 +195,12 @@ export const UA: ResourceLanguage = {
       },
       cabinet: {
         cabinet: "Кабінет",
-      }
+        name: "Назва",
+        phone: "Телефон",
+        address: "Адреса",
+        notes: "Замітки",
+        actions: "Дії",
+      },
     },
   },
 };

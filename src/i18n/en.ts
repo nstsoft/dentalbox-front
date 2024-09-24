@@ -152,8 +152,21 @@ export const EN: ResourceLanguage = {
         cancel: "Cancel",
         pause: "Pause",
         paymentsSection: {
-          payments: "Payments",
+          payments: "Payment methods",
           default: "Default card",
+          delete: "Remove card",
+          makeDefault: "Make default",
+        },
+        popover: {
+          email: "Email",
+          role: "Role",
+        },
+        roleItems: {
+          admin: "Admin",
+          manager: "Manager",
+          doctor: "Doctor",
+          assistant: "Assistant",
+          owner: "Owner",
         },
       },
       staff: {
@@ -180,7 +193,12 @@ export const EN: ResourceLanguage = {
       },
       cabinet: {
         cabinet: "Cabinet",
-      }
+        name: "Name",
+        phone: "Phone",
+        address: "Address",
+        notes: "Notes",
+        actions: "Actions",
+      },
     },
   },
 };
