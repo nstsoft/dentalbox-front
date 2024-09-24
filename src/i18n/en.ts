@@ -178,6 +178,9 @@ export const EN: ResourceLanguage = {
         dob: "Date of birth",
         address: "Address",
       },
+      cabinet: {
+        cabinet: "Cabinet",
+      }
     },
   },
 };

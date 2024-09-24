@@ -43,7 +43,7 @@ export const StaffPage = () => {
   if (!data || ["uninitialized", "loading"].includes(status)) return null;
 
   return (
-    <div>
+    <>
       <Typography variant="h4">{t("staff")}</Typography>
       <Filter
         search={searchValue}
@@ -60,6 +60,6 @@ export const StaffPage = () => {
         paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
       />
-    </div>
+    </>
   );
 };

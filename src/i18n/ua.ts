@@ -180,6 +180,9 @@ export const UA: ResourceLanguage = {
         dob: "Дата народження",
         address: "Адреса",
       },
+      cabinet: {
+        cabinet: "Кабінет",
+      }
     },
   },
 };
