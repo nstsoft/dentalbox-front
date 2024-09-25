@@ -10,6 +10,7 @@ import {
 import { useLocalStorage, WORKSPACE, useAuth, useSideMenu } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 import Box from "@mui/material/Box";
+import Grid2 from "@mui/material/Grid2";
 import { SideMenu } from "@components";
 import { CLOSED_MENU_WIDTH, OPENED_MENU_WIDTH } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
@@ -111,7 +112,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
         error={(error as { data: { message: string } })?.data?.message}
       />
       {!subscription || !workspace || !user?.isVerified ? null : (
-        <>
+        <Grid2>
           <SideMenu />
           <Box
             sx={{
@@ -123,7 +124,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
           >
             <Outlet />
           </Box>
-        </>
+        </Grid2>
       )}
     </section>
   );

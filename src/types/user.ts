@@ -50,3 +50,18 @@ export type RegisterData = {
   workspaceImage?: File;
   priceId: string;
 };
+
+export enum InvitationStatus {
+  pending = "pending",
+  accepted = "accepted",
+  declined = "declined",
+  expired = "expired",
+}
+
+export type UserInvitation = {
+  workspace: string;
+  userRole: UserRole;
+  email: string;
+  activeTill: number;
+  status: InvitationStatus;
+};

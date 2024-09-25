@@ -22,6 +22,7 @@ const sx = {
   overflow: "hidden",
   pr: 1,
   pl: 1,
+  zIndex: 2,
 };
 
 export const Header: FC = () => {
@@ -29,7 +30,7 @@ export const Header: FC = () => {
   const { isLoggedIn } = useAuth();
   return (
     <Box>
-      <AppBar position="static" sx={sx}>
+      <AppBar position="relative" sx={sx}>
         {(isMobile || isTablet) && isLoggedIn && (
           <IconButton color="inherit" onClick={toggle}>
             <MenuIcon />

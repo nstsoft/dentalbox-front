@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { User, Workspace } from "@types";
+import type { User, Workspace, UserInvitation } from "@types";
 import { USER_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -18,12 +18,19 @@ export const userApi = createApi({
       query: () => `/user/me`,
       providesTags: () => [{ type: USER_TAG.USER }],
     }),
+    getInvitations: builder.query<
+      { count: number; data: UserInvitation[] },
+      { skip: number; limit: number }
+    >({
+      query: (query) =>
+        `/user/invitation?skip=${query.skip}&limit=${query.limit}`,
+      providesTags: () => [{ type: USER_TAG.USER_INVITATION_LIST }],
+    }),
     getUserList: builder.query<
       { count: number; data: User[] },
       { skip: number; limit: number; filter?: UserListFilter }
     >({
       query: (params) => {
-        console.log(params);
         let quey = "";
         if (params.filter?.verified) {
           quey += `&verified=${params.filter?.verified}`;
@@ -83,7 +90,8 @@ export const {
   useLazyConfirmOtpQuery,
   useGetUserListQuery,
   useLazyInviteUserQuery,
-  useLazyAcceptInvitationQuery
+  useLazyAcceptInvitationQuery,
+  useGetInvitationsQuery,
 } = userApi;
 
 export default { userApi };

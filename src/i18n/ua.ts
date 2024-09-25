@@ -174,13 +174,19 @@ export const UA: ResourceLanguage = {
         staff: "Персонал",
         search: "Пошук",
         isVerified: "Веріфікований",
-        roles: "Ролі",
+        roles: "Роль",
         roleItems: {
           admin: "Адміністратор",
           manager: "Менеджер",
           doctor: "Лікар",
           assistant: "Асистент",
           owner: "Власник акаунту",
+        },
+        invitationStatuses: {
+          pending: "Очікується",
+          accepted: "Прийнята",
+          declined: "Відхилена",
+          expired: "Протермінована",
         },
         verifiedItems: {
           verified: "Так",
@@ -194,6 +200,9 @@ export const UA: ResourceLanguage = {
         phone: "Телефон",
         dob: "Дата народження",
         address: "Адреса",
+        status: "Статус",
+        activeTill: "Активна до",
+        invitations: "Запрошення",
       },
       cabinet: {
         cabinet: "Кабінет",

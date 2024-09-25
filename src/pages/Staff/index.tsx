@@ -1,8 +1,35 @@
-import { UsersTable, Filter } from "./components";
+import { UsersTable, Filter, InvitationsTable } from "./components";
 import Typography from "@mui/material/Typography";
-import { useGetUserListQuery } from "@api";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { useGetUserListQuery, useGetInvitationsQuery } from "@api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
+    </div>
+  );
+}
 
 export const StaffPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
@@ -19,16 +46,21 @@ export const StaffPage = () => {
     skip: 0,
     limit: 20,
   });
+  const [invitationPaginationModel, setInvitationPaginationModel] = useState({
+    skip: 0,
+    limit: 20,
+  });
 
-  const { status, isLoading, data } = useGetUserListQuery({
+  const { isLoading, data } = useGetUserListQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
-    filter: {
-      roles,
-      verified,
-      search,
-    },
+    filter: { roles, verified, search },
   });
+  const { isLoading: isLoadingInvitations, data: invitationData } =
+    useGetInvitationsQuery({
+      skip: invitationPaginationModel.skip,
+      limit: invitationPaginationModel.limit,
+    });
 
   const applyFilters = () => {
     setRole(rolesValues);
@@ -40,26 +72,61 @@ export const StaffPage = () => {
     setSearch(searchValue);
   };
 
-  if (!data || ["uninitialized", "loading"].includes(status)) return null;
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  if (!data || !invitationData) return null;
 
   return (
     <>
       <Typography variant="h4">{t("staff")}</Typography>
-      <Filter
-        search={searchValue}
-        setSearch={setSearchValue}
-        roles={rolesValues}
-        verified={verifiedValue}
-        setRole={setRolesValues}
-        setIsVerified={setVerifiedValue}
-        applyFilters={applyFilters}
-      />
-      <UsersTable
-        data={data}
-        isLoading={isLoading}
-        paginationModel={paginationModel}
-        setPaginationModel={setPaginationModel}
-      />
+
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label={t("staff")} />
+            <Tab label={t("invitations")} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <Filter
+            search={searchValue}
+            setSearch={setSearchValue}
+            roles={rolesValues}
+            verified={verifiedValue}
+            setRole={setRolesValues}
+            setIsVerified={setVerifiedValue}
+            applyFilters={applyFilters}
+          />
+          {isLoading ? (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <UsersTable
+              data={data}
+              isLoading={isLoading}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+            />
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <InvitationsTable
+            isLoading={isLoadingInvitations}
+            data={invitationData}
+            paginationModel={invitationPaginationModel}
+            setPaginationModel={setInvitationPaginationModel}
+          />
+        </CustomTabPanel>
+      </Box>
     </>
   );
 };

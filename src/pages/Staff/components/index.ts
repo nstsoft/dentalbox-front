@@ -1,2 +1,3 @@
-export * from "./staffTable";
+export * from "./userTable";
 export * from "./filter";
+export * from "./invitationsTable";

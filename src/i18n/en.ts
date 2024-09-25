@@ -183,6 +183,12 @@ export const EN: ResourceLanguage = {
           assistant: "Assistant",
           owner: "Owner",
         },
+        invitationStatuses: {
+          pending: "Pending",
+          accepted: "Accepted",
+          declined: "Declined",
+          expired: "Expired",
+        },
         verifiedItems: { verified: "Yes", notVerified: "No" },
         verification: "Is verified",
         email: "Email",
@@ -192,6 +198,9 @@ export const EN: ResourceLanguage = {
         phone: "Phone",
         dob: "Date of birth",
         address: "Address",
+        status: "Status",
+        activeTill: "Active till",
+        invitations: "Invitations",
       },
       cabinet: {
         cabinet: "Cabinet",

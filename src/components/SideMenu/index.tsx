@@ -43,13 +43,14 @@ const getDrawerStyle = (isOpen: boolean) =>
         transition: "width 0.3s",
         "& .MuiDrawer-paper": {
           width: isOpen ? OPENED_MENU_WIDTH : CLOSED_MENU_WIDTH,
-          marginTop: "64px",
+          paddingTop: "64px",
           overflowX: "hidden",
           transition: "width 0.3s",
           display: "flex",
           position: "absolute",
           top: 0,
           left: 0,
+          height: "100%",
         },
       };
 
@@ -115,7 +116,7 @@ export const SideMenu: FC = () => {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", position: "fixed", top: 0, height: "100%" }}>
       <SwipeableDrawer
         onOpen={toggleDrawer(true)}
         sx={getDrawerStyle(isOpenMenu)}
