@@ -16,16 +16,30 @@ import { validateLogin } from "@utils";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment, { Moment } from "moment";
+import { Invitation } from "../AcceptInvitation";
 
 interface IUserDataStepProps {
   userForm: UserForm;
   onUpdate: (data: Partial<UserForm>) => void;
+  type: "signUp" | "invite";
+  onInvite?: () => void;
+  workspaceName?: string;
+  workspaceImage?: string;
 }
 
 export const UserData = (
   props: IUserDataStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { userForm, onUpdate, nextStep, previousStep } = props;
+  const {
+    userForm,
+    onUpdate,
+    nextStep,
+    previousStep,
+    type,
+    onInvite,
+    workspaceName,
+    workspaceImage,
+  } = props;
   const { t } = useTranslation();
   const [emailError, setEmailError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -95,6 +109,14 @@ export const UserData = (
           error: birthDateError,
         },
         {
+          id: "address",
+          label: t("signUpWizard.userData.address"),
+          value: userForm.address,
+          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+            onUpdate({ address: ev.target.value });
+          },
+        },
+        {
           id: "email",
           label: t("signUpWizard.userData.email"),
           type: "email",
@@ -103,6 +125,7 @@ export const UserData = (
             onUpdate({ email: ev.target.value });
           },
           error: emailError,
+          disabled: type === "invite",
         },
         {
           id: "password",
@@ -173,9 +196,19 @@ export const UserData = (
       <Typography
         component="h1"
         variant="h4"
-        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+        sx={{
+          width: "100%",
+          fontSize: "clamp(2rem, 10vw, 2.15rem)",
+        }}
       >
-        {t("signUpWizard.userData.title")}
+        {type === "signUp" ? (
+          t("signUpWizard.userData.title")
+        ) : (
+          <Invitation
+            workspaceImage={workspaceImage!}
+            workspaceName={workspaceName!}
+          />
+        )}
       </Typography>
       <Box
         component="form"
@@ -244,6 +277,7 @@ export const UserData = (
                       name={input.id}
                       label={input.label}
                       sx={{ ariaLabel: input.id }}
+                      disabled={input?.disabled}
                     />
                   </Fragment>
                 )}
@@ -254,19 +288,32 @@ export const UserData = (
             ))}
           </Box>
         ))}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button type="button" variant="outlined" onClick={previousStep}>
-            {t("buttons.back")}
-          </Button>
-          <Button type="submit" variant="contained">
-            {t("buttons.next")}
-          </Button>
-        </Box>
+        {type === "signUp" ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button type="button" variant="outlined" onClick={previousStep}>
+              {t("buttons.back")}
+            </Button>
+            <Button type="submit" variant="contained">
+              {t("buttons.next")}
+            </Button>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button variant="contained" onClick={() => onInvite?.()}>
+              {t("buttons.accept")}
+            </Button>
+          </Box>
+        )}
       </Box>
     </Card>
   );

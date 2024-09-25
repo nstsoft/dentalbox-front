@@ -14,6 +14,7 @@ export const EN: ResourceLanguage = {
       select: "Select",
       returnToLogin: "Back to Login",
       applyFilter: "Apply filter",
+      accept: "Accept",
     },
     login: {
       login: "Login",
@@ -63,6 +64,7 @@ export const EN: ResourceLanguage = {
         confirmPassword: "Confirm Password",
         phone: "Phone",
         birthDate: "Birth Date",
+        address: "Address",
       },
       workspace: {
         title: "Workspace Data",

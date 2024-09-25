@@ -14,6 +14,7 @@ export const UA: ResourceLanguage = {
       select: "Обрати",
       returnToLogin: "Повернутись до лігін-сторінки",
       applyFilter: "Фільтрувати",
+      accept: "Прийняти",
     },
     login: {
       login: "Логін",
@@ -63,6 +64,7 @@ export const UA: ResourceLanguage = {
         confirmPassword: "Підтвердіть пароль",
         phone: "Номер телефону",
         birthDate: "Дата народження",
+        address: "Адреса",
       },
       workspace: {
         title: "Виберіть кабінет",
@@ -86,7 +88,7 @@ export const UA: ResourceLanguage = {
       packageIntervals: {
         week: "Тижневий абонемент",
         month: "Місчний абонемент",
-        year: "Річний абонементe",
+        year: "Річний абонемент",
       },
     },
     header: {

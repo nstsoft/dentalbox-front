@@ -35,6 +35,7 @@ export const SignUp = () => {
     secondName: "",
     phone: "+380",
     dob: "",
+    address: "",
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
@@ -83,6 +84,7 @@ export const SignUp = () => {
           onUpdate={(value: Partial<UserForm>) =>
             setUser((prevState) => ({ ...prevState, ...value }))
           }
+          type="signUp"
         />
         <Workspace
           stepName="workspace"

@@ -16,6 +16,7 @@ import {
   CalendarPage,
   ProfilePage,
   ProtectedApp,
+  AcceptInvitation,
 } from "./pages";
 
 export const getRoutes = (isAuthenticated: boolean) => {
@@ -32,6 +33,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
             { path: "/auth/login", Component: Login },
             { path: "/auth/sign-up", Component: SignUp },
             { path: "/auth/oauth2", Component: Oauth2 },
+            { path: "/auth/accept-invitation", Component: AcceptInvitation },
           ],
         },
         {

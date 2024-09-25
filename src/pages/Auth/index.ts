@@ -1,3 +1,4 @@
+export * from './AcceptInvitation';
 export * from "./Auth";
 export * from "./Login";
 export * from "./Oauth2";

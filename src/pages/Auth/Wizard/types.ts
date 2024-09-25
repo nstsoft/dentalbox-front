@@ -6,6 +6,7 @@ export type UserForm = {
   secondName: string;
   phone: string;
   dob: string;
+  address?: string;
 };
 
 export type WorkspaceForm = {
