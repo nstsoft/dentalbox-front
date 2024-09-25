@@ -5,7 +5,7 @@ import { CustomTable } from "@components";
 import { Avatar, Grid2, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
