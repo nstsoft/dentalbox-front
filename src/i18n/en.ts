@@ -15,6 +15,7 @@ export const EN: ResourceLanguage = {
       returnToLogin: "Back to Login",
       applyFilter: "Apply filter",
       accept: "Accept",
+      create: "Create",
     },
     login: {
       login: "Login",
@@ -209,6 +210,8 @@ export const EN: ResourceLanguage = {
         address: "Address",
         notes: "Notes",
         actions: "Actions",
+        createCabinet: "Create cabinet",
+        chair: 'Chair',
       },
     },
   },

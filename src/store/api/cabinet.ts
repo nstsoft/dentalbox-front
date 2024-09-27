@@ -28,9 +28,26 @@ export const cabinetApi = createApi({
       },
       providesTags: () => [{ type: CABINET_TAG.CABINET_LIST }],
     }),
+    createCabinet: builder.query<
+      unknown,
+      {
+        name: string;
+        phone: string;
+        address: string;
+        notes: string;
+        chairs: string[];
+      }
+    >({
+      query: (body) => ({
+        body,
+        url: "/cabinet",
+        method: "POST",
+      }),
+      providesTags: () => [{ type: CABINET_TAG.CABINET }],
+    }),
   }),
 });
 
-export const { useGetMyCabinetsQuery } = cabinetApi;
+export const { useGetMyCabinetsQuery, useLazyCreateCabinetQuery } = cabinetApi;
 
 export default { cabinetApi };

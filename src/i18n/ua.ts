@@ -15,6 +15,7 @@ export const UA: ResourceLanguage = {
       returnToLogin: "Повернутись до лігін-сторінки",
       applyFilter: "Фільтрувати",
       accept: "Прийняти",
+      create: "Створити",
     },
     login: {
       login: "Логін",
@@ -211,6 +212,8 @@ export const UA: ResourceLanguage = {
         address: "Адреса",
         notes: "Замітки",
         actions: "Дії",
+        createCabinet: "Створити кабінет",
+        chair: 'Крісло',
       },
     },
   },
