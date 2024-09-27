@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
-import type { UserForm } from "./types";
+import type { UserForm } from "@types";
 import { useTranslation } from "react-i18next";
 import { Card } from "@elements";
 
@@ -19,131 +19,156 @@ import moment, { Moment } from "moment";
 import { Invitation } from "../AcceptInvitation";
 
 interface IUserDataStepProps {
-  userForm: UserForm;
-  onUpdate: (data: Partial<UserForm>) => void;
   type: "signUp" | "invite";
-  onInvite?: () => void;
+  confirm: (form: UserForm) => void;
   workspaceName?: string;
   workspaceImage?: string;
+  errors?: {
+    phone?: string;
+    email?: string;
+    dob?: string;
+    address?: string;
+    password?: string;
+  };
+  prefilled?: Partial<UserForm>;
 }
 
 export const UserData = (
   props: IUserDataStepProps & Partial<StepWizardChildProps>
 ) => {
   const {
-    userForm,
-    onUpdate,
-    nextStep,
     previousStep,
+    prefilled,
     type,
-    onInvite,
     workspaceName,
     workspaceImage,
+    errors,
+    confirm,
+    nextStep,
   } = props;
   const { t } = useTranslation();
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string>();
+  const [phoneError, setPhoneError] = useState<string>();
+  const [passwordError, setPasswordError] = useState<string>();
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState<
-    string | null
-  >(null);
-  const [birthDateError, setBirthDateError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>();
+  const [birthDateError, setBirthDateError] = useState<string>();
+  const [user, setUser] = useState<UserForm>({
+    name: "",
+    password: "",
+    surname: "",
+    secondName: "",
+    phone: "+380",
+    dob: "",
+    address: "",
+    email: prefilled?.email || "",
+  });
+
   const signUpInputs = [
     {
-      name: "section1",
+      name: "name-surname",
       direction: "row",
       content: [
         {
           id: "name",
           label: t("signUpWizard.userData.name"),
           type: "text",
-          value: userForm.name,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ name: ev.target.value });
+          value: user.name,
+          disabled: prefilled?.name,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, name: target.value }));
           },
         },
         {
           id: "surname",
           label: t("signUpWizard.userData.surname"),
           type: "text",
-          value: userForm.surname,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ surname: ev.target.value });
+          value: user.surname,
+          disabled: prefilled?.surname,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, surname: target.value }));
           },
         },
       ],
     },
     {
-      name: "section2",
+      name: "second-name-phone",
       direction: "row",
       content: [
         {
           id: "secondName",
           label: t("signUpWizard.userData.secondName"),
           type: "text",
-          value: userForm.secondName,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ secondName: ev.target.value });
+          value: user.secondName,
+          disabled: prefilled?.secondName,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, secondName: target.value }));
           },
         },
         {
           id: "phone",
           label: t("signUpWizard.userData.phone"),
-          value: userForm.phone,
-          error: phoneError,
+          value: user.phone.replace(/\s+/g, ""),
+          error: phoneError || errors?.phone,
+          disabled: prefilled?.phone,
         },
       ],
     },
     {
-      name: "section3",
+      name: "dob-address-email-password",
       direction: "column",
       content: [
         {
           id: "birthDate",
           label: t("signUpWizard.userData.birthDate"),
-          value: userForm.dob,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ dob: ev.target.value });
+          value: user.dob,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, dob: target.value }));
           },
-          error: birthDateError,
+          error: birthDateError || errors?.dob,
+          disabled: prefilled?.dob,
         },
         {
           id: "address",
           label: t("signUpWizard.userData.address"),
-          value: userForm.address,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ address: ev.target.value });
+          value: user.address,
+          disabled: prefilled?.address,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, address: target.value }));
           },
         },
         {
           id: "email",
           label: t("signUpWizard.userData.email"),
           type: "email",
-          value: userForm.email,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ email: ev.target.value });
+          value: user.email,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({ ...prev, email: target.value }));
           },
-          error: emailError,
-          disabled: type === "invite",
+          error: emailError || errors?.email,
+          disabled: prefilled?.email,
         },
         {
           id: "password",
           label: t("signUpWizard.userData.password"),
           type: "password",
-          value: userForm.password,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            onUpdate({ password: ev.target.value });
+          value: user.password,
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setUser((prev) => ({
+              ...prev,
+              password: target.value.replace(/\s/g, ""),
+            }));
           },
-          error: passwordError,
+          error: passwordError || errors?.password,
+          disabled: prefilled?.password,
         },
         {
           id: "confirmPassword",
           label: t("signUpWizard.userData.confirmPassword"),
           type: "password",
           value: confirmPassword,
-          onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-            setConfirmPassword(ev.target.value);
+          onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
+            setConfirmPassword(target.value);
           },
           error: confirmPasswordError,
         },
@@ -151,43 +176,47 @@ export const UserData = (
     },
   ];
 
-  const onNext = (event: FormEvent) => {
+  const validateForm = () => {
+    setPhoneError(undefined);
+    setBirthDateError(undefined);
+    setEmailError(undefined);
+    setPasswordError(undefined);
+    setConfirmPasswordError(undefined);
+
+    if (!matchIsValidTel(user.phone)) {
+      setPhoneError("Please enter a valid phone number.");
+      return false;
+    }
+
+    if (user.dob && !moment(user.dob).isValid()) {
+      setBirthDateError("Please enter valid date.");
+      return false;
+    }
+
+    if (!validateLogin(user.email)) {
+      setEmailError("Please enter a valid email address.");
+      return false;
+    }
+
+    if (user.password.length <= 6) {
+      setPasswordError("Password must be at least 6 characters long.");
+      return false;
+    }
+
+    if (confirmPassword !== user.password) {
+      setConfirmPasswordError("Password must be the same.");
+      return false;
+    }
+    return true;
+  };
+
+  const onConfirm = (event: FormEvent) => {
     event.preventDefault();
 
-    if (matchIsValidTel(userForm.phone)) {
-      setPhoneError(null);
-    } else {
-      setPhoneError("Please enter a valid phone number.");
-      return;
-    }
-
-    if (userForm.dob && moment(userForm.dob).isValid()) {
-      setBirthDateError(null);
-    } else {
-      setBirthDateError("Please enter valid date.");
-      return;
-    }
-
-    if (validateLogin(userForm.email)) {
-      setEmailError(null);
-    } else {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-
-    if (userForm.password.length >= 6) {
-      setPasswordError(null);
-    } else {
-      setPasswordError("Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (confirmPassword === userForm.password) {
-      setConfirmPasswordError(null);
+    const isFormValid = validateForm();
+    if (isFormValid) {
+      confirm(user);
       nextStep?.();
-    } else {
-      setConfirmPasswordError("Password must be the same.");
-      return;
     }
   };
 
@@ -196,10 +225,7 @@ export const UserData = (
       <Typography
         component="h1"
         variant="h4"
-        sx={{
-          width: "100%",
-          fontSize: "clamp(2rem, 10vw, 2.15rem)",
-        }}
+        sx={{ w: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
       >
         {type === "signUp" ? (
           t("signUpWizard.userData.title")
@@ -212,13 +238,8 @@ export const UserData = (
       </Typography>
       <Box
         component="form"
-        onSubmit={onNext}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          gap: 2,
-        }}
+        onSubmit={onConfirm}
+        sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
         {signUpInputs.map((section) => (
           <Box
@@ -236,9 +257,12 @@ export const UserData = (
                   <MuiTelInput
                     key={input.id}
                     value={input.value}
-                    onChange={(newValue: string) =>
-                      onUpdate({ phone: newValue })
-                    }
+                    onChange={(newValue: string) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        phone: newValue.replace(/\s+/g, ""),
+                      }));
+                    }}
                     error={!!input.error}
                     placeholder={input?.label}
                     color={input.error ? "error" : "primary"}
@@ -249,11 +273,16 @@ export const UserData = (
                     key={input.id}
                     value={input.value ? moment(input.value) : null}
                     onChange={(newValue: Moment | null) =>
-                      onUpdate({ dob: newValue?.toString() })
+                      setUser((prev) => ({
+                        ...prev,
+                        dob: newValue?.toString() ?? "",
+                      }))
                     }
                     disableFuture
                     onError={(err) =>
-                      setBirthDateError(err ? "Please enter valid date." : null)
+                      setBirthDateError(
+                        err ? "Please enter valid date." : undefined
+                      )
                     }
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
@@ -277,7 +306,7 @@ export const UserData = (
                       name={input.id}
                       label={input.label}
                       sx={{ ariaLabel: input.id }}
-                      disabled={input?.disabled}
+                      disabled={!!input?.disabled}
                     />
                   </Fragment>
                 )}
@@ -288,32 +317,16 @@ export const UserData = (
             ))}
           </Box>
         ))}
-        {type === "signUp" ? (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          {type === "signUp" && (
             <Button type="button" variant="outlined" onClick={previousStep}>
               {t("buttons.back")}
             </Button>
-            <Button type="submit" variant="contained">
-              {t("buttons.next")}
-            </Button>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button variant="contained" onClick={() => onInvite?.()}>
-              {t("buttons.accept")}
-            </Button>
-          </Box>
-        )}
+          )}
+          <Button variant="contained" type="submit">
+            {type === "signUp" ? t("buttons.next") : t("buttons.accept")}
+          </Button>
+        </Box>
       </Box>
     </Card>
   );

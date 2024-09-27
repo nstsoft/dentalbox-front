@@ -1,7 +1,8 @@
 import { type FC, type FormEvent, useEffect, useState } from "react";
 
 import { useRegisterMutation } from "@api";
-import type { WorkspaceForm, UserForm } from "./types";
+import type { WorkspaceForm } from "./types";
+import type { UserForm } from "@types";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";

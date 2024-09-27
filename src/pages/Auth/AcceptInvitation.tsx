@@ -1,15 +1,14 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect, ReactNode } from "react";
 import { UserData } from "./Wizard";
-import { Avatar, Box, Button, Typography } from "@mui/material";
+import { Avatar, Box, Button, Grid2, Typography } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLazyAcceptInvitationQuery } from "@api";
 import { Card } from "@elements";
 import { useTranslation } from "react-i18next";
+import type { UserForm } from "@types";
+import { ErrorTypography } from "@elements";
 
-type InvitationProps = {
-  workspaceName: string;
-  workspaceImage: string;
-};
+type InvitationProps = { workspaceName: string; workspaceImage: string };
 
 export const Invitation: FC<InvitationProps> = ({
   workspaceName,
@@ -17,10 +16,7 @@ export const Invitation: FC<InvitationProps> = ({
 }) => (
   <>
     <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-      <Avatar
-        src={workspaceImage ?? ""}
-        alt={workspaceName ?? "workspace image"}
-      />
+      <Avatar src={workspaceImage} alt={workspaceName} />
       <Typography variant="h5">{workspaceName}</Typography>
     </Box>
 
@@ -29,51 +25,83 @@ export const Invitation: FC<InvitationProps> = ({
     </Typography>
   </>
 );
+export const ErrorBlock: FC<{ children: ReactNode }> = ({ children }) => (
+  <Box
+    sx={{
+      height: "calc(100vh - 96px)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    {children}
+  </Box>
+);
 
 export const AcceptInvitation = () => {
   const { t } = useTranslation();
   const [queryParameters] = useSearchParams();
-  const [acceptInvitation] = useLazyAcceptInvitationQuery();
+  const [acceptInvitation, { error, isSuccess, isError }] =
+    useLazyAcceptInvitationQuery();
   const navigate = useNavigate();
 
-  const invitationToken = queryParameters.get("invitationToken");
+  const token = queryParameters.get("invitationToken");
   const existed = queryParameters.get("existed");
-  const receiverEmail = queryParameters.get("email")!;
+  const receivedEmail = queryParameters.get("email")!;
   const workspaceName = queryParameters.get("workspace");
   const workspaceImage = queryParameters.get("workspaceImage");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const apiErrorData = (error as any)?.data;
 
-  const [user, setUser] = useState({
-    name: "",
-    password: "",
-    surname: "",
-    secondName: "",
-    phone: "+380",
-    dob: "",
-    address: "",
-  });
+  const [errors, setErrors] = useState<{
+    phone?: string;
+    email?: string;
+    dob?: string;
+    address?: string;
+    password?: string;
+  }>({});
 
-  const isFormValid = user.name && user.surname && user.secondName && user.dob;
-
-  const inviteUserHandler = async () => {
-    try {
-      if (existed === "true") {
-        await acceptInvitation({ token: invitationToken! });
-      } else {
-        if (!isFormValid) return;
-        await acceptInvitation({ ...user, token: invitationToken! });
-      }
-
-      navigate("/auth/login");
-    } catch (e) {
-      console.log(e);
+  const acceptInvitationHandler = async (form?: UserForm) => {
+    setErrors({});
+    if (!token) {
+      return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { email, ...data } = { ...form, token };
+    acceptInvitation(data);
   };
 
+  useEffect(() => {
+    apiErrorData?.errors?.map(
+      (err: { property: string; constraints: string[] }) => {
+        setErrors((prev) => ({ ...prev, [err.property]: err.constraints[0] }));
+      }
+    );
+  }, [isError, error, apiErrorData?.errors]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/auth/login");
+    }
+  }, [isSuccess, navigate]);
+
+  if (apiErrorData?.message) {
+    return (
+      <ErrorBlock>
+        <Grid2>
+          <ErrorTypography variant="h5">
+            {apiErrorData?.message}
+          </ErrorTypography>
+          <Button variant="contained" onClick={() => navigate("/auth/login")}>
+            Login
+          </Button>
+        </Grid2>
+      </ErrorBlock>
+    );
+  }
   return (
     <Box
       sx={{
-        pt: 2,
-        pb: 2,
         height: "calc(100vh - 96px)",
         display: "flex",
         justifyContent: "center",
@@ -87,18 +115,18 @@ export const AcceptInvitation = () => {
             workspaceName={workspaceName!}
           />
 
-          <Button variant="contained" onClick={inviteUserHandler}>
+          <Button variant="contained" onClick={() => acceptInvitationHandler()}>
             {t("buttons.accept")}
           </Button>
         </Card>
       ) : (
         <UserData
-          userForm={{ ...user, email: receiverEmail }}
-          onUpdate={(data) => setUser({ ...user, ...data })}
-          onInvite={inviteUserHandler}
+          confirm={acceptInvitationHandler}
           type="invite"
           workspaceName={workspaceName!}
           workspaceImage={workspaceImage!}
+          errors={errors}
+          prefilled={{ email: receivedEmail }}
         />
       )}
     </Box>

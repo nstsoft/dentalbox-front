@@ -65,3 +65,14 @@ export type UserInvitation = {
   activeTill: number;
   status: InvitationStatus;
 };
+
+export type UserForm = {
+  name: string;
+  email: string;
+  password: string;
+  surname: string;
+  secondName: string;
+  phone: string;
+  dob: string;
+  address?: string;
+};

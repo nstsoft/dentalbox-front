@@ -6,9 +6,10 @@ import {
   UserProduct,
   Workspace,
   ConfirmRegister,
-  type UserForm,
   type WorkspaceForm,
 } from "./Wizard";
+
+import type { UserForm } from "@types";
 
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
@@ -61,6 +62,10 @@ export const SignUp = () => {
     });
   };
 
+  const confirmUserForm = (form: UserForm) => {
+    setUser((prevState) => ({ ...prevState, ...form }));
+  };
+
   useEffect(() => {
     if (status === "fulfilled" && !auth.isLoggedIn) {
       auth.login(data);
@@ -80,10 +85,7 @@ export const SignUp = () => {
         <UserData
           stepName="userData"
           hashKey={"userData"}
-          userForm={user}
-          onUpdate={(value: Partial<UserForm>) =>
-            setUser((prevState) => ({ ...prevState, ...value }))
-          }
+          confirm={confirmUserForm}
           type="signUp"
         />
         <Workspace

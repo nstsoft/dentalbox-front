@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 export const AuthContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
   padding: 20,
+
   backgroundImage:
     "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))",
   backgroundRepeat: "no-repeat",
