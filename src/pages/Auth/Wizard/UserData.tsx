@@ -171,6 +171,7 @@ export const UserData = (
             setConfirmPassword(target.value);
           },
           error: confirmPasswordError,
+          disabled: false
         },
       ],
     },
