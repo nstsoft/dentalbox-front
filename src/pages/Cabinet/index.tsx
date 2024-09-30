@@ -1,8 +1,9 @@
 import { useGetMyCabinetsQuery } from "@api";
 import { Box, Button, Typography } from "@mui/material";
-import { CabinetFilter, CabinetModal, CabinetsTable } from "./components";
+import { CabinetModal, CabinetsTable } from "./components";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { GridSearchFilter } from "@components";
 
 export const CabinetPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
@@ -34,7 +35,7 @@ export const CabinetPage = () => {
         <Button variant="contained" onClick={() => setIsModalOpen(true)}>{t("createCabinet")}</Button>
       </Box>
       <CabinetModal open={isModalOpen} onClose={() => setIsModalOpen(false)} onUpdate={() => refetch()} />
-      <CabinetFilter
+      <GridSearchFilter
         search={search}
         setSearch={setSearch}
         applyFilters={() => setSearchValue(search)}

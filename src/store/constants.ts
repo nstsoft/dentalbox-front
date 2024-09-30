@@ -33,6 +33,11 @@ export enum CABINET_TAG {
   CABINET_LIST = "CABINET_LIST",
 }
 
+export enum PATIENT_TAG {
+  PATIENT = "PATIENT",
+  PATIENT_LIST = "PATIENT_LIST",
+}
+
 export enum REDUCER {
   USER = "USER",
   AUTH = "AUTH",
@@ -41,6 +46,7 @@ export enum REDUCER {
   SUBSCRIPTION = "SUBSCRIPTION",
   PAYMENT = "PAYMENT",
   CABINET = "CABINET",
+  PATIENT = "PATIENT",
 }
 
 export enum CACHE_KEYS {

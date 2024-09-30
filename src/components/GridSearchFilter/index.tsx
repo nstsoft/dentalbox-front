@@ -10,12 +10,12 @@ type Props = {
   applyFilters: () => void;
 };
 
-export const CabinetFilter: FC<Props> = ({
+export const GridSearchFilter: FC<Props> = ({
   search,
   setSearch,
   applyFilters,
 }) => {
-  const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
+  const { t } = useTranslation("", { keyPrefix: "buttons" });
 
   return (
     <Grid2
@@ -27,7 +27,7 @@ export const CabinetFilter: FC<Props> = ({
     >
       <SearchInput value={search} onChange={setSearch} />
       <Button onClick={applyFilters}>
-        {t("applyFilter", { keyPrefix: "buttons" })}
+        {t("applyFilter")}
       </Button>
     </Grid2>
   );

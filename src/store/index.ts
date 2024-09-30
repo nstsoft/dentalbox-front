@@ -8,6 +8,7 @@ import {
   subscriptionApi,
   workspaceApi,
   cabinetApi,
+  patientApi,
 } from "./api";
 
 export const store = configureStore({
@@ -19,6 +20,7 @@ export const store = configureStore({
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
     [cabinetApi.reducerPath]: cabinetApi.reducer,
+    [patientApi.reducerPath]: patientApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -30,6 +32,7 @@ export const store = configureStore({
       subscriptionApi.middleware,
       paymentApi.middleware,
       cabinetApi.middleware,
+      patientApi.middleware,
     ]),
 });
 

@@ -215,6 +215,17 @@ export const UA: ResourceLanguage = {
         createCabinet: "Створити кабінет",
         chair: 'Крісло',
       },
+      patient: {
+        patient: "Пацієнт",
+        name: "Ім'я",
+        secondName: "Прізвище",
+        surname: "По батькові",
+        dob: "Дата народження",
+        email: "Емейл",
+        phone: "Телефон",
+        address: "Адреса",
+        createPatient: "Створити пацієнта",
+      },
     },
   },
 };
