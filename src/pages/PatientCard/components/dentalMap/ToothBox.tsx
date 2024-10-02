@@ -5,13 +5,26 @@ import Typography from "@mui/material/Typography";
 export const ToothBox: FC<{
   children: ReactNode | ReactNode[];
   toothNumber: number;
-}> = ({ children, toothNumber }) => {
+  orientation: "top" | "bottom";
+}> = ({ children, toothNumber, orientation }) => {
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
-      <Typography variant="h6" sx={{ textAlign: "center" }}>
-        {toothNumber}
-      </Typography>
+    <Box className={"tooth-box " + orientation}>
+      {orientation === "bottom" && (
+        <Box>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {toothNumber}
+          </Typography>{" "}
+        </Box>
+      )}
       {children}
+
+      {orientation === "top" && (
+        <Box>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {toothNumber}
+          </Typography>{" "}
+        </Box>
+      )}
     </Box>
   );
 };

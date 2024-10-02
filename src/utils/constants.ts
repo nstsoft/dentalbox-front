@@ -18,3 +18,14 @@ export const TOOTH_SVG_STYLE = {
   strokeLinejoin: "miter" as "miter" | "round" | "bevel",
   strokeOpacity: "0",
 };
+
+export const TOOTH_ZONES_STYLE = {
+  stroke: "#000000",
+  strokeWidth: "4.19999981",
+  strokeLinecap: "butt" as "butt" | "round" | "square",
+  strokeLinejoin: "miter" as "miter" | "round" | "bevel",
+  strokeMiterlimit: 4,
+  strokeDasharray: "none",
+  strokeOpacity: 1,
+  cursor: "pointer",
+};

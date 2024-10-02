@@ -1,1 +1,2 @@
-export * from "../ToothBox";
+export * from "./teethMap";
+export * from "./zones";
