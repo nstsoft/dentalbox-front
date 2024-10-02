@@ -6,4 +6,5 @@ export * from "./cabinet";
 export * from "./product";
 export * from "./payment";
 export * from "./common";
-export * from './patient';
+export * from "./patient";
+export * from "./dentalMap";

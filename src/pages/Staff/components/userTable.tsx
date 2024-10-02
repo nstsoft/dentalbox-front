@@ -1,11 +1,11 @@
 import { type GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
+import Typography from "@mui/material/Typography";
 import { User } from "@types";
 import { type Dispatch, type SetStateAction, type FC } from "react";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
-import { Typography } from "@mui/material";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;

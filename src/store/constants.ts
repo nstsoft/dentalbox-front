@@ -36,6 +36,11 @@ export enum CABINET_TAG {
 export enum PATIENT_TAG {
   PATIENT = "PATIENT",
   PATIENT_LIST = "PATIENT_LIST",
+  PATIENT_RECORD = "PATIENT_RECORD",
+}
+
+export enum DENTAL_MAP_TAG {
+  DENTAL_MAP_RECORD = "DENTAL_MAP_RECORD",
 }
 
 export enum REDUCER {
@@ -47,6 +52,7 @@ export enum REDUCER {
   PAYMENT = "PAYMENT",
   CABINET = "CABINET",
   PATIENT = "PATIENT",
+  DENTAL_MAP = "DENTAL_MAP",
 }
 
 export enum CACHE_KEYS {

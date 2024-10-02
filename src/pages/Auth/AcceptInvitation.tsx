@@ -1,6 +1,10 @@
 import { FC, useState, useEffect, ReactNode } from "react";
 import { UserData } from "./Wizard";
-import { Avatar, Box, Button, Grid2, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid2 from "@mui/material/Grid2";
+import Typography from "@mui/material/Typography";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLazyAcceptInvitationQuery } from "@api";
 import { Card } from "@elements";

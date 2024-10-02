@@ -17,6 +17,7 @@ export const CabinetPage = () => {
     skip: 0,
     limit: 20,
   });
+
   const { status, isLoading, data, refetch } = useGetMyCabinetsQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
@@ -31,9 +32,15 @@ export const CabinetPage = () => {
     <>
       <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <Typography variant="h4">{t("cabinet")}</Typography>
-        <Button variant="contained" onClick={() => setIsModalOpen(true)}>{t("createCabinet")}</Button>
+        <Button variant="contained" onClick={() => setIsModalOpen(true)}>
+          {t("createCabinet")}
+        </Button>
       </Box>
-      <CabinetModal open={isModalOpen} onClose={() => setIsModalOpen(false)} onUpdate={() => refetch()} />
+      <CabinetModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpdate={() => refetch()}
+      />
       <GridSearchFilter
         search={search}
         setSearch={setSearch}

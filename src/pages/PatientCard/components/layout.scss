@@ -1,0 +1,10 @@
+.tooth-map-layout {
+  display: grid;
+  width: 500px;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 100px;
+  svg {
+    width: 60px;
+    height: 100%;
+  }
+}

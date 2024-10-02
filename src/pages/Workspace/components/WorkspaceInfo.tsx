@@ -5,6 +5,10 @@ import Divider from "@mui/material/Divider";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Popover from "@mui/material/Popover";
 import Grid2 from "@mui/material/Grid2";
 import LinearProgress from "@mui/material/LinearProgress";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -16,7 +20,6 @@ import { ClinicIconIcon } from "@assets";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@hooks";
 import { useLazyInviteUserQuery } from "@api";
-import { FormControl, InputLabel, OutlinedInput, Popover } from "@mui/material";
 
 type WorkspaceInfoProps = { workspace: Workspace | null };
 const sx = { width: "100%", height: "100%" };

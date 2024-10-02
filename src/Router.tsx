@@ -17,6 +17,7 @@ import {
   ProfilePage,
   ProtectedApp,
   AcceptInvitation,
+  PatientCardPage,
 } from "./pages";
 
 export const getRoutes = (isAuthenticated: boolean) => {
@@ -48,6 +49,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
             { path: "/app/workspace", Component: WorkspacePage },
             { path: "/app/staff", Component: StaffPage },
             { path: "/app/patients", Component: PatientsPage },
+            { path: "/app/patients/:patientId", Component: PatientCardPage },
             { path: "/app/cabinets", Component: CabinetPage },
             { path: "/app/calendar", Component: CalendarPage },
             { path: "/app/profile", Component: ProfilePage },

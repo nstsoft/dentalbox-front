@@ -28,10 +28,7 @@ export const patientApi = createApi({
       },
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_LIST }],
     }),
-    createPatient: builder.mutation<
-      unknown,
-      CreatePatient
-    >({
+    createPatient: builder.mutation<unknown, CreatePatient>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {
@@ -40,16 +37,20 @@ export const patientApi = createApi({
 
         formData.append("data", JSON.stringify({ body }));
 
-        return {
-          body: formData,
-          url: "/patient",
-          method: "POST",
-        };
+        return { body: formData, url: "/patient", method: "POST" };
       },
+    }),
+    getPatientById: builder.query<Patient, string>({
+      query: (id) => `/patient/${id}`,
+      providesTags: () => [{ type: PATIENT_TAG.PATIENT_RECORD }],
     }),
   }),
 });
 
-export const { useGetMyPatientsQuery, useCreatePatientMutation } = patientApi;
+export const {
+  useGetMyPatientsQuery,
+  useGetPatientByIdQuery,
+  useCreatePatientMutation,
+} = patientApi;
 
 export default { patientApi };

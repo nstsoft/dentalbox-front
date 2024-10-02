@@ -105,7 +105,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
       onUpdate();
       onClose();
     }
-  }, [isSuccess]);
+  }, [isSuccess, onClose, onUpdate]);
 
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -240,7 +240,9 @@ export const CabinetModal: FC<CabinetModalProps> = ({
               name="cabinetImage"
               type="file"
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                e.target.files?.[0] && setCabinetImage(e.target.files?.[0]);
+                if (e.target.files?.[0]) {
+                  setCabinetImage(e.target.files?.[0]);
+                }
               }}
             />
           </Button>

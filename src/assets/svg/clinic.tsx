@@ -1,4 +1,5 @@
-import { SvgIcon, type SvgIconOwnProps } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
+import { type SvgIconOwnProps } from "@mui/material/SvgIcon";
 
 export function ClinicIconIcon(props?: SvgIconOwnProps) {
   return (
