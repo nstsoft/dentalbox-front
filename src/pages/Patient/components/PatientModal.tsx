@@ -1,17 +1,20 @@
-import { useLazyCreatePatientQuery } from "@api";
+import { useCreatePatientMutation } from "@api";
+import { VisuallyHiddenInput } from "@elements";
 import {
   Box,
   Button,
   FormControl,
   FormHelperText,
+  FormLabel,
   InputLabel,
   Modal,
   OutlinedInput,
   Typography,
 } from "@mui/material";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { ChangeEvent, FC, FormEvent, Fragment, useState } from "react";
+import { ChangeEvent, FC, FormEvent, Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 type PatientModalProps = {
   open: boolean;
@@ -25,12 +28,11 @@ export const PatientModal: FC<PatientModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
-  const [cabinetForm, setCabinetForm] = useState<{
+  const [patientForm, setCabinetForm] = useState<{
     name: string;
     secondName: string;
     surName: string;
     dob: string;
-    image: string;
     email: string;
     phone: string;
     address: string;
@@ -39,7 +41,6 @@ export const PatientModal: FC<PatientModalProps> = ({
     secondName: "",
     surName: "",
     dob: "",
-    image: "",
     email: "",
     phone: "+380",
     address: "",
@@ -48,14 +49,15 @@ export const PatientModal: FC<PatientModalProps> = ({
   const [responseError, setResponseError] = useState<string | string[] | null>(
     null
   );
+  const [patientImage, setPatientImage] = useState<File>();
 
-  const [createPatient] = useLazyCreatePatientQuery();
+  const [createPatient, { data, error }] = useCreatePatientMutation();
 
   const fieldsMap = [
     {
       id: "name",
       label: t("name"),
-      value: cabinetForm.name,
+      value: patientForm.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setCabinetForm((prevState) => ({
           ...prevState,
@@ -65,7 +67,7 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "secondName",
       label: t("secondName"),
-      value: cabinetForm.secondName,
+      value: patientForm.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setCabinetForm((prevState) => ({
           ...prevState,
@@ -75,7 +77,7 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "surName",
       label: t("surname"),
-      value: cabinetForm.surName,
+      value: patientForm.surName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setCabinetForm((prevState) => ({
           ...prevState,
@@ -85,7 +87,7 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "dob",
       label: t("dob"),
-      value: cabinetForm.dob,
+      value: patientForm.dob,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
         setCabinetForm((prev) => ({ ...prev, dob: target.value }));
       },
@@ -93,7 +95,7 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "email",
       label: t("email"),
-      value: cabinetForm.email,
+      value: patientForm.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
         setCabinetForm((prev) => ({ ...prev, email: target.value }));
       },
@@ -101,12 +103,12 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "phone",
       label: t("phone"),
-      value: cabinetForm.phone,
+      value: patientForm.phone,
     },
     {
       id: "address",
       label: t("address"),
-      value: cabinetForm.address,
+      value: patientForm.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setCabinetForm((prevState) => ({
           ...prevState,
@@ -118,23 +120,25 @@ export const PatientModal: FC<PatientModalProps> = ({
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (matchIsValidTel(cabinetForm.phone)) {
+    if (matchIsValidTel(patientForm.phone)) {
       setPhoneError(null);
     } else {
       setPhoneError("Please enter a valid phone number.");
       return;
     }
 
-    createPatient(cabinetForm).then((data) => {
-      if (data.error) {
-        setResponseError((data?.error as any).data?.message);
-        return;
-      }
+    createPatient({ ...patientForm, image: patientImage });
+  };
 
+  useEffect(() => {
+    if (error) {
+      setResponseError((error as any).message);
+    }
+    if (data) {
       onUpdate();
       onClose();
-    });
-  };
+    }
+  }, [data, error]);
 
   return (
     <Modal
@@ -198,6 +202,29 @@ export const PatientModal: FC<PatientModalProps> = ({
             )}
           </FormControl>
         ))}
+        <FormControl sx={{ mb: 2, width: "100%" }}>
+          <FormLabel htmlFor="patientImage">
+            {t("image")}
+          </FormLabel>
+          <Button
+            fullWidth
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            {t("buttons.upload")}
+            <VisuallyHiddenInput
+              id="patientImage"
+              name="patientImage"
+              type="file"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                e.target.files?.[0] && setPatientImage(e.target.files?.[0]);
+              }}
+            />
+          </Button>
+        </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">

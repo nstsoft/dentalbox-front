@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Cabinet } from "@types";
+import type { Cabinet, CreateCabinet } from "@types";
 import { REDUCER, CABINET_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -28,26 +28,27 @@ export const cabinetApi = createApi({
       },
       providesTags: () => [{ type: CABINET_TAG.CABINET_LIST }],
     }),
-    createCabinet: builder.query<
-      unknown,
-      {
-        name: string;
-        phone: string;
-        address: string;
-        notes: string;
-        chairs: string[];
-      }
-    >({
-      query: (body) => ({
-        body,
-        url: "/cabinet",
-        method: "POST",
-      }),
-      providesTags: () => [{ type: CABINET_TAG.CABINET }],
+    createCabinet: builder.mutation<unknown, CreateCabinet>({
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        const stringData = JSON.stringify({ body });
+
+        formData.append("data", stringData);
+
+        return {
+          body: formData,
+          url: "/cabinet",
+          method: "POST",
+        };
+      },
     }),
   }),
 });
 
-export const { useGetMyCabinetsQuery, useLazyCreateCabinetQuery } = cabinetApi;
+export const { useGetMyCabinetsQuery, useCreateCabinetMutation } = cabinetApi;
 
 export default { cabinetApi };

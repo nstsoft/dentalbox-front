@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  FormLabel,
   InputLabel,
   ListItemIcon,
   Modal,
@@ -10,10 +11,19 @@ import {
   Typography,
 } from "@mui/material";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { ChangeEvent, FC, FormEvent, Fragment, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  Fragment,
+  useEffect,
+  useState,
+} from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
-import { useLazyCreateCabinetQuery } from "@api";
+import { useCreateCabinetMutation } from "@api";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { VisuallyHiddenInput } from "@elements";
 
 type CabinetModalProps = {
   open: boolean;
@@ -21,7 +31,11 @@ type CabinetModalProps = {
   onClose: () => void;
 };
 
-export const CabinetModal: FC<CabinetModalProps> = ({ open, onUpdate, onClose }) => {
+export const CabinetModal: FC<CabinetModalProps> = ({
+  open,
+  onUpdate,
+  onClose,
+}) => {
   const { t } = useTranslation();
   const [cabinetForm, setCabinetForm] = useState<{
     name: string;
@@ -40,7 +54,9 @@ export const CabinetModal: FC<CabinetModalProps> = ({ open, onUpdate, onClose })
   const [responseError, setResponseError] = useState<string | string[] | null>(
     null
   );
-  const [createCabinet] = useLazyCreateCabinetQuery();
+  const [cabinetImage, setCabinetImage] = useState<File>();
+
+  const [createCabinet, { data, error }] = useCreateCabinetMutation();
 
   const fieldsMap = [
     {
@@ -80,6 +96,16 @@ export const CabinetModal: FC<CabinetModalProps> = ({ open, onUpdate, onClose })
     },
   ];
 
+  useEffect(() => {
+    if (error) {
+      setResponseError((error as any).message);
+    }
+    if (data) {
+      onUpdate();
+      onClose();
+    }
+  }, [data, error]);
+
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
@@ -90,20 +116,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({ open, onUpdate, onClose })
       return;
     }
 
-    createCabinet(cabinetForm)
-      .then((data) => {
-        if (data.error) {
-          setResponseError((data?.error as any).data?.message);
-          return;
-        }
-
-        onUpdate();
-        onClose();
-      })
-      .catch((error) => {
-        console.log(error);
-        setResponseError(error?.message);
-      });
+    createCabinet({ ...cabinetForm, image: cabinetImage });
   };
 
   return (
@@ -208,6 +221,29 @@ export const CabinetModal: FC<CabinetModalProps> = ({ open, onUpdate, onClose })
             />
           </FormControl>
         ))}
+        <FormControl sx={{ mb: 2, width: "100%" }}>
+          <FormLabel htmlFor="cabinetImage">
+            {t("pages.cabinet.image")}
+          </FormLabel>
+          <Button
+            fullWidth
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            {t("buttons.upload")}
+            <VisuallyHiddenInput
+              id="cabinetImage"
+              name="cabinetImage"
+              type="file"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                e.target.files?.[0] && setCabinetImage(e.target.files?.[0]);
+              }}
+            />
+          </Button>
+        </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">

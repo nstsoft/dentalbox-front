@@ -16,6 +16,7 @@ export const UA: ResourceLanguage = {
       applyFilter: "Фільтрувати",
       accept: "Прийняти",
       create: "Створити",
+      upload: "Завантажити",
     },
     login: {
       login: "Логін",
@@ -72,7 +73,6 @@ export const UA: ResourceLanguage = {
         name: "Назва кабінету",
         image: "Зображення кабінету",
         description: "Опис кабінету",
-        upload: "Завантажити",
       },
       userProduct: {
         title: "Оберіть продукт",
@@ -214,6 +214,7 @@ export const UA: ResourceLanguage = {
         actions: "Дії",
         createCabinet: "Створити кабінет",
         chair: 'Крісло',
+        image: "Фото",
       },
       patient: {
         patient: "Пацієнт",
@@ -225,6 +226,7 @@ export const UA: ResourceLanguage = {
         phone: "Телефон",
         address: "Адреса",
         createPatient: "Створити пацієнта",
+        image: "Фото",
       },
     },
   },

@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { StepWizardChildProps } from "react-step-wizard";
 import { WorkspaceForm } from "./types";
-import { Card } from "@elements";
+import { Card, VisuallyHiddenInput } from "@elements";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -11,7 +11,6 @@ import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 interface IUserWorkspaceStepProps {
@@ -51,18 +50,6 @@ export const Workspace = (
       },
     },
   ];
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   const onNext = (event: FormEvent) => {
     event.preventDefault();
@@ -114,7 +101,7 @@ export const Workspace = (
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
           >
-            {t("signUpWizard.workspace.upload")}
+            {t("buttons.upload")}
             <VisuallyHiddenInput
               id="workspaceImage"
               name="workspaceImage"

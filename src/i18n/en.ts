@@ -16,6 +16,7 @@ export const EN: ResourceLanguage = {
       applyFilter: "Apply filter",
       accept: "Accept",
       create: "Create",
+      upload: "Upload",
     },
     login: {
       login: "Login",
@@ -72,7 +73,6 @@ export const EN: ResourceLanguage = {
         name: "Workspace Name",
         image: "Workspace Image",
         description: "Workspace Description",
-        upload: "Upload",
       },
       userProduct: {
         title: "User Product",
@@ -212,6 +212,7 @@ export const EN: ResourceLanguage = {
         actions: "Actions",
         createCabinet: "Create cabinet",
         chair: "Chair",
+        image: "Image",
       },
       patient: {
         patient: "Patient",
@@ -223,6 +224,7 @@ export const EN: ResourceLanguage = {
         phone: "Phone",
         address: "Address",
         createPatient: "Create patient",
+        image: "Image",
       },
     },
   },

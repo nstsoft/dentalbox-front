@@ -28,20 +28,30 @@ export const patientApi = createApi({
       },
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_LIST }],
     }),
-    createPatient: builder.query<
+    createPatient: builder.mutation<
       unknown,
       Patient
     >({
-      query: (body) => ({
-        body,
-        url: "/cabinet",
-        method: "POST",
-      }),
-      providesTags: () => [{ type: PATIENT_TAG.PATIENT }],
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        const stringData = JSON.stringify({ body });
+
+        formData.append("data", stringData);
+
+        return {
+          body: formData,
+          url: "/patient",
+          method: "POST",
+        };
+      },
     }),
   }),
 });
 
-export const { useGetMyPatientsQuery, useLazyCreatePatientQuery } = patientApi;
+export const { useGetMyPatientsQuery, useCreatePatientMutation } = patientApi;
 
 export default { patientApi };

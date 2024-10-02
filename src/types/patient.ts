@@ -6,5 +6,5 @@ export type Patient = {
     phone: string;
     email: string;
     address: string;
-    image: string;
+    image?: File;
 }

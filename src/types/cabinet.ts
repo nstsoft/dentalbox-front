@@ -10,3 +10,12 @@ export type Cabinet = {
   users?: string[];
   workspace?: string;
 };
+
+export type CreateCabinet = {
+  name: string;
+  phone: string;
+  address: string;
+  notes?: string;
+  image?: File;
+  chairs: string[];
+};
