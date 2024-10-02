@@ -1,16 +1,14 @@
 import { useCreatePatientMutation } from "@api";
 import { VisuallyHiddenInput } from "@elements";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  InputLabel,
-  Modal,
-  OutlinedInput,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormLabel from "@mui/material/FormLabel";
+import InputLabel from "@mui/material/InputLabel";
+import Modal from "@mui/material/Modal";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
 import {
   ChangeEvent,

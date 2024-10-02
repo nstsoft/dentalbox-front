@@ -1,5 +1,7 @@
 import { useGetMyPatientsQuery } from "@api";
-import { Box, Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { GridSearchFilter } from "@components";

@@ -2,7 +2,9 @@ import { type GridColDef } from "@mui/x-data-grid";
 import { type Patient } from "@types";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { CustomTable } from "@components";
-import { Avatar, Grid2, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Grid2 from "@mui/material/Grid2";
+import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 
 type Props = {

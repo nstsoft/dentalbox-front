@@ -1,15 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  InputLabel,
-  ListItemIcon,
-  Modal,
-  OutlinedInput,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormLabel from "@mui/material/FormLabel";
+import InputLabel from "@mui/material/InputLabel";
+import Modal from "@mui/material/Modal";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
 import {
   ChangeEvent,
@@ -56,8 +54,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
   const [responseError, setResponseError] = useState<string | string[]>();
   const [cabinetImage, setCabinetImage] = useState<File>();
 
-  const [createCabinet, { error, isSuccess }] =
-    useCreateCabinetMutation();
+  const [createCabinet, { error, isSuccess }] = useCreateCabinetMutation();
 
   const fieldsMap = [
     {

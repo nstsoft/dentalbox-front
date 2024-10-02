@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Patient } from "@types";
+import type { CreatePatient, Patient } from "@types";
 import { REDUCER, PATIENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -30,7 +30,7 @@ export const patientApi = createApi({
     }),
     createPatient: builder.mutation<
       unknown,
-      Patient
+      CreatePatient
     >({
       query: ({ image, ...body }) => {
         const formData = new FormData();
