@@ -31,19 +31,21 @@ type CabinetModalProps = {
   onClose: () => void;
 };
 
+type CabinetForm = {
+  name: string;
+  phone: string;
+  address: string;
+  notes: string;
+  chairs: string[];
+};
+
 export const CabinetModal: FC<CabinetModalProps> = ({
   open,
   onUpdate,
   onClose,
 }) => {
   const { t } = useTranslation();
-  const [cabinetForm, setCabinetForm] = useState<{
-    name: string;
-    phone: string;
-    address: string;
-    notes: string;
-    chairs: string[];
-  }>({
+  const [cabinetForm, setCabinetForm] = useState<CabinetForm>({
     name: "",
     phone: "+380",
     address: "",
@@ -51,12 +53,11 @@ export const CabinetModal: FC<CabinetModalProps> = ({
     chairs: [""],
   });
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [responseError, setResponseError] = useState<string | string[] | null>(
-    null
-  );
+  const [responseError, setResponseError] = useState<string | string[]>();
   const [cabinetImage, setCabinetImage] = useState<File>();
 
-  const [createCabinet, { data, error }] = useCreateCabinetMutation();
+  const [createCabinet, { error, isSuccess }] =
+    useCreateCabinetMutation();
 
   const fieldsMap = [
     {
@@ -100,11 +101,14 @@ export const CabinetModal: FC<CabinetModalProps> = ({
     if (error) {
       setResponseError((error as any).message);
     }
-    if (data) {
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
       onUpdate();
       onClose();
     }
-  }, [data, error]);
+  }, [isSuccess]);
 
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();

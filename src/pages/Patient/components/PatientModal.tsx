@@ -12,7 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { ChangeEvent, FC, FormEvent, Fragment, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  Fragment,
+  useEffect,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -22,21 +29,23 @@ type PatientModalProps = {
   onClose: () => void;
 };
 
+type PatientForm = {
+  name: string;
+  secondName: string;
+  surName: string;
+  dob: string;
+  email: string;
+  phone: string;
+  address: string;
+};
+
 export const PatientModal: FC<PatientModalProps> = ({
   open,
   onUpdate,
   onClose,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
-  const [patientForm, setCabinetForm] = useState<{
-    name: string;
-    secondName: string;
-    surName: string;
-    dob: string;
-    email: string;
-    phone: string;
-    address: string;
-  }>({
+  const [patientForm, setCabinetForm] = useState<PatientForm>({
     name: "",
     secondName: "",
     surName: "",
@@ -46,12 +55,10 @@ export const PatientModal: FC<PatientModalProps> = ({
     address: "",
   });
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [responseError, setResponseError] = useState<string | string[] | null>(
-    null
-  );
+  const [responseError, setResponseError] = useState<string | string[]>();
   const [patientImage, setPatientImage] = useState<File>();
 
-  const [createPatient, { data, error }] = useCreatePatientMutation();
+  const [createPatient, { isSuccess, error }] = useCreatePatientMutation();
 
   const fieldsMap = [
     {
@@ -134,11 +141,14 @@ export const PatientModal: FC<PatientModalProps> = ({
     if (error) {
       setResponseError((error as any).message);
     }
-    if (data) {
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
       onUpdate();
       onClose();
     }
-  }, [data, error]);
+  }, [isSuccess]);
 
   return (
     <Modal
@@ -203,9 +213,7 @@ export const PatientModal: FC<PatientModalProps> = ({
           </FormControl>
         ))}
         <FormControl sx={{ mb: 2, width: "100%" }}>
-          <FormLabel htmlFor="patientImage">
-            {t("image")}
-          </FormLabel>
+          <FormLabel htmlFor="patientImage">{t("image")}</FormLabel>
           <Button
             fullWidth
             component="label"
@@ -214,7 +222,7 @@ export const PatientModal: FC<PatientModalProps> = ({
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
           >
-            {t("buttons.upload")}
+            {t("upload" , { keyPrefix: "buttons" })}
             <VisuallyHiddenInput
               id="patientImage"
               name="patientImage"

@@ -38,9 +38,7 @@ export const patientApi = createApi({
           formData.append("file", image);
         }
 
-        const stringData = JSON.stringify({ body });
-
-        formData.append("data", stringData);
+        formData.append("data", JSON.stringify({ body }));
 
         return {
           body: formData,

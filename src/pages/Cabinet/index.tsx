@@ -23,10 +23,7 @@ export const CabinetPage = () => {
     },
   });
 
-  if (!data) return null;
-  if (["uninitialized", "loading"].includes(status)) {
-    return null;
-  }
+  if (!data || ["uninitialized", "loading"].includes(status)) return null;
 
   return (
     <>
