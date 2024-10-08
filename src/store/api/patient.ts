@@ -35,7 +35,10 @@ export const patientApi = createApi({
           formData.append("file", image);
         }
 
-        formData.append("data", JSON.stringify({ body }));
+        formData.append(
+          "data",
+          JSON.stringify({ ...body, dob: body.dob.toString() })
+        );
 
         return { body: formData, url: "/patient", method: "POST" };
       },
@@ -44,6 +47,21 @@ export const patientApi = createApi({
       query: (id) => `/patient/${id}`,
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_RECORD }],
     }),
+    updatePatient: builder.mutation<unknown, Patient>({
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        formData.append(
+          "data",
+          JSON.stringify({ ...body, dob: body.dob.toString() })
+        );
+
+        return { body: formData, url: `/patient${body._id}`, method: "PATCH" };
+      },
+    }),
   }),
 });
 
@@ -51,6 +69,7 @@ export const {
   useGetMyPatientsQuery,
   useGetPatientByIdQuery,
   useCreatePatientMutation,
+  useUpdatePatientMutation,
 } = patientApi;
 
 export default { patientApi };

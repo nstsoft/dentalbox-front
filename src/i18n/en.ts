@@ -17,6 +17,7 @@ export const EN: ResourceLanguage = {
       accept: "Accept",
       create: "Create",
       upload: "Upload",
+      save: "Save",
     },
     login: {
       login: "Login",
@@ -225,7 +226,16 @@ export const EN: ResourceLanguage = {
         address: "Address",
         createPatient: "Create patient",
         image: "Image",
+        imageSuccess: "Image successfully uploaded",
       },
+      patientCard: {
+        patientCard: "Patient Card",
+        dob: "Date of birth",
+        phone: "Phone",
+        email: "Email",
+        address: "Address",
+        notes: "Notes",
+      }
     },
   },
 };

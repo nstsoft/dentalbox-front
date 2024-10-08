@@ -20,6 +20,9 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { DatePicker } from "@mui/x-date-pickers";
+import moment, { Moment } from "moment";
+import { validateLogin } from "@utils";
 
 type PatientModalProps = {
   open: boolean;
@@ -30,7 +33,7 @@ type PatientModalProps = {
 type PatientForm = {
   name: string;
   secondName: string;
-  surName: string;
+  surname: string;
   dob: string;
   email: string;
   phone: string;
@@ -46,13 +49,15 @@ export const PatientModal: FC<PatientModalProps> = ({
   const [patientForm, setCabinetForm] = useState<PatientForm>({
     name: "",
     secondName: "",
-    surName: "",
+    surname: "",
     dob: "",
     email: "",
     phone: "+380",
     address: "",
   });
-  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string>();
+  const [emailError, setEmailError] = useState<string>();
+  const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
   const [patientImage, setPatientImage] = useState<File>();
 
@@ -80,13 +85,13 @@ export const PatientModal: FC<PatientModalProps> = ({
         })),
     },
     {
-      id: "surName",
+      id: "surname",
       label: t("surname"),
-      value: patientForm.surName,
+      value: patientForm.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setCabinetForm((prevState) => ({
           ...prevState,
-          surName: event.target.value,
+          surname: event.target.value,
         })),
     },
     {
@@ -96,6 +101,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
         setCabinetForm((prev) => ({ ...prev, dob: target.value }));
       },
+      error: birthDateError,
     },
     {
       id: "email",
@@ -104,11 +110,13 @@ export const PatientModal: FC<PatientModalProps> = ({
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
         setCabinetForm((prev) => ({ ...prev, email: target.value }));
       },
+      error: emailError,
     },
     {
       id: "phone",
       label: t("phone"),
       value: patientForm.phone,
+      error: phoneError,
     },
     {
       id: "address",
@@ -122,17 +130,36 @@ export const PatientModal: FC<PatientModalProps> = ({
     },
   ];
 
+  const validateForm = () => {
+    setPhoneError(undefined);
+    setBirthDateError(undefined);
+    setEmailError(undefined);
+
+    if (!matchIsValidTel(patientForm.phone)) {
+      setPhoneError("Please enter a valid phone number.");
+      return false;
+    }
+
+    if (patientForm.dob && !moment(patientForm.dob).isValid()) {
+      setBirthDateError("Please enter valid date.");
+      return false;
+    }
+
+    if (!validateLogin(patientForm.email)) {
+      setEmailError("Please enter a valid email address.");
+      return false;
+    }
+
+    return true;
+  };
+
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (matchIsValidTel(patientForm.phone)) {
-      setPhoneError(null);
-    } else {
-      setPhoneError("Please enter a valid phone number.");
-      return;
+    const isFormValid = validateForm();
+    if (isFormValid) {
+      createPatient({ ...patientForm, image: patientImage });
     }
-
-    createPatient({ ...patientForm, image: patientImage });
   };
 
   useEffect(() => {
@@ -174,25 +201,47 @@ export const PatientModal: FC<PatientModalProps> = ({
       >
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
-            {input.id === "phone" ? (
+            {input.id === "phone" && (
               <Fragment key={input.id}>
                 <MuiTelInput
                   value={input.value}
                   onChange={(newValue: string) =>
                     setCabinetForm((prevState) => ({
                       ...prevState,
-                      phone: newValue,
+                      phone: newValue.replace(/\s+/g, ""),
                     }))
                   }
                   error={!!phoneError}
                   placeholder={input?.label}
                   color={phoneError ? "error" : "primary"}
                 />
-                <FormHelperText error={!!phoneError}>
-                  {phoneError}
-                </FormHelperText>
               </Fragment>
-            ) : (
+            )}
+            {input.id === "dob" && (
+              <DatePicker
+                key={input.id}
+                value={input.value ? moment(input.value) : null}
+                onChange={(newValue: Moment | null) =>
+                  setCabinetForm((prev) => ({
+                    ...prev,
+                    dob: newValue?.toString() ?? "",
+                  }))
+                }
+                disableFuture
+                onError={(err) =>
+                  setBirthDateError(
+                    err ? "Please enter valid date." : undefined
+                  )
+                }
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      borderColor: birthDateError ? "red" : "none",
+                    },
+                }}
+              />
+            )}
+            {input.id !== "phone" && input.id !== "dob" && (
               <Fragment key={input.id}>
                 <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
                 <OutlinedInput
@@ -208,6 +257,7 @@ export const PatientModal: FC<PatientModalProps> = ({
                 />
               </Fragment>
             )}
+            <FormHelperText error={!!input.error}>{input.error}</FormHelperText>
           </FormControl>
         ))}
         <FormControl sx={{ mb: 2, width: "100%" }}>
@@ -220,7 +270,7 @@ export const PatientModal: FC<PatientModalProps> = ({
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
           >
-            {t("upload" , { keyPrefix: "buttons" })}
+            {t("upload", { keyPrefix: "buttons" })}
             <VisuallyHiddenInput
               id="patientImage"
               name="patientImage"
@@ -230,6 +280,7 @@ export const PatientModal: FC<PatientModalProps> = ({
               }}
             />
           </Button>
+          {patientImage && <FormHelperText>{t("imageSuccess")}</FormHelperText>}
         </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>

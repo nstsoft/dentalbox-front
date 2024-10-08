@@ -1,7 +1,7 @@
 export type CreatePatient = {
   name: string;
   secondName: string;
-  surName: string;
+  surname: string;
   dob: string;
   phone: string;
   email: string;
@@ -13,10 +13,11 @@ export type Patient = {
   _id: string;
   name: string;
   secondName: string;
-  surName: string;
+  surname: string;
   dob: string;
   phone: string;
   email: string;
   address: string;
   image?: string;
+  notes?: string;
 };

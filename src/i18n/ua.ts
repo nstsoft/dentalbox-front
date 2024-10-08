@@ -17,6 +17,7 @@ export const UA: ResourceLanguage = {
       accept: "Прийняти",
       create: "Створити",
       upload: "Завантажити",
+      save: "Зберегти",
     },
     login: {
       login: "Логін",
@@ -128,6 +129,8 @@ export const UA: ResourceLanguage = {
       workspace: {
         workspace: "Середовище",
         stuff: "Персонал",
+        address: "Адреса",
+        phone: "Телефон",
         notes: "Замітки",
         currentStaff: "Поточно кількість персоналу",
         maxStaff: "Максимальна кількість персоналу",
@@ -137,7 +140,6 @@ export const UA: ResourceLanguage = {
         package: "Пакет",
         price: "Ціна",
         description: "Опис",
-        image: "Image",
         status: "Статус",
         subscriptionStatus: {
           active: "Активний",
@@ -189,10 +191,7 @@ export const UA: ResourceLanguage = {
           declined: "Відхилена",
           expired: "Протермінована",
         },
-        verifiedItems: {
-          verified: "Так",
-          notVerified: "Ні",
-        },
+        verifiedItems: { verified: "Так", notVerified: "Ні" },
         verification: "Верифікований",
         email: "Емейл",
         name: "Ім'я",
@@ -213,7 +212,7 @@ export const UA: ResourceLanguage = {
         notes: "Замітки",
         actions: "Дії",
         createCabinet: "Створити кабінет",
-        chair: 'Крісло',
+        chair: "Крісло",
         image: "Фото",
       },
       patient: {
@@ -227,6 +226,15 @@ export const UA: ResourceLanguage = {
         address: "Адреса",
         createPatient: "Створити пацієнта",
         image: "Фото",
+        imageSuccess: "Фото успішно завантажене",
+      },
+      patientCard: {
+        patientCard: "Картка пацієнта",
+        dob: "Дата народження",
+        phone: "Телефон",
+        email: "Емейл",
+        address: "Адреса",
+        notes: "Замітки",
       },
     },
   },

@@ -1,4 +1,4 @@
-import { DataGrid, type GridValidRowModel } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, type GridValidRowModel } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 
 export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -19,6 +19,12 @@ import { useState } from "react";
 
 type Props = GridValidRowModel & {
   onPagination: (prop: { skip: number; limit: number }) => void;
+};
+
+export type Row = {
+  id: string;
+  columns: GridColDef[];
+  row: any;
 };
 
 export const CustomTable = (params: Props) => {

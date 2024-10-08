@@ -35,7 +35,7 @@ export const cabinetApi = createApi({
           formData.append("file", image);
         }
 
-        formData.append("data", JSON.stringify({ body }));
+        formData.append("data", JSON.stringify({ ...body }));
 
         return {
           body: formData,

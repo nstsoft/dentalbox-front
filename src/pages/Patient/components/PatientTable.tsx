@@ -1,11 +1,12 @@
 import { type GridColDef } from "@mui/x-data-grid";
 import { type Patient } from "@types";
 import { type Dispatch, type FC, type SetStateAction } from "react";
-import { CustomTable } from "@components";
+import { CustomTable, Row } from "@components";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -20,6 +21,7 @@ export const PatientsTable: FC<Props> = ({
   data,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
+  const navigate = useNavigate();
 
   const columns: GridColDef<Patient>[] = [
     {
@@ -73,6 +75,7 @@ export const PatientsTable: FC<Props> = ({
       rowCount={data.count}
       loading={isLoading}
       onPagination={setPaginationModel}
+      onRowClick={(data: Row) => navigate(data.id)}
     />
   );
 };
