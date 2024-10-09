@@ -3,10 +3,12 @@ export type CreatePatient = {
   secondName: string;
   surname: string;
   dob: string;
+  sex: string;
   phone: string;
   email: string;
   address: string;
   image?: File;
+  notes?: string;
 };
 
 export type Patient = {
@@ -14,10 +16,11 @@ export type Patient = {
   name: string;
   secondName: string;
   surname: string;
+  sex: string;
   dob: string;
   phone: string;
   email: string;
   address: string;
-  image?: string;
+  image?: File | string;
   notes?: string;
 };

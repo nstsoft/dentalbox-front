@@ -31,9 +31,17 @@ export const PatientsPage = () => {
     <>
       <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <Typography variant="h4">{t("patient")}</Typography>
-        <Button variant="contained" onClick={() => setIsModalOpen(true)}>{t("createPatient")}</Button>
+        <Button variant="contained" onClick={() => setIsModalOpen(true)}>
+          {t("createPatient")}
+        </Button>
       </Box>
-      <PatientModal open={isModalOpen} onClose={() => setIsModalOpen(false)} onUpdate={() => refetch()} />
+      {isModalOpen && (
+        <PatientModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onUpdate={() => refetch()}
+        />
+      )}
       <GridSearchFilter
         search={search}
         setSearch={setSearch}

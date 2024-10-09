@@ -1,5 +1,7 @@
 import { useCreatePatientMutation } from "@api";
-import { VisuallyHiddenInput } from "@elements";
+import {
+  VisuallyHiddenInput,
+} from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -14,7 +16,6 @@ import {
   ChangeEvent,
   FC,
   FormEvent,
-  Fragment,
   useEffect,
   useState,
 } from "react";
@@ -23,6 +24,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment, { Moment } from "moment";
 import { validateLogin } from "@utils";
+import { ListItemText, MenuItem, Select } from "@mui/material";
+import { UserSex } from "../types/insex";
 
 type PatientModalProps = {
   open: boolean;
@@ -34,6 +37,7 @@ type PatientForm = {
   name: string;
   secondName: string;
   surname: string;
+  sex: string;
   dob: string;
   email: string;
   phone: string;
@@ -46,10 +50,11 @@ export const PatientModal: FC<PatientModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
-  const [patientForm, setCabinetForm] = useState<PatientForm>({
+  const [patientForm, setPatientForm] = useState<PatientForm>({
     name: "",
     secondName: "",
     surname: "",
+    sex: "",
     dob: "",
     email: "",
     phone: "+380",
@@ -69,7 +74,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("name"),
       value: patientForm.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setCabinetForm((prevState) => ({
+        setPatientForm((prevState) => ({
           ...prevState,
           name: event.target.value,
         })),
@@ -79,7 +84,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("secondName"),
       value: patientForm.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setCabinetForm((prevState) => ({
+        setPatientForm((prevState) => ({
           ...prevState,
           secondName: event.target.value,
         })),
@@ -89,17 +94,22 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("surname"),
       value: patientForm.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setCabinetForm((prevState) => ({
+        setPatientForm((prevState) => ({
           ...prevState,
           surname: event.target.value,
         })),
+    },
+    {
+      id: "sex",
+      label: t("sex"),
+      value: patientForm.sex,
     },
     {
       id: "dob",
       label: t("dob"),
       value: patientForm.dob,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setCabinetForm((prev) => ({ ...prev, dob: target.value }));
+        setPatientForm((prev) => ({ ...prev, dob: target.value }));
       },
       error: birthDateError,
     },
@@ -108,7 +118,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("email"),
       value: patientForm.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setCabinetForm((prev) => ({ ...prev, email: target.value }));
+        setPatientForm((prev) => ({ ...prev, email: target.value }));
       },
       error: emailError,
     },
@@ -123,7 +133,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("address"),
       value: patientForm.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setCabinetForm((prevState) => ({
+        setPatientForm((prevState) => ({
           ...prevState,
           address: event.target.value,
         })),
@@ -175,6 +185,8 @@ export const PatientModal: FC<PatientModalProps> = ({
     }
   }, [isSuccess]);
 
+  console.log(patientForm);
+
   return (
     <Modal
       open={open}
@@ -202,27 +214,50 @@ export const PatientModal: FC<PatientModalProps> = ({
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
-              <Fragment key={input.id}>
-                <MuiTelInput
-                  value={input.value}
-                  onChange={(newValue: string) =>
-                    setCabinetForm((prevState) => ({
-                      ...prevState,
-                      phone: newValue.replace(/\s+/g, ""),
+              <MuiTelInput
+                value={input.value}
+                onChange={(newValue: string) =>
+                  setPatientForm((prevState) => ({
+                    ...prevState,
+                    phone: newValue.replace(/\s+/g, ""),
+                  }))
+                }
+                error={!!phoneError}
+                placeholder={input?.label}
+                color={phoneError ? "error" : "primary"}
+              />
+            )}
+            {input.id === "sex" && (
+              <>
+                <InputLabel id="radio-label">{t("sex")}</InputLabel>
+                <Select
+                  labelId="radio-label"
+                  value={patientForm.sex}
+                  onChange={({ target }) =>
+                    setPatientForm((prev) => ({
+                      ...prev,
+                      sex: target.value,
                     }))
                   }
-                  error={!!phoneError}
-                  placeholder={input?.label}
-                  color={phoneError ? "error" : "primary"}
-                />
-              </Fragment>
+                  required
+                  input={<OutlinedInput label={t(`sex`)} />}
+                >
+                  {UserSex.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      <ListItemText
+                        primary={t(`sexItems.${item}`)}
+                        sx={{ m: 0 }}
+                      />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
             )}
             {input.id === "dob" && (
               <DatePicker
-                key={input.id}
                 value={input.value ? moment(input.value) : null}
                 onChange={(newValue: Moment | null) =>
-                  setCabinetForm((prev) => ({
+                  setPatientForm((prev) => ({
                     ...prev,
                     dob: newValue?.toString() ?? "",
                   }))
@@ -241,22 +276,24 @@ export const PatientModal: FC<PatientModalProps> = ({
                 }}
               />
             )}
-            {input.id !== "phone" && input.id !== "dob" && (
-              <Fragment key={input.id}>
-                <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
-                <OutlinedInput
-                  id={input.id}
-                  type="text"
-                  required
-                  onChange={input.onChange}
-                  value={input.value}
-                  color="primary"
-                  name={input.id}
-                  label={input.label}
-                  sx={{ ariaLabel: input.id }}
-                />
-              </Fragment>
-            )}
+            {input.id !== "phone" &&
+              input.id !== "dob" &&
+              input.id !== "sex" && (
+                <>
+                  <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
+                  <OutlinedInput
+                    id={input.id}
+                    type="text"
+                    required
+                    onChange={input.onChange}
+                    value={input.value}
+                    color="primary"
+                    name={input.id}
+                    label={input.label}
+                    sx={{ ariaLabel: input.id }}
+                  />
+                </>
+              )}
             <FormHelperText error={!!input.error}>{input.error}</FormHelperText>
           </FormControl>
         ))}

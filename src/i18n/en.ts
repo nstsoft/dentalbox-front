@@ -227,15 +227,22 @@ export const EN: ResourceLanguage = {
         createPatient: "Create patient",
         image: "Image",
         imageSuccess: "Image successfully uploaded",
+        sex: "Sex",
+        sexItems: { male: "Male", female: "Female" },
       },
       patientCard: {
         patientCard: "Patient Card",
+        name: "Name",
+        secondName: "Second Name",
+        surname: "Surname",
         dob: "Date of birth",
         phone: "Phone",
         email: "Email",
         address: "Address",
         notes: "Notes",
-      }
+        sex: "Sex",
+        sexItems: { male: "Male", female: "Female" },
+      },
     },
   },
 };
