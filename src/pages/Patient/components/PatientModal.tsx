@@ -1,7 +1,5 @@
 import { useCreatePatientMutation } from "@api";
-import {
-  VisuallyHiddenInput,
-} from "@elements";
+import { VisuallyHiddenInput } from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -12,20 +10,17 @@ import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment, { Moment } from "moment";
 import { validateLogin } from "@utils";
-import { ListItemText, MenuItem, Select } from "@mui/material";
-import { UserSex } from "../types/insex";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
+import { Sex } from "@types";
 
 type PatientModalProps = {
   open: boolean;
@@ -242,7 +237,7 @@ export const PatientModal: FC<PatientModalProps> = ({
                   required
                   input={<OutlinedInput label={t(`sex`)} />}
                 >
-                  {UserSex.map((item) => (
+                  {Object.keys(Sex).map((item) => (
                     <MenuItem key={item} value={item}>
                       <ListItemText
                         primary={t(`sexItems.${item}`)}

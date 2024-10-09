@@ -3,3 +3,8 @@ export interface MenuContextType {
   setIsOpen: (isOpen: boolean) => void;
   toggle: () => void;
 }
+
+export enum Sex {
+  male = "male",
+  female = "female",
+}

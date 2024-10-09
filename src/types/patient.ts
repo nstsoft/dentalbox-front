@@ -1,9 +1,11 @@
+import { Sex } from "./common";
+
 export type CreatePatient = {
   name: string;
   secondName: string;
   surname: string;
   dob: string;
-  sex: string;
+  sex: Sex;
   phone: string;
   email: string;
   address: string;

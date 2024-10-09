@@ -1,3 +1,5 @@
+import { Sex } from "./common";
+
 export enum UserRole {
   admin = "admin",
   manager = "manager",
@@ -41,6 +43,7 @@ export type User = {
   image?: string;
   dob?: Date;
   role: UserRole;
+  sex: Sex;
 };
 
 export type RegisterData = {
