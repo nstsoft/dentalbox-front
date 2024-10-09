@@ -6,6 +6,8 @@ import { User } from "@types";
 import { type Dispatch, type SetStateAction, type FC } from "react";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -21,11 +23,11 @@ export const UsersTable: FC<Props> = ({
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
 
-  const columns: GridColDef<User>[] = [
+  const mobileColumns: GridColDef<User>[] = [
     {
       field: "email",
       headerName: t("email"),
-      width: 250,
+      width: isMobile ? 200 : 250,
 
       renderCell: ({ row }) => (
         <Grid2 height="100%" display="flex" alignItems="center">
@@ -39,9 +41,19 @@ export const UsersTable: FC<Props> = ({
         </Grid2>
       ),
     },
-    { field: "name", headerName: t("name"), width: 150 },
-    { field: "surname", headerName: t("surname"), width: 150 },
-    { field: "secondName", headerName: t("secondName"), width: 150 },
+    {
+      field: "name",
+      headerName: t("name"),
+      width: isMobile ? 200 : 300,
+      renderCell: ({ row }) =>
+        isMobile
+          ? `${row.surname} ${row.name[0]}. ${row.secondName[0]}.`
+          : `${row.name} ${row.surname} ${row.secondName}`,
+    },
+  ];
+
+  const columns: GridColDef<User>[] = [
+    ...mobileColumns,
     { field: "phone", headerName: t("phone"), width: 150 },
     {
       field: "roles",
@@ -49,7 +61,12 @@ export const UsersTable: FC<Props> = ({
       width: 70,
       valueGetter: (_, r) => r.roles[0].role,
     },
-    { field: "dob", headerName: t("dob"), width: 150 },
+    {
+      field: "dob",
+      headerName: t("dob"),
+      width: 150,
+      renderCell: ({ row }) => moment(row.dob).format("DD.MM.YYYY"),
+    },
     { field: "isVerified", headerName: t("verification"), width: 150 },
   ];
   if (!data) return null;
@@ -58,7 +75,7 @@ export const UsersTable: FC<Props> = ({
     <div style={{ width: "100%" }}>
       <CustomTable
         rows={data.data}
-        columns={columns.map((col) => ({
+        columns={(isMobile ? mobileColumns : columns).map((col) => ({
           ...col,
           sortable: false,
           filterable: false,
