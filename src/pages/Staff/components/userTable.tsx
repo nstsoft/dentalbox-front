@@ -25,35 +25,35 @@ export const UsersTable: FC<Props> = ({
 
   const mobileColumns: GridColDef<User>[] = [
     {
-      field: "email",
-      headerName: t("email"),
-      width: isMobile ? 200 : 250,
-
-      renderCell: ({ row }) => (
-        <Grid2 height="100%" display="flex" alignItems="center">
-          <Avatar
-            sx={{ width: 30, height: 30, mr: 1 }}
-            sizes="small"
-            alt={row.name}
-            src={row.image}
-          />
-          <Typography> {row.email}</Typography>
-        </Grid2>
-      ),
-    },
-    {
       field: "name",
-      headerName: t("name"),
-      width: isMobile ? 200 : 300,
+      headerName: `${t("secondName")} ${t("name")} ${t("surname")}`,
+      width: isMobile ? 360 : 300,
       renderCell: ({ row }) =>
-        isMobile
-          ? `${row.surname} ${row.name[0]}. ${row.secondName[0]}.`
-          : `${row.name} ${row.surname} ${row.secondName}`,
+        isMobile ? (
+          <Grid2 height="100%" display="flex" alignItems="center">
+            <Avatar
+              sx={{ width: 30, height: 30, mr: 1 }}
+              sizes="small"
+              alt={row.name}
+              src={row.image}
+            />
+            <Typography>
+              {row.surname} {row.name[0]}. {row.secondName[0]}.
+            </Typography>
+          </Grid2>
+        ) : (
+          `${row.name} ${row.surname} ${row.secondName}`
+        ),
     },
   ];
 
   const columns: GridColDef<User>[] = [
     ...mobileColumns,
+    {
+      field: "email",
+      headerName: t("email"),
+      width: 250,
+    },
     { field: "phone", headerName: t("phone"), width: 150 },
     {
       field: "roles",

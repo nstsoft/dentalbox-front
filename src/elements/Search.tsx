@@ -1,4 +1,4 @@
-import { styled } from "@mui/material/styles";
+import { styled, SxProps, Theme } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTranslation } from "react-i18next";
@@ -40,12 +40,16 @@ const StyledSearchIcon = styled(SearchIcon)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-type Props = { value: string; onChange: Dispatch<SetStateAction<string>> };
+type Props = {
+  value: string;
+  onChange: Dispatch<SetStateAction<string>>;
+  sx?: SxProps<Theme>;
+};
 
-export const SearchInput: FC<Props> = ({ value, onChange }) => {
+export const SearchInput: FC<Props> = ({ value, onChange, sx }) => {
   const { i18n } = useTranslation();
   return (
-    <Search sx={{ mt: 1, mb: 1 }}>
+    <Search sx={{ ...sx, mt: 1, mb: 1 }}>
       <SearchIconWrapper>
         <StyledSearchIcon />
       </SearchIconWrapper>

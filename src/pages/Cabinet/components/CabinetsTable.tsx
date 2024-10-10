@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -23,7 +24,7 @@ export const CabinetsTable: FC<Props> = ({
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
 
-  const columns: GridColDef<Cabinet>[] = [
+  const mobileColumns: GridColDef<Cabinet>[] = [
     {
       field: "name",
       headerName: t("name"),
@@ -42,6 +43,10 @@ export const CabinetsTable: FC<Props> = ({
         );
       },
     },
+  ];
+
+  const columns: GridColDef<Cabinet>[] = [
+    ...mobileColumns,
     {
       field: "phone",
       headerName: t("phone"),
@@ -72,7 +77,7 @@ export const CabinetsTable: FC<Props> = ({
   return (
     <CustomTable
       rows={data.data}
-      columns={columns.map((col) => ({
+      columns={(isMobile ? mobileColumns : columns).map((col) => ({
         ...col,
         sortable: false,
         filterable: false,

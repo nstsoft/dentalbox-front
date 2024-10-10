@@ -7,6 +7,7 @@ import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -23,7 +24,7 @@ export const PatientsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
 
-  const columns: GridColDef<Patient>[] = [
+  const mobileColumns: GridColDef<Patient>[] = [
     {
       field: "name",
       headerName: t("name"),
@@ -35,13 +36,17 @@ export const PatientsTable: FC<Props> = ({
               sx={{ width: 30, height: 30, mr: 1 }}
               sizes="small"
               alt={row.name}
-              src={row.image}
+              src={row.image as string}
             />
             <Typography> {row.name}</Typography>
           </Grid2>
         );
       },
     },
+  ];
+
+  const columns: GridColDef<Patient>[] = [
+    ...mobileColumns,
     {
       field: "dob",
       headerName: t("dob"),
@@ -66,7 +71,7 @@ export const PatientsTable: FC<Props> = ({
   return (
     <CustomTable
       rows={data.data}
-      columns={columns.map((col) => ({
+      columns={(isMobile ? mobileColumns : columns).map((col) => ({
         ...col,
         sortable: false,
         filterable: false,
