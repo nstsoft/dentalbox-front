@@ -1,5 +1,5 @@
 import type { FC, Dispatch, SetStateAction } from "react";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";

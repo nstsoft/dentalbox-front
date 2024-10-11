@@ -79,3 +79,8 @@ export type UserForm = {
   dob: string;
   address?: string;
 };
+
+export type UserSummaryListItem = Pick<
+  User,
+  "name" | "surname" | "secondName" | "email" | "phone" | "_id"
+>;

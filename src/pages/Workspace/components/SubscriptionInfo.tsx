@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import icons from "currency-icons";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import { useGetMySubscriptionQuery } from "@api";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "@hooks";

@@ -4,3 +4,4 @@ export * from "./useQuery";
 export * from "./useAuth";
 export * from "./useSideMenu";
 export * from "./usePagination";
+export * from "./useLanguage";

@@ -7,3 +7,5 @@ export * from "./subscription";
 export * from "./payment";
 export * from "./patient";
 export * from "./dentalMap";
+export * from "./appointment";
+export * from "./chair";

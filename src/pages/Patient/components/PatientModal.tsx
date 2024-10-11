@@ -14,7 +14,7 @@ import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment, { Moment } from "moment";
+import moment, { Moment } from "moment/min/moment-with-locales";
 import { validateLogin } from "@utils";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";

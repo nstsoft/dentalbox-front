@@ -243,6 +243,20 @@ export const UA: ResourceLanguage = {
         sex: "Стать",
         sexItems: { male: "Чоловік", female: "Жінка" },
       },
+      calendar: {
+        messages: {
+          today: "Сьогодні",
+          previous: "Назад",
+          next: "Вперед",
+          month: "Місяць",
+          week: "Тижден",
+          day: "День",
+          agenda: "Адженда",
+          date: "Дата",
+          time: "Час",
+          event: "Подія",
+        },
+      },
     },
   },
 };

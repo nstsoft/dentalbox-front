@@ -1,21 +1,13 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import { useLocalStorage, LANGUAGE } from "@hooks";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@hooks";
+import { LANGUAGES } from "@types";
 
-const CustomSelect = styled(Select)({
-  ".MuiSelect-icon": { display: "none" },
-});
+const CustomSelect = styled(Select)({ ".MuiSelect-icon": { display: "none" } });
 
 export function LanguageSelector() {
-  const [language, setLanguage] = useLocalStorage(LANGUAGE, "ua");
-  const { i18n } = useTranslation("", { keyPrefix: "header" });
-
-  const handleChange = (lang: string) => {
-    setLanguage(lang);
-    i18n.changeLanguage(lang);
-  };
+  const { language, setLanguage } = useLanguage();
 
   return (
     <CustomSelect
@@ -33,7 +25,7 @@ export function LanguageSelector() {
       labelId="language-select-label"
       id="language-select"
       value={language}
-      onChange={(event) => handleChange(event.target.value as string)}
+      onChange={(event) => setLanguage(event.target.value as LANGUAGES)}
       defaultValue={"en"}
       defaultChecked={true}
       variant="outlined"
@@ -41,9 +33,8 @@ export function LanguageSelector() {
       <MenuItem selected value="en">
         En
       </MenuItem>
-      <MenuItem value="ua">Укр</MenuItem>
+      <MenuItem value="uk">Укр</MenuItem>
     </CustomSelect>
-    // </FormControl>
   );
 }
 

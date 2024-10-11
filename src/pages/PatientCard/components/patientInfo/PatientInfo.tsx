@@ -18,7 +18,7 @@ import {
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import { matchIsValidTel } from "mui-tel-input";
 import { validateLogin } from "@utils";
 import { useUpdatePatientMutation } from "@api";

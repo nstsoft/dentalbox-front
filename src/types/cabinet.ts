@@ -19,3 +19,5 @@ export type CreateCabinet = {
   image?: File;
   chairs: string[];
 };
+
+export type CabinetSummaryListItem = Pick<Cabinet, "name" | "_id" | "image">;

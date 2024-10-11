@@ -1,5 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { User, Workspace, UserInvitation } from "@types";
+import type {
+  User,
+  Workspace,
+  UserInvitation,
+  UserSummaryListItem,
+} from "@types";
 import { USER_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -81,6 +86,10 @@ export const userApi = createApi({
       }),
       providesTags: () => [{ type: USER_TAG.ACCEPT_INVITATION }],
     }),
+    getUserSummary: builder.query<UserSummaryListItem[], void>({
+      query: () => "/user/summary",
+      providesTags: () => [{ type: USER_TAG.USER_SUMMARY }],
+    }),
   }),
 });
 
@@ -92,6 +101,7 @@ export const {
   useLazyInviteUserQuery,
   useLazyAcceptInvitationQuery,
   useGetInvitationsQuery,
+  useGetUserSummaryQuery,
 } = userApi;
 
 export default { userApi };

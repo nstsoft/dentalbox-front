@@ -1,11 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { CreatePatient, Patient } from "@types";
+import type { CreatePatient, Patient, PatientSummaryListItem } from "@types";
 import { REDUCER, PATIENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
-type PatientNameFilter = {
-  search?: string;
-};
+type PatientNameFilter = { search?: string };
 
 export const patientApi = createApi({
   reducerPath: REDUCER.PATIENT,
@@ -62,6 +60,10 @@ export const patientApi = createApi({
         return { body: formData, url: `/patient${body._id}`, method: "PATCH" };
       },
     }),
+    getPatientSummary: builder.query<PatientSummaryListItem[], void>({
+      query: () => "/patient/summary",
+      providesTags: () => [{ type: PATIENT_TAG.PATIENT_SUMMARY }],
+    }),
   }),
 });
 
@@ -70,6 +72,7 @@ export const {
   useGetPatientByIdQuery,
   useCreatePatientMutation,
   useUpdatePatientMutation,
+  useGetPatientSummaryQuery,
 } = patientApi;
 
 export default { patientApi };

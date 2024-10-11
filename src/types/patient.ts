@@ -26,3 +26,8 @@ export type Patient = {
   image?: File | string;
   notes?: string;
 };
+
+export type PatientSummaryListItem = Pick<
+  Patient,
+  "name" | "surname" | "secondName" | "email" | "phone" | "_id"
+>;

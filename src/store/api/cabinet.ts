@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Cabinet, CreateCabinet } from "@types";
+import type { Cabinet, CreateCabinet, CabinetSummaryListItem } from "@types";
 import { REDUCER, CABINET_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -37,16 +37,20 @@ export const cabinetApi = createApi({
 
         formData.append("data", JSON.stringify({ ...body }));
 
-        return {
-          body: formData,
-          url: "/cabinet",
-          method: "POST",
-        };
+        return { body: formData, url: "/cabinet", method: "POST" };
       },
+    }),
+    getCabinetSummary: builder.query<CabinetSummaryListItem[], void>({
+      query: () => "/cabinet/summary",
+      providesTags: () => [{ type: CABINET_TAG.CABINET_SUMMARY }],
     }),
   }),
 });
 
-export const { useGetMyCabinetsQuery, useCreateCabinetMutation } = cabinetApi;
+export const {
+  useGetMyCabinetsQuery,
+  useCreateCabinetMutation,
+  useGetCabinetSummaryQuery,
+} = cabinetApi;
 
 export default { cabinetApi };

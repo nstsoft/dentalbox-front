@@ -243,6 +243,20 @@ export const EN: ResourceLanguage = {
         sex: "Sex",
         sexItems: { male: "Male", female: "Female" },
       },
+      calendar: {
+        messages: {
+          today: "Today",
+          previous: "Previous",
+          next: "Next",
+          month: "Month",
+          week: "Week",
+          day: "Day",
+          agenda: "Agenda",
+          date: "Date",
+          time: "Date",
+          event: "Event",
+        },
+      },
     },
   },
 };

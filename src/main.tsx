@@ -10,7 +10,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import i18n from "./i18n.ts";
 import { I18nextProvider } from "react-i18next";
-import { AuthProvider, MenuProvider } from "@providers";
+import { AuthProvider, MenuProvider, LanguageProvider } from "@providers";
 import "./index.scss";
 
 createRoot(document.getElementById("root")!).render(
@@ -19,12 +19,14 @@ createRoot(document.getElementById("root")!).render(
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <ThemeProvider theme={theme}>
           <I18nextProvider i18n={i18n}>
-            <CssBaseline />
-            <AuthProvider>
-              <MenuProvider>
-                <App />
-              </MenuProvider>
-            </AuthProvider>
+            <LanguageProvider>
+              <CssBaseline />
+              <AuthProvider>
+                <MenuProvider>
+                  <App />
+                </MenuProvider>
+              </AuthProvider>
+            </LanguageProvider>
           </I18nextProvider>
         </ThemeProvider>
       </LocalizationProvider>

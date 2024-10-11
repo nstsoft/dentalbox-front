@@ -1,2 +1,2 @@
 export * from "./en";
-export * from "./ua";
+export * from "./uk";

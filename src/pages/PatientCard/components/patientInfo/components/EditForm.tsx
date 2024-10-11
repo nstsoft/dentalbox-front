@@ -8,13 +8,12 @@ import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Patient, Sex } from "@types";
-import moment, { Moment } from "moment";
+import moment, { Moment } from "moment/min/moment-with-locales";
 import { DatePicker } from "@mui/x-date-pickers";
 import FormLabel from "@mui/material/FormLabel";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-
 import { Textarea } from "@elements";
 import { useTranslation } from "react-i18next";
 

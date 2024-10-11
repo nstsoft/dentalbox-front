@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { validateLogin } from "@utils";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment, { Moment } from "moment";
+import moment, { Moment } from "moment/min/moment-with-locales";
 import { Invitation } from "../AcceptInvitation";
 
 interface IUserDataStepProps {

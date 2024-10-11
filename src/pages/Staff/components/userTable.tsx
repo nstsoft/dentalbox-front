@@ -6,7 +6,7 @@ import { User } from "@types";
 import { type Dispatch, type SetStateAction, type FC } from "react";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import { isMobile } from "react-device-detect";
 
 type Props = {

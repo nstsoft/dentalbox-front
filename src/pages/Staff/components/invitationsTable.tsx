@@ -2,7 +2,7 @@ import { type GridColDef } from "@mui/x-data-grid";
 import { UserInvitation } from "@types";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import { type Dispatch, type SetStateAction, type FC } from "react";
 
 type Props = {
