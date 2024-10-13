@@ -1,4 +1,5 @@
 import "react-credit-cards-2/dist/lib/styles.scss";
+import "./payment.scss";
 import CreditCard from "react-credit-cards-2";
 
 import Typography from "@mui/material/Typography";
@@ -9,6 +10,7 @@ import { useGetMyPaymentMethodsQuery, useGetMySubscriptionQuery } from "@api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import { Card } from "@elements";
 
 export const Payments = () => {
   const { data: payments } = useGetMyPaymentMethodsQuery();
@@ -21,6 +23,14 @@ export const Payments = () => {
     a.id === subscription?.defaultPaymentMethod ? -1 : 1
   );
 
+  const defaultMethod = payments?.find(
+    (el) => el.id === subscription?.defaultPaymentMethod
+  );
+
+  const restMethods = payments?.filter(
+    (el) => el.id !== subscription?.defaultPaymentMethod
+  );
+
   return (
     <Grid2 container>
       <Typography variant="h4">{t("payments")}</Typography>
@@ -29,7 +39,7 @@ export const Payments = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
+          alignItems: "stretch",
           alignContent: "flex-start",
         }}
       >
@@ -38,40 +48,42 @@ export const Payments = () => {
             key={payment.id}
             container
             size={12}
-            m={2}
+            mt={2}
             direction="row"
             flexWrap="wrap"
           >
-            <Grid2 size={6} sx={{ minWidth: "300px" }}>
-              <CreditCard
-                name=" "
-                number={`**** **** **** ${payment.last4}`}
-                expiry={`${payment.exp_month}/${payment.exp_year}`}
-                cvc=""
-                preview
-                issuer={payment.brand}
-              />
-            </Grid2>
-            <Grid2 size={6}>
-              {subscription?.defaultPaymentMethod === payment.id ? (
-                <Typography variant="h6">{t("default")}</Typography>
-              ) : (
-                <Grid2
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="flex-start"
-                >
-                  <Button>
-                    <DeleteIcon />
-                    <Typography>{t("delete")}</Typography>
-                  </Button>
-                  <Button>
-                    <AddCardIcon />
-                    <Typography>{t("makeDefault")}</Typography>
-                  </Button>
-                </Grid2>
-              )}
-            </Grid2>
+            <Card sx={{ display: "flex", flexDirection: "row", margin: 0 }}>
+              <Grid2 size={4}>
+                <CreditCard
+                  name=" "
+                  number={`**** **** **** ${payment.last4}`}
+                  expiry={`${payment.exp_month}/${payment.exp_year}`}
+                  cvc=""
+                  preview
+                  issuer={payment.brand}
+                />
+              </Grid2>
+              <Grid2 size={8}>
+                {subscription?.defaultPaymentMethod === payment.id ? (
+                  <Typography variant="h6">{t("default")}</Typography>
+                ) : (
+                  <Grid2
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                  >
+                    <Button>
+                      <DeleteIcon />
+                      <Typography>{t("delete")}</Typography>
+                    </Button>
+                    <Button>
+                      <AddCardIcon />
+                      <Typography>{t("makeDefault")}</Typography>
+                    </Button>
+                  </Grid2>
+                )}
+              </Grid2>
+            </Card>
           </Grid2>
         ))}
       </Grid2>

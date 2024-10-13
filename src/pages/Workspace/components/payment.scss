@@ -1,0 +1,9 @@
+.rccs {
+  height: 100px;
+  width: 145px;
+  margin: 0;
+  .rccs__card {
+    transform: scale(0.5);
+    transform-origin: top left;
+  }
+}

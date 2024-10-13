@@ -63,6 +63,7 @@ export const CheckoutForm: FC<Props> = ({
     });
 
     if (error) {
+      console.log(error);
       handleError(error);
     } else {
       console.log("success");
