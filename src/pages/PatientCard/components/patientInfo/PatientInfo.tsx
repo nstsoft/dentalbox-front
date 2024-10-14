@@ -1,14 +1,12 @@
 import { ClinicIconIcon } from "@assets";
-import { Card, VisuallyHiddenInput } from "@elements";
+import { Card } from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid2 from "@mui/material/Grid2";
-import Typography from "@mui/material/Typography";
 import { Patient } from "@types";
 import {
-  ChangeEvent,
   type FC,
   FormEvent,
   useCallback,
@@ -27,6 +25,7 @@ import { EditForm, InfoSection } from "./components";
 const sx = { width: "100%", height: "100%" };
 
 const FIELDS_SET: Array<keyof Patient> = [
+  "image",
   "name",
   "secondName",
   "surname",
@@ -35,7 +34,6 @@ const FIELDS_SET: Array<keyof Patient> = [
   "phone",
   "email",
   "address",
-  "notes",
 ];
 
 export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
@@ -48,7 +46,6 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   const [updatePatient, { isSuccess, error }] = useUpdatePatientMutation();
   const [isDataChanged, setIsDataChanged] = useState(false);
   const [responseError, setResponseError] = useState<string | string[]>();
-  const [patientImage, setPatientImage] = useState<File>();
 
   const errorSet: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +100,7 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      updatePatient({ ...patientData, image: patientImage });
+      updatePatient(patientData);
     }
   };
 
@@ -129,99 +126,56 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   }, [isSuccess, editToggle]);
 
   return (
-    <Card sx={{ m: 0, width: "100%", position: "relative" }}>
+    <Card sx={{ m: 0, position: "relative" }}>
       <Button
         sx={{ position: "absolute", top: 0, right: 0 }}
         onClick={editToggle}
       >
         {isEdit ? <CloseIcon /> : <EditIcon />}
       </Button>
-      <Grid2 gap={1} container wrap="wrap">
-        <Grid2 size={{ xs: 12, md: 4 }} sx={{ maxWidth: "200px" }}>
-          <Box
-            sx={{
-              borderRadius: "20px",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            {isEdit && (
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
+      <CardContent sx={{ padding: "0 5px" }}>
+        <Grid2 gap={1} container wrap="wrap" sx={{ width: "100%" }}>
+          {!isEdit && (
+            <Grid2 size={{ xs: 12, md: 4 }} sx={{ maxWidth: "200px" }}>
+              <Box
                 sx={{
-                  position: "absolute",
-                  top: 5,
-                  right: 5,
-                  p: 0,
-                  minWidth: "30px",
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                  position: "relative",
                 }}
               >
-                <EditIcon />
-                <VisuallyHiddenInput
-                  id="patientImage"
-                  name="patientImage"
-                  type="file"
-                  onChange={async (e: ChangeEvent<HTMLInputElement>) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      setPatientImage(file);
-
-                      reader.onloadend = () => {
-                        setPatientData((prev) => ({
-                          ...prev,
-                          image: `${reader.result}`,
-                        }));
-                        setIsDataChanged(true);
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
-                />
-              </Button>
-            )}
-            {patientData.image ? (
-              <CardMedia
-                sx={sx}
-                component="img"
-                image={patientData.image as string}
-                alt={patientData.name}
+                {patientData.image ? (
+                  <CardMedia
+                    sx={sx}
+                    component="img"
+                    image={patientData.image as string}
+                    alt={patientData.name}
+                  />
+                ) : (
+                  <ClinicIconIcon sx={sx} />
+                )}
+              </Box>
+            </Grid2>
+          )}
+          <Grid2 sx={{ width: isEdit ? "100%" : "unset", pt: 2 }}>
+            {isEdit ? (
+              <EditForm
+                fields={fieldsMap}
+                onSubmit={onEditPatientInfo}
+                onChange={() => setIsDataChanged(true)}
+                isDataChanged={isDataChanged}
               />
             ) : (
-              <ClinicIconIcon sx={sx} />
+              <InfoSection fields={fieldsMap.slice(1, 4)} />
             )}
-          </Box>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 7 }}>
-          <Grid2 size={12}>
-            <CardContent sx={{ padding: "0 5px" }}>
-              {!isEdit && (
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  sx={{ mb: isEdit ? 2 : 1 }}
-                >
-                  {patient.name} {patient.secondName} {patient.surname}
-                </Typography>
-              )}
-              {isEdit ? (
-                <EditForm
-                  fields={fieldsMap}
-                  onSubmit={onEditPatientInfo}
-                  onChange={() => setIsDataChanged(true)}
-                  isDataChanged={isDataChanged}
-                />
-              ) : (
-                <InfoSection fields={fieldsMap} />
-              )}
-            </CardContent>
           </Grid2>
+          {!isEdit && (
+            <Grid2>
+              <InfoSection fields={fieldsMap.slice(5)} />
+            </Grid2>
+          )}
         </Grid2>
-      </Grid2>
+      </CardContent>
     </Card>
   );
 };
