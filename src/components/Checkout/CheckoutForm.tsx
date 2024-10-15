@@ -12,17 +12,22 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { Card } from "@elements";
+import { Typography } from "@mui/material";
 
 type Props = {
   type: "setup" | "payment" | "payment-added";
   clientSecret: string;
   clearSecret: () => void;
+  onCancel?: () => void;
+  label?: string;
 };
 
 export const CheckoutForm: FC<Props> = ({
   type,
   clientSecret,
   clearSecret,
+  onCancel,
+  label,
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -72,9 +77,34 @@ export const CheckoutForm: FC<Props> = ({
     setLoading(false);
     clearSecret();
   };
+
+  const controlPanel = () => {
+    if (loading) {
+      return (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
+    return (
+      <div style={{ display: "flex", gap: 2 }}>
+        {onCancel && (
+          <Button fullWidth variant="outlined" onClick={onCancel}>
+            cancel
+          </Button>
+        )}
+        <Button type="submit" fullWidth variant="contained">
+          submit
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <Card variant="outlined">
-      <h2>Payment method</h2>
+      <Typography variant="h2" sx={{ mb: 2 }}>
+        {label}
+      </Typography>
       <Box
         component="form"
         onSubmit={onSubmit}
@@ -83,17 +113,7 @@ export const CheckoutForm: FC<Props> = ({
         <FormControl>
           <PaymentElement />
         </FormControl>
-        <FormControl>
-          {loading ? (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Button type="submit" fullWidth variant="contained">
-              submit
-            </Button>
-          )}
-        </FormControl>
+        <FormControl>{controlPanel()}</FormControl>
       </Box>
     </Card>
   );

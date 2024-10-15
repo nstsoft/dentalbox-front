@@ -112,10 +112,7 @@ export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
                 onClose={() => setAnchorEl(null)}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               >
                 <Box sx={{ display: "flex", flexDirection: "column", p: 2 }}>
                   <FormControl sx={{ mb: 1 }}>

@@ -172,6 +172,12 @@ export const UA: ResourceLanguage = {
           assistant: "Асистент",
           owner: "Власник акаунту",
         },
+        paymentMethods: {
+          confirmDeleteLabel:
+            "Видалити поточний метод платежу? Ви не зможете його використати для оплати підписки.",
+          setDefault: "Зробити картку по замовчуванню",
+          addCardLabel: "Додати новий метод платежу",
+        },
       },
       staff: {
         staff: "Персонал",

@@ -6,3 +6,4 @@ export * from "./MultiSelect";
 export * from "./Select";
 export * from "./VisuallyHiddenInput";
 export * from "./TextArea";
+export * from "./ConfirmPopover";

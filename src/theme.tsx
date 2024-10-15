@@ -1,8 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 
-// const xs = "@media (min-width:600px)";
-// const sm = "@media (min-width:960px)";
-
 const commonGrey = "#757575";
 
 const theme = createTheme({

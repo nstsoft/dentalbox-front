@@ -1,109 +1,112 @@
 import "react-credit-cards-2/dist/lib/styles.scss";
 import "./payment.scss";
-import CreditCard from "react-credit-cards-2";
-
 import Typography from "@mui/material/Typography";
-import Grid2 from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
-import { useGetMyPaymentMethodsQuery, useGetMySubscriptionQuery } from "@api";
-
-import DeleteIcon from "@mui/icons-material/Delete";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import {
+  useGetMyPaymentMethodsQuery,
+  useGetMySubscriptionQuery,
+  useDeletePaymentMethodMutation,
+  useSetDefaultPaymentMethodMutation,
+} from "@api";
 import { useTranslation } from "react-i18next";
 import AddCardIcon from "@mui/icons-material/AddCard";
-import { Card } from "@elements";
+import { isMobile } from "react-device-detect";
+import { CardItem } from "./elements";
+import { useEffect, useState } from "react";
+
+import { Checkout } from "@components";
 
 export const Payments = () => {
-  const { data: payments } = useGetMyPaymentMethodsQuery();
-  const { data: subscription } = useGetMySubscriptionQuery();
+  const {
+    data: payments,
+    refetch: refetchMethods,
+    isFetching: isFetchingMethods,
+  } = useGetMyPaymentMethodsQuery();
+  const {
+    data: subscription,
+    refetch,
+    isFetching: isFetchingSubscription,
+  } = useGetMySubscriptionQuery();
+  const [deletePaymentMethod, deleteData] = useDeletePaymentMethodMutation();
+  const [setDefaultPaymentMethod, setDefaultPaymentMethodData] =
+    useSetDefaultPaymentMethodMutation();
+
+  const [openAddCardModal, setIsOpenAddCardModal] = useState(false);
+
   const { t } = useTranslation("", {
     keyPrefix: "pages.workspace.paymentsSection",
   });
 
-  const sorted = [...(payments ?? [])]?.sort((a) =>
-    a.id === subscription?.defaultPaymentMethod ? -1 : 1
-  );
+  useEffect(() => {
+    if (deleteData.isSuccess || setDefaultPaymentMethodData.isSuccess) {
+      refetch();
+      refetchMethods();
+    }
+  }, [
+    deleteData.isSuccess,
+    refetch,
+    refetchMethods,
+    setDefaultPaymentMethodData.isSuccess,
+  ]);
 
-  const defaultMethod = payments?.find(
-    (el) => el.id === subscription?.defaultPaymentMethod
-  );
+  const ordered = payments?.map((el) => ({
+    default: el.id === subscription?.defaultPaymentMethod,
+    ...el,
+  }));
 
-  const restMethods = payments?.filter(
-    (el) => el.id !== subscription?.defaultPaymentMethod
-  );
+  const sorted = ordered?.sort((a) => (a.default ? -1 : 1));
 
   return (
-    <Grid2 container>
+    <div className={"payment-methods-section" + (isMobile ? " mobile" : "")}>
       <Typography variant="h4">{t("payments")}</Typography>
-      <Grid2
-        size={12}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          alignContent: "flex-start",
-        }}
-      >
-        {sorted?.map((payment) => (
-          <Grid2
-            key={payment.id}
-            container
-            size={12}
-            mt={2}
-            direction="row"
-            flexWrap="wrap"
-          >
-            <Card sx={{ display: "flex", flexDirection: "row", margin: 0 }}>
-              <Grid2 size={4}>
-                <CreditCard
-                  name=" "
-                  number={`**** **** **** ${payment.last4}`}
-                  expiry={`${payment.exp_month}/${payment.exp_year}`}
-                  cvc=""
-                  preview
-                  issuer={payment.brand}
-                />
-              </Grid2>
-              <Grid2 size={8}>
-                {subscription?.defaultPaymentMethod === payment.id ? (
-                  <Typography variant="h6">{t("default")}</Typography>
-                ) : (
-                  <Grid2
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="flex-start"
-                  >
-                    <Button>
-                      <DeleteIcon />
-                      <Typography>{t("delete")}</Typography>
-                    </Button>
-                    <Button>
-                      <AddCardIcon />
-                      <Typography>{t("makeDefault")}</Typography>
-                    </Button>
-                  </Grid2>
-                )}
-              </Grid2>
-            </Card>
-          </Grid2>
-        ))}
-      </Grid2>
-    </Grid2>
+      <div className="payment-methods">
+        <div className="payment-methods__control">
+          <div>
+            <Typography variant="h6">
+              <AddCardIcon /> Credit card(s)
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="body1">Manage Your Payment Methods</Typography>
+          </div>
 
-    // <Card sx={{ margin: 0 }}>
-    //   <Typography variant="h4">Payment methods:</Typography>
-    //   {payments?.map((payment) => (
-    //     <CreditCard
-    //       name=" "
-    //       number={`**** **** **** ${payment.last4}`}
-    //       expiry={`${payment.exp_month}/${payment.exp_year}`}
-    //       cvc=""
-    //       preview
-    //       issuer={payment.brand}
-    //     />
-    //   ))}
-    //   <Button variant="contained" onClick={() => navigate("/app/checkout")}>
-    //     Add payment method
-    //   </Button>
-    // </Card>
+          <Button
+            onClick={() => setIsOpenAddCardModal(true)}
+            sx={{ marginTop: 3, marginBottom: 3 }}
+            variant="contained"
+          >
+            Add credit card
+          </Button>
+        </div>
+        <div className="payment-methods__list">
+          {sorted?.map((paymentMethod) => (
+            <CardItem
+              isLoading={isFetchingSubscription || isFetchingMethods}
+              paymentMethod={paymentMethod}
+              key={paymentMethod.id}
+              deletePaymentMethod={deletePaymentMethod}
+              setDefaultPaymentMethod={setDefaultPaymentMethod}
+            />
+          ))}
+        </div>
+      </div>
+      <Modal
+        open={openAddCardModal}
+        onClose={() => setIsOpenAddCardModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ width: "100vw", height: "100vh", display: "flex" }}>
+          <Checkout
+            label={t("addCardLabel", {
+              keyPrefix: "pages.workspace.paymentMethods",
+            })}
+            onCancel={() => setIsOpenAddCardModal(false)}
+          />
+        </Box>
+      </Modal>
+    </div>
   );
 };

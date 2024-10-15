@@ -12,9 +12,19 @@ export const paymentApi = createApi({
       query: () => `/payment/payment-methods`,
       providesTags: () => [{ type: PAYMENT_TAG.PAYMENT }],
     }),
+    deletePaymentMethod: builder.mutation<Payment[], string>({
+      query: (cardId) => ({ url: `/payment/${cardId}`, method: "DELETE" }),
+    }),
+    setDefaultPaymentMethod: builder.mutation<Payment[], string>({
+      query: (cardId) => ({ url: `/payment/${cardId}`, method: "PATCH" }),
+    }),
   }),
 });
 
-export const { useGetMyPaymentMethodsQuery } = paymentApi;
+export const {
+  useGetMyPaymentMethodsQuery,
+  useDeletePaymentMethodMutation,
+  useSetDefaultPaymentMethodMutation,
+} = paymentApi;
 
 export default { paymentApi };

@@ -1,9 +1,70 @@
 .rccs {
-  height: 100px;
-  width: 145px;
+  height: 60px;
+  width: 84px;
   margin: 0;
   .rccs__card {
-    transform: scale(0.5);
+    transform: scale(0.3);
     transform-origin: top left;
+  }
+}
+.payment-methods-section {
+  display: flex;
+  flex-direction: column;
+  .payment-methods {
+    display: grid;
+    max-width: 800px;
+    width: 100%;
+    grid-template-columns: minmax(200px, 250px) minmax(300px, 1fr);
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+    }
+    .payment-methods__list {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 1fr;
+      row-gap: 5px;
+      .payment-methods__item {
+        align-items: center;
+        padding: 5px;
+        display: grid;
+        width: 100%;
+        grid-template-columns: 100px 170px 1fr;
+        .payment-methods__item__details {
+          .card-header {
+            display: flex;
+            align-items: center;
+          }
+        }
+        .payment-methods__item__actions {
+          display: grid;
+          justify-content: end;
+          grid-template-columns: 1fr 70px;
+          .chip {
+            width: 100px;
+            margin: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.payment-methods-section.mobile {
+  .payment-methods {
+    .payment-methods__list {
+      column-gap: 0;
+      .payment-methods__item {
+        column-gap: 0;
+        grid-template-columns: 90px 140px 1fr;
+        .payment-methods__item__details {
+          .card-header {
+          }
+        }
+        .payment-methods__item__actions {
+          .chip {
+          }
+        }
+      }
+    }
   }
 }
