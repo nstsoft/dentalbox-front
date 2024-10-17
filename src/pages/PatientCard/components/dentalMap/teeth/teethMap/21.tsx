@@ -2,6 +2,9 @@ import SvgIcon from "@mui/material/SvgIcon";
 import type { Segment2, FourZonesChart, FourZoneTooth } from "@types";
 import type { FC } from "react";
 import { TOOTH_SVG_STYLE } from "@utils";
+import Crown from "@images/tooth/crown-2.png";
+import Implant from "@images/tooth/implant.png";
+import RemovedIcon from "@mui/icons-material/Close";
 
 type TeethMapProps = {
   tooth: FourZoneTooth;
@@ -11,6 +14,23 @@ type TeethMapProps = {
 export const T21Svg: FC<TeethMapProps> = ({ tooth, onColorChange }) => {
   const style_1 = { fill: tooth.segments.c1 || "none", ...TOOTH_SVG_STYLE };
   const style_2 = { fill: tooth.segments.c2 || "none", ...TOOTH_SVG_STYLE };
+  const className = "tooth-svg r u 1";
+  if (tooth.removed) {
+    return (
+      <div className={className + " removed"}>
+        <RemovedIcon color="error" fontSize="large" />
+      </div>
+    );
+  }
+
+  if (tooth.implant || tooth.crown) {
+    const alt = tooth.implant ? "implant" : "crown";
+    return (
+      <div className={className + " pathology " + alt}>
+        <img src={tooth.implant ? Implant : Crown} alt={alt} />
+      </div>
+    );
+  }
   return (
     <SvgIcon className="tooth-svg r u 1">
       <svg width="17.6" height="60.8" version="1.1" viewBox="0 0 17.6 60.8">

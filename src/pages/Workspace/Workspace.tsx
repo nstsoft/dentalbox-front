@@ -2,7 +2,12 @@ import { useAuth } from "@hooks";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Payments, SubscriptionInfo, WorkspaceInfo } from "./components";
+import {
+  Payments,
+  SubscriptionInfo,
+  WorkspaceInfo,
+  InvoiceList,
+} from "./components";
 import { UserRole } from "@types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -92,7 +97,7 @@ export const WorkspacePage = () => {
               <Payments />
             </CustomTabPanel>
             <CustomTabPanel value={activeTab} index={3}>
-              <div>Invoices</div>
+              <InvoiceList />
             </CustomTabPanel>
           </>
         )}

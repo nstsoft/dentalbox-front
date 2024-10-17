@@ -50,9 +50,9 @@ import {
   Zone5Segment,
 } from "./teeth";
 import Grid2 from "@mui/material/Grid2";
-
 import Divider from "@mui/material/Divider";
-import Skull from "@images/skull.png";
+import SkullBottom from "@images/backgrounds/skull-bottom.png";
+import SkullTop from "@images/backgrounds/skull-top.png";
 import { isMobile } from "react-device-detect";
 
 const colorsSet = Object.values(SEGMENT_COLORS);
@@ -126,6 +126,44 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     }));
   };
 
+  const onToothObjectChange = (tooth: keyof Chart) => {
+    if (!data?.chart) return;
+
+    const value = {
+      implant:
+        chart?.[tooth]?.implant !== undefined
+          ? chart?.[tooth]?.implant
+          : data?.chart[tooth].implant,
+      crown:
+        chart?.[tooth]?.crown !== undefined
+          ? chart?.[tooth]?.crown
+          : data?.chart[tooth].crown,
+      removed:
+        chart?.[tooth]?.removed !== undefined
+          ? chart?.[tooth]?.removed
+          : data?.chart[tooth].removed,
+    };
+
+    if (!value.implant && !value.crown && !value.removed) {
+      value.implant = true;
+    } else if (value.implant) {
+      Object.assign(value, { implant: false, crown: true, removed: false });
+    } else if (value.crown) {
+      Object.assign(value, { implant: false, crown: false, removed: true });
+    } else if (value.removed) {
+      Object.assign(value, { implant: false, crown: false, removed: false });
+    }
+
+    setChart((prev) => ({
+      ...prev,
+      [tooth]: {
+        ...prev?.[tooth],
+        zones: { ...prev?.[tooth]?.zones },
+        ...value,
+      },
+    }));
+  };
+
   if (!data?.chart) return null;
 
   const mergedChart = deepMerge(data?.chart, chart ?? {});
@@ -134,13 +172,22 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     <div
       className="dental-map-background"
       style={{
-        backgroundImage: isMobile ? "none" : `url(${Skull})`,
+        backgroundImage: isMobile
+          ? "none"
+          : `url(${SkullTop}), url(${SkullBottom})`,
+        backgroundPosition: "top center, bottom center",
+        backgroundSize: "contain, contain",
+        backgroundRepeat: "no-repeat, no-repeat",
       }}
     >
       <div className="dental-map-blurred-overlay"></div>
       <Grid2 className="dental-map">
         <ToothMapLayout direction="left">
-          <ToothBox orientation="top" toothNumber={18}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={18}
+          >
             <T18Svg
               tooth={mergedChart.t18}
               onColorChange={on5ZoneColorChange}
@@ -151,7 +198,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on5ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={17}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={17}
+          >
             <T17Svg
               tooth={mergedChart.t17}
               onColorChange={on5ZoneColorChange}
@@ -162,7 +213,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on5ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={16}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={16}
+          >
             <T16Svg
               tooth={mergedChart.t16}
               onColorChange={on5ZoneColorChange}
@@ -173,7 +228,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on5ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={15}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={15}
+          >
             <T15Svg
               tooth={mergedChart.t15}
               onColorChange={on4ZoneColorChange}
@@ -184,7 +243,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={14}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={14}
+          >
             <T14Svg
               tooth={mergedChart.t14}
               onColorChange={on4ZoneColorChange}
@@ -195,7 +258,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={13}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={13}
+          >
             <T13Svg
               tooth={mergedChart.t13}
               onColorChange={on4ZoneColorChange}
@@ -206,7 +273,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={12}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={12}
+          >
             <T12Svg
               tooth={mergedChart.t12}
               onColorChange={on4ZoneColorChange}
@@ -217,7 +288,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={11}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={11}
+          >
             <T11Svg
               tooth={mergedChart.t11}
               onColorChange={on4ZoneColorChange}
@@ -231,7 +306,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
         </ToothMapLayout>
         <Divider orientation="vertical" />
         <ToothMapLayout direction="right">
-          <ToothBox orientation="top" toothNumber={21}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={21}
+          >
             <T21Svg
               tooth={mergedChart.t21}
               onColorChange={on4ZoneColorChange}
@@ -242,7 +321,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={22}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={22}
+          >
             <T22Svg
               tooth={mergedChart.t22}
               onColorChange={on4ZoneColorChange}
@@ -253,7 +336,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={23}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={23}
+          >
             <T23Svg
               tooth={mergedChart.t23}
               onColorChange={on4ZoneColorChange}
@@ -264,7 +351,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={24}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={24}
+          >
             <T24Svg
               tooth={mergedChart.t24}
               onColorChange={on4ZoneColorChange}
@@ -275,7 +366,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={25}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={25}
+          >
             <T25Svg
               tooth={mergedChart.t25}
               onColorChange={on4ZoneColorChange}
@@ -286,7 +381,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on4ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={26}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={26}
+          >
             <T26Svg
               tooth={mergedChart.t26}
               onColorChange={on5ZoneColorChange}
@@ -297,7 +396,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on5ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={27}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={27}
+          >
             <T27Svg
               tooth={mergedChart.t27}
               onColorChange={on5ZoneColorChange}
@@ -308,7 +411,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onZoneTrigger={on5ZoneTrigger}
             />
           </ToothBox>
-          <ToothBox orientation="top" toothNumber={28}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="top"
+            toothNumber={28}
+          >
             <T28Svg
               tooth={mergedChart.t28}
               onColorChange={on5ZoneColorChange}
@@ -326,7 +433,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
         <Divider orientation="horizontal" />
 
         <ToothMapLayout direction="left">
-          <ToothBox orientation="bottom" toothNumber={48}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={48}
+          >
             <Zone5Segment
               toothKey="t48"
               tooth={mergedChart.t48}
@@ -337,7 +448,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on5ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={47}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={47}
+          >
             <Zone5Segment
               toothKey="t47"
               tooth={mergedChart.t47}
@@ -348,7 +463,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on5ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={46}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={46}
+          >
             <Zone5Segment
               toothKey="t46"
               tooth={mergedChart.t46}
@@ -359,7 +478,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on5ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={45}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={45}
+          >
             <Zone4Segment
               toothKey="t45"
               tooth={mergedChart.t45}
@@ -370,7 +493,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={44}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={44}
+          >
             <Zone4Segment
               toothKey="t44"
               tooth={mergedChart.t44}
@@ -381,7 +508,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={43}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={43}
+          >
             <Zone4Segment
               toothKey="t43"
               tooth={mergedChart.t43}
@@ -392,7 +523,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={42}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={42}
+          >
             <Zone4Segment
               toothKey="t42"
               tooth={mergedChart.t42}
@@ -403,7 +538,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={41}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={41}
+          >
             <Zone4Segment
               toothKey="t41"
               tooth={mergedChart.t41}
@@ -417,7 +556,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
         </ToothMapLayout>
         <Divider orientation="vertical" />
         <ToothMapLayout direction="right">
-          <ToothBox orientation="bottom" toothNumber={31}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={31}
+          >
             <Zone4Segment
               toothKey="t31"
               tooth={mergedChart.t31}
@@ -428,7 +571,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={32}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={32}
+          >
             <Zone4Segment
               toothKey="t32"
               tooth={mergedChart.t32}
@@ -439,7 +586,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={33}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={33}
+          >
             <Zone4Segment
               toothKey="t33"
               tooth={mergedChart.t33}
@@ -450,7 +601,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={34}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={34}
+          >
             <Zone4Segment
               toothKey="t34"
               tooth={mergedChart.t34}
@@ -461,7 +616,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={35}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={35}
+          >
             <Zone4Segment
               toothKey="t35"
               tooth={mergedChart.t35}
@@ -472,7 +631,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on4ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={36}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={36}
+          >
             <Zone5Segment
               toothKey="t36"
               tooth={mergedChart.t36}
@@ -483,7 +646,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on5ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={37}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={37}
+          >
             <Zone5Segment
               toothKey="t37"
               tooth={mergedChart.t37}
@@ -494,7 +661,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
               onColorChange={on5ZoneColorChange}
             />
           </ToothBox>
-          <ToothBox orientation="bottom" toothNumber={38}>
+          <ToothBox
+            onToothObjectChange={onToothObjectChange}
+            orientation="bottom"
+            toothNumber={38}
+          >
             <Zone5Segment
               toothKey="t38"
               tooth={mergedChart.t38}

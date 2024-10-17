@@ -1,5 +1,5 @@
 .dental-map-background {
-  padding: 120px 140px;
+  padding: 50px 120px;
   width: fit-content;
   background-size: cover;
   position: relative;
@@ -28,14 +28,25 @@
     .tooth-box {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 90px 50px 1fr;
+      grid-template-rows: 50px 90px 50px 1fr;
       align-items: center;
       justify-items: center;
+      .tooth-panel {
+        width: 30px;
+        min-width: 10px;
+        border: none;
+        svg {
+          cursor: pointer;
+        }
+      }
 
       .tooth-svg {
         display: block;
         width: 35px;
         height: 100%;
+        img {
+          height: 100%;
+        }
       }
       .tooth-svg.big {
         width: 45px;
@@ -48,6 +59,19 @@
       }
       .tooth-svg.l.u {
         transform: scaleX(-1);
+      }
+      .tooth-svg.removed {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        svg {
+          width: 100%;
+          stroke: coral;
+        }
+      }
+      .tooth-svg.pathology {
+        display: flex;
+        justify-content: center;
       }
 
       .zone-svg {
