@@ -5,6 +5,16 @@ import Tab from "@mui/material/Tab";
 import { Payments, SubscriptionInfo, WorkspaceInfo } from "./components";
 import { UserRole } from "@types";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+const panelStyles = {
+  display: "flex",
+  justifyContent: "flex-start",
+  width: "100%",
+  gap: "24px",
+  marginBottom: "20px",
+  flexWrap: "wrap",
+};
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -30,10 +40,25 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const WorkspacePage = () => {
   const { workspace, user } = useAuth();
-  const [value, setValue] = useState(2);
+  const [activeTab, setActiveTab] = useState(0);
+  const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setActiveTab(newValue);
+  };
+
+  const tabLabels = () => {
+    let tabLabelsArray = [t("tabs.workspace")];
+
+    if (user && [(UserRole.admin, UserRole.owner)].includes(user.role)) {
+      tabLabelsArray = tabLabelsArray.concat([
+        t("tabs.subscription"),
+        t("tabs.paymentMethods"),
+        t("tabs.invoices"),
+      ]);
+    }
+
+    return tabLabelsArray;
   };
 
   return (
@@ -41,47 +66,35 @@ export const WorkspacePage = () => {
       <Box sx={{ width: "100%" }} p={0}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
-            value={value}
+            value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" />
+            {tabLabels().map((label) => (
+              <Tab key={label} label={label} />
+            ))}
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              width: "100%",
-              gap: "24px",
-              marginBottom: "20px",
-              flexWrap: "wrap",
-            }}
-          >
+        <CustomTabPanel value={activeTab} index={0}>
+          <Box sx={panelStyles}>
             <WorkspaceInfo workspace={workspace} />
           </Box>
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              width: "100%",
-              gap: "24px",
-              marginBottom: "20px",
-              flexWrap: "wrap",
-            }}
-          >
-            <SubscriptionInfo />
-          </Box>
-        </CustomTabPanel>
+
         {user && [(UserRole.admin, UserRole.owner)].includes(user.role) && (
-          <CustomTabPanel value={value} index={2}>
-            <Payments />
-          </CustomTabPanel>
+          <>
+            <CustomTabPanel value={activeTab} index={1}>
+              <Box sx={panelStyles}>
+                <SubscriptionInfo />
+              </Box>
+            </CustomTabPanel>
+            <CustomTabPanel value={activeTab} index={2}>
+              <Payments />
+            </CustomTabPanel>
+            <CustomTabPanel value={activeTab} index={3}>
+              <div>Invoices</div>
+            </CustomTabPanel>
+          </>
         )}
       </Box>
       {/* <Box

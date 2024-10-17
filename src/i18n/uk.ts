@@ -178,6 +178,12 @@ export const UA: ResourceLanguage = {
           setDefault: "Зробити картку по замовчуванню",
           addCardLabel: "Додати новий метод платежу",
         },
+        tabs: {
+          workspace: "Середовище",
+          subscription: "Підписка",
+          paymentMethods: "Платіжні методи",
+          invoices: "Інвойси",
+        },
       },
       staff: {
         staff: "Персонал",

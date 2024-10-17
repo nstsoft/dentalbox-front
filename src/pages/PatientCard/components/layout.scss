@@ -1,15 +1,29 @@
+.dental-map-background {
+  padding: 120px 140px;
+  width: fit-content;
+  background-size: cover;
+  position: relative;
+  border-radius: 100px;
+  @media screen and (max-width: 1000px) {
+    border-radius: 0;
+    overflow-x: scroll;
+    background-image: none !important;
+    width: auto;
+    padding: 10px;
+  }
+}
 .dental-map {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
   grid-template-rows: 1fr 3px 1fr;
-  max-width: 1000px;
-  @media screen and (max-width: 1000px) {
-    overflow-x: scroll;
-  }
+  max-width: 620px;
+  // @media screen and (max-width: 1000px) {
+  //   overflow-x: scroll;
+  // }
   .tooth-map-layout {
     display: grid;
-    width: 500px;
-    grid-template-columns: repeat(8, 1fr);
+    width: 310px;
+    grid-template-columns: 45px 45px 45px 35px 35px 35px 35px 35px;
     grid-template-rows: auto;
     .tooth-box {
       display: grid;
@@ -20,17 +34,33 @@
 
       .tooth-svg {
         display: block;
-        width: 60px;
+        width: 35px;
         height: 100%;
       }
+      .tooth-svg.big {
+        width: 45px;
+      }
+      .tooth-svg.b {
+        transform: rotate(180deg);
+      }
+      .tooth-svg.b.l {
+        transform: rotate(180deg) scaleX(-1);
+      }
+      .tooth-svg.l.u {
+        transform: scaleX(-1);
+      }
+
       .zone-svg {
         display: block;
-        width: 45px;
-        height: 45px;
+        width: 35px;
+        height: 35px;
       }
     }
     .tooth-box.bottom {
       grid-template-rows: 1fr 50px 90px;
     }
+  }
+  .tooth-map-layout.right {
+    grid-template-columns: 35px 35px 35px 35px 35px 45px 45px 45px;
   }
 }

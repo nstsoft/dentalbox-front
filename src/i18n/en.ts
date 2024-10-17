@@ -1,5 +1,4 @@
 import { ResourceLanguage } from "i18next";
-import payment from "../store/api/payment";
 
 export const EN: ResourceLanguage = {
   translation: {
@@ -172,6 +171,12 @@ export const EN: ResourceLanguage = {
           doctor: "Doctor",
           assistant: "Assistant",
           owner: "Owner",
+        },
+        tabs: {
+          workspace: "Workspace",
+          subscription: "Subscription",
+          paymentMethods: "Payment methods",
+          invoices: "Invoices",
         },
         paymentMethods: {
           confirmDeleteLabel:
