@@ -8,8 +8,6 @@ import {
   Fragment,
   useMemo,
   type FC,
-  type Dispatch,
-  type SetStateAction,
 } from "react";
 import moment from "moment/min/moment-with-locales";
 import {
@@ -17,12 +15,16 @@ import {
   Views,
   type View,
   momentLocalizer,
-  type CalendarProps,
   type EventProps,
 } from "react-big-calendar";
 import { useTranslation } from "react-i18next";
 
-import { AppointmentEventListItem, AppointmentListItem } from "@types";
+import {
+  Appointment,
+  AppointmentEventListItem,
+} from "@types";
+import { useLazyUpdateAppointmentQuery } from "@api";
+import { CalendarEvent, Props } from "../types";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -36,13 +38,6 @@ const CustomEvent = (el: EventProps<object>) => {
       </p>
     </div>
   );
-};
-
-type Props = {
-  events: CalendarProps<AppointmentListItem>["events"];
-  resources: CalendarProps["resources"];
-  onViewChange: Dispatch<SetStateAction<"day" | "week">>;
-  onNavigate: CalendarProps["onNavigate"];
 };
 
 export const CalendarResource: FC<Props> = ({
@@ -60,6 +55,8 @@ export const CalendarResource: FC<Props> = ({
     }),
     []
   );
+  const [myEvents, setMyEvents] = useState<AppointmentListItem[]>(events ?? []);
+  const [updateAppointment, { isSuccess }] = useLazyUpdateAppointmentQuery();
 
   // const handleSelectSlot = ({ start, end }) => {
   //   // const title = window.prompt("New Event name"); // Prompt user for event title
@@ -91,6 +88,10 @@ export const CalendarResource: FC<Props> = ({
   //   // You can perform any action based on the new view here
   // };
 
+  const updateCalendarAppointment = (appointment: Appointment) => {
+    updateAppointment(appointment);
+  };
+
   const messages = {
     today: t("messages.today"),
     previous: t("messages.previous"),
@@ -110,12 +111,40 @@ export const CalendarResource: FC<Props> = ({
           defaultDate={defaultDates}
           defaultView={Views.DAY}
           views={views}
-          events={events}
+          events={myEvents}
           localizer={momentLocalizer(moment)}
-          onEventDrop={({ event, start, end, resourceId }) =>
-            console.log("onEventDrop", { event, start, end, resourceId })
-          }
-          onEventResize={() => console.log("onEventResize")}
+          onEventDrop={({ event, start, end, resourceId }) => {
+            const { cabinet, doctor, patient, _id, workspace, chair, notes } =
+              event as CalendarEvent;
+            updateCalendarAppointment({
+              _id,
+              start: start.toString(),
+              end: end.toString(),
+              cabinet: cabinet._id,
+              doctor: doctor._id,
+              patient: patient._id,
+              workspace,
+              chair: chair?._id,
+              notes,
+            });
+            console.log("onEventDrop", { event, start, end, resourceId });
+          }}
+          onEventResize={({ event, start, end, resourceId }) => {
+            const { cabinet, doctor, patient, _id, workspace, chair, notes } =
+              event as CalendarEvent;
+            updateCalendarAppointment({
+              _id,
+              start: start.toString(),
+              end: end.toString(),
+              cabinet: cabinet._id,
+              doctor: doctor._id,
+              patient: patient._id,
+              workspace,
+              chair: chair?._id,
+              notes,
+            });
+            console.log("onEventResize", { event, start, end, resourceId });
+          }}
           resizable
           resources={resources}
           scrollToTime={scrollToTime}

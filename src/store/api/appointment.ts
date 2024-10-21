@@ -15,9 +15,17 @@ export const appointmentApi = createApi({
       },
       providesTags: () => [{ type: APPOINTMENT_TAG.APPOINTMENT_LIST }],
     }),
+    updateAppointment: builder.query<Appointment, Appointment>({
+      query: (body) => ({
+        body,
+        url: `/appointment`,
+        method: "PATCH",
+      }),
+      providesTags: () => [{ type: APPOINTMENT_TAG.APPOINTMENT }],
+    }),
   }),
 });
 
-export const { useGetAppointmentsQuery } = appointmentApi;
+export const { useGetAppointmentsQuery, useLazyUpdateAppointmentQuery } = appointmentApi;
 
 export default { appointmentApi };

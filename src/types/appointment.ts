@@ -1,5 +1,5 @@
 export type Appointment = {
-  _id: number;
+  _id: string;
   start: string;
   end: string;
   workspace: string;
