@@ -41,7 +41,6 @@ export const InfoSection: FC<Props> = ({ fields }) => {
             gap: 1,
             height: "30px",
             alignItems: "center",
-            mb: 1,
           }}
         >
           <>

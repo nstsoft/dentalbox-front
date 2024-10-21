@@ -32,7 +32,7 @@ type PatientForm = {
   name: string;
   secondName: string;
   surname: string;
-  sex: string;
+  sex: Sex;
   dob: string;
   email: string;
   phone: string;
@@ -49,7 +49,7 @@ export const PatientModal: FC<PatientModalProps> = ({
     name: "",
     secondName: "",
     surname: "",
-    sex: "",
+    sex: Sex.male,
     dob: "",
     email: "",
     phone: "+380",
@@ -231,7 +231,7 @@ export const PatientModal: FC<PatientModalProps> = ({
                   onChange={({ target }) =>
                     setPatientForm((prev) => ({
                       ...prev,
-                      sex: target.value,
+                      sex: target.value as Sex,
                     }))
                   }
                   required
