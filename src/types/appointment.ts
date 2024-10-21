@@ -1,13 +1,14 @@
 export type Appointment = {
   _id: string;
-  start: string;
-  end: string;
+  start: string | Date;
+  end: string | Date;
   workspace: string;
   patient: string;
   doctor: string;
   cabinet: string;
   chair?: string;
   notes?: string;
+  title?: string;
 };
 
 type Person = {
