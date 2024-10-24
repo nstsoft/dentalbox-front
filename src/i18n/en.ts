@@ -254,6 +254,9 @@ export const EN: ResourceLanguage = {
         notes: "Notes",
         sex: "Sex",
         sexItems: { male: "Male", female: "Female" },
+        dentalMap: {
+          toothNotes: "{{tooth}}th tooth notes",
+        },
       },
       calendar: {
         messages: {

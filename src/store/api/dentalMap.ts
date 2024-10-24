@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 import { REDUCER, DENTAL_MAP_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
-import type { DentalMapType } from "@types";
+import type { DentalMapType, Chart } from "@types";
 
 export const dentalMapApi = createApi({
   reducerPath: REDUCER.DENTAL_MAP,
@@ -13,9 +13,20 @@ export const dentalMapApi = createApi({
       query: (id) => `/dental-map/${id}`,
       providesTags: () => [{ type: DENTAL_MAP_TAG.DENTAL_MAP_RECORD }],
     }),
+    updateDentalMap: builder.mutation<
+      Partial<Chart>,
+      { chart: Partial<Chart>; patientId: string }
+    >({
+      query: ({ chart, patientId }) => ({
+        url: `/dental-map/${patientId}`,
+        method: "PATCH",
+        body: chart,
+      }),
+    }),
   }),
 });
 
-export const { useGetDentalMapQuery } = dentalMapApi;
+export const { useGetDentalMapQuery, useUpdateDentalMapMutation } =
+  dentalMapApi;
 
 export default { dentalMapApi };

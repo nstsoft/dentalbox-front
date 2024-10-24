@@ -100,3 +100,50 @@ export type FourZonesChart = {
   t12: FourZoneTooth;
   t11: FourZoneTooth;
 };
+
+export type FiveZonesChartKeys =
+  | "t48"
+  | "t47"
+  | "t46"
+  | "t38"
+  | "t37"
+  | "t36"
+  | "t28"
+  | "t27"
+  | "t26"
+  | "t18"
+  | "t17"
+  | "t16";
+
+export type FourZonesChartKeys =
+  | "t11"
+  | "t12"
+  | "t13"
+  | "t14"
+  | "t15"
+  | "t21"
+  | "t22"
+  | "t23"
+  | "t24"
+  | "t25"
+  | "t31"
+  | "t32"
+  | "t33"
+  | "t34"
+  | "t35"
+  | "t41"
+  | "t42"
+  | "t43"
+  | "t44"
+  | "t45";
+
+export type ToothQuarterKeys = [
+  FourZonesChartKeys,
+  FourZonesChartKeys,
+  FourZonesChartKeys,
+  FourZonesChartKeys,
+  FourZonesChartKeys,
+  FiveZonesChartKeys,
+  FiveZonesChartKeys,
+  FiveZonesChartKeys
+];

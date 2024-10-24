@@ -9,10 +9,29 @@ export const ToothBox: FC<{
   children: ReactNode | ReactNode[];
   toothNumber: number;
   orientation: "top" | "bottom";
+  isFocused: boolean;
+  hasDescription: boolean;
   onToothObjectChange: (tooth: keyof Chart) => void;
-}> = ({ children, toothNumber, orientation, onToothObjectChange }) => {
+  onToothSelect: (tooth: keyof Chart) => void;
+}> = ({
+  children,
+  toothNumber,
+  orientation,
+  onToothObjectChange,
+  onToothSelect,
+  isFocused,
+  hasDescription,
+}) => {
   const elements = [
-    <Box key={"number" + toothNumber}>
+    <Box
+      onClick={() => onToothSelect(("t" + toothNumber) as keyof Chart)}
+      className={
+        "tooth-number" +
+        (isFocused ? " focused" : "") +
+        (hasDescription ? " with-description" : "")
+      }
+      key={"number" + toothNumber}
+    >
       <Typography variant="h6" sx={{ textAlign: "center" }}>
         {toothNumber}
       </Typography>

@@ -35,13 +35,11 @@ export const PatientsPage = () => {
           {t("createPatient")}
         </Button>
       </Box>
-      {isModalOpen && (
-        <PatientModal
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onUpdate={() => refetch()}
-        />
-      )}
+      <PatientModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpdate={() => refetch()}
+      />
       <GridSearchFilter
         search={search}
         setSearch={setSearch}

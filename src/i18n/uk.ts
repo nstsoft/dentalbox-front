@@ -254,6 +254,9 @@ export const UA: ResourceLanguage = {
         notes: "Замітки",
         sex: "Стать",
         sexItems: { male: "Чоловік", female: "Жінка" },
+        dentalMap: {
+          toothNotes: "Нотатки до зуба {{tooth}}",
+        },
       },
       calendar: {
         messages: {

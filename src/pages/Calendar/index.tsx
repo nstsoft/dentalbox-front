@@ -63,8 +63,6 @@ export const CalendarPage = () => {
     resourceTitle: name,
   }));
 
-  console.log(events);
-
   return (
     <div>
       <CalendarResource

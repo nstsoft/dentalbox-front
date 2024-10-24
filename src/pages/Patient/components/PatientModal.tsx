@@ -178,9 +178,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       onUpdate();
       onClose();
     }
-  }, [isSuccess]);
-
-  console.log(patientForm);
+  }, [isSuccess, onClose, onUpdate]);
 
   return (
     <Modal

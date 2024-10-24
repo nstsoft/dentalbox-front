@@ -58,3 +58,7 @@ export const createQueryStringFromObject = (params: any) => {
 
   return searchParams.toString();
 };
+
+export const extractNumber = (str: string): number => {
+  return parseInt(str.replace(/\D/g, ""), 10);
+};

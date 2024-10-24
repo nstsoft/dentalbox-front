@@ -26,8 +26,6 @@ export const Checkout: FC<Props> = ({ onCancel, label }) => {
     return null;
   }
 
-  console.log(data);
-
   const options: StripeElementsOptions = {
     locale: "ru",
     clientSecret,
