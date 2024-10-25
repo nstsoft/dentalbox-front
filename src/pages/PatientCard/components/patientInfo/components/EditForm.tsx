@@ -24,7 +24,7 @@ import Select from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import { VisuallyHiddenInput } from "@elements";
-import { CardMedia } from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
 
 type Props = {
   fields: {

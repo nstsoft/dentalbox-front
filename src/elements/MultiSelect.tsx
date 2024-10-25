@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import { FC } from "react";
-import { SxProps, Theme } from "@mui/material";
+import { Theme, SxProps } from "@mui/material/styles";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 8;

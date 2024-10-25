@@ -22,6 +22,8 @@ import { useTranslation } from "react-i18next";
 import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
 import { useSideMenu } from "@hooks";
+import { FaUserDoctor } from "react-icons/fa6";
+import { SvgIcon } from "@mui/material";
 
 const isMenuMobile = isMobile || isTablet;
 
@@ -32,7 +34,11 @@ const icons: { [key in Pages]: JSX.Element } = {
   patients: <GroupIcon />,
   cabinets: <AddLocationAltIcon />,
   calendar: <CalendarMonthIcon />,
-  staff: <GroupIcon />,
+  staff: (
+    <SvgIcon>
+      <FaUserDoctor />
+    </SvgIcon>
+  ),
   profile: <SettingsIcon />,
 };
 

@@ -271,6 +271,13 @@ export const EN: ResourceLanguage = {
           time: "Date",
           event: "Event",
         },
+        eventStatuses: {
+          pending: "Pending",
+          confirmed: "Confirmed by client",
+          awaiting: "Awaiting",
+          in_cabinet: "In cabinet",
+          finished: "Finished",
+        },
       },
     },
   },

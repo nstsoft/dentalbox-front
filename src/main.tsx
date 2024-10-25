@@ -15,21 +15,24 @@ import "./index.scss";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <LocalizationProvider dateAdapter={AdapterMoment}>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <I18nextProvider i18n={i18n}>
-            <LanguageProvider>
+          <LanguageProvider>
+            <LocalizationProvider
+              dateAdapter={AdapterMoment}
+              adapterLocale={"uk"}
+            >
               <CssBaseline />
               <AuthProvider>
                 <MenuProvider>
                   <App />
                 </MenuProvider>
               </AuthProvider>
-            </LanguageProvider>
-          </I18nextProvider>
+            </LocalizationProvider>
+          </LanguageProvider>
         </ThemeProvider>
-      </LocalizationProvider>
-    </Provider>
+      </Provider>
+    </I18nextProvider>
   </StrictMode>
 );

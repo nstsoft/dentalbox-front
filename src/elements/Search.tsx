@@ -54,7 +54,7 @@ export const SearchInput: FC<Props> = ({ value, onChange, sx }) => {
         <StyledSearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder={i18n.language === "ua" ? "Пошук..." : "Search…"}
+        placeholder={i18n.language === "uk" ? "Пошук..." : "Search…"}
         inputProps={{ "aria-label": "search" }}
         value={value}
         onChange={({ target }) => onChange(target.value)}

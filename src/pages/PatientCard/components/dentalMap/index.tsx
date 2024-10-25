@@ -18,6 +18,7 @@ import Grid2 from "@mui/material/Grid2";
 import Divider from "@mui/material/Divider";
 import SkullBottom from "@images/backgrounds/skull-bottom.png";
 import SkullTop from "@images/backgrounds/skull-top.png";
+import Button from "@mui/material/Button";
 import { isMobile } from "react-device-detect";
 import { Notes } from "@components";
 import { QuarterLayout } from "./components";
@@ -28,7 +29,6 @@ import {
   LeftBottomToothKeys,
 } from "./constants";
 import { useTranslation } from "react-i18next";
-import { Button } from "@mui/material";
 
 const colorsSet = Object.values(SEGMENT_COLORS);
 

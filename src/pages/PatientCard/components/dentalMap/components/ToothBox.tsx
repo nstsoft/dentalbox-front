@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import type { Chart } from "@types";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 
 export const ToothBox: FC<{
   children: ReactNode | ReactNode[];

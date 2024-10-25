@@ -10,9 +10,8 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import Typography from "@mui/material/Typography";
 import { Card } from "@elements";
-import { Typography } from "@mui/material";
 
 type Props = {
   type: "setup" | "payment" | "payment-added";

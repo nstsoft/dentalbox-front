@@ -8,6 +8,13 @@ import {
   useGetChairSummaryQuery,
 } from "@api";
 import { useState, useEffect } from "react";
+import {
+  CabinetSummaryListItem,
+  PatientSummaryListItem,
+  UserSummaryListItem,
+  ChairSummaryListItem,
+  AppointmentEventListItem,
+} from "@types";
 
 export const CalendarPage = () => {
   const { data: cabinetSummary } = useGetCabinetSummaryQuery();
@@ -31,37 +38,55 @@ export const CalendarPage = () => {
     return null;
   }
 
-  const cabinetsMap = new Map();
-  const chairsMap = new Map();
-  const usersMap = new Map();
-  const patientsMap = new Map();
+  const cabinetsMap = new Map<string, CabinetSummaryListItem>();
+  const chairsMap = new Map<string, ChairSummaryListItem>();
+  const usersMap = new Map<string, UserSummaryListItem>();
+  const patientsMap = new Map<string, PatientSummaryListItem>();
+  const assistantMap = new Map<string, UserSummaryListItem>();
 
   cabinetSummary.map((cabinet) => cabinetsMap.set(cabinet._id, cabinet));
   chairSummary.map((chair) => chairsMap.set(chair._id, chair));
-  userSummary.map((user) => usersMap.set(user._id, user));
+  userSummary.map((user) => {
+    usersMap.set(user._id, user);
+    assistantMap.set(user._id, user);
+  });
   patientSummary.map((patient) => patientsMap.set(patient._id, patient));
 
   const onNavigate = (newDate: Date) => {
     setDate(moment(newDate));
   };
 
-  const events = (data ?? []).map((appointment) => ({
-    ...appointment,
-    id: appointment._id,
-    title: patientsMap.get(appointment.patient)?.name ?? "",
-    start: moment(appointment.start).toDate(),
-    end: moment(appointment.end).toDate(),
-    resourceId: cabinetsMap.get(appointment.cabinet)?._id ?? "",
-    patient: patientsMap.get(appointment.patient),
-    cabinet: cabinetsMap.get(appointment.cabinet),
-    doctor: usersMap.get(appointment.doctor),
-    chair: chairsMap.get(appointment.chair),
-  }));
+  const events: AppointmentEventListItem[] = (data ?? []).map(
+    (appointment) => ({
+      ...appointment,
+      id: appointment._id,
+      title: patientsMap.get(appointment.patient)?.name ?? "",
+      start: moment(appointment.start).toDate(),
+      end: moment(appointment.end).toDate(),
+      resourceId:
+        cabinetsMap.get(appointment.cabinet)?._id +
+        `${appointment.chair ? "_" + appointment.chair : ""}`,
+      patient: patientsMap.get(appointment.patient)!,
+      cabinet: cabinetsMap.get(appointment.cabinet)!,
+      doctor: usersMap.get(appointment.doctor)!,
+      chair: chairsMap.get(appointment.chair ?? ""),
+      assistant: assistantMap.get(appointment?.assistant ?? ""),
+    })
+  );
 
-  const resources = cabinetSummary.map(({ _id, name }) => ({
-    resourceId: _id,
-    resourceTitle: name,
-  }));
+  const resources = cabinetSummary.reduce((acc, { _id, name }) => {
+    const chairs = chairSummary.filter((chair) => chair.cabinet === _id);
+    if (!chairs.length) {
+      return [...acc, { resourceId: _id, resourceTitle: name }];
+    }
+    return [
+      ...acc,
+      ...chairs.map(({ _id: chairId, name: chairName }) => ({
+        resourceId: _id + "_" + chairId,
+        resourceTitle: `${name} - ${chairName}`,
+      })),
+    ];
+  }, [] as { resourceId: string; resourceTitle: string }[]);
 
   return (
     <div>
@@ -70,6 +95,13 @@ export const CalendarPage = () => {
         onViewChange={setView}
         events={events ?? []}
         resources={resources}
+        eventResources={{
+          cabinetsMap,
+          patientsMap,
+          usersMap,
+          chairsMap,
+          assistantMap,
+        }}
       />
     </div>
   );

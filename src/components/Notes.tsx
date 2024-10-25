@@ -3,7 +3,8 @@ import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { FC, useState } from "react";
-import { FormControl, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
 import { useTranslation } from "react-i18next";
 
 type NotesProps = {

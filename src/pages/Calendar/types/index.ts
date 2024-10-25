@@ -1,12 +1,29 @@
-import { AppointmentListItem } from "@types";
+import {
+  AppointmentListItem,
+  CabinetSummaryListItem,
+  ChairSummaryListItem,
+  PatientSummaryListItem,
+  UserSummaryListItem,
+  AppointmentStatus,
+} from "@types";
 import { type Dispatch, type SetStateAction } from "react";
 import { CalendarProps } from "react-big-calendar";
+import { Moment } from "moment/min/moment-with-locales";
+
+export type AppointmentResources = {
+  cabinetsMap: Map<string, CabinetSummaryListItem>;
+  chairsMap: Map<string, ChairSummaryListItem>;
+  usersMap: Map<string, UserSummaryListItem>;
+  patientsMap: Map<string, PatientSummaryListItem>;
+  assistantMap: Map<string, UserSummaryListItem>;
+};
 
 export type Props = {
-  events: CalendarProps<AppointmentListItem>["events"];
+  events: AppointmentListItem[];
   resources: CalendarProps["resources"];
   onViewChange: Dispatch<SetStateAction<"day" | "week">>;
   onNavigate: CalendarProps["onNavigate"];
+  eventResources: AppointmentResources;
 };
 
 type DefaultObject = {
@@ -28,6 +45,7 @@ export type CalendarEvent = {
   cabinet: DefaultObject;
   chair: DefaultObject;
   doctor: PersonData;
+  assistant?: PersonData;
   end: Date;
   id: string;
   notes?: string;
@@ -38,3 +56,24 @@ export type CalendarEvent = {
   workspace: string;
   _id: string;
 };
+
+export type EditableProps = (
+  | "patient"
+  | "doctor"
+  | "cabinet"
+  | "chair"
+  | "start"
+  | "end"
+  | "status"
+)[];
+
+export type UpdateEventHandler = (
+  data: Partial<{
+    [key in keyof Omit<CalendarEvent, "start" | "end">]: string;
+  }> & {
+    start?: Moment;
+    end?: Moment;
+    approved?: boolean;
+    status?: AppointmentStatus;
+  }
+) => void;

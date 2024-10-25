@@ -1,0 +1,54 @@
+.modal-edit-appointment {
+  .modal-control-panel {
+    display: flex;
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    button {
+      padding: 0;
+      min-width: 0;
+      width: 25px;
+      padding: revert-layer;
+      margin: 0;
+    }
+  }
+  .mobile-time-picker {
+    div {
+      padding: 0;
+      input {
+        padding: 5px;
+        width: 70px;
+      }
+    }
+  }
+}
+.big-calendar {
+  .appointment-event.pending {
+    background-color: #ffa500;
+  }
+  .appointment-event.confirmed {
+    background-color: #28a745;
+  }
+  .appointment-event.awaiting {
+    background-color: #17a2b8;
+  }
+  .appointment-event.in_cabinet {
+    background-color: #6f42c1;
+  }
+  .appointment-event.finished {
+    background-color: #6c757d;
+  }
+  .appointment-event {
+    .custom-event-container {
+      .note {
+        margin-top: 5px;
+      }
+      .name {
+        font-size: 8px;
+        svg {
+          width: 15px;
+        }
+      }
+    }
+  }
+}

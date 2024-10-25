@@ -82,5 +82,5 @@ export type UserForm = {
 
 export type UserSummaryListItem = Pick<
   User,
-  "name" | "surname" | "secondName" | "email" | "phone" | "_id"
+  "name" | "surname" | "secondName" | "email" | "phone" | "_id" | "role"
 >;

@@ -271,6 +271,13 @@ export const UA: ResourceLanguage = {
           time: "Час",
           event: "Подія",
         },
+        eventStatuses: {
+          pending: "Не підтверджений",
+          confirmed: "Підтверджений",
+          awaiting: "Очікує",
+          in_cabinet: "На прийомі",
+          finished: "Прийом закінено",
+        },
       },
     },
   },

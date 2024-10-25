@@ -4,9 +4,9 @@ import { LANGUAGES } from "@types";
 import moment from "moment/min/moment-with-locales";
 import { LANGUAGE, useLocalStorage } from "@hooks";
 
-export const LanguageProvider: FC<{ children: ReactElement[] }> = ({
-  children,
-}) => {
+export const LanguageProvider: FC<{
+  children: ReactElement[] | ReactElement;
+}> = ({ children }) => {
   const [languageInStorage, setLanguageInStorage] = useLocalStorage<LANGUAGES>(
     LANGUAGE,
     LANGUAGES.uk

@@ -1,5 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Appointment, AppointmentListQuery } from "@types";
+import type {
+  Appointment,
+  AppointmentListQuery,
+  UpsertAppointmentElement,
+} from "@types";
 import { REDUCER, APPOINTMENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 import { createQueryStringFromObject } from "@utils";
@@ -15,17 +19,29 @@ export const appointmentApi = createApi({
       },
       providesTags: () => [{ type: APPOINTMENT_TAG.APPOINTMENT_LIST }],
     }),
-    updateAppointment: builder.query<Appointment, Appointment>({
+    deleteAppointment: builder.mutation<string, string>({
+      query: (id) => ({
+        url: `/appointment/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    upsertAppointment: builder.mutation<
+      Appointment,
+      Partial<UpsertAppointmentElement>
+    >({
       query: (body) => ({
         body,
         url: `/appointment`,
-        method: "PATCH",
+        method: "PUT",
       }),
-      providesTags: () => [{ type: APPOINTMENT_TAG.APPOINTMENT }],
     }),
   }),
 });
 
-export const { useGetAppointmentsQuery, useLazyUpdateAppointmentQuery } = appointmentApi;
+export const {
+  useGetAppointmentsQuery,
+  useUpsertAppointmentMutation,
+  useDeleteAppointmentMutation,
+} = appointmentApi;
 
 export default { appointmentApi };
