@@ -55,15 +55,6 @@ export type DentalMapType = {
   chart: Chart;
 };
 
-export enum SEGMENT_COLORS {
-  red = "#d93107",
-  yellow = "#debb10",
-  green = "#6dd611",
-  blue = "#0d82db",
-  purple = "#c410c7",
-  default = "#0000",
-}
-
 export type FiveZonesChart = {
   t18: FiveZoneTooth;
   t16: FiveZoneTooth;
