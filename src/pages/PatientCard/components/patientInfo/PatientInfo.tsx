@@ -6,13 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid2 from "@mui/material/Grid2";
 import { Patient } from "@types";
-import {
-  type FC,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { type FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
@@ -46,6 +40,12 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   const [updatePatient, { isSuccess, error }] = useUpdatePatientMutation();
   const [isDataChanged, setIsDataChanged] = useState(false);
   const [responseError, setResponseError] = useState<string | string[]>();
+
+  useEffect(() => {
+    if (patient && !patientData) {
+      setPatientData(patient);
+    }
+  }, [patient, patientData]);
 
   const errorSet: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -144,11 +144,11 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
                   position: "relative",
                 }}
               >
-                {patientData.image ? (
+                {patientData?.image ? (
                   <CardMedia
                     sx={sx}
                     component="img"
-                    image={patientData.image as string}
+                    image={patientData?.image as string}
                     alt={patientData.name}
                   />
                 ) : (

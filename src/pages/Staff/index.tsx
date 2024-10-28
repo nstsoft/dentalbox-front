@@ -8,28 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useGetUserListQuery, useGetInvitationsQuery } from "@api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
-    </div>
-  );
-}
+import { CustomTabPanel } from "../../components/CustomTabPanel";
 
 export const StaffPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });

@@ -52,7 +52,7 @@ export const Notes: FC<NotesProps> = ({
         )}
       </FormControl>
 
-      <Button
+      {isEdit &&<Button
         type="submit"
         variant={"contained"}
         disabled={!isDataChanged}
@@ -63,7 +63,7 @@ export const Notes: FC<NotesProps> = ({
         }}
       >
         {t("save", { keyPrefix: "buttons" })}
-      </Button>
+      </Button>}
     </Card>
   );
 };
