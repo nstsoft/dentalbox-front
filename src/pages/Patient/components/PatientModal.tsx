@@ -26,37 +26,18 @@ type PatientModalProps = {
   open: boolean;
   onUpdate: () => void;
   onClose: () => void;
-  selectedPatient: Patient | null;
-};
-
-type PatientForm = {
-  name: string;
-  secondName: string;
-  surname: string;
-  sex: Sex;
-  dob: string;
-  email: string;
-  phone: string;
-  address: string;
+  patient: Omit<Patient, "_id"> & { _id?: string };
+  setPatient: (patient: Omit<Patient, "_id"> & { _id?: string }) => void;
 };
 
 export const PatientModal: FC<PatientModalProps> = ({
   open,
   onUpdate,
   onClose,
-  selectedPatient,
+  patient,
+  setPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
-  const [patientForm, setPatientForm] = useState<PatientForm>({
-    name: selectedPatient?.name || "",
-    secondName: selectedPatient?.secondName || "",
-    surname: selectedPatient?.surname || "",
-    sex: (selectedPatient?.sex as Sex) || Sex.male,
-    dob: selectedPatient?.dob || "",
-    email: selectedPatient?.email || "",
-    phone: selectedPatient?.phone || "+380",
-    address: selectedPatient?.address || "",
-  });
   const [phoneError, setPhoneError] = useState<string>();
   const [emailError, setEmailError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
@@ -71,71 +52,71 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "name",
       label: t("name"),
-      value: patientForm.name,
+      value: patient.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientForm((prevState) => ({
-          ...prevState,
+        setPatient({
+          ...patient,
           name: event.target.value,
-        })),
+        }),
     },
     {
       id: "secondName",
       label: t("secondName"),
-      value: patientForm.secondName,
+      value: patient.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientForm((prevState) => ({
-          ...prevState,
+        setPatient({
+          ...patient,
           secondName: event.target.value,
-        })),
+        }),
     },
     {
       id: "surname",
       label: t("surname"),
-      value: patientForm.surname,
+      value: patient.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientForm((prevState) => ({
-          ...prevState,
+        setPatient({
+          ...patient,
           surname: event.target.value,
-        })),
+        }),
     },
     {
       id: "sex",
       label: t("sex"),
-      value: patientForm.sex,
+      value: patient.sex,
     },
     {
       id: "dob",
       label: t("dob"),
-      value: patientForm.dob,
+      value: patient.dob,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatientForm((prev) => ({ ...prev, dob: target.value }));
+        setPatient({ ...patient, dob: target.value });
       },
       error: birthDateError,
     },
     {
       id: "email",
       label: t("email"),
-      value: patientForm.email,
+      value: patient.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatientForm((prev) => ({ ...prev, email: target.value }));
+        setPatient({ ...patient, email: target.value });
       },
       error: emailError,
     },
     {
       id: "phone",
       label: t("phone"),
-      value: patientForm.phone,
+      value: patient.phone,
       error: phoneError,
     },
     {
       id: "address",
       label: t("address"),
-      value: patientForm.address,
+      value: patient.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientForm((prevState) => ({
-          ...prevState,
+        setPatient({
+          ...patient,
           address: event.target.value,
-        })),
+        }),
     },
   ];
 
@@ -144,17 +125,17 @@ export const PatientModal: FC<PatientModalProps> = ({
     setBirthDateError(undefined);
     setEmailError(undefined);
 
-    if (!matchIsValidTel(patientForm.phone)) {
+    if (!matchIsValidTel(patient.phone)) {
       setPhoneError("Please enter a valid phone number.");
       return false;
     }
 
-    if (patientForm.dob && !moment(patientForm.dob).isValid()) {
+    if (patient.dob && !moment(patient.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
 
-    if (!validateLogin(patientForm.email)) {
+    if (!validateLogin(patient.email)) {
       setEmailError("Please enter a valid email address.");
       return false;
     }
@@ -167,26 +148,22 @@ export const PatientModal: FC<PatientModalProps> = ({
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      if (selectedPatient) {
-        updatePatient({
-          ...patientForm,
-          image: patientImage,
-          _id: selectedPatient._id,
-        });
-      } else {
-        createPatient({ ...patientForm, image: patientImage });
-      }
+      (patient._id ? updatePatient : createPatient)({
+        ...patient,
+        image: patientImage,
+        _id: patient?._id,
+      });
     }
   };
 
   useEffect(() => {
     if (error || updateError) {
-      setResponseError((error as any || updateError as any).message);
+      setResponseError(((error as any) || (updateError as any)).message);
     }
   }, [error, updateError]);
 
   useEffect(() => {
-    if (isSuccess || isUpdateSuccess) {
+    if (isSuccess ?? isUpdateSuccess) {
       onUpdate();
       onClose();
     }
@@ -196,8 +173,6 @@ export const PatientModal: FC<PatientModalProps> = ({
     <Modal
       open={open}
       onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
       <Box
         component="form"
@@ -222,10 +197,10 @@ export const PatientModal: FC<PatientModalProps> = ({
               <MuiTelInput
                 value={input.value}
                 onChange={(newValue: string) =>
-                  setPatientForm((prevState) => ({
-                    ...prevState,
+                  setPatient({
+                    ...patient,
                     phone: newValue.replace(/\s+/g, ""),
-                  }))
+                  })
                 }
                 error={!!phoneError}
                 placeholder={input?.label}
@@ -237,12 +212,12 @@ export const PatientModal: FC<PatientModalProps> = ({
                 <InputLabel id="radio-label">{t("sex")}</InputLabel>
                 <Select
                   labelId="radio-label"
-                  value={patientForm.sex}
+                  value={patient.sex}
                   onChange={({ target }) =>
-                    setPatientForm((prev) => ({
-                      ...prev,
+                    setPatient({
+                      ...patient,
                       sex: target.value as Sex,
-                    }))
+                    })
                   }
                   required
                   input={<OutlinedInput label={t(`sex`)} />}
@@ -262,10 +237,10 @@ export const PatientModal: FC<PatientModalProps> = ({
               <DatePicker
                 value={input.value ? moment(input.value) : null}
                 onChange={(newValue: Moment | null) =>
-                  setPatientForm((prev) => ({
-                    ...prev,
+                  setPatient({
+                    ...patient,
                     dob: newValue?.toString() ?? "",
-                  }))
+                  })
                 }
                 disableFuture
                 onError={(err) =>
@@ -327,7 +302,7 @@ export const PatientModal: FC<PatientModalProps> = ({
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">
-            {selectedPatient
+            {patient._id
               ? t("update", { keyPrefix: "buttons" })
               : t("create", { keyPrefix: "buttons" })}
           </Button>

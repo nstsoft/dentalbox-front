@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useGetUserListQuery, useGetInvitationsQuery } from "@api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { CustomTabPanel } from "../../components/CustomTabPanel";
+import { CustomTabPanel } from "@components";
 
 export const StaffPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });

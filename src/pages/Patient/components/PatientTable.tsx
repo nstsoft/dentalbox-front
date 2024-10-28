@@ -18,7 +18,7 @@ type Props = {
   paginationModel: { skip: number; limit: number };
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  onSelectPatient: (patient: Patient) => void;
+  onSelectPatient: (patient?: Patient) => void;
 };
 
 export const PatientsTable: FC<Props> = ({
@@ -94,7 +94,7 @@ export const PatientsTable: FC<Props> = ({
               open={Boolean(anchorEl)}
               onClose={() => {
                 setAnchorEl(null);
-                setSelectedPatient(null);
+                onSelectPatient();
               }}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
