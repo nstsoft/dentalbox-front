@@ -26,7 +26,7 @@ export const patientApi = createApi({
       },
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_LIST }],
     }),
-    createPatient: builder.mutation<unknown, Patient>({
+    createPatient: builder.mutation<unknown, Omit<Patient, "_id">>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {

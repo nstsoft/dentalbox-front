@@ -1,7 +1,7 @@
 import { Sex } from "./common";
 
 export type Patient = {
-  _id?: string;
+  _id: string;
   name: string;
   secondName: string;
   surname: string;

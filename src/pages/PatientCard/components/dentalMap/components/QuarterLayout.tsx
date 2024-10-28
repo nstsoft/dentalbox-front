@@ -17,42 +17,7 @@ import type {
 
 import { ToothComponents5, ToothComponents4 } from "../constants";
 
-import {
-  T11Svg,
-  T12Svg,
-  T13Svg,
-  T14Svg,
-  T15Svg,
-  T16Svg,
-  T17Svg,
-  T18Svg,
-  T21Svg,
-  T22Svg,
-  T23Svg,
-  T24Svg,
-  T25Svg,
-  T31Svg,
-  T32Svg,
-  T33Svg,
-  T34Svg,
-  T35Svg,
-  T41Svg,
-  T42Svg,
-  T43Svg,
-  T44Svg,
-  T45Svg,
-  T46Svg,
-  T47Svg,
-  T48Svg,
-  T26Svg,
-  T27Svg,
-  T28Svg,
-  T36Svg,
-  T37Svg,
-  T38Svg,
-  Zone4Segment,
-  Zone5Segment,
-} from "./teeth";
+import { Zone4Segment, Zone5Segment } from "./teeth";
 
 type Props = {
   chart: Chart;

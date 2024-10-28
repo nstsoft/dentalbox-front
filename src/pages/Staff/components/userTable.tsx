@@ -41,7 +41,6 @@ export const UsersTable: FC<Props> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [responseError, setResponseError] = useState<string | string[]>();
   const [deleteUser, { isSuccess, error }] = useDeleteUserMutation();
 
   const mobileColumns: GridColDef<User>[] = [
@@ -129,9 +128,6 @@ export const UsersTable: FC<Props> = ({
   ];
 
   useEffect(() => {
-    if (error) {
-      setResponseError((error as any).message);
-    }
     if (isSuccess) {
       onReset();
     }

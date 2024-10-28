@@ -15,7 +15,7 @@ export const PatientCardPage = () => {
   const { data } = useGetPatientByIdQuery(patientId!);
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
   const [patient, setPatient] = useState<Patient>();
-  const [updatePatient, { isSuccess, error }] = useUpdatePatientMutation();
+  const [updatePatient] = useUpdatePatientMutation();
 
   const [value, setValue] = useState(0);
 

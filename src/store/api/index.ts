@@ -9,3 +9,4 @@ export * from "./patient";
 export * from "./dentalMap";
 export * from "./appointment";
 export * from "./chair";
+export * from "./metadata";

@@ -37,9 +37,8 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   const [emailError, setEmailError] = useState<string>();
   const [phoneError, setPhoneError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
-  const [updatePatient, { isSuccess, error }] = useUpdatePatientMutation();
+  const [updatePatient, { isSuccess }] = useUpdatePatientMutation();
   const [isDataChanged, setIsDataChanged] = useState(false);
-  const [responseError, setResponseError] = useState<string | string[]>();
 
   useEffect(() => {
     if (patient && !patientData) {
@@ -112,12 +111,6 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
 
     setIsEdit(!isEdit);
   }, [isEdit, patient]);
-
-  useEffect(() => {
-    if (error) {
-      setResponseError((error as Error).message);
-    }
-  }, [error]);
 
   useEffect(() => {
     if (isSuccess) {

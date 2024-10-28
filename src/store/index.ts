@@ -12,6 +12,7 @@ import {
   dentalMapApi,
   appointmentApi,
   chairApi,
+  metadataApi,
 } from "./api";
 
 export const store = configureStore({
@@ -27,6 +28,7 @@ export const store = configureStore({
     [dentalMapApi.reducerPath]: dentalMapApi.reducer,
     [appointmentApi.reducerPath]: appointmentApi.reducer,
     [chairApi.reducerPath]: chairApi.reducer,
+    [metadataApi.reducerPath]: metadataApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -42,6 +44,7 @@ export const store = configureStore({
       dentalMapApi.middleware,
       appointmentApi.middleware,
       chairApi.middleware,
+      metadataApi.middleware,
     ]),
 });
 

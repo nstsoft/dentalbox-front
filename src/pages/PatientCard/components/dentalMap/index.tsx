@@ -1,5 +1,9 @@
 import "./dentalMap.scss";
-import { useGetDentalMapQuery, useUpdateDentalMapMutation } from "@api";
+import {
+  useGetDentalMapQuery,
+  useUpdateDentalMapMutation,
+  useGetWorkspaceMetadataQuery,
+} from "@api";
 import { FC, useEffect, useState } from "react";
 import { extractNumber } from "@utils";
 
@@ -12,7 +16,7 @@ import type {
   Zone4,
   Zone5,
 } from "@types";
-import { SEGMENT_COLORS } from "@types";
+
 import { deepMerge } from "@utils";
 import Grid2 from "@mui/material/Grid2";
 import Divider from "@mui/material/Divider";
@@ -30,12 +34,17 @@ import {
 } from "./constants";
 import { useTranslation } from "react-i18next";
 
-const colorsSet = Object.values(SEGMENT_COLORS);
-
-const getNextColor = (color: string) => {
-  const index = colorsSet.indexOf(color as SEGMENT_COLORS);
+const getNextColor = (color: string, colorsSet: string[]) => {
+  if (color === colorsSet[colorsSet.length - 1]) {
+    return "#0000";
+  }
+  const index = colorsSet.indexOf(color);
   const nextIndex = (index + 1) % colorsSet.length;
   return colorsSet[nextIndex];
+};
+
+const isToothCrown = (segment: string) => {
+  return segment.charAt(segment.length - 1) === "1";
 };
 
 export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
@@ -49,6 +58,12 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
   const [selectedToothKey, setSelectedToothKey] = useState<
     keyof Chart | undefined
   >();
+
+  const { data: metadata } = useGetWorkspaceMetadataQuery();
+  const rootColors = metadata?.dentalMapColors?.root?.map(({ color }) => color);
+  const crownColors = metadata?.dentalMapColors?.crown?.map(
+    ({ color }) => color
+  );
 
   useEffect(() => {
     if (
@@ -77,7 +92,11 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     if (!data?.chart) return;
     const defaultColor = data.chart[tooth].segments[segment];
     const currentColor = chart?.[tooth]?.segments?.[segment];
-    const color: string = getNextColor(currentColor ?? defaultColor);
+
+    const color: string = getNextColor(
+      currentColor ?? defaultColor,
+      isToothCrown(segment) ? crownColors ?? [] : rootColors ?? []
+    );
 
     const newChart = deepMerge(chart ?? {}, {
       [tooth]: { segments: { [segment]: color } },
@@ -92,7 +111,10 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     if (!data?.chart) return;
     const defaultColor = data.chart[tooth].segments[segment];
     const currentColor = chart?.[tooth]?.segments?.[segment];
-    const color: string = getNextColor(currentColor ?? defaultColor);
+    const color: string = getNextColor(
+      currentColor ?? defaultColor,
+      isToothCrown(segment) ? crownColors ?? [] : rootColors ?? []
+    );
 
     const newChart = deepMerge(chart ?? {}, {
       [tooth]: { segments: { [segment]: color } },

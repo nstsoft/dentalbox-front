@@ -146,14 +146,14 @@ export const PatientModal: FC<PatientModalProps> = ({
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const isFormValid = validateForm();
-    if (isFormValid) {
-      (patient._id ? updatePatient : createPatient)({
-        ...patient,
-        image: patientImage,
-        _id: patient?._id,
-      });
+    if (!validateForm()) {
+      return;
     }
+    const data = { ...patient, image: patientImage };
+    if (patient._id) {
+      return updatePatient({ ...data, _id: patient._id });
+    }
+    return createPatient(data);
   };
 
   useEffect(() => {
@@ -170,10 +170,7 @@ export const PatientModal: FC<PatientModalProps> = ({
   }, [isSuccess, onClose, onUpdate, isUpdateSuccess]);
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-    >
+    <Modal open={open} onClose={onClose}>
       <Box
         component="form"
         onSubmit={submitFormHandler}

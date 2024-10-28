@@ -41,7 +41,7 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
   image?: string;
-  dob?: string;
+  dob?: Date;
   role: UserRole;
   sex: Sex;
 };

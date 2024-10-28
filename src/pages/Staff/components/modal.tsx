@@ -44,7 +44,7 @@ export const StaffModal: FC<StaffModalProps> = ({
     name: selectedUser?.name ?? "",
     secondName: selectedUser?.secondName ?? "",
     surname: selectedUser?.surname ?? "",
-    dob: selectedUser?.dob ?? "",
+    dob: selectedUser?.dob?.toString() ?? "",
     roles: selectedUser?.roles.map((role) => role.role) ?? [],
   });
   const [birthDateError, setBirthDateError] = useState<string>();
@@ -134,10 +134,7 @@ export const StaffModal: FC<StaffModalProps> = ({
   }, [isSuccess, onClose, onUpdate]);
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-    >
+    <Modal open={open} onClose={onClose}>
       <Box
         component="form"
         onSubmit={submitFormHandler}
