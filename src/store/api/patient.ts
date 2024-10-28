@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { CreatePatient, Patient, PatientSummaryListItem } from "@types";
+import type { Patient, PatientSummaryListItem } from "@types";
 import { REDUCER, PATIENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
@@ -26,7 +26,7 @@ export const patientApi = createApi({
       },
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_LIST }],
     }),
-    createPatient: builder.mutation<unknown, CreatePatient>({
+    createPatient: builder.mutation<unknown, Patient>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {
@@ -57,7 +57,7 @@ export const patientApi = createApi({
           JSON.stringify({ ...body, dob: body.dob.toString() })
         );
 
-        return { body: formData, url: `/patient${body._id}`, method: "PATCH" };
+        return { body: formData, url: `/patient/${body._id}`, method: "PATCH" };
       },
     }),
     getPatientSummary: builder.query<PatientSummaryListItem[], void>({

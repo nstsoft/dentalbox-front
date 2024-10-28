@@ -35,7 +35,7 @@ export const UsersTable: FC<Props> = ({
   isLoading,
   data,
   refetch,
-  onReset
+  onReset,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -132,13 +132,10 @@ export const UsersTable: FC<Props> = ({
     if (error) {
       setResponseError((error as any).message);
     }
-  }, [error]);
-
-  useEffect(() => {
     if (isSuccess) {
       onReset();
     }
-  }, [isSuccess, onReset]);
+  }, [isSuccess, onReset, error]);
 
   if (!data) return null;
 
@@ -156,14 +153,12 @@ export const UsersTable: FC<Props> = ({
         loading={isLoading}
         onPagination={setPaginationModel}
       />
-      {isModalOpen && (
-        <StaffModal
-          selectedUser={selectedUser}
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onUpdate={() => refetch()}
-        />
-      )}
+      <StaffModal
+        selectedUser={selectedUser}
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpdate={() => refetch()}
+      />
     </div>
   );
 };

@@ -6,12 +6,27 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { GridSearchFilter } from "@components";
 import { PatientsTable, PatientModal } from "./components";
+import { Patient, Sex } from "@types";
+
+const initPatient = {
+  name: "",
+  secondName: "",
+  surname: "",
+  sex: Sex.male,
+  dob: "",
+  email: "",
+  phone: "+380",
+  address: "",
+};
 
 export const PatientsPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const [search, setSearch] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [patient, setPatient] = useState<
+    Omit<Patient, "_id"> & { _id?: string }
+  >(initPatient);
 
   const [paginationModel, setPaginationModel] = useState({
     skip: 0,
@@ -37,8 +52,13 @@ export const PatientsPage = () => {
       </Box>
       <PatientModal
         open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setPatient(initPatient);
+        }}
         onUpdate={() => refetch()}
+        patient={patient}
+        setPatient={setPatient}
       />
       <GridSearchFilter
         search={search}
@@ -46,10 +66,13 @@ export const PatientsPage = () => {
         applyFilters={() => setSearchValue(search)}
       />
       <PatientsTable
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
         data={data}
         isLoading={isLoading}
         paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
+        onSelectPatient={setPatient}
       />
     </>
   );

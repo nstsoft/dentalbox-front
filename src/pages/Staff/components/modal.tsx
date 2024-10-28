@@ -137,8 +137,6 @@ export const StaffModal: FC<StaffModalProps> = ({
     <Modal
       open={open}
       onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
       <Box
         component="form"

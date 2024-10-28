@@ -1,6 +1,6 @@
-import { type GridColDef } from "@mui/x-data-grid";
+import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import { type Patient } from "@types";
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import { CustomTable, Row } from "@components";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
@@ -8,21 +8,31 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import { Button, Menu, MenuItem } from "@mui/material";
+import moment from "moment";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
   isLoading: boolean;
   data?: { count: number; data: Patient[] };
   paginationModel: { skip: number; limit: number };
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+  onSelectPatient: Dispatch<
+    SetStateAction<Omit<Patient, "_id"> & { _id?: string | undefined }>
+  >;
 };
 
 export const PatientsTable: FC<Props> = ({
   setPaginationModel,
   isLoading,
   data,
+  setIsModalOpen,
+  onSelectPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const mobileColumns: GridColDef<Patient>[] = [
     {
@@ -51,6 +61,7 @@ export const PatientsTable: FC<Props> = ({
       field: "dob",
       headerName: t("dob"),
       width: 180,
+      renderCell: ({ row }) => moment(row.dob).format("DD.MM.YYYY"),
     },
     {
       field: "email",
@@ -64,6 +75,39 @@ export const PatientsTable: FC<Props> = ({
       width: 180,
     },
     { field: "address", headerName: t("address"), width: 220 },
+    {
+      field: "actions",
+      headerName: t("actions"),
+      width: 80,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+              onClick={(event) => {
+                event.stopPropagation();
+                setAnchorEl(event.currentTarget);
+                onSelectPatient(params.row);
+              }}
+            >
+              <GridMoreVertIcon />
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={() => setIsModalOpen(true)}>
+                {t("update", { keyPrefix: "buttons" })}
+              </MenuItem>
+              <MenuItem>{t("delete", { keyPrefix: "buttons" })}</MenuItem>
+            </Menu>
+          </>
+        );
+      },
+    },
   ];
 
   if (!data) return null;

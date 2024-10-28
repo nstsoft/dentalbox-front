@@ -138,7 +138,7 @@ export const EditForm: FC<Props> = ({
                       onChange={({ target }) =>
                         field.setPatientData((prev) => ({
                           ...prev,
-                          sex: target.value,
+                          sex: target.value as Sex,
                         }))
                       }
                       required

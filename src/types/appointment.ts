@@ -5,6 +5,7 @@ export enum AppointmentStatus {
   in_cabinet = "in_cabinet",
   finished = "finished",
 }
+
 export type Appointment = {
   _id: string;
   start: string | Date;
