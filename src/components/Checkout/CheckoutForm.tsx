@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import { Card } from "@elements";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   type: "setup" | "payment" | "payment-added";
@@ -30,6 +31,7 @@ export const CheckoutForm: FC<Props> = ({
 }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { t } = useTranslation();
 
   const [, setErrorMessage] = useState<string>();
   const [loading, setLoading] = useState(false);
@@ -89,11 +91,11 @@ export const CheckoutForm: FC<Props> = ({
       <div style={{ display: "flex", gap: 2 }}>
         {onCancel && (
           <Button fullWidth variant="outlined" onClick={onCancel}>
-            cancel
+            {t("buttons.cancel")}
           </Button>
         )}
         <Button type="submit" fullWidth variant="contained">
-          submit
+          {t("buttons.submit")}
         </Button>
       </div>
     );

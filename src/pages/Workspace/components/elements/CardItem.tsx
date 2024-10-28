@@ -29,7 +29,7 @@ export const CardItem: FC<CardItemProps> = ({
   isLoading,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
+  const { t } = useTranslation("", { keyPrefix: "pages.workspace.paymentMethods" });
   const [deleteAnchorEl, setDeleteAnchorEl] = useState<HTMLElement>();
   const [setDefaultAnchorEl, setSetDefaultAnchorEl] = useState<HTMLElement>();
 
@@ -49,12 +49,12 @@ export const CardItem: FC<CardItemProps> = ({
           onClick={({ currentTarget }) => setSetDefaultAnchorEl(currentTarget)}
           variant="text"
         >
-          {isMobile ? <AddCardIcon /> : "make default"}
+          {isMobile ? <AddCardIcon /> : t("setDefault")}
         </Button>
         <ConfirmPopover
           anchorEl={setDefaultAnchorEl}
           setAnchorEl={setSetDefaultAnchorEl}
-          label={t("paymentMethods.setDefault")}
+          label={t("setDefault")}
           onConfirm={() => setDefaultPaymentMethod(paymentMethod.id)}
         />
       </>
@@ -99,7 +99,7 @@ export const CardItem: FC<CardItemProps> = ({
               <DoneOutlineIcon />
             </Typography>
           ) : (
-            <Chip className="chip" color="primary" label="default" />
+            <Chip className="chip" color="primary" label={t("default")} sx={{width: 'max-content'}}/>
           ))}
         {makeDefaultButton()}
         {!isDefault && (
@@ -113,7 +113,7 @@ export const CardItem: FC<CardItemProps> = ({
             <ConfirmPopover
               anchorEl={deleteAnchorEl}
               setAnchorEl={setDeleteAnchorEl}
-              label={t("paymentMethods.confirmDeleteLabel")}
+              label={t("confirmDeleteLabel")}
               onConfirm={() => deletePaymentMethod(paymentMethod.id)}
             />
           </>

@@ -18,6 +18,8 @@ export const UA: ResourceLanguage = {
       create: "Створити",
       upload: "Завантажити",
       save: "Зберегти",
+      update: "Оновити",
+      delete: "Видалити",
     },
     login: {
       login: "Логін",
@@ -157,9 +159,9 @@ export const UA: ResourceLanguage = {
         pause: "Пауза",
         paymentsSection: {
           payments: "Платіжні методи",
-          default: "Картка по замовчуванню",
-          delete: "Видалити",
-          makeDefault: "Зробити картку по замовчуванню",
+          creditCards: "Кредитні картки",
+          managePayments: 'Змінити "Платіжні методи"',
+          addCard: "Додати картку",
         },
         popover: {
           email: "Емейл",
@@ -177,6 +179,7 @@ export const UA: ResourceLanguage = {
             "Видалити поточний метод платежу? Ви не зможете його використати для оплати підписки.",
           setDefault: "Зробити картку по замовчуванню",
           addCardLabel: "Додати новий метод платежу",
+          default: "Поточна",
         },
         tabs: {
           workspace: "Середовище",
@@ -215,6 +218,8 @@ export const UA: ResourceLanguage = {
         status: "Статус",
         activeTill: "Активна до",
         invitations: "Запрошення",
+        actions: "Дії",
+        image: "Фото",
       },
       cabinet: {
         cabinet: "Кабінет",
