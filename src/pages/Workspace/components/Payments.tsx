@@ -65,11 +65,11 @@ export const Payments = () => {
         <div className="payment-methods__control">
           <div>
             <Typography variant="h6">
-              <AddCardIcon /> Credit card(s)
+              <AddCardIcon /> {t("creditCards")}
             </Typography>
           </div>
           <div>
-            <Typography variant="body1">Manage Your Payment Methods</Typography>
+            <Typography variant="body1">{t("managePayments")}</Typography>
           </div>
 
           <Button
@@ -77,7 +77,7 @@ export const Payments = () => {
             sx={{ marginTop: 3, marginBottom: 3 }}
             variant="contained"
           >
-            Add credit card
+            {t("addCard")}
           </Button>
         </div>
         <div className="payment-methods__list">

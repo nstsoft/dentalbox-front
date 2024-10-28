@@ -159,9 +159,9 @@ export const EN: ResourceLanguage = {
         pause: "Pause",
         paymentsSection: {
           payments: "Payment methods",
-          default: "Default card",
-          delete: "Remove card",
-          makeDefault: "Make default",
+          creditCards: "Credit card(s)",
+          managePayments: 'Manage Your Payment Methods',
+          addCard: "Add credit card",
         },
         popover: {
           email: "Email",
@@ -185,6 +185,7 @@ export const EN: ResourceLanguage = {
             "Are you sure you want to remove this payment method?",
           setDefault: "Make default",
           addCardLabel: "Add a new payment method",
+          default: "Default card",
         },
       },
       staff: {
