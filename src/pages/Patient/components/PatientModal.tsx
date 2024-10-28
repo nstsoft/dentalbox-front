@@ -1,4 +1,4 @@
-import { useCreatePatientMutation } from "@api";
+import { useCreatePatientMutation, useUpdatePatientMutation } from "@api";
 import { VisuallyHiddenInput } from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -20,12 +20,13 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-import { Sex } from "@types";
+import { Patient, Sex } from "@types";
 
 type PatientModalProps = {
   open: boolean;
   onUpdate: () => void;
   onClose: () => void;
+  selectedPatient: Patient | null;
 };
 
 type PatientForm = {
@@ -43,17 +44,18 @@ export const PatientModal: FC<PatientModalProps> = ({
   open,
   onUpdate,
   onClose,
+  selectedPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const [patientForm, setPatientForm] = useState<PatientForm>({
-    name: "",
-    secondName: "",
-    surname: "",
-    sex: Sex.male,
-    dob: "",
-    email: "",
-    phone: "+380",
-    address: "",
+    name: selectedPatient?.name || "",
+    secondName: selectedPatient?.secondName || "",
+    surname: selectedPatient?.surname || "",
+    sex: (selectedPatient?.sex as Sex) || Sex.male,
+    dob: selectedPatient?.dob || "",
+    email: selectedPatient?.email || "",
+    phone: selectedPatient?.phone || "+380",
+    address: selectedPatient?.address || "",
   });
   const [phoneError, setPhoneError] = useState<string>();
   const [emailError, setEmailError] = useState<string>();
@@ -62,6 +64,8 @@ export const PatientModal: FC<PatientModalProps> = ({
   const [patientImage, setPatientImage] = useState<File>();
 
   const [createPatient, { isSuccess, error }] = useCreatePatientMutation();
+  const [updatePatient, { isSuccess: isUpdateSuccess, error: updateError }] =
+    useUpdatePatientMutation();
 
   const fieldsMap = [
     {
@@ -163,22 +167,30 @@ export const PatientModal: FC<PatientModalProps> = ({
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      createPatient({ ...patientForm, image: patientImage });
+      if (selectedPatient) {
+        updatePatient({
+          ...patientForm,
+          image: patientImage,
+          _id: selectedPatient._id,
+        });
+      } else {
+        createPatient({ ...patientForm, image: patientImage });
+      }
     }
   };
 
   useEffect(() => {
-    if (error) {
-      setResponseError((error as any).message);
+    if (error || updateError) {
+      setResponseError((error as any || updateError as any).message);
     }
-  }, [error]);
+  }, [error, updateError]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isUpdateSuccess) {
       onUpdate();
       onClose();
     }
-  }, [isSuccess, onClose, onUpdate]);
+  }, [isSuccess, onClose, onUpdate, isUpdateSuccess]);
 
   return (
     <Modal
@@ -315,7 +327,9 @@ export const PatientModal: FC<PatientModalProps> = ({
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">
-            {t("create", { keyPrefix: "buttons" })}
+            {selectedPatient
+              ? t("update", { keyPrefix: "buttons" })
+              : t("create", { keyPrefix: "buttons" })}
           </Button>
           {Array.isArray(responseError) ? (
             responseError.map((error) => (

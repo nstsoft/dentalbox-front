@@ -57,7 +57,7 @@ export const patientApi = createApi({
           JSON.stringify({ ...body, dob: body.dob.toString() })
         );
 
-        return { body: formData, url: `/patient${body._id}`, method: "PATCH" };
+        return { body: formData, url: `/patient/${body._id}`, method: "PATCH" };
       },
     }),
     getPatientSummary: builder.query<PatientSummaryListItem[], void>({

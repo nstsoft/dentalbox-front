@@ -246,6 +246,7 @@ export const EN: ResourceLanguage = {
         imageSuccess: "Image successfully uploaded",
         sex: "Sex",
         sexItems: { male: "Male", female: "Female" },
+        actions: "Actions",
       },
       patientCard: {
         patientCard: "Patient Card",

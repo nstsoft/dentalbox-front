@@ -12,6 +12,7 @@ export const PatientsPage = () => {
   const [search, setSearch] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   const [paginationModel, setPaginationModel] = useState({
     skip: 0,
@@ -35,21 +36,30 @@ export const PatientsPage = () => {
           {t("createPatient")}
         </Button>
       </Box>
-      <PatientModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onUpdate={() => refetch()}
-      />
+      {isModalOpen && (
+        <PatientModal
+          open={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedPatient(null);
+          }}
+          onUpdate={() => refetch()}
+          selectedPatient={selectedPatient}
+        />
+      )}
       <GridSearchFilter
         search={search}
         setSearch={setSearch}
         applyFilters={() => setSearchValue(search)}
       />
       <PatientsTable
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
         data={data}
         isLoading={isLoading}
         paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
+        onSelectPatient={(patient) => setSelectedPatient(patient)}
       />
     </>
   );

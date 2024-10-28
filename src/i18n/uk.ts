@@ -246,6 +246,7 @@ export const UA: ResourceLanguage = {
         imageSuccess: "Фото успішно завантажене",
         sex: "Стать",
         sexItems: { male: "Чоловік", female: "Жінка" },
+        actions: "Дії",
       },
       patientCard: {
         patientCard: "Картка пацієнта",
