@@ -41,7 +41,7 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
   image?: string;
-  dob?: Date;
+  dob?: string;
   role: UserRole;
   sex: Sex;
 };
@@ -78,6 +78,16 @@ export type UserForm = {
   phone: string;
   dob: string;
   address?: string;
+};
+
+export type StaffForm = {
+  _id: string;
+  name: string;
+  secondName: string;
+  surname: string;
+  dob: string;
+  roles: string[];
+  image?: File;
 };
 
 export type UserSummaryListItem = Pick<

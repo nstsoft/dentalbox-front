@@ -4,6 +4,7 @@ import type {
   Workspace,
   UserInvitation,
   UserSummaryListItem,
+  StaffForm,
 } from "@types";
 import { USER_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
@@ -90,6 +91,21 @@ export const userApi = createApi({
       query: () => "/user/summary",
       providesTags: () => [{ type: USER_TAG.USER_SUMMARY }],
     }),
+    updateUser: builder.mutation<unknown, StaffForm>({
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        formData.append("data", JSON.stringify({ ...body }));
+
+        return { body: formData, url: "/user", method: "PATCH" };
+      },
+    }),
+    deleteUser: builder.mutation<void, string>({
+      query: (userId) => ({ url: `/user/${userId}`, method: "DELETE" }),
+    }),
   }),
 });
 
@@ -102,6 +118,8 @@ export const {
   useLazyAcceptInvitationQuery,
   useGetInvitationsQuery,
   useGetUserSummaryQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = userApi;
 
 export default { userApi };

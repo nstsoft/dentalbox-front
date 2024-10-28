@@ -3,25 +3,46 @@ import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { User } from "@types";
-import { type Dispatch, type SetStateAction, type FC } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  type FC,
+  useState,
+  useEffect,
+} from "react";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
 import moment from "moment/min/moment-with-locales";
 import { isMobile } from "react-device-detect";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { StaffModal } from "./modal";
+import { useDeleteUserMutation } from "@api";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
   isLoading: boolean;
   data?: { count: number; data: User[] };
   paginationModel: { skip: number; limit: number };
+  refetch: () => void;
+  onReset: () => void;
 };
 
 export const UsersTable: FC<Props> = ({
   setPaginationModel,
   isLoading,
   data,
+  refetch,
+  onReset
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [responseError, setResponseError] = useState<string | string[]>();
+  const [deleteUser, { isSuccess, error }] = useDeleteUserMutation();
 
   const mobileColumns: GridColDef<User>[] = [
     {
@@ -68,7 +89,57 @@ export const UsersTable: FC<Props> = ({
       renderCell: ({ row }) => moment(row.dob).format("DD.MM.YYYY"),
     },
     { field: "isVerified", headerName: t("verification"), width: 150 },
+    {
+      field: "actions",
+      headerName: t("actions"),
+      width: 80,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+              onClick={(event) => {
+                setAnchorEl(event.currentTarget);
+                setSelectedUser(params.row);
+              }}
+            >
+              <MoreVertIcon />
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => {
+                setAnchorEl(null);
+                setSelectedUser(null);
+              }}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={() => setIsModalOpen(true)}>
+                {t("update", { keyPrefix: "buttons" })}
+              </MenuItem>
+              <MenuItem onClick={() => deleteUser(selectedUser?._id ?? "")}>
+                {t("delete", { keyPrefix: "buttons" })}
+              </MenuItem>
+            </Menu>
+          </>
+        );
+      },
+    },
   ];
+
+  useEffect(() => {
+    if (error) {
+      setResponseError((error as any).message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      onReset();
+    }
+  }, [isSuccess, onReset]);
+
   if (!data) return null;
 
   return (
@@ -85,6 +156,14 @@ export const UsersTable: FC<Props> = ({
         loading={isLoading}
         onPagination={setPaginationModel}
       />
+      {isModalOpen && (
+        <StaffModal
+          selectedUser={selectedUser}
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onUpdate={() => refetch()}
+        />
+      )}
     </div>
   );
 };

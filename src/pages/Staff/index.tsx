@@ -51,7 +51,7 @@ export const StaffPage = () => {
     limit: 20,
   });
 
-  const { isLoading, data } = useGetUserListQuery({
+  const { isLoading, data, refetch } = useGetUserListQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
     filter: { roles, verified, search },
@@ -76,6 +76,14 @@ export const StaffPage = () => {
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const resetFilters = () => {
+    setRole([]);
+    setIsVerified(undefined);
+    setSearch("");
+    setPaginationModel({ skip: 0, limit: 20 });
+    refetch();
   };
 
   if (!data || !invitationData) return null;
@@ -115,6 +123,8 @@ export const StaffPage = () => {
               isLoading={isLoading}
               paginationModel={paginationModel}
               setPaginationModel={setPaginationModel}
+              refetch={refetch}
+              onReset={resetFilters}
             />
           )}
         </CustomTabPanel>

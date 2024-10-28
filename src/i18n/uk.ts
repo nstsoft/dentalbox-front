@@ -18,6 +18,8 @@ export const UA: ResourceLanguage = {
       create: "Створити",
       upload: "Завантажити",
       save: "Зберегти",
+      update: "Оновити",
+      delete: "Видалити",
     },
     login: {
       login: "Логін",
@@ -215,6 +217,8 @@ export const UA: ResourceLanguage = {
         status: "Статус",
         activeTill: "Активна до",
         invitations: "Запрошення",
+        actions: "Дії",
+        image: "Фото",
       },
       cabinet: {
         cabinet: "Кабінет",

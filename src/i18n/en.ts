@@ -18,6 +18,8 @@ export const EN: ResourceLanguage = {
       create: "Create",
       upload: "Upload",
       save: "Save",
+      update: "Update",
+      delete: "Delete",
     },
     login: {
       login: "Login",
@@ -215,6 +217,8 @@ export const EN: ResourceLanguage = {
         status: "Status",
         activeTill: "Active till",
         invitations: "Invitations",
+        actions: "Actions",
+        image: "Image",
       },
       cabinet: {
         cabinet: "Cabinet",
