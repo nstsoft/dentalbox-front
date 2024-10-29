@@ -7,6 +7,7 @@ import {
   useLazyGetMyWorkspacesQuery,
   useLazyGetMySubscriptionQuery,
   useLazyGetWorkspaceMetadataQuery,
+  useLazyGetServicesQuery,
 } from "@api";
 import { useLocalStorage, WORKSPACE, useAuth, useSideMenu } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
@@ -35,6 +36,7 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   const [getMyWorkspaces, { data: workspaces, status: statusWorkspaces }] =
     useLazyGetMyWorkspacesQuery();
   const [getMetadata] = useLazyGetWorkspaceMetadataQuery();
+  const [getServices] = useLazyGetServicesQuery();
 
   const [
     getMySubscription,
@@ -60,8 +62,9 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
     if (statusWorkspaces == "uninitialized") {
       getMyWorkspaces();
       getMetadata();
+      getServices();
     }
-  }, [getMyWorkspaces, statusWorkspaces, workspace, getMetadata]);
+  }, [getMyWorkspaces, statusWorkspaces, workspace, getMetadata, getServices]);
 
   useEffect(() => {
     if (!availableWorkspaces.length && workspaces) {

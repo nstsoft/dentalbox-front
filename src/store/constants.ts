@@ -27,6 +27,9 @@ export enum WORKSPACE_TAG {
 export enum METADATA_TAG {
   METADATA = "METADATA",
 }
+export enum SERVICE_TAG {
+  SERVICE = "SERVICE",
+}
 
 export enum PAYMENT_TAG {
   PAYMENT = "PAYMENT",
@@ -72,6 +75,7 @@ export enum REDUCER {
   APPOINTMENT = "APPOINTMENT",
   CHAIR = "CHAIR",
   METADATA = "METADATA",
+  SERVICE = "SERVICE",
 }
 
 export enum CACHE_KEYS {

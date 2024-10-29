@@ -13,6 +13,7 @@ import {
   appointmentApi,
   chairApi,
   metadataApi,
+  serviceApi,
 } from "./api";
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
     [appointmentApi.reducerPath]: appointmentApi.reducer,
     [chairApi.reducerPath]: chairApi.reducer,
     [metadataApi.reducerPath]: metadataApi.reducer,
+    [serviceApi.reducerPath]: serviceApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -45,6 +47,7 @@ export const store = configureStore({
       appointmentApi.middleware,
       chairApi.middleware,
       metadataApi.middleware,
+      serviceApi.middleware,
     ]),
 });
 

@@ -7,6 +7,7 @@ import {
   SubscriptionInfo,
   WorkspaceInfo,
   InvoiceList,
+  Services,
 } from "./components";
 import { UserRole } from "@types";
 import { useState } from "react";
@@ -45,7 +46,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const WorkspacePage = () => {
   const { workspace, user } = useAuth();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(4);
   const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -60,6 +61,7 @@ export const WorkspacePage = () => {
         t("tabs.subscription"),
         t("tabs.paymentMethods"),
         t("tabs.invoices"),
+        "Сервіси",
       ]);
     }
 
@@ -99,39 +101,12 @@ export const WorkspacePage = () => {
             <CustomTabPanel value={activeTab} index={3}>
               <InvoiceList />
             </CustomTabPanel>
+            <CustomTabPanel value={activeTab} index={4}>
+              <Services />
+            </CustomTabPanel>
           </>
         )}
       </Box>
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          width: "100%",
-          gap: "24px",
-          marginBottom: "20px",
-          flexWrap: "wrap",
-        }}
-      >
-        <WorkspaceInfo workspace={workspace} />
-        <SubscriptionInfo />
-      </Box>
-      {user && [(UserRole.admin, UserRole.owner)].includes(user.role) && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignContent: "flex-start",
-            alignItems: "flex-start",
-            width: "100%",
-            gap: "24px",
-            marginBottom: "20px",
-            flexWrap: "wrap",
-            flexDirection: "row",
-          }}
-        >
-          <Payments />
-        </Box>
-      )} */}
     </Box>
   );
 };
