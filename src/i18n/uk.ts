@@ -279,6 +279,10 @@ export const UA: ResourceLanguage = {
         sexItems: { male: "Чоловік", female: "Жінка" },
         dentalMap: {
           toothNotes: "Нотатки до зуба {{tooth}}",
+          root: "Корінь",
+          crown: "Коронка",
+          toothColor: "Колір зуба:",
+          toothColorName: "Назва кольору",
         },
       },
       calendar: {

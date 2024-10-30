@@ -12,12 +12,29 @@ export const metadataApi = createApi({
       query: () => `/metadata`,
       providesTags: () => [{ type: METADATA_TAG.METADATA }],
     }),
+    updateMetadata: builder.mutation<
+      void,
+      {
+        dentalMapColors: Partial<{
+          root: { color: string; name: string }[];
+          crown: { color: string; name: string }[];
+        }>;
+      }
+    >({
+      query: (body) => ({
+        url: `/metadata`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: [METADATA_TAG.METADATA]
+    }),
   }),
 });
 
 export const {
   useLazyGetWorkspaceMetadataQuery,
   useGetWorkspaceMetadataQuery,
+  useUpdateMetadataMutation,
 } = metadataApi;
 
 export default { metadataApi };

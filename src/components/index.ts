@@ -7,3 +7,4 @@ export * from "./SideMenu";
 export * from "./Table";
 export * from "./GridSearchFilter";
 export * from "./Notes";
+export * from './ToothColorBox';

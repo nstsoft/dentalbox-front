@@ -24,7 +24,7 @@ import SkullBottom from "@images/backgrounds/skull-bottom.png";
 import SkullTop from "@images/backgrounds/skull-top.png";
 import Button from "@mui/material/Button";
 import { isMobile } from "react-device-detect";
-import { Notes } from "@components";
+import { Notes, ToothColorBox } from "@components";
 import { QuarterLayout } from "./components";
 import {
   LeftUpToothKeys,
@@ -308,6 +308,7 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
             toothDescriptionChanged(description);
           }}
         />
+        <ToothColorBox dentalMapColors={metadata?.dentalMapColors} isEditable />
       </div>
     </div>
   );
