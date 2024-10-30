@@ -160,7 +160,7 @@ export const EN: ResourceLanguage = {
         paymentsSection: {
           payments: "Payment methods",
           creditCards: "Credit card(s)",
-          managePayments: 'Manage Your Payment Methods',
+          managePayments: "Manage Your Payment Methods",
           addCard: "Add credit card",
         },
         popover: {
@@ -186,6 +186,23 @@ export const EN: ResourceLanguage = {
           setDefault: "Make default",
           addCardLabel: "Add a new payment method",
           default: "Default card",
+        },
+        services: {
+          addService: "Add new service item",
+          inputs: {
+            name: "Service",
+            paragraph: "Paragraph",
+            price: "Price",
+            notes: "Notes",
+            group: "Group",
+          },
+          errors: {
+            name: "Fill name",
+            paragraph: "Fill paragraph",
+            price: "Fill price",
+            group: "Fill group",
+          },
+          deleteService: "Delete service?",
         },
       },
       staff: {

@@ -121,12 +121,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={onClose}>
       <Box
         component="form"
         onSubmit={submitFormHandler}

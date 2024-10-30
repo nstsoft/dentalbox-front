@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import type { Service } from "@types";
 import { SERVICE_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
+import { invalid } from "moment";
 
 export const serviceApi = createApi({
   reducerPath: REDUCER.SERVICE,
@@ -11,6 +12,13 @@ export const serviceApi = createApi({
     getServices: builder.query<Service[], void>({
       query: () => `/service`,
       providesTags: () => [{ type: SERVICE_TAG.SERVICE }],
+    }),
+    deleteServiceItem: builder.mutation<unknown, string>({
+      query: (id) => ({
+        url: `/service/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [SERVICE_TAG.SERVICE],
     }),
     addServiceItem: builder.mutation<void, Omit<Service, "_id" | "workspace">>({
       query: (body) => ({ url: "/service", method: "POST", body }),
@@ -35,6 +43,7 @@ export const {
   useAddServiceItemMutation,
   useLazyGetServicesQuery,
   useUpdateServiceItemMutation,
+  useDeleteServiceItemMutation,
 } = serviceApi;
 
 export default { serviceApi };

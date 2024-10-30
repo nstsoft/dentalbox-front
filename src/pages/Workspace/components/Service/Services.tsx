@@ -1,17 +1,17 @@
 import Button from "@mui/material/Button";
+import { CustomModal } from "@elements";
 import Box from "@mui/material/Box";
 import { useAddServiceItemMutation, useGetServicesQuery } from "@api";
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useState } from "react";
 import { Service } from "@types";
-import { AccordionItem } from "./components";
+import { AccordionItem, AddService } from "./components";
+import { useTranslation } from "react-i18next";
 
 export const Services = () => {
   const [create] = useAddServiceItemMutation();
   const { data } = useGetServicesQuery();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useTranslation("", { keyPrefix: "pages.workspace.services" });
 
   const groups =
     data?.reduce(
@@ -24,9 +24,21 @@ export const Services = () => {
 
   return (
     <Box sx={{ maxWidth: 1000 }}>
-      {Object.entries(groups).map(([group, services]) => (
-        <AccordionItem key={group} title={group} services={services} />
-      ))}
+      <CustomModal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <AddService
+          onUpdate={(serviceItem) => create(serviceItem)}
+          groupItems={Object.keys(groups)}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </CustomModal>
+      <Box>
+        <Button onClick={() => setIsModalOpen(true)}>{t("addService")}</Button>
+      </Box>
+      <Box>
+        {Object.entries(groups).map(([group, services]) => (
+          <AccordionItem key={group} title={group} services={services} />
+        ))}
+      </Box>
     </Box>
   );
 };

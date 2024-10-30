@@ -187,6 +187,23 @@ export const UA: ResourceLanguage = {
           paymentMethods: "Платіжні методи",
           invoices: "Інвойси",
         },
+        services: {
+          addService: "Додати сервіс",
+          inputs: {
+            name: "Послуга",
+            paragraph: "Парагрф",
+            price: "Ціна",
+            notes: "Нотатки",
+            group: "Група",
+          },
+          errors: {
+            name: "Додайте послугу",
+            paragraph: "Додайте параграф",
+            price: "Додайте ціну",
+            group: "Додайте групу",
+          },
+          deleteService: "Видалити сервіс?",
+        },
       },
       staff: {
         staff: "Персонал",

@@ -28,6 +28,7 @@ import { SvgIcon } from "@mui/material";
 import { GiNurseFemale } from "react-icons/gi";
 import { FaClinicMedical } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { CustomModal } from "@elements";
 
 type CalendarEvent = Omit<
   AppointmentListItem,
@@ -133,28 +134,13 @@ export const CalenderModal: FC<CalendarModalProps> = ({
     !doctor || !cabinet || !patient || !status || !start || !end;
 
   return (
-    <Modal
+    <CustomModal
       open={open}
       onClose={onClose}
       className="modal-edit-appointment"
       sx={{ paddingTop: "30px" }}
     >
-      <Box
-        component="form"
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          maxHeight: "90vh",
-          bgcolor: "background.paper",
-          overflow: "auto",
-          boxShadow: 24,
-          borderRadius: "8px",
-          p: 2,
-        }}
-      >
+      <Box>
         <div className="modal-control-panel">
           {isEditingMode ? (
             <Button
@@ -306,6 +292,6 @@ export const CalenderModal: FC<CalendarModalProps> = ({
           </Button>
         </Box>
       </Box>
-    </Modal>
+    </CustomModal>
   );
 };

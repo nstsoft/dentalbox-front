@@ -8,3 +8,4 @@ export * from "./VisuallyHiddenInput";
 export * from "./TextArea";
 export * from "./ConfirmPopover";
 export * from "./IconButton";
+export * from "./Modal";
