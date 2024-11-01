@@ -41,6 +41,7 @@ type Person = {
   secondName: string;
   email: string;
   phone: string;
+  image?: string;
 };
 
 export type AppointmentListItem = Omit<

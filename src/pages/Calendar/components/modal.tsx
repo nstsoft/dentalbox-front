@@ -1,10 +1,8 @@
 import { type FC, useState, useEffect, useMemo } from "react";
 import moment, { Moment } from "moment";
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import ChairAltIcon from "@mui/icons-material/ChairAlt";
 import { AppointmentListItem } from "@types";
-import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
@@ -155,14 +153,6 @@ export const CalenderModal: FC<CalendarModalProps> = ({
               <EditIcon />
             </Button>
           )}
-          <Button
-            onClick={() => {
-              setIsEditingMode(false);
-              onClose();
-            }}
-          >
-            <CloseIcon />
-          </Button>
         </div>
         <Box>
           <AppointmentTimeRangeInput

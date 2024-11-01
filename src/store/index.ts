@@ -14,6 +14,7 @@ import {
   chairApi,
   metadataApi,
   serviceApi,
+  historyApi,
 } from "./api";
 
 export const store = configureStore({
@@ -31,6 +32,7 @@ export const store = configureStore({
     [chairApi.reducerPath]: chairApi.reducer,
     [metadataApi.reducerPath]: metadataApi.reducer,
     [serviceApi.reducerPath]: serviceApi.reducer,
+    [historyApi.reducerPath]: historyApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -48,6 +50,7 @@ export const store = configureStore({
       chairApi.middleware,
       metadataApi.middleware,
       serviceApi.middleware,
+      historyApi.middleware,
     ]),
 });
 

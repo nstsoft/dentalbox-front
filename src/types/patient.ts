@@ -10,11 +10,11 @@ export type Patient = {
   phone: string;
   email: string;
   address: string;
-  image?: File | string;
+  image?: string;
   notes?: string;
 };
 
 export type PatientSummaryListItem = Pick<
   Patient,
-  "name" | "surname" | "secondName" | "email" | "phone" | "_id"
+  "name" | "surname" | "secondName" | "email" | "phone" | "_id" | "image"
 >;

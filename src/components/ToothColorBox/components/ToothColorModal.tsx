@@ -4,10 +4,10 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CustomModal } from "@elements";
 
 type Props = {
   isOpen: boolean;
@@ -18,31 +18,12 @@ type Props = {
 export const ToothColorModal: FC<Props> = ({ isOpen, onClose, onCreate }) => {
   const [color, setColor] = useState({ name: "", color: "#000000" });
   const { t } = useTranslation("", {
-    keyPrefix: "pages.patientCard.dentalMap",
+    keyPrefix: "components.toothMapLegend",
   });
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
-      <Box
-        component="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onCreate(color);
-        }}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          maxHeight: "90vh",
-          bgcolor: "background.paper",
-          overflow: "auto",
-          boxShadow: 24,
-          borderRadius: "8px",
-          p: 4,
-        }}
-      >
+    <CustomModal open={isOpen} onClose={onClose}>
+      <Box className="add-tooth-color-modal">
         <FormControl fullWidth sx={{ mb: 2 }}>
           <FormLabel>{t("toothColor")}</FormLabel>
           <Input
@@ -52,11 +33,10 @@ export const ToothColorModal: FC<Props> = ({ isOpen, onClose, onCreate }) => {
             onChange={(e) =>
               setColor((prev) => ({ ...prev, color: e.target.value }))
             }
-            sx={{ mt: 0 }}
           />
         </FormControl>
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel htmlFor={color.name}>{t("toothColorName")}</InputLabel>
+          <InputLabel htmlFor={color.name}>{t("itemName")}</InputLabel>
           <OutlinedInput
             id={color.name}
             type="text"
@@ -67,17 +47,23 @@ export const ToothColorModal: FC<Props> = ({ isOpen, onClose, onCreate }) => {
             value={color.name}
             color="primary"
             name={color.name}
-            label={t("toothColorName")}
+            label={t("itemName")}
             sx={{ ariaLabel: color.name }}
           />
         </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" type="submit">
+          <Button
+            onClick={() => {
+              onCreate(color);
+            }}
+            variant="contained"
+            type="submit"
+          >
             {t("create", { keyPrefix: "buttons" })}
           </Button>
         </Box>
       </Box>
-    </Modal>
+    </CustomModal>
   );
 };

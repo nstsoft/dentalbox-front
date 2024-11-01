@@ -26,6 +26,7 @@ import {
 import {
   useUpsertAppointmentMutation,
   useDeleteAppointmentMutation,
+  useGetWorkspaceMetadataQuery,
 } from "@api";
 import { Props } from "../types";
 import { CalenderModal } from "./modal";
@@ -55,7 +56,7 @@ export const CalendarResource: FC<Props> = ({
   const { defaultDates, views, scrollToTime } = useMemo(
     () => ({
       defaultDates: moment().toDate(),
-      views: ["day", "week", "agenda"] as View[],
+      views: ["day", "week"] as View[],
       scrollToTime: new Date(1972, 0, 1, 8),
     }),
     []
@@ -69,6 +70,8 @@ export const CalendarResource: FC<Props> = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableProps, setEditableProps] = useState<EditableProps>([]);
+
+  const { data: workspaceMetadata } = useGetWorkspaceMetadataQuery();
 
   useEffect(() => {
     if (events) {
@@ -192,8 +195,6 @@ export const CalendarResource: FC<Props> = ({
       Object.assign(val, { chair: chairsMap.get(data.chair) });
     }
 
-    console.log(val);
-
     setSelectedEvent((prev) => {
       if (!prev) return prev;
       return {
@@ -256,9 +257,13 @@ export const CalendarResource: FC<Props> = ({
     });
   };
 
+  if (!workspaceMetadata) {
+    return null;
+  }
+
   return (
     <Fragment>
-      <div className="height600 big-calendar">
+      <div className="big-calendar">
         <DragAndDropCalendar
           defaultDate={defaultDates}
           defaultView={Views.DAY}
@@ -281,8 +286,8 @@ export const CalendarResource: FC<Props> = ({
           resourceTitleAccessor={(resource) =>
             (resource as { resourceTitle: string }).resourceTitle
           }
-          min={moment().hour(6).minute(0).toDate()}
-          max={moment().hour(23).minute(59).toDate()}
+          min={moment(workspaceMetadata.workingHours.start, "HH:mm").toDate()}
+          max={moment(workspaceMetadata.workingHours.end, "HH:mm").toDate()}
           components={{ event: CustomEvent }}
           messages={getCalendarMessages(t)}
           onNavigate={onNavigate}

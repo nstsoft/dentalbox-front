@@ -1,6 +1,6 @@
 import { useGetPatientByIdQuery, useUpdatePatientMutation } from "@api";
 import { useParams } from "react-router-dom";
-import { DentalMap, PatientInfo } from "./components";
+import { DentalMap, PatientInfo, CaseHistory } from "./components";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,7 @@ import { Notes } from "@components";
 import { useEffect, useState } from "react";
 import { Patient } from "@types";
 import { Tab, Tabs } from "@mui/material";
-import { CustomTabPanel } from "../../components/CustomTabPanel";
+import { CustomTabPanel } from "../../components";
 
 export const PatientCardPage = () => {
   const { patientId } = useParams();
@@ -25,15 +25,17 @@ export const PatientCardPage = () => {
     }
   }, [data]);
 
-  const onConfirmHandler = () => {
-    updatePatient(patient!);
-  };
-
-  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   if (!patient || !patientId || !data) return null;
+  const tabs = [
+    { label: t("tabs.map"), component: <DentalMap patientId={patientId} /> },
+    {
+      label: t("tabs.history"),
+      component: <CaseHistory patientId={patientId} />,
+    },
+    { label: t("tabs.plan"), component: "dddd" },
+    { label: t("tabs.periodentalCard"), component: "dddd" },
+    { label: t("tabs.files"), component: "dddd" },
+  ];
 
   return (
     <Box>
@@ -50,24 +52,22 @@ export const PatientCardPage = () => {
           value={patient?.notes ?? ""}
           setValue={(value) => setPatient({ ...patient!, notes: value })}
           label={t("notes")}
-          onConfirm={onConfirmHandler}
+          onConfirm={() => updatePatient(patient)}
         />
       </Box>
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="patient card tabs"
-          >
-            <Tab label={"Зуби"} />
-            <Tab label={"Ще щось"} />
+          <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}>
+            {tabs.map(({ label }) => (
+              <Tab key={label} label={label} />
+            ))}
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-          <DentalMap patientId={patientId} />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}></CustomTabPanel>
+        {tabs.map((tab, index) => (
+          <CustomTabPanel key={tab.label} value={value} index={index}>
+            {tab.component}
+          </CustomTabPanel>
+        ))}
       </Box>
     </Box>
   );

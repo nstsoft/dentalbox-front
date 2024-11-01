@@ -282,7 +282,14 @@ export const EN: ResourceLanguage = {
           root: "Root",
           crown: "Crown",
           toothColor: "Tooth Color:",
-          toothColorName: 'Tooth Color Name'
+          toothColorName: "Tooth Color Name",
+        },
+        tabs: {
+          map: "Dental Map",
+          history: "Disease history",
+          plan: "Treatment plan",
+          periodentalCard: "Periodental card",
+          files: "Files",
         },
       },
       calendar: {
@@ -305,6 +312,15 @@ export const EN: ResourceLanguage = {
           in_cabinet: "In cabinet",
           finished: "Finished",
         },
+      },
+    },
+    components: {
+      toothMapLegend: {
+        toothColor: "Tooth color",
+        itemName: "Item name",
+        create: "Create",
+        root: "Root",
+        crown: "Crown",
       },
     },
   },

@@ -23,7 +23,7 @@ export const CustomModal: FC<Props> = ({ children, ...props }) => {
           overflow: "auto",
           boxShadow: 24,
           borderRadius: "8px",
-          p: 2,
+          p: 1,
         }}
       >
         <Box
@@ -31,10 +31,11 @@ export const CustomModal: FC<Props> = ({ children, ...props }) => {
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
+            borderBottom: "1px solid #e0e0e0",
           }}
         >
           <IconButton
-            component="span"
+            sx={{ padding: 0 }}
             onClick={(e) => props?.onClose?.(e, "backdropClick")}
           >
             <CloseIcon />

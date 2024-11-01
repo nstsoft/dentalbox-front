@@ -92,5 +92,12 @@ export type StaffForm = {
 
 export type UserSummaryListItem = Pick<
   User,
-  "name" | "surname" | "secondName" | "email" | "phone" | "_id" | "role"
+  | "name"
+  | "surname"
+  | "secondName"
+  | "email"
+  | "phone"
+  | "_id"
+  | "role"
+  | "image"
 >;

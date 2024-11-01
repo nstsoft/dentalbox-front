@@ -284,6 +284,13 @@ export const UA: ResourceLanguage = {
           toothColor: "Колір зуба:",
           toothColorName: "Назва кольору",
         },
+        tabs: {
+          map: "Донтальна карта",
+          history: "Історія хвороби",
+          plan: "План лікування",
+          periodentalCard: "Періодентальна карта",
+          files: "Файли",
+        },
       },
       calendar: {
         messages: {
@@ -305,6 +312,15 @@ export const UA: ResourceLanguage = {
           in_cabinet: "На прийомі",
           finished: "Прийом закінено",
         },
+      },
+    },
+    components: {
+      toothMapLegend: {
+        toothColor: "Колір",
+        itemName: "Назва положення",
+        create: "Створити",
+        root: "Корінь",
+        crown: "Коронка",
       },
     },
   },
