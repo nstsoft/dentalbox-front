@@ -12,6 +12,9 @@ import {
 import { UserRole } from "@types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ToothColorBox } from "@components";
+import { useGetWorkspaceMetadataQuery } from "@api";
+import { Card } from "@elements";
 
 const panelStyles = {
   display: "flex",
@@ -48,6 +51,7 @@ export const WorkspacePage = () => {
   const { workspace, user } = useAuth();
   const [activeTab, setActiveTab] = useState(4);
   const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
+  const { data: metadata } = useGetWorkspaceMetadataQuery();
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -85,6 +89,14 @@ export const WorkspacePage = () => {
         <CustomTabPanel value={activeTab} index={0}>
           <Box sx={panelStyles}>
             <WorkspaceInfo workspace={workspace} />
+          </Box>
+          <Box>
+            <Card sx={{ position: "relative" }}>
+              <ToothColorBox
+                dentalMapColors={metadata?.dentalMapColors}
+                isEditable
+              />
+            </Card>
           </Box>
         </CustomTabPanel>
 
