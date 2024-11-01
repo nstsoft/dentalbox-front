@@ -6,19 +6,32 @@ import { CabinetModal, CabinetsTable } from "./components";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { GridSearchFilter } from "@components";
+import { CabinetForm } from "./types";
+
+const initCabinet = {
+  name: "",
+  phone: "+380",
+  address: "",
+  notes: "",
+  chairs: [""],
+  image: ''
+};
 
 export const CabinetPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
   const [search, setSearch] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cabinetForm, setCabinetForm] = useState<
+    CabinetForm & { _id?: string }
+  >(initCabinet);
 
   const [paginationModel, setPaginationModel] = useState({
     skip: 0,
     limit: 20,
   });
 
-  const { status, isLoading, data, refetch } = useGetMyCabinetsQuery({
+  const { status, isLoading, data } = useGetMyCabinetsQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
     filter: {
@@ -37,9 +50,10 @@ export const CabinetPage = () => {
         </Button>
       </Box>
       <CabinetModal
+        cabinetForm={cabinetForm}
+        setCabinetForm={setCabinetForm}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onUpdate={() => refetch()}
       />
       <GridSearchFilter
         search={search}
@@ -49,8 +63,9 @@ export const CabinetPage = () => {
       <CabinetsTable
         data={data}
         isLoading={isLoading}
-        paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
+        setIsModalOpen={setIsModalOpen}
+        onSelectCabinet={setCabinetForm}
       />
     </>
   );

@@ -15,8 +15,6 @@ type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
   isLoading: boolean;
   data?: { count: number; data: Patient[] };
-  paginationModel: { skip: number; limit: number };
-  isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
   onSelectPatient: Dispatch<
     SetStateAction<Omit<Patient, "_id"> & { _id?: string | undefined }>

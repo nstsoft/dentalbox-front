@@ -40,6 +40,7 @@ export const patientApi = createApi({
 
         return { body: formData, url: "/patient", method: "POST" };
       },
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
     }),
     getPatientById: builder.query<Patient, string>({
       query: (id) => `/patient/${id}`,
@@ -59,6 +60,7 @@ export const patientApi = createApi({
 
         return { body: formData, url: `/patient/${body._id}`, method: "PATCH" };
       },
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
     }),
     getPatientSummary: builder.query<PatientSummaryListItem[], void>({
       query: () => "/patient/summary",

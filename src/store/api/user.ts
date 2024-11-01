@@ -102,9 +102,11 @@ export const userApi = createApi({
 
         return { body: formData, url: "/user", method: "PATCH" };
       },
+      invalidatesTags: [USER_TAG.USER_LIST]
     }),
     deleteUser: builder.mutation<void, string>({
       query: (userId) => ({ url: `/user/${userId}`, method: "DELETE" }),
+      invalidatesTags: [USER_TAG.USER_LIST]
     }),
   }),
 });

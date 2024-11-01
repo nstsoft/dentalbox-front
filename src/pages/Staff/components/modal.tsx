@@ -8,7 +8,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, type FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -18,7 +18,6 @@ import { useUpdateUserMutation } from "@api";
 
 type StaffModalProps = {
   open: boolean;
-  onUpdate: () => void;
   onClose: () => void;
   selectedUser: User | null;
 };
@@ -35,7 +34,6 @@ type StaffForm = {
 export const StaffModal: FC<StaffModalProps> = ({
   selectedUser,
   open,
-  onUpdate,
   onClose,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
@@ -128,10 +126,9 @@ export const StaffModal: FC<StaffModalProps> = ({
 
   useEffect(() => {
     if (isSuccess) {
-      onUpdate();
       onClose();
     }
-  }, [isSuccess, onClose, onUpdate]);
+  }, [isSuccess, onClose]);
 
   return (
     <Modal open={open} onClose={onClose}>

@@ -24,7 +24,6 @@ import { Patient, Sex } from "@types";
 
 type PatientModalProps = {
   open: boolean;
-  onUpdate: () => void;
   onClose: () => void;
   patient: Omit<Patient, "_id"> & { _id?: string };
   setPatient: (patient: Omit<Patient, "_id"> & { _id?: string }) => void;
@@ -32,7 +31,6 @@ type PatientModalProps = {
 
 export const PatientModal: FC<PatientModalProps> = ({
   open,
-  onUpdate,
   onClose,
   patient,
   setPatient,
@@ -164,10 +162,9 @@ export const PatientModal: FC<PatientModalProps> = ({
 
   useEffect(() => {
     if (isSuccess ?? isUpdateSuccess) {
-      onUpdate();
       onClose();
     }
-  }, [isSuccess, onClose, onUpdate, isUpdateSuccess]);
+  }, [isSuccess, onClose, isUpdateSuccess]);
 
   return (
     <Modal open={open} onClose={onClose}>

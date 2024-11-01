@@ -1,28 +1,34 @@
-import { type GridColDef } from "@mui/x-data-grid";
+import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import { Cabinet } from "@types";
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import { CustomTable } from "@components";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { isMobile } from "react-device-detect";
+import { CabinetForm } from "../types";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
   isLoading: boolean;
   data?: { count: number; data: Cabinet[] };
-  paginationModel: { skip: number; limit: number };
+  setIsModalOpen: (isOpen: boolean) => void;
+  onSelectCabinet: Dispatch<SetStateAction<CabinetForm & { _id?: string }>>;
 };
 
 export const CabinetsTable: FC<Props> = ({
   setPaginationModel,
   isLoading,
   data,
+  onSelectCabinet,
+  setIsModalOpen,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const mobileColumns: GridColDef<Cabinet>[] = [
     {
@@ -63,12 +69,38 @@ export const CabinetsTable: FC<Props> = ({
       field: "actions",
       headerName: t("actions"),
       width: 80,
-      renderCell: () => (
-        <Grid2>
-          <EditIcon />
-          <DeleteIcon />
-        </Grid2>
-      ),
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+              onClick={(event) => {
+                event.stopPropagation();
+                setAnchorEl(event.currentTarget);
+                console.log(params.row);
+                onSelectCabinet({
+                  ...params.row,
+                  chairs: (params.row.chairs ?? []).map((chair) => chair.name),
+                });
+              }}
+            >
+              <GridMoreVertIcon />
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={() => setIsModalOpen(true)}>
+                {t("update", { keyPrefix: "buttons" })}
+              </MenuItem>
+              <MenuItem>{t("delete", { keyPrefix: "buttons" })}</MenuItem>
+            </Menu>
+          </>
+        );
+      },
     },
   ];
 

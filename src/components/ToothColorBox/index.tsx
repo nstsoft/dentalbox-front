@@ -53,7 +53,6 @@ export const ToothColorBox: FC<Props> = ({ dentalMapColors, isEditable }) => {
         ? rootColors.some((color) => color.name === newColor.name)
         : crownColors.some((color) => color.name === newColor.name);
     if (!isNameExists) {
-      console.log("not exists");
       setIsOpen(false);
       setType("");
       updateMetadata({

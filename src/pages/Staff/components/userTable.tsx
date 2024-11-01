@@ -26,7 +26,6 @@ type Props = {
   isLoading: boolean;
   data?: { count: number; data: User[] };
   paginationModel: { skip: number; limit: number };
-  refetch: () => void;
   onReset: () => void;
 };
 
@@ -34,7 +33,6 @@ export const UsersTable: FC<Props> = ({
   setPaginationModel,
   isLoading,
   data,
-  refetch,
   onReset,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
@@ -131,7 +129,7 @@ export const UsersTable: FC<Props> = ({
     if (isSuccess) {
       onReset();
     }
-  }, [isSuccess, onReset, error]);
+  }, [isSuccess, onReset]);
 
   if (!data) return null;
 
@@ -153,7 +151,6 @@ export const UsersTable: FC<Props> = ({
         selectedUser={selectedUser}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onUpdate={() => refetch()}
       />
     </div>
   );

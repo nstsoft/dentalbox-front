@@ -32,7 +32,7 @@ export const PatientsPage = () => {
     skip: 0,
     limit: 20,
   });
-  const { status, isLoading, data, refetch } = useGetMyPatientsQuery({
+  const { status, isLoading, data } = useGetMyPatientsQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
     filter: {
@@ -56,7 +56,6 @@ export const PatientsPage = () => {
           setIsModalOpen(false);
           setPatient(initPatient);
         }}
-        onUpdate={() => refetch()}
         patient={patient}
         setPatient={setPatient}
       />
@@ -66,11 +65,9 @@ export const PatientsPage = () => {
         applyFilters={() => setSearchValue(search)}
       />
       <PatientsTable
-        isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         data={data}
         isLoading={isLoading}
-        paginationModel={paginationModel}
         setPaginationModel={setPaginationModel}
         onSelectPatient={setPatient}
       />

@@ -11,50 +11,43 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
 import {
   ChangeEvent,
+  Dispatch,
   FC,
   FormEvent,
   Fragment,
+  SetStateAction,
   useEffect,
   useState,
 } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
-import { useCreateCabinetMutation } from "@api";
+import { useCreateCabinetMutation, useUpdateCabinetMutation } from "@api";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { VisuallyHiddenInput } from "@elements";
+import { CabinetForm } from "../types";
 
 type CabinetModalProps = {
+  cabinetForm: CabinetForm & { _id?: string };
+  setCabinetForm: Dispatch<SetStateAction<CabinetForm & { _id?: string }>>;
   open: boolean;
-  onUpdate: () => void;
   onClose: () => void;
-};
-
-type CabinetForm = {
-  name: string;
-  phone: string;
-  address: string;
-  notes: string;
-  chairs: string[];
 };
 
 export const CabinetModal: FC<CabinetModalProps> = ({
   open,
-  onUpdate,
   onClose,
+  cabinetForm,
+  setCabinetForm,
 }) => {
   const { t } = useTranslation();
-  const [cabinetForm, setCabinetForm] = useState<CabinetForm>({
-    name: "",
-    phone: "+380",
-    address: "",
-    notes: "",
-    chairs: [""],
-  });
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
   const [responseError, setResponseError] = useState<string | string[]>();
   const [cabinetImage, setCabinetImage] = useState<File>();
 
   const [createCabinet, { error, isSuccess }] = useCreateCabinetMutation();
+  const [updateCabinet, { error: updateError, isSuccess: updateSuccess }] =
+    useUpdateCabinetMutation();
 
   const fieldsMap = [
     {
@@ -95,29 +88,48 @@ export const CabinetModal: FC<CabinetModalProps> = ({
   ];
 
   useEffect(() => {
-    if (error) {
-      setResponseError((error as any).message);
+    if (error ?? updateError) {
+      setResponseError(((error as any) ?? (updateError as any)).message);
     }
-  }, [error]);
+  }, [error, updateError]);
 
   useEffect(() => {
-    if (isSuccess) {
-      onUpdate();
+    if (isSuccess ?? updateSuccess) {
       onClose();
     }
-  }, [isSuccess, onClose, onUpdate]);
+  }, [isSuccess, updateSuccess, onClose]);
+
+  const validateForm = () => {
+    setPhoneError("");
+    setImageError("");
+
+    if (!matchIsValidTel(cabinetForm.phone)) {
+      setPhoneError("Please enter a valid phone number.");
+      return false;
+    }
+
+    if ((cabinetForm._id && !cabinetForm.image) ?? !cabinetImage) {
+      setImageError("Please upload cabinet image.");
+      return false;
+    }
+
+    return true;
+  };
 
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (matchIsValidTel(cabinetForm.phone)) {
-      setPhoneError(null);
-    } else {
-      setPhoneError("Please enter a valid phone number.");
+    if (!validateForm()) {
       return;
     }
 
-    createCabinet({ ...cabinetForm, image: cabinetImage });
+    const data = { ...cabinetForm, image: cabinetImage };
+
+    if (cabinetForm._id) {
+      return updateCabinet({ ...data, _id: cabinetForm._id });
+    }
+
+    return createCabinet(data);
   };
 
   return (
@@ -165,7 +177,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
                 <OutlinedInput
                   id={input.id}
                   type="text"
-                  required
+                  required={input.id !== "notes"}
                   onChange={input.onChange}
                   value={input.value}
                   color="primary"
@@ -237,15 +249,19 @@ export const CabinetModal: FC<CabinetModalProps> = ({
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 if (e.target.files?.[0]) {
                   setCabinetImage(e.target.files?.[0]);
+                  setImageError("");
                 }
               }}
             />
           </Button>
+          <FormHelperText error={!!imageError}>{imageError}</FormHelperText>
         </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">
-            {t("buttons.create")}
+            {cabinetForm._id
+              ? t("update", { keyPrefix: "buttons" })
+              : t("create", { keyPrefix: "buttons" })}
           </Button>
           {Array.isArray(responseError) ? (
             responseError.map((error) => (

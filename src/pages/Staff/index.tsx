@@ -102,7 +102,6 @@ export const StaffPage = () => {
               isLoading={isLoading}
               paginationModel={paginationModel}
               setPaginationModel={setPaginationModel}
-              refetch={refetch}
               onReset={resetFilters}
             />
           )}

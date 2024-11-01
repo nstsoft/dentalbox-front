@@ -28,7 +28,7 @@ export const cabinetApi = createApi({
       },
       providesTags: () => [{ type: CABINET_TAG.CABINET_LIST }],
     }),
-    createCabinet: builder.mutation<unknown, CreateCabinet>({
+    createCabinet: builder.mutation<void, CreateCabinet>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {
@@ -39,6 +39,20 @@ export const cabinetApi = createApi({
 
         return { body: formData, url: "/cabinet", method: "POST" };
       },
+      invalidatesTags: [CABINET_TAG.CABINET_LIST]
+    }),
+    updateCabinet: builder.mutation<void, CreateCabinet & { _id: string }>({
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        formData.append("data", JSON.stringify({ ...body }));
+
+        return { body: formData, url: "/cabinet", method: "PATCH" };
+      },
+      invalidatesTags: [CABINET_TAG.CABINET_LIST]
     }),
     getCabinetSummary: builder.query<CabinetSummaryListItem[], void>({
       query: () => "/cabinet/summary",
@@ -51,6 +65,7 @@ export const {
   useGetMyCabinetsQuery,
   useCreateCabinetMutation,
   useGetCabinetSummaryQuery,
+  useUpdateCabinetMutation,
 } = cabinetApi;
 
 export default { cabinetApi };
