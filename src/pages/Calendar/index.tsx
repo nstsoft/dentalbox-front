@@ -1,5 +1,5 @@
 import { CalendarResource } from "./components";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import {
   useGetAppointmentsQuery,
   useGetCabinetSummaryQuery,
@@ -23,7 +23,7 @@ export const CalendarPage = () => {
   const { data: chairSummary } = useGetChairSummaryQuery();
 
   const [view, setView] = useState<"day" | "week">("day");
-  const [date, setDate] = useState(moment());
+  const [date, setDate] = useState(days());
 
   const { data, refetch } = useGetAppointmentsQuery({
     start: date.startOf(view).toISOString(),
@@ -53,7 +53,7 @@ export const CalendarPage = () => {
   patientSummary.map((patient) => patientsMap.set(patient._id, patient));
 
   const onNavigate = (newDate: Date) => {
-    setDate(moment(newDate));
+    setDate(days(newDate));
   };
 
   const events: AppointmentEventListItem[] = (data ?? []).map(
@@ -61,8 +61,8 @@ export const CalendarPage = () => {
       ...appointment,
       id: appointment._id,
       title: patientsMap.get(appointment.patient)?.name ?? "",
-      start: moment(appointment.start).toDate(),
-      end: moment(appointment.end).toDate(),
+      start: days(appointment.start).toDate(),
+      end: days(appointment.end).toDate(),
       resourceId:
         cabinetsMap.get(appointment.cabinet)?._id +
         `${appointment.chair ? "_" + appointment.chair : ""}`,

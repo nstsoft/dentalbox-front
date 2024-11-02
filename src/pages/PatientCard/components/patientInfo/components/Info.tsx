@@ -1,5 +1,5 @@
 import type { FC, Dispatch, SetStateAction } from "react";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -27,7 +27,7 @@ export const InfoSection: FC<Props> = ({ fields }) => {
   const renderValue = (field: Field) => {
     if (field.id === "sex" && field.value) return t(`sexItems.${field.value}`);
     if (field.id === "dob" && field.value)
-      return moment(field.value).format("YYYY/MM/DD");
+      return days(field.value).format("YYYY/MM/DD");
     return field.value;
   };
   return (

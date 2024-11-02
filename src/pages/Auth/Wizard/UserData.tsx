@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { validateLogin } from "@utils";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment, { Moment } from "moment/min/moment-with-locales";
+import days, { type Dayjs } from "dayjs";
 import { Invitation } from "../AcceptInvitation";
 
 interface IUserDataStepProps {
@@ -188,7 +188,7 @@ export const UserData = (
       return false;
     }
 
-    if (user.dob && !moment(user.dob).isValid()) {
+    if (user.dob && !days(user.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
@@ -271,8 +271,8 @@ export const UserData = (
                 {input.id === "birthDate" && (
                   <DatePicker
                     key={input.id}
-                    value={input.value ? moment(input.value) : null}
-                    onChange={(newValue: Moment | null) =>
+                    value={input.value ? days(input.value) : null}
+                    onChange={(newValue: Dayjs | null) =>
                       setUser((prev) => ({
                         ...prev,
                         dob: newValue?.toString() ?? "",

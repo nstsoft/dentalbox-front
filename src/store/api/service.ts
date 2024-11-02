@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import type { Service } from "@types";
 import { SERVICE_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
-import { invalid } from "moment";
 
 export const serviceApi = createApi({
   reducerPath: REDUCER.SERVICE,

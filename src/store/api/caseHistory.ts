@@ -12,6 +12,10 @@ export const historyApi = createApi({
       query: (id) => `/caseHistory?patient=${id}`,
       providesTags: () => [{ type: DISEASE_HISTORY_TAG.HISTORY }],
     }),
+    createHistoryItem: builder.mutation<WorkspaceMetadata, string>({
+      query: (id) => `/caseHistory?patient=${id}`,
+      invalidatesTags: [DISEASE_HISTORY_TAG.HISTORY],
+    }),
   }),
 });
 

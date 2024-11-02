@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect, useMemo } from "react";
-import moment, { Moment } from "moment";
+import days, { Dayjs } from "dayjs";
 import Box from "@mui/material/Box";
 import ChairAltIcon from "@mui/icons-material/ChairAlt";
 import { AppointmentListItem } from "@types";
@@ -68,8 +68,8 @@ export const CalenderModal: FC<CalendarModalProps> = ({
     AppointmentStatus.pending
   );
   const [notes, setNotes] = useState<string | undefined>();
-  const [start, setStart] = useState<Moment>(moment());
-  const [end, setEnd] = useState<Moment>(moment());
+  const [start, setStart] = useState<Dayjs>(days());
+  const [end, setEnd] = useState<Dayjs>(days());
   const chairValues = useMemo(() => {
     const arr: { key: string; value: string }[] = [];
     resources.chairsMap.forEach((p) => {
@@ -109,9 +109,9 @@ export const CalenderModal: FC<CalendarModalProps> = ({
       setChair(event.chair?._id);
       setPatient(event.patient?._id);
       setStatus(event.status ?? AppointmentStatus.pending);
-      setStart(moment(event.start));
-      setEnd(moment(event.end));
-      setEnd(moment(event.end));
+      setStart(days(event.start));
+      setEnd(days(event.end));
+      setEnd(days(event.end));
       setNotes(event.notes);
     }
   }, [event]);

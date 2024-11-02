@@ -12,7 +12,7 @@ import { ChangeEvent, type FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment, { Moment } from "moment/min/moment-with-locales";
+import days, { type Dayjs } from "dayjs";
 import { User, UserRole } from "@types";
 import { useUpdateUserMutation } from "@api";
 
@@ -101,7 +101,7 @@ export const StaffModal: FC<StaffModalProps> = ({
   const validateForm = () => {
     setBirthDateError(undefined);
 
-    if (staffForm.dob && !moment(staffForm.dob).isValid()) {
+    if (staffForm.dob && !days(staffForm.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
@@ -153,8 +153,8 @@ export const StaffModal: FC<StaffModalProps> = ({
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "dob" && (
               <DatePicker
-                value={input.value ? moment(input.value) : null}
-                onChange={(newValue: Moment | null) =>
+                value={input.value ? days(input.value) : null}
+                onChange={(newValue: Dayjs | null) =>
                   setStaffForm((prev) => ({
                     ...prev,
                     dob: newValue?.toString() ?? "",

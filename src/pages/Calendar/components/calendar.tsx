@@ -8,13 +8,7 @@ import withDragAndDrop, {
 } from "react-big-calendar/lib/addons/dragAndDrop";
 
 import { Fragment, useEffect, useMemo, useState, type FC } from "react";
-import moment from "moment/min/moment-with-locales";
-import {
-  Calendar,
-  Views,
-  type View,
-  momentLocalizer,
-} from "react-big-calendar";
+import { Calendar, Views, type View, dayjsLocalizer } from "react-big-calendar";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -33,6 +27,8 @@ import { CalenderModal } from "./modal";
 import { EditableProps, UpdateEventHandler } from "../types";
 import { getCalendarMessages } from "./helpers";
 import { CustomEvent } from "./elements";
+
+import days from "dayjs";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -55,7 +51,7 @@ export const CalendarResource: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.calendar" });
   const { defaultDates, views, scrollToTime } = useMemo(
     () => ({
-      defaultDates: moment().toDate(),
+      defaultDates: days().toDate(),
       views: ["day", "week"] as View[],
       scrollToTime: new Date(1972, 0, 1, 8),
     }),
@@ -94,8 +90,8 @@ export const CalendarResource: FC<Props> = ({
         ...data,
         id: data._id,
         title: patientsMap.get(data.patient)?.name ?? "",
-        start: moment(data.start).toDate(),
-        end: moment(data.end).toDate(),
+        start: days(data.start).toDate(),
+        end: days(data.end).toDate(),
         resourceId,
         patient: patientsMap.get(data.patient)!,
         cabinet: cabinetsMap.get(data.cabinet)!,
@@ -141,7 +137,7 @@ export const CalendarResource: FC<Props> = ({
     const event = {
       title: patientsMap.values().next().value.name,
       start: data.start,
-      end: moment(data.start).add(1, "h").toDate(),
+      end: days(data.start).add(1, "h").toDate(),
       resourceId: data.resourceId as string,
       patient: patientsMap.values().next().value,
       cabinet: cabinetsMap.get(cabinetId)!,
@@ -165,8 +161,8 @@ export const CalendarResource: FC<Props> = ({
 
     const val = {
       notes: data.notes,
-      start: data.start?.toDate() ?? moment().toDate(),
-      end: data.end?.toDate() ?? moment().add(1, "hour").toDate(),
+      start: data.start?.toDate() ?? days().toDate(),
+      end: data.end?.toDate() ?? days().add(1, "hour").toDate(),
       status: data.status,
     };
 
@@ -214,8 +210,8 @@ export const CalendarResource: FC<Props> = ({
         cabinet: selectedEvent.cabinet._id,
         chair: selectedEvent.chair?._id,
         assistant: selectedEvent.assistant?._id,
-        start: moment(selectedEvent.start).toISOString(),
-        end: moment(selectedEvent.end).toISOString(),
+        start: days(selectedEvent.start).toISOString(),
+        end: days(selectedEvent.end).toISOString(),
         status: selectedEvent.status,
         notes: selectedEvent.notes,
         _id: selectedEvent._id,
@@ -245,8 +241,8 @@ export const CalendarResource: FC<Props> = ({
     eventData.resourceId = resourceId as string;
 
     upsertAppointment({
-      start: moment(start).toISOString(),
-      end: moment(end).toISOString(),
+      start: days(start).toISOString(),
+      end: days(end).toISOString(),
       cabinet: cabinetId,
       patient: eventData.patient._id,
       doctor: eventData.doctor._id,
@@ -269,7 +265,7 @@ export const CalendarResource: FC<Props> = ({
           defaultView={Views.DAY}
           views={views}
           events={myEvents}
-          localizer={momentLocalizer(moment)}
+          localizer={dayjsLocalizer(days)}
           onEventDrop={onAppointmentChange}
           onEventResize={onAppointmentChange}
           resizable
@@ -286,8 +282,8 @@ export const CalendarResource: FC<Props> = ({
           resourceTitleAccessor={(resource) =>
             (resource as { resourceTitle: string }).resourceTitle
           }
-          min={moment(workspaceMetadata.workingHours.start, "HH:mm").toDate()}
-          max={moment(workspaceMetadata.workingHours.end, "HH:mm").toDate()}
+          min={days(workspaceMetadata.workingHours.start, "HH:mm").toDate()}
+          max={days(workspaceMetadata.workingHours.end, "HH:mm").toDate()}
           components={{ event: CustomEvent }}
           messages={getCalendarMessages(t)}
           onNavigate={onNavigate}

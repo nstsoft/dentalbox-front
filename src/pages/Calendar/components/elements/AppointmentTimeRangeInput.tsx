@@ -4,14 +4,14 @@ import Typography from "@mui/material/Typography";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import { useTranslation } from "react-i18next";
-import moment, { Moment } from "moment/min/moment-with-locales";
+import days, { Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 type Props = {
-  start: Moment;
-  end: Moment;
-  setStart: (date: Moment) => void;
-  setEnd: (date: Moment) => void;
+  start: Dayjs;
+  end: Dayjs;
+  setStart: (date: Dayjs) => void;
+  setEnd: (date: Dayjs) => void;
   isEditingMode: boolean;
 };
 
@@ -26,7 +26,7 @@ export const AppointmentTimeRangeInput: FC<Props> = ({
 }) => {
   const { t } = useTranslation("", { keyPrefix: "buttons" });
 
-  const changeDate = (date: Moment | null) => {
+  const changeDate = (date: Dayjs | null) => {
     if (!date) return;
     setStart(date.clone().hour(start.hour()).minute(start.minute()));
     setEnd(date.clone().hour(end.hour()).minute(end.minute()));
@@ -39,8 +39,7 @@ export const AppointmentTimeRangeInput: FC<Props> = ({
           <AccessAlarmsIcon />
         </Typography>
         <Typography variant="body1">
-          {moment(start).format("DD.MM.YYYY/HH:mm")}-
-          {moment(end).format("HH:mm")}
+          {days(start).format("DD.MM.YYYY/HH:mm")}-{days(end).format("HH:mm")}
         </Typography>
       </Box>
     );
@@ -56,7 +55,7 @@ export const AppointmentTimeRangeInput: FC<Props> = ({
           cancelButtonLabel: t("cancel"),
           okButtonLabel: t("select"),
         }}
-        onChange={(newValue) => setStart(newValue ?? moment())}
+        onChange={(newValue) => setStart(newValue ?? days())}
       />
       -
       <MobileTimePicker
@@ -67,7 +66,7 @@ export const AppointmentTimeRangeInput: FC<Props> = ({
           cancelButtonLabel: t("cancel"),
           okButtonLabel: t("select"),
         }}
-        onChange={(newValue) => setEnd(newValue ?? moment())}
+        onChange={(newValue) => setEnd(newValue ?? days())}
       />
     </Box>
   );

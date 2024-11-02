@@ -10,7 +10,7 @@ import { type FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import { matchIsValidTel } from "mui-tel-input";
 import { validateLogin } from "@utils";
 import { useUpdatePatientMutation } from "@api";
@@ -81,7 +81,7 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
       return false;
     }
 
-    if (patientData.dob && !moment(patientData.dob).isValid()) {
+    if (patientData.dob && !days(patientData.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }

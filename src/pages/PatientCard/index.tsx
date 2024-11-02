@@ -17,7 +17,7 @@ export const PatientCardPage = () => {
   const [patient, setPatient] = useState<Patient>();
   const [updatePatient] = useUpdatePatientMutation();
 
-  const [value, setValue] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   useEffect(() => {
     if (data) {
@@ -57,14 +57,14 @@ export const PatientCardPage = () => {
       </Box>
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}>
+          <Tabs value={tabIndex} onChange={(_, index) => setTabIndex(index)}>
             {tabs.map(({ label }) => (
               <Tab key={label} label={label} />
             ))}
           </Tabs>
         </Box>
         {tabs.map((tab, index) => (
-          <CustomTabPanel key={tab.label} value={value} index={index}>
+          <CustomTabPanel key={tab.label} value={tabIndex} index={index}>
             {tab.component}
           </CustomTabPanel>
         ))}

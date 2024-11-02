@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { isMobile } from "react-device-detect";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { ConfirmPopover } from "@elements";
@@ -29,16 +29,18 @@ export const CardItem: FC<CardItemProps> = ({
   isLoading,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation("", { keyPrefix: "pages.workspace.paymentMethods" });
+  const { t } = useTranslation("", {
+    keyPrefix: "pages.workspace.paymentMethods",
+  });
   const [deleteAnchorEl, setDeleteAnchorEl] = useState<HTMLElement>();
   const [setDefaultAnchorEl, setSetDefaultAnchorEl] = useState<HTMLElement>();
 
   const isDefault = paymentMethod.default;
-  const isExpired = moment()
+  const isExpired = days()
     .year(paymentMethod.exp_year)
     .month(paymentMethod.exp_month)
     .startOf("month")
-    .isBefore(moment());
+    .isBefore(days());
 
   const makeDefaultButton = () => {
     if (isExpired || isDefault) return null;
@@ -99,7 +101,12 @@ export const CardItem: FC<CardItemProps> = ({
               <DoneOutlineIcon />
             </Typography>
           ) : (
-            <Chip className="chip" color="primary" label={t("default")} sx={{width: 'max-content'}}/>
+            <Chip
+              className="chip"
+              color="primary"
+              label={t("default")}
+              sx={{ width: "max-content" }}
+            />
           ))}
         {makeDefaultButton()}
         {!isDefault && (

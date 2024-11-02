@@ -16,7 +16,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Patient, Sex } from "@types";
-import moment, { Moment } from "moment/min/moment-with-locales";
+import days, { type Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
@@ -158,8 +158,8 @@ export const EditForm: FC<Props> = ({
                 {field.id === "dob" && (
                   <DatePicker
                     key={field.id}
-                    value={field.value ? moment(field.value) : null}
-                    onChange={(newValue: Moment | null) =>
+                    value={field.value ? days(field.value) : null}
+                    onChange={(newValue: Dayjs | null) =>
                       field.setPatientData((prev) => ({
                         ...prev,
                         dob: newValue?.toString() ?? "",

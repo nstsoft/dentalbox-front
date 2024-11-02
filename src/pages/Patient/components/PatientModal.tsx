@@ -14,7 +14,7 @@ import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment, { Moment } from "moment/min/moment-with-locales";
+import days, { type Dayjs } from "dayjs";
 import { validateLogin } from "@utils";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
@@ -128,7 +128,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       return false;
     }
 
-    if (patient.dob && !moment(patient.dob).isValid()) {
+    if (patient.dob && !days(patient.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
@@ -229,8 +229,8 @@ export const PatientModal: FC<PatientModalProps> = ({
             )}
             {input.id === "dob" && (
               <DatePicker
-                value={input.value ? moment(input.value) : null}
-                onChange={(newValue: Moment | null) =>
+                value={input.value ? days(input.value) : null}
+                onChange={(newValue: Dayjs | null) =>
                   setPatient({
                     ...patient,
                     dob: newValue?.toString() ?? "",

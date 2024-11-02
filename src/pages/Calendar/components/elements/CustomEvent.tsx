@@ -1,4 +1,3 @@
-import { FaUserDoctor } from "react-icons/fa6";
 import { type EventProps } from "react-big-calendar";
 import { AppointmentEventListItem } from "@types";
 import { getPersonNames } from "../helpers";

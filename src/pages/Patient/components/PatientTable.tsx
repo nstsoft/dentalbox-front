@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { Button, Menu, MenuItem } from "@mui/material";
-import moment from "moment";
+import days from "dayjs";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -59,7 +59,7 @@ export const PatientsTable: FC<Props> = ({
       field: "dob",
       headerName: t("dob"),
       width: 180,
-      renderCell: ({ row }) => moment(row.dob).format("DD.MM.YYYY"),
+      renderCell: ({ row }) => days(row.dob).format("DD.MM.YYYY"),
     },
     {
       field: "email",

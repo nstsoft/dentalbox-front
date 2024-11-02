@@ -12,7 +12,7 @@ import {
 } from "react";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import { isMobile } from "react-device-detect";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
@@ -39,7 +39,7 @@ export const UsersTable: FC<Props> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [deleteUser, { isSuccess, error }] = useDeleteUserMutation();
+  const [deleteUser, { isSuccess }] = useDeleteUserMutation();
 
   const mobileColumns: GridColDef<User>[] = [
     {
@@ -83,7 +83,7 @@ export const UsersTable: FC<Props> = ({
       field: "dob",
       headerName: t("dob"),
       width: 150,
-      renderCell: ({ row }) => moment(row.dob).format("DD.MM.YYYY"),
+      renderCell: ({ row }) => days(row.dob).format("DD.MM.YYYY"),
     },
     { field: "isVerified", headerName: t("verification"), width: 150 },
     {

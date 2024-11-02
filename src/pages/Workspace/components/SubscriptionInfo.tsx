@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import icons from "currency-icons";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import { useGetMySubscriptionQuery } from "@api";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "@hooks";
@@ -127,11 +127,11 @@ export const SubscriptionInfo = () => {
             {t("period")}:
           </Typography>
           <Typography variant="body1">
-            {moment((subscription?.current_period_start ?? 0) * 1000).format(
+            {days((subscription?.current_period_start ?? 0) * 1000).format(
               "DD.MM.YYYY"
             )}
             -
-            {moment((subscription?.current_period_end ?? 0) * 1000).format(
+            {days((subscription?.current_period_end ?? 0) * 1000).format(
               "DD.MM.YYYY"
             )}
           </Typography>

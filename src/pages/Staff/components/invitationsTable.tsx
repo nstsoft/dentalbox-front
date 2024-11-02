@@ -2,7 +2,7 @@ import { type GridColDef } from "@mui/x-data-grid";
 import { UserInvitation } from "@types";
 import { CustomTable } from "@components";
 import { useTranslation } from "react-i18next";
-import moment from "moment/min/moment-with-locales";
+import days from "dayjs";
 import { type Dispatch, type SetStateAction, type FC } from "react";
 
 type Props = {
@@ -41,7 +41,7 @@ export const InvitationsTable: FC<Props> = ({
       field: "activeTill",
       headerName: t("activeTill"),
       width: 150,
-      valueGetter: (_, r) => moment(r.activeTill * 1000).format("DD.MM.YYYY"),
+      valueGetter: (_, r) => days(r.activeTill * 1000).format("DD.MM.YYYY"),
     },
   ];
   if (!data) return null;

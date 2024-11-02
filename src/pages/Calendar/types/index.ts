@@ -8,7 +8,7 @@ import {
 } from "@types";
 import { type Dispatch, type SetStateAction } from "react";
 import { CalendarProps } from "react-big-calendar";
-import { Moment } from "moment/min/moment-with-locales";
+import { type Dayjs } from "dayjs";
 
 export type AppointmentResources = {
   cabinetsMap: Map<string, CabinetSummaryListItem>;
@@ -71,8 +71,8 @@ export type UpdateEventHandler = (
   data: Partial<{
     [key in keyof Omit<CalendarEvent, "start" | "end">]: string;
   }> & {
-    start?: Moment;
-    end?: Moment;
+    start?: Dayjs;
+    end?: Dayjs;
     approved?: boolean;
     status?: AppointmentStatus;
   }
