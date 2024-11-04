@@ -9,12 +9,12 @@ import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { useUpdateMetadataMutation } from "@api";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import days from "dayjs";
 
 type Props = {
-  metadata?: WorkspaceMetadata;
+  metadata: WorkspaceMetadata;
 };
 
 const currencies = ["$", "₴"];

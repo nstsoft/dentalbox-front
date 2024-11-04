@@ -15,7 +15,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetWorkspaceMetadataQuery } from "@api";
 import { ToothColorBox } from "@components";
-import { Card } from "@elements";
 
 interface TabPanelProps {
   children?: React.ReactNode;

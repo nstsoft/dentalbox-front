@@ -103,7 +103,7 @@ export const ToothColorBox: FC<Props> = ({ dentalMapColors, isEditable }) => {
   if (!dentalMapColors) return null;
 
   return (
-    <Card className="tooth-color-box" sx={{ m: 0 }}>
+    <Card className="tooth-color-box" sx={{ m: 0, gap: 0 }}>
       <Box
         className={
           "edit-btn-box" + (isEditable ? " editable" : " not-editable")
