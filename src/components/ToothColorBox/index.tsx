@@ -3,7 +3,7 @@ import "./ToothColorBox.scss";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { FC, useEffect, useState, useCallback } from "react";
+import { type FC, useEffect, useState, useCallback } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";

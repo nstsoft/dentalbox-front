@@ -14,6 +14,8 @@ import { UserRole } from "@types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetWorkspaceMetadataQuery } from "@api";
+import { ToothColorBox } from "@components";
+import { Card } from "@elements";
 
 const panelStyles = {
   display: "flex",
@@ -89,7 +91,13 @@ export const WorkspacePage = () => {
           <Box sx={panelStyles}>
             <WorkspaceInfo workspace={workspace} />
           </Box>
-          <Box sx={panelStyles}>
+          <Box className="metadata">
+            <Card className="metadata-box" sx={{ m: 0 }}>
+              <ToothColorBox
+                dentalMapColors={metadata?.dentalMapColors}
+                isEditable
+              />
+            </Card>
             <MetadataInfo metadata={metadata} />
           </Box>
         </CustomTabPanel>

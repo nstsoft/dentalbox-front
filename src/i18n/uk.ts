@@ -203,8 +203,10 @@ export const UA: ResourceLanguage = {
           },
           deleteService: "Видалити сервіс?",
         },
-        currency: "Валюта",
-        workingHours: "Графік роботи",
+        metadata: {
+          currency: "Валюта",
+          workingHours: "Графік роботи",
+        },
       },
       staff: {
         staff: "Персонал",

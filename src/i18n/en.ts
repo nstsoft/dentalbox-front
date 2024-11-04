@@ -203,8 +203,10 @@ export const EN: ResourceLanguage = {
           },
           deleteService: "Delete service?",
         },
-        currency: "Currency",
-        workingHours: "Working hours",
+        metadata: {
+          currency: "Currency",
+          workingHours: "Working hours",
+        },
       },
       staff: {
         staff: "Stuff",
