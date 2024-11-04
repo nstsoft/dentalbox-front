@@ -137,7 +137,6 @@ export const UA: ResourceLanguage = {
         currentStaff: "Поточно кількість персоналу",
         maxStaff: "Максимальна кількість персоналу",
         addStaff: "Додати користувача",
-
         subscription: "Підписка",
         package: "Пакет",
         price: "Ціна",
@@ -204,6 +203,8 @@ export const UA: ResourceLanguage = {
           },
           deleteService: "Видалити сервіс?",
         },
+        currency: "Валюта",
+        workingHours: "Графік роботи",
       },
       staff: {
         staff: "Персонал",

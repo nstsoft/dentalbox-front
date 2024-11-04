@@ -137,7 +137,6 @@ export const EN: ResourceLanguage = {
         currentStaff: "Current staff",
         maxStaff: "Maximum stuff",
         addStaff: "Add stuff",
-
         subscription: "Subscription",
         package: "Package",
         price: "Price",
@@ -204,6 +203,8 @@ export const EN: ResourceLanguage = {
           },
           deleteService: "Delete service?",
         },
+        currency: "Currency",
+        workingHours: "Working hours",
       },
       staff: {
         staff: "Stuff",

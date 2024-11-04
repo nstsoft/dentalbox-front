@@ -8,4 +8,5 @@ export type WorkspaceMetadata = {
     root: { color: string; name: string }[];
     crown: { color: string; name: string }[];
   };
+  workingHours: { start: string; end: string };
 };
