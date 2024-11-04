@@ -5,6 +5,9 @@ import { baseQuery } from "./baseQuery";
 
 type PatientNameFilter = { search?: string };
 
+type UpdatePatient = Omit<Patient, "image"> & { image?: File };
+type CreatePatient = Omit<UpdatePatient, "_id">;
+
 export const patientApi = createApi({
   reducerPath: REDUCER.PATIENT,
   tagTypes: Object.values(PATIENT_TAG),
@@ -26,7 +29,7 @@ export const patientApi = createApi({
       },
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_LIST }],
     }),
-    createPatient: builder.mutation<unknown, Omit<Patient, "_id">>({
+    createPatient: builder.mutation<unknown, CreatePatient>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {
@@ -40,13 +43,13 @@ export const patientApi = createApi({
 
         return { body: formData, url: "/patient", method: "POST" };
       },
-      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST],
     }),
     getPatientById: builder.query<Patient, string>({
       query: (id) => `/patient/${id}`,
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_RECORD }],
     }),
-    updatePatient: builder.mutation<unknown, Patient>({
+    updatePatient: builder.mutation<unknown, UpdatePatient>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {
@@ -60,7 +63,7 @@ export const patientApi = createApi({
 
         return { body: formData, url: `/patient/${body._id}`, method: "PATCH" };
       },
-      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST],
     }),
     getPatientSummary: builder.query<PatientSummaryListItem[], void>({
       query: () => "/patient/summary",

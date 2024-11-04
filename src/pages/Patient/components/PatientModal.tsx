@@ -19,6 +19,7 @@ import { validateLogin } from "@utils";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { CustomModal } from "@elements";
 
 import { Patient, Sex } from "@types";
 
@@ -167,24 +168,8 @@ export const PatientModal: FC<PatientModalProps> = ({
   }, [isSuccess, onClose, isUpdateSuccess]);
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        component="form"
-        onSubmit={submitFormHandler}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          maxHeight: "90vh",
-          bgcolor: "background.paper",
-          overflow: "auto",
-          boxShadow: 24,
-          borderRadius: "8px",
-          p: 4,
-        }}
-      >
+    <CustomModal width="auto" open={open} onClose={onClose}>
+      <Box component="form" onSubmit={submitFormHandler}>
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
@@ -313,6 +298,6 @@ export const PatientModal: FC<PatientModalProps> = ({
           )}
         </Box>
       </Box>
-    </Modal>
+    </CustomModal>
   );
 };

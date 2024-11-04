@@ -294,6 +294,22 @@ export const EN: ResourceLanguage = {
           periodentalCard: "Periodental card",
           files: "Files",
         },
+        history: {
+          diagnosis: "Diagnosis",
+          treatment: "Treatment",
+          complaints: "Complaints",
+          anamnesis: "Anamnesis",
+          materials: "Materials",
+          anesthesia: "Anesthesia",
+          notes: "Notes",
+          date: "Date",
+          objectiveData: "Objective data",
+          from: "From",
+          to: "To",
+          addItem: "Add new record",
+          files: "Files",
+          filter: "Filter",
+        },
       },
       calendar: {
         messages: {

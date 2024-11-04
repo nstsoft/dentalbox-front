@@ -16,7 +16,6 @@ type Props = {
 export const ConfirmPopover: FC<Props> = ({
   anchorEl,
   setAnchorEl,
-
   onConfirm,
   label,
 }) => {

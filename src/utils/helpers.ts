@@ -47,14 +47,15 @@ export const deepMerge = <T extends AnyObject, U extends AnyObject>(
 export const createQueryStringFromObject = (params: any) => {
   const searchParams = new URLSearchParams();
 
-  Object.keys(params).forEach((key) => {
-    const value = params[key];
-    if (Array.isArray(value)) {
-      value.forEach((val) => searchParams.append(key, val));
-    } else {
-      searchParams.append(key, value);
-    }
-  });
+  Object.entries(params)
+    .filter(([, val]) => !!val)
+    .forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((val) => searchParams.append(key, val));
+      } else {
+        searchParams.append(key, value as string);
+      }
+    });
 
   return searchParams.toString();
 };

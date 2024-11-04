@@ -137,8 +137,7 @@ export const CalenderModal: FC<CalendarModalProps> = ({
       onClose={onClose}
       className="modal-edit-appointment"
       sx={{ paddingTop: "30px" }}
-    >
-      <Box>
+      headerButtons={
         <div className="modal-control-panel">
           {isEditingMode ? (
             <Button
@@ -154,6 +153,9 @@ export const CalenderModal: FC<CalendarModalProps> = ({
             </Button>
           )}
         </div>
+      }
+    >
+      <Box>
         <Box>
           <AppointmentTimeRangeInput
             start={start}
