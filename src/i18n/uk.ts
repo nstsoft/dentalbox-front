@@ -294,6 +294,22 @@ export const UA: ResourceLanguage = {
           periodentalCard: "Періодентальна карта",
           files: "Файли",
         },
+        history: {
+          diagnosis: "Діагноз",
+          treatment: "Лікування",
+          complaints: "Скарги",
+          anamnesis: "Анамнез",
+          materials: "Матеіали",
+          anesthesia: "Анестезія",
+          notes: "Нотатки",
+          date: "Дата",
+          objectiveData: "Об'єктивні дані",
+          from: "Від",
+          to: "До",
+          addItem: "Додати новий запис",
+          files: "Файли",
+          filter: "Фільтрувати",
+        },
       },
       calendar: {
         messages: {

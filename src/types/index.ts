@@ -12,3 +12,5 @@ export * from "./appointment";
 export * from "./chair";
 export * from "./metadata";
 export * from "./service";
+export * from "./file";
+export * from "./history";
