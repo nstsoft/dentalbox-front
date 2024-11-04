@@ -17,15 +17,6 @@ import { useGetWorkspaceMetadataQuery } from "@api";
 import { ToothColorBox } from "@components";
 import { Card } from "@elements";
 
-const panelStyles = {
-  display: "flex",
-  justifyContent: "flex-start",
-  width: "100%",
-  gap: "24px",
-  marginBottom: "20px",
-  flexWrap: "wrap",
-};
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -88,24 +79,22 @@ export const WorkspacePage = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={activeTab} index={0}>
-          <Box sx={panelStyles}>
+          <Box className="metadata box">
             <WorkspaceInfo workspace={workspace} />
-          </Box>
-          <Box className="metadata">
-            <Card className="metadata-box" sx={{ m: 0 }}>
-              <ToothColorBox
-                dentalMapColors={metadata?.dentalMapColors}
-                isEditable
-              />
-            </Card>
             <MetadataInfo metadata={metadata} />
+          </Box>
+          <Box className="box">
+            <ToothColorBox
+              dentalMapColors={metadata?.dentalMapColors}
+              isEditable
+            />
           </Box>
         </CustomTabPanel>
 
         {user && [(UserRole.admin, UserRole.owner)].includes(user.role) && (
           <>
             <CustomTabPanel value={activeTab} index={1}>
-              <Box sx={panelStyles}>
+              <Box className="box">
                 <SubscriptionInfo />
               </Box>
             </CustomTabPanel>

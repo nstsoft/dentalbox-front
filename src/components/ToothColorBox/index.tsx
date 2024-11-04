@@ -7,7 +7,7 @@ import { type FC, useEffect, useState, useCallback } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { IconButton } from "@elements";
+import { Card, IconButton } from "@elements";
 import { ToothColorModal, ColorItem } from "./components";
 import { useUpdateMetadataMutation } from "@api";
 import { useTranslation } from "react-i18next";
@@ -103,7 +103,7 @@ export const ToothColorBox: FC<Props> = ({ dentalMapColors, isEditable }) => {
   if (!dentalMapColors) return null;
 
   return (
-    <Box className="tooth-color-box">
+    <Card className="tooth-color-box" sx={{ m: 0 }}>
       <Box
         className={
           "edit-btn-box" + (isEditable ? " editable" : " not-editable")
@@ -180,6 +180,6 @@ export const ToothColorBox: FC<Props> = ({ dentalMapColors, isEditable }) => {
           setCallUpdateMethod(true);
         }}
       />
-    </Box>
+    </Card>
   );
 };

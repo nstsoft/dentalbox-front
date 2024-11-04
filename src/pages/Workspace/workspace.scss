@@ -1,14 +1,7 @@
 .metadata {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-
-  &-box {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(25px, 50px);
-  }
-
   .metadata-info {
     position: relative;
+    align-self: flex-start;
     .edit-btn-box {
       display: flex;
       justify-content: flex-end;
@@ -25,4 +18,13 @@
       }
     }
   }
+}
+
+.box {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }

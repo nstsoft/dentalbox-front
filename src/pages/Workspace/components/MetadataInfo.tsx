@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useUpdateMetadataMutation } from "@api";
 import { Button } from "@mui/material";
 import { MobileTimePicker } from "@mui/x-date-pickers";
-import moment from "moment";
+import days from "dayjs";
 
 type Props = {
   metadata?: WorkspaceMetadata;
@@ -25,8 +25,8 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
   const [updateMetadata] = useUpdateMetadataMutation();
   const [currency, setCurrency] = useState(metadata?.currency ?? "$");
   const [workingHours, setWorkingHours] = useState({
-    start: moment(metadata?.workingHours.start ?? "08:00", "HH:mm"),
-    end: moment(metadata?.workingHours.end ?? "17:00", "HH:mm"),
+    start: days(metadata?.workingHours.start ?? "08:00", "HH:mm"),
+    end: days(metadata?.workingHours.end ?? "17:00", "HH:mm"),
   });
 
   const onUpdateMetadata = () => {
@@ -40,7 +40,7 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
   };
 
   return (
-    <Card className="metadata-info metadata-box" sx={{ m: 0, gap: 0 }}>
+    <Card className="metadata-info" sx={{ m: 0, gap: 0 }}>
       <Box className="edit-btn-box">
         <IconButton onClick={() => setIsEditingMode((prev) => !prev)}>
           {isEditingMode ? <CloseIcon /> : <EditIcon />}
@@ -78,7 +78,7 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
                 onChange={(newValue) =>
                   setWorkingHours((prevState) => ({
                     ...prevState,
-                    start: newValue ?? moment(),
+                    start: newValue ?? days(),
                   }))
                 }
               />
@@ -94,7 +94,7 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
                 onChange={(newValue) =>
                   setWorkingHours((prevState) => ({
                     ...prevState,
-                    end: newValue ?? moment(),
+                    end: newValue ?? days(),
                   }))
                 }
               />

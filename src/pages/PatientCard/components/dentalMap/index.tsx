@@ -309,12 +309,10 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
             toothDescriptionChanged(description);
           }}
         />
-        <Card>
-          <ToothColorBox
-            dentalMapColors={metadata?.dentalMapColors}
-            isEditable={false}
-          />
-        </Card>
+        <ToothColorBox
+          dentalMapColors={metadata?.dentalMapColors}
+          isEditable={false}
+        />
       </div>
     </div>
   );
