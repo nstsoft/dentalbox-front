@@ -5,42 +5,48 @@ import { Dayjs } from "dayjs";
 import { type FC, type Dispatch, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { CaseHistoryModal } from "./CaseHistoryModal";
-import type { HistoryData, FileWithDescription } from "@types";
+import type { HistoryData, FileWithDescription, PatientFile } from "@types";
+import days from "dayjs";
 
 type Props = {
-  dateFilter: { to?: Dayjs; from?: Dayjs };
-  setDateFilter: (dateFilter: { to?: Dayjs; from?: Dayjs }) => void;
-  apply: () => void;
-  historyItem: Partial<HistoryData>;
+  dateFilter: { to?: Dayjs | null; from?: Dayjs | null };
+  setDateFilter: (dateFilter: {
+    to?: Dayjs | null;
+    from?: Dayjs | null;
+  }) => void;
+  resetDates: () => void;
+  selectedHistoryItem: Partial<HistoryData & { selectedFiles?: PatientFile[] }>;
   setHistoryData: (data: Partial<HistoryData>) => void;
-  onSubmitCreate: () => void;
+  onSubmitModal: () => void;
   files: FileWithDescription[];
   setFiles: Dispatch<SetStateAction<FileWithDescription[]>>;
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  onCloseModal: () => void;
 };
 
 export const ControlPanel: FC<Props> = ({
   dateFilter,
   setDateFilter,
-  apply,
-  historyItem,
+  resetDates,
+  selectedHistoryItem,
   setHistoryData,
-  onSubmitCreate,
+  onSubmitModal,
   files,
   setFiles,
   isOpen,
   setIsOpen,
+  onCloseModal,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard.history" });
 
   return (
     <Box className="case-history-control-panel">
       <CaseHistoryModal
-        data={historyItem}
+        data={selectedHistoryItem}
         open={isOpen}
-        onSubmit={onSubmitCreate}
-        onClose={() => setIsOpen(false)}
+        onSubmit={onSubmitModal}
+        onClose={onCloseModal}
         setHistoryData={setHistoryData}
         files={files}
         setFiles={setFiles}
@@ -59,6 +65,7 @@ export const ControlPanel: FC<Props> = ({
             if (!from) return;
             setDateFilter({ from, to: dateFilter.to });
           }}
+          maxDate={days().endOf("day")}
         />
 
         <DatePicker
@@ -71,7 +78,9 @@ export const ControlPanel: FC<Props> = ({
           label={t("to")}
         />
         <Box className="item">
-          <Button onClick={apply}>{t("filter")}</Button>
+          <Button onClick={resetDates}>
+            {t("reset", { keyPrefix: "buttons" })}
+          </Button>
         </Box>
       </Box>
     </Box>

@@ -4,6 +4,8 @@ export type PatientFile = {
   notes?: string;
   url: string;
   mimeType: string;
+  name: string;
+  _id: string;
 };
 
 export type FileWithDescription = {

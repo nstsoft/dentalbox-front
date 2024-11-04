@@ -20,6 +20,8 @@ export const UA: ResourceLanguage = {
       save: "Зберегти",
       update: "Оновити",
       delete: "Видалити",
+      add: "Додати",
+      reset: "Скинути",
     },
     image: {
       success: "Фото успішно завантажене",
@@ -312,6 +314,8 @@ export const UA: ResourceLanguage = {
           addItem: "Додати новий запис",
           files: "Файли",
           filter: "Фільтрувати",
+          addFiles: "Завантажити файли",
+          confirmDelete: "Видалити запис?",
         },
       },
       calendar: {

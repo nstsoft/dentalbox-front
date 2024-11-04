@@ -19,6 +19,21 @@
       }
     }
   }
+  .history-container {
+    max-width: 1200px;
+    .history-accordion-item {
+      .history-accordion-header {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr 50px 50px;
+      }
+      .history-accordion-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+    }
+  }
 }
 .history-modal {
   width: 100%;
@@ -26,6 +41,12 @@
     width: 100%;
   }
   .file-input {
+    .exited-file-list {
+      display: flex;
+      button {
+        margin-left: 20px;
+      }
+    }
     .item {
       margin-top: 5px;
       .file-name {

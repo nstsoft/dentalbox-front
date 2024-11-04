@@ -26,4 +26,6 @@ export type HistoryData = Omit<
   files?: File[];
 };
 
-export type HistoryResponse = Omit<History, "files"> & { files: PatientFile[] };
+export type HistoryResponse = Omit<History, "files"> & {
+  files: (PatientFile & { _id: string })[];
+};

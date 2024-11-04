@@ -20,10 +20,12 @@ export const EN: ResourceLanguage = {
       save: "Save",
       update: "Update",
       delete: "Delete",
+      add: "Add",
+      reset: "Reset",
     },
     image: {
-      success: 'Image successfully uploaded',
-      error: 'Image upload error'
+      success: "Image successfully uploaded",
+      error: "Image upload error",
     },
     login: {
       login: "Login",
@@ -312,6 +314,8 @@ export const EN: ResourceLanguage = {
           addItem: "Add new record",
           files: "Files",
           filter: "Filter",
+          addFiles: "Upload files with description",
+          confirmDelete: "Confirm delete?",
         },
       },
       calendar: {

@@ -7,14 +7,16 @@ import { HistoryData } from "@types";
 import { Textarea } from "@elements";
 import { isMobile } from "react-device-detect";
 import { MultipleFileUploadWithDescriptions } from "./FileInput";
-import { FileWithDescription } from "@types";
+import type { FileWithDescription, PatientFile } from "@types";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: HistoryData) => void;
-  setHistoryData: (data: Partial<HistoryData>) => void;
-  data: HistoryData;
+  setHistoryData: (
+    data: Partial<HistoryData & { selectedFiles?: PatientFile[] }>
+  ) => void;
+  data: HistoryData & { selectedFiles?: PatientFile[] };
   files: FileWithDescription[];
   setFiles: Dispatch<SetStateAction<FileWithDescription[]>>;
 };
@@ -90,13 +92,27 @@ export const CaseHistoryModal: FC<Props> = ({
             value={data?.materials}
             onChange={(e) => setHistoryData({ materials: e.target.value })}
           />
+
           <MultipleFileUploadWithDescriptions
             files={files}
+            selectedFiles={data.selectedFiles}
             setFiles={setFiles}
+            removeSelectedFile={(id: string) => {
+              setHistoryData({
+                selectedFiles: data.selectedFiles?.filter((f) => f._id !== id),
+              });
+            }}
           />
         </Box>
-        <Box>
-          <Button onClick={() => onSubmit(data)}>Submit</Button>
+
+        <Box mt={2}>
+          <Button
+            variant="contained"
+            sx={{ width: "100%" }}
+            onClick={() => onSubmit(data)}
+          >
+            {t(data._id ? "submit" : "add", { keyPrefix: "buttons" })}
+          </Button>
         </Box>
       </Box>
     </CustomModal>

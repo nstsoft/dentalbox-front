@@ -2,9 +2,10 @@ export * from "./ConfirmOtp";
 export * from "./SelectWorkspace";
 export * from "./Header";
 export * from "./Checkout";
-export * from './CustomTabPanel'
+export * from "./CustomTabPanel";
 export * from "./SideMenu";
 export * from "./Table";
 export * from "./GridSearchFilter";
 export * from "./Notes";
-export * from './ToothColorBox';
+export * from "./ToothColorBox";
+export * from "./FilesSection";

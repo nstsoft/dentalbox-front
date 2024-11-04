@@ -134,9 +134,11 @@ export const CalenderModal: FC<CalendarModalProps> = ({
   return (
     <CustomModal
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        setIsEditingMode(false);
+      }}
       className="modal-edit-appointment"
-      sx={{ paddingTop: "30px" }}
       headerButtons={
         <div className="modal-control-panel">
           {isEditingMode ? (

@@ -63,3 +63,8 @@ export const createQueryStringFromObject = (params: any) => {
 export const extractNumber = (str: string): number => {
   return parseInt(str.replace(/\D/g, ""), 10);
 };
+
+export const shortenString = (str: string, maxLength: number = 30) => {
+  if (str.length <= maxLength) return str;
+  return str.slice(0, maxLength - 3) + "...";
+};

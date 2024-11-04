@@ -177,7 +177,7 @@ export const PatientModal: FC<PatientModalProps> = ({
   return (
     <CustomModal width="auto" open={open} onClose={onClose}>
       <Box component="form" onSubmit={submitFormHandler}>
-      <FormControl sx={{ mb: 2, flexDirection: "row" }}>
+        <FormControl sx={{ mb: 2, flexDirection: "row" }}>
           <Box sx={{ position: "relative" }}>
             <CardMedia
               sx={{ width: "70px", height: "70px", borderRadius: "50%" }}
