@@ -17,7 +17,7 @@ type Props = {
   data?: { count: number; data: Patient[] };
   setIsModalOpen: (isOpen: boolean) => void;
   onSelectPatient: Dispatch<
-    SetStateAction<Omit<Patient, "_id"> & { _id?: string | undefined }>
+    SetStateAction<Omit<Patient, "_id"> & { _id?: string }>
   >;
 };
 
@@ -31,6 +31,9 @@ export const PatientsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedPatient, setSelectedPatient] = useState<
+    Omit<Patient, "_id"> & { _id?: string }
+  >();
 
   const mobileColumns: GridColDef<Patient>[] = [
     {
@@ -84,6 +87,7 @@ export const PatientsTable: FC<Props> = ({
               onClick={(event) => {
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
+                setSelectedPatient(params.row);
                 onSelectPatient(params.row);
               }}
             >
@@ -97,7 +101,14 @@ export const PatientsTable: FC<Props> = ({
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => setIsModalOpen(true)}>
+              <MenuItem
+                onClick={() => {
+                  if (selectedPatient) {
+                    onSelectPatient(selectedPatient);
+                  }
+                  setIsModalOpen(true);
+                }}
+              >
                 {t("update", { keyPrefix: "buttons" })}
               </MenuItem>
               <MenuItem>{t("delete", { keyPrefix: "buttons" })}</MenuItem>
