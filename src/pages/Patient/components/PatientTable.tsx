@@ -31,9 +31,6 @@ export const PatientsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedPatient, setSelectedPatient] = useState<
-    Omit<Patient, "_id"> & { _id?: string }
-  >();
 
   const mobileColumns: GridColDef<Patient>[] = [
     {
@@ -87,8 +84,6 @@ export const PatientsTable: FC<Props> = ({
               onClick={(event) => {
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
-                setSelectedPatient(params.row);
-                onSelectPatient(params.row);
               }}
             >
               <GridMoreVertIcon />
@@ -103,9 +98,7 @@ export const PatientsTable: FC<Props> = ({
             >
               <MenuItem
                 onClick={() => {
-                  if (selectedPatient) {
-                    onSelectPatient(selectedPatient);
-                  }
+                  onSelectPatient(params.row);
                   setIsModalOpen(true);
                 }}
               >
