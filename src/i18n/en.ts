@@ -21,6 +21,10 @@ export const EN: ResourceLanguage = {
       update: "Update",
       delete: "Delete",
     },
+    image: {
+      success: 'Image successfully uploaded',
+      error: 'Image upload error'
+    },
     login: {
       login: "Login",
       loginPlaceholder: "Your email or phone number",
@@ -263,7 +267,6 @@ export const EN: ResourceLanguage = {
         address: "Address",
         createPatient: "Create patient",
         image: "Image",
-        imageSuccess: "Image successfully uploaded",
         sex: "Sex",
         sexItems: { male: "Male", female: "Female" },
         actions: "Actions",

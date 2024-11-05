@@ -3,18 +3,18 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
-import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { ChangeEvent, type FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
 import { User, UserRole } from "@types";
 import { useUpdateUserMutation } from "@api";
+import CardMedia from "@mui/material/CardMedia";
+import EditIcon from "@mui/icons-material/Edit";
 
 type StaffModalProps = {
   open: boolean;
@@ -29,6 +29,7 @@ type StaffForm = {
   surname: string;
   dob: string;
   roles: string[];
+  image?: string;
 };
 
 export const StaffModal: FC<StaffModalProps> = ({
@@ -38,16 +39,32 @@ export const StaffModal: FC<StaffModalProps> = ({
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
   const [staffForm, setStaffForm] = useState<StaffForm>({
-    _id: selectedUser?._id ?? "",
-    name: selectedUser?.name ?? "",
-    secondName: selectedUser?.secondName ?? "",
-    surname: selectedUser?.surname ?? "",
-    dob: selectedUser?.dob?.toString() ?? "",
-    roles: selectedUser?.roles.map((role) => role.role) ?? [],
+    _id: "",
+    name: "",
+    secondName: "",
+    surname: "",
+    dob: "",
+    roles: [],
+    image: "",
   });
   const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
   const [staffImage, setStaffImage] = useState<File>();
+  const [staffImageError, setStaffImageError] = useState<string>();
+
+  useEffect(() => {
+    if (selectedUser) {
+      setStaffForm({
+        _id: selectedUser._id,
+        name: selectedUser.name,
+        secondName: selectedUser.secondName,
+        surname: selectedUser.surname,
+        dob: selectedUser?.dob?.toString() ?? "",
+        roles: selectedUser.roles.map((role) => role.role),
+        image: selectedUser.image,
+      });
+    }
+  }, [selectedUser]);
 
   const [updateUser, { isSuccess, error }] = useUpdateUserMutation();
 
@@ -149,11 +166,66 @@ export const StaffModal: FC<StaffModalProps> = ({
           p: 4,
         }}
       >
+        <FormControl sx={{ mb: 2, flexDirection: "row" }}>
+          <Box sx={{ position: "relative" }}>
+            <CardMedia
+              sx={{ width: "70px", height: "70px", borderRadius: "50%" }}
+              component="img"
+              image={staffForm.image}
+              alt={staffForm.name}
+            />
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                p: 0,
+                minWidth: "30px",
+              }}
+            >
+              <EditIcon />
+              <VisuallyHiddenInput
+                id="staffImage"
+                name="staffImage"
+                type="file"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    setStaffImage(file);
+                    reader.onloadend = () => {
+                      setStaffForm((prevState) => ({
+                        ...prevState,
+                        image: `${reader.result}`,
+                      }));
+                    };
+                    reader.onerror = () => {
+                      setStaffImageError(t("error", { keyPrefix: "image" }));
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </Button>
+          </Box>
+          {staffImage && (
+            <FormHelperText>
+              {t("success", { keyPrefix: "image" })}
+            </FormHelperText>
+          )}
+          {staffImageError && (
+            <FormHelperText>{staffImageError}</FormHelperText>
+          )}
+        </FormControl>
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "dob" && (
               <DatePicker
-                value={input.value ? days(input.value) : null}
+                value={input.value ? days(input.value as string) : null}
                 onChange={(newValue: Dayjs | null) =>
                   setStaffForm((prev) => ({
                     ...prev,
@@ -210,28 +282,6 @@ export const StaffModal: FC<StaffModalProps> = ({
             <FormHelperText error={!!input.error}>{input.error}</FormHelperText>
           </FormControl>
         ))}
-        <FormControl sx={{ mb: 2, width: "100%" }}>
-          <FormLabel htmlFor="staffImage">{t("image")}</FormLabel>
-          <Button
-            fullWidth
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            {t("upload", { keyPrefix: "buttons" })}
-            <VisuallyHiddenInput
-              id="staffImage"
-              name="staffImage"
-              type="file"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                e.target.files?.[0] && setStaffImage(e.target.files?.[0]);
-              }}
-            />
-          </Button>
-          {staffImage && <FormHelperText>{t("imageSuccess")}</FormHelperText>}
-        </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">

@@ -4,15 +4,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
-import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
-import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
 import { validateLogin } from "@utils";
@@ -22,6 +19,8 @@ import Select from "@mui/material/Select";
 import { CustomModal } from "@elements";
 
 import { Patient, Sex } from "@types";
+import { CardMedia } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 type PatientModalProps = {
   open: boolean;
@@ -37,44 +36,52 @@ export const PatientModal: FC<PatientModalProps> = ({
   setPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
+  const [patientData, setPatientData] = useState(patient);
   const [phoneError, setPhoneError] = useState<string>();
   const [emailError, setEmailError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
   const [patientImage, setPatientImage] = useState<File>();
+  const [patientImageError, setPatientImageError] = useState<string>();
 
   const [createPatient, { isSuccess, error }] = useCreatePatientMutation();
   const [updatePatient, { isSuccess: isUpdateSuccess, error: updateError }] =
     useUpdatePatientMutation();
 
+  useEffect(() => {
+    if (patient) {
+      setPatientData(patient);
+    }
+  }, [patient]);
+
   const fieldsMap = [
     {
       id: "name",
       label: t("name"),
-      value: patient.name,
+      value: patientData.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setPatient({
-          ...patient,
+          ...patientData,
           name: event.target.value,
         }),
     },
     {
       id: "secondName",
       label: t("secondName"),
-      value: patient.secondName,
+      value: patientData.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setPatient({
-          ...patient,
+          ...patientData,
           secondName: event.target.value,
         }),
     },
     {
       id: "surname",
       label: t("surname"),
-      value: patient.surname,
+      value: patientData.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setPatient({
-          ...patient,
+          ...patientData,
           surname: event.target.value,
         }),
     },
@@ -86,34 +93,34 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "dob",
       label: t("dob"),
-      value: patient.dob,
+      value: patientData.dob,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatient({ ...patient, dob: target.value });
+        setPatient({ ...patientData, dob: target.value });
       },
       error: birthDateError,
     },
     {
       id: "email",
       label: t("email"),
-      value: patient.email,
+      value: patientData.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatient({ ...patient, email: target.value });
+        setPatient({ ...patientData, email: target.value });
       },
       error: emailError,
     },
     {
       id: "phone",
       label: t("phone"),
-      value: patient.phone,
+      value: patientData.phone,
       error: phoneError,
     },
     {
       id: "address",
       label: t("address"),
-      value: patient.address,
+      value: patientData.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         setPatient({
-          ...patient,
+          ...patientData,
           address: event.target.value,
         }),
     },
@@ -124,17 +131,17 @@ export const PatientModal: FC<PatientModalProps> = ({
     setBirthDateError(undefined);
     setEmailError(undefined);
 
-    if (!matchIsValidTel(patient.phone)) {
+    if (!matchIsValidTel(patientData.phone)) {
       setPhoneError("Please enter a valid phone number.");
       return false;
     }
 
-    if (patient.dob && !days(patient.dob).isValid()) {
+    if (patientData.dob && !days(patientData.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
 
-    if (!validateLogin(patient.email)) {
+    if (!validateLogin(patientData.email)) {
       setEmailError("Please enter a valid email address.");
       return false;
     }
@@ -148,9 +155,9 @@ export const PatientModal: FC<PatientModalProps> = ({
     if (!validateForm()) {
       return;
     }
-    const data = { ...patient, image: patientImage };
-    if (patient._id) {
-      return updatePatient({ ...data, _id: patient._id });
+    const data = { ...patientData, image: patientImage };
+    if (patientData._id) {
+      return updatePatient({ ...data, _id: patientData._id });
     }
     return createPatient(data);
   };
@@ -170,6 +177,61 @@ export const PatientModal: FC<PatientModalProps> = ({
   return (
     <CustomModal width="auto" open={open} onClose={onClose}>
       <Box component="form" onSubmit={submitFormHandler}>
+      <FormControl sx={{ mb: 2, flexDirection: "row" }}>
+          <Box sx={{ position: "relative" }}>
+            <CardMedia
+              sx={{ width: "70px", height: "70px", borderRadius: "50%" }}
+              component="img"
+              image={patientData.image}
+              alt={patientData.image}
+            />
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                p: 0,
+                minWidth: "30px",
+              }}
+            >
+              <EditIcon />
+              <VisuallyHiddenInput
+                id="staffImage"
+                name="staffImage"
+                type="file"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    setPatientImage(file);
+                    reader.onloadend = () => {
+                      setPatientData((prevState) => ({
+                        ...prevState,
+                        image: `${reader.result}`,
+                      }));
+                    };
+                    reader.onerror = () => {
+                      setPatientImageError(t("error", { keyPrefix: "image" }));
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </Button>
+          </Box>
+          {patientImage && (
+            <FormHelperText>
+              {t("success", { keyPrefix: "image" })}
+            </FormHelperText>
+          )}
+          {patientImageError && (
+            <FormHelperText>{patientImageError}</FormHelperText>
+          )}
+        </FormControl>
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
@@ -235,49 +297,25 @@ export const PatientModal: FC<PatientModalProps> = ({
                 }}
               />
             )}
-            {input.id !== "phone" &&
-              input.id !== "dob" &&
-              input.id !== "sex" && (
-                <>
-                  <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
-                  <OutlinedInput
-                    id={input.id}
-                    type="text"
-                    required
-                    onChange={input.onChange}
-                    value={input.value}
-                    color="primary"
-                    name={input.id}
-                    label={input.label}
-                    sx={{ ariaLabel: input.id }}
-                  />
-                </>
-              )}
+            {!["phone", "dob", "sex"].includes(input.id) && (
+              <>
+                <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
+                <OutlinedInput
+                  id={input.id}
+                  type="text"
+                  required
+                  onChange={input.onChange}
+                  value={input.value}
+                  color="primary"
+                  name={input.id}
+                  label={input.label}
+                  sx={{ ariaLabel: input.id }}
+                />
+              </>
+            )}
             <FormHelperText error={!!input.error}>{input.error}</FormHelperText>
           </FormControl>
         ))}
-        <FormControl sx={{ mb: 2, width: "100%" }}>
-          <FormLabel htmlFor="patientImage">{t("image")}</FormLabel>
-          <Button
-            fullWidth
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            {t("upload", { keyPrefix: "buttons" })}
-            <VisuallyHiddenInput
-              id="patientImage"
-              name="patientImage"
-              type="file"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                e.target.files?.[0] && setPatientImage(e.target.files?.[0]);
-              }}
-            />
-          </Button>
-          {patientImage && <FormHelperText>{t("imageSuccess")}</FormHelperText>}
-        </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">

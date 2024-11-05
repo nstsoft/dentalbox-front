@@ -38,71 +38,78 @@ type Props = {
   }[];
   onSubmit: (event: FormEvent) => void;
   onChange: () => void;
+  onUpload?: (file: File) => void;
   isDataChanged: boolean;
 };
 
 export const EditForm: FC<Props> = ({
   onSubmit,
   onChange,
+  onUpload,
   fields,
   isDataChanged,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-  const [patientImage, setPatientImage] = useState(
-    fields.find((field) => field.id === "image")?.value
-  );
+  const [imageSuccess, setImageSuccess] = useState<string>();
 
   return (
-    <Box
-      component="form"
-      onSubmit={onSubmit}
-      onChange={onChange}
-      sx={{ width: "100%" }}
-    >
+    <Box component="form" onSubmit={onSubmit} onChange={onChange}>
       {fields.map((field) => (
         <Fragment key={field.id}>
           {field.id === "image" ? (
-            <Box sx={{ position: "relative" }}>
-              <CardMedia
-                sx={{ width: "100%", maxHeight: "300px", mb: 2 }}
-                component="img"
-                image={patientImage}
-                alt={patientImage}
-              />
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                sx={{
-                  position: "absolute",
-                  top: 5,
-                  right: 5,
-                  p: 0,
-                  minWidth: "30px",
-                }}
-              >
-                <EditIcon />
-                <VisuallyHiddenInput
-                  id="patientImage"
-                  name="patientImage"
-                  type="file"
-                  onChange={async (e: ChangeEvent<HTMLInputElement>) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      field.setPatientData((prev) => ({
-                        ...prev,
-                        image: file,
-                      }));
-                      reader.onloadend = () => {
-                        setPatientImage(`${reader.result}`);
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
+            <Box sx={{ display: "flex", mb: 2, gap: 2 }}>
+              <Box sx={{ position: "relative", width: "100px" }}>
+                <CardMedia
+                  sx={{ height: "100px", borderRadius: "50%" }}
+                  component="img"
+                  image={field.value}
+                  alt={field.value}
                 />
-              </Button>
+                <Button
+                  component="label"
+                  role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  sx={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    p: 0,
+                    minWidth: "30px",
+                  }}
+                >
+                  <EditIcon />
+                  <VisuallyHiddenInput
+                    id="patientImage"
+                    name="patientImage"
+                    type="file"
+                    onChange={async (e: ChangeEvent<HTMLInputElement>) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        onUpload?.(file);
+                        reader.onloadend = () => {
+                          field.setPatientData((prev) => ({
+                            ...prev,
+                            image: `${reader.result}`,
+                          }));
+                          setImageSuccess(t("success", { keyPrefix: "image" }));
+                        };
+                        reader.onerror = () => {
+                          field.onError?.(t("error", { keyPrefix: "image" }));
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </Button>
+              </Box>
+              {field.error && (
+                <FormHelperText error={!!field.error}>
+                  {field.error}
+                </FormHelperText>
+              )}
+              {imageSuccess && <FormHelperText>{imageSuccess}</FormHelperText>}
             </Box>
           ) : (
             <Box

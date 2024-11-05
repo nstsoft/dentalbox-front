@@ -45,6 +45,7 @@ export const PatientCardPage = () => {
           display: "flex",
           gap: 2,
           mb: 1,
+          flexFlow: "row wrap",
         }}
       >
         <PatientInfo patient={patient!} />

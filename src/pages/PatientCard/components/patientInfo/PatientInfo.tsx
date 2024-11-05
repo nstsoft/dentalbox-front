@@ -35,16 +35,18 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   const [patientData, setPatientData] = useState(patient);
   const [isEdit, setIsEdit] = useState(false);
   const [emailError, setEmailError] = useState<string>();
+  const [imageError, setImageError] = useState<string>();
   const [phoneError, setPhoneError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
   const [updatePatient, { isSuccess }] = useUpdatePatientMutation();
   const [isDataChanged, setIsDataChanged] = useState(false);
+  const [patientImage, setPatientImage] = useState<File>();
 
   useEffect(() => {
-    if (patient && !patientData) {
+    if (patient) {
       setPatientData(patient);
     }
-  }, [patient, patientData]);
+  }, [patient]);
 
   const errorSet: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,6 +59,7 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
       setter: (err: string | Error | null) =>
         setBirthDateError(err ? "Please enter valid date." : undefined),
     },
+    image: { value: imageError, setter: setImageError },
   };
 
   const fieldsMap = FIELDS_SET.map((field) => {
@@ -68,6 +71,7 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
       type: "text",
       error: errorSet?.[field]?.value,
       onError: errorSet?.[field]?.setter,
+      onUpload: setPatientImage,
     };
   });
 
@@ -99,7 +103,7 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      updatePatient(patientData);
+      updatePatient({ ...patientData, image: patientImage });
     }
   };
 
@@ -127,12 +131,12 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
         {isEdit ? <CloseIcon /> : <EditIcon />}
       </Button>
       <CardContent sx={{ padding: "0 5px" }}>
-        <Grid2 gap={1} container wrap="wrap" sx={{ width: "100%" }}>
+        <Grid2 gap={2} container wrap="wrap" sx={{ width: "100%" }}>
           {!isEdit && (
-            <Grid2 size={{ xs: 12, md: 4 }} sx={{ maxWidth: "200px" }}>
+            <Grid2 size={{ xs: 12, md: 4 }} sx={{ maxWidth: "100px" }}>
               <Box
                 sx={{
-                  borderRadius: "20px",
+                  borderRadius: "50%",
                   overflow: "hidden",
                   position: "relative",
                 }}

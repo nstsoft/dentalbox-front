@@ -21,6 +21,10 @@ export const UA: ResourceLanguage = {
       update: "Оновити",
       delete: "Видалити",
     },
+    image: {
+      success: "Фото успішно завантажене",
+      error: "Помилка завантаження фото",
+    },
     login: {
       login: "Логін",
       loginPlaceholder: "Ваш емейл або телефон",
@@ -263,7 +267,6 @@ export const UA: ResourceLanguage = {
         address: "Адреса",
         createPatient: "Створити пацієнта",
         image: "Фото",
-        imageSuccess: "Фото успішно завантажене",
         sex: "Стать",
         sexItems: { male: "Чоловік", female: "Жінка" },
         actions: "Дії",
