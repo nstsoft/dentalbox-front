@@ -6,10 +6,11 @@ import { useState } from "react";
 import { Service } from "@types";
 import { AccordionItem, AddService } from "./components";
 import { useTranslation } from "react-i18next";
+import { Loader } from "@components";
 
 export const Services = () => {
   const [create] = useAddServiceItemMutation();
-  const { data } = useGetServicesQuery();
+  const { data, isLoading } = useGetServicesQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation("", { keyPrefix: "pages.workspace.services" });
 
@@ -21,6 +22,8 @@ export const Services = () => {
       }),
       {} as { [key: string]: Service[] }
     ) ?? {};
+
+  if (isLoading) return <Loader />;
 
   return (
     <Box sx={{ maxWidth: 1000 }}>

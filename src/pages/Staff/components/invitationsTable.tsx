@@ -1,6 +1,6 @@
 import { type GridColDef } from "@mui/x-data-grid";
 import { UserInvitation } from "@types";
-import { CustomTable } from "@components";
+import { CustomTable, Loader, NoData } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { type Dispatch, type SetStateAction, type FC } from "react";
@@ -44,7 +44,10 @@ export const InvitationsTable: FC<Props> = ({
       valueGetter: (_, r) => days(r.activeTill * 1000).format("DD.MM.YYYY"),
     },
   ];
-  if (!data) return null;
+
+  if (isLoading) return <Loader />;
+
+  if (!data) return <NoData />;
 
   return (
     <div style={{ width: "100%" }}>

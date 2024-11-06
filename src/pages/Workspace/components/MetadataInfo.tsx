@@ -14,7 +14,7 @@ import { MobileTimePicker } from "@mui/x-date-pickers";
 import days from "dayjs";
 
 type Props = {
-  metadata: WorkspaceMetadata;
+  metadata?: WorkspaceMetadata;
 };
 
 const currencies = ["$", "₴"];

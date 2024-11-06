@@ -9,3 +9,5 @@ export * from "./GridSearchFilter";
 export * from "./Notes";
 export * from "./ToothColorBox";
 export * from "./FilesSection";
+export * from './NoData';
+export * from './Loader';

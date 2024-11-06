@@ -10,7 +10,7 @@ import {
   useState,
   useEffect,
 } from "react";
-import { CustomTable } from "@components";
+import { CustomTable, Loader, NoData } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { isMobile } from "react-device-detect";
@@ -131,7 +131,9 @@ export const UsersTable: FC<Props> = ({
     }
   }, [isSuccess, onReset]);
 
-  if (!data) return null;
+  if (isLoading) return <Loader />;
+
+  if (!data) return <NoData />;
 
   return (
     <div style={{ width: "100%" }}>

@@ -1,7 +1,7 @@
 import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import { type Patient } from "@types";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
-import { CustomTable, Row } from "@components";
+import { CustomTable, Row, NoData, Loader } from "@components";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
@@ -112,7 +112,9 @@ export const PatientsTable: FC<Props> = ({
     },
   ];
 
-  if (!data) return null;
+  if (isLoading) return <Loader />;
+
+  if (!data) return <NoData />;
 
   return (
     <CustomTable
