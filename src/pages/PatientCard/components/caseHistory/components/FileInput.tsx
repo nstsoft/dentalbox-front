@@ -15,6 +15,7 @@ type Props = {
   files: FileWithDescription[];
   setFiles: Dispatch<SetStateAction<FileWithDescription[]>>;
   removeSelectedFile: (id: string) => void;
+  updateSelectedFile: (id: string, notes: string) => void;
 };
 
 export const MultipleFileUploadWithDescriptions: React.FC<Props> = ({
@@ -22,6 +23,7 @@ export const MultipleFileUploadWithDescriptions: React.FC<Props> = ({
   setFiles,
   selectedFiles,
   removeSelectedFile,
+  updateSelectedFile,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { t } = useTranslation("", {
@@ -63,10 +65,22 @@ export const MultipleFileUploadWithDescriptions: React.FC<Props> = ({
   const renderSelectedFile = (file: PatientFile) => {
     return (
       <Box className="exited-file-list" key={file._id}>
-        <Typography>{file.name}</Typography>
-        <IconButton onClick={() => removeSelectedFile(file._id)}>
-          <DeleteIcon />
-        </IconButton>
+        <Box className="exited-file-list-control-panel">
+          <Typography>{file.name}</Typography>
+          <IconButton onClick={() => removeSelectedFile(file._id)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+        <Box>
+          <TextField
+            label="Description"
+            fullWidth
+            value={file.notes}
+            onChange={({ target }) => {
+              updateSelectedFile(file._id, target.value);
+            }}
+          />
+        </Box>
       </Box>
     );
   };

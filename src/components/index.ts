@@ -11,3 +11,4 @@ export * from "./ToothColorBox";
 export * from "./FilesSection";
 export * from './NoData';
 export * from './Loader';
+export * from './AvatarUpload';

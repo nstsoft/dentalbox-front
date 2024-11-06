@@ -43,8 +43,14 @@
   .file-input {
     .exited-file-list {
       display: flex;
-      button {
-        margin-left: 20px;
+      flex-direction: column;
+      .exited-file-list-control-panel {
+        margin: 10px 0;
+        display: flex;
+        flex-direction: row;
+        button {
+          margin-left: 20px;
+        }
       }
     }
     .item {

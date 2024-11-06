@@ -97,6 +97,14 @@ export const CaseHistoryModal: FC<Props> = ({
             files={files}
             selectedFiles={data.selectedFiles}
             setFiles={setFiles}
+            updateSelectedFile={(id: string, notes: string) => {
+              console.log("updateSelectedFile", id, notes);
+              setHistoryData({
+                selectedFiles: data.selectedFiles?.map((f) =>
+                  f._id === id ? { ...f, notes } : f
+                ),
+              });
+            }}
             removeSelectedFile={(id: string) => {
               setHistoryData({
                 selectedFiles: data.selectedFiles?.filter((f) => f._id !== id),

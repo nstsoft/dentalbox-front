@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
-import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -22,9 +21,8 @@ import {
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
 import { useCreateCabinetMutation, useUpdateCabinetMutation } from "@api";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { VisuallyHiddenInput } from "@elements";
 import { CabinetForm } from "../types";
+import { AvatarUpload } from "@components";
 
 type CabinetModalProps = {
   cabinetForm: CabinetForm & { _id?: string };
@@ -41,7 +39,6 @@ export const CabinetModal: FC<CabinetModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [imageError, setImageError] = useState<string | null>(null);
   const [responseError, setResponseError] = useState<string | string[]>();
   const [cabinetImage, setCabinetImage] = useState<File>();
 
@@ -101,7 +98,6 @@ export const CabinetModal: FC<CabinetModalProps> = ({
 
   const validateForm = () => {
     setPhoneError("");
-    setImageError("");
 
     if (!matchIsValidTel(cabinetForm.phone)) {
       setPhoneError("Please enter a valid phone number.");
@@ -109,7 +105,6 @@ export const CabinetModal: FC<CabinetModalProps> = ({
     }
 
     if ((cabinetForm._id && !cabinetForm.image) ?? !cabinetImage) {
-      setImageError("Please upload cabinet image.");
       return false;
     }
 
@@ -151,6 +146,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
           p: 4,
         }}
       >
+        <AvatarUpload image={cabinetForm.image} onUpload={setCabinetImage} />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" ? (
@@ -229,33 +225,6 @@ export const CabinetModal: FC<CabinetModalProps> = ({
             />
           </FormControl>
         ))}
-        <FormControl sx={{ mb: 2, width: "100%" }}>
-          <FormLabel htmlFor="cabinetImage">
-            {t("pages.cabinet.image")}
-          </FormLabel>
-          <Button
-            fullWidth
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            {t("buttons.upload")}
-            <VisuallyHiddenInput
-              id="cabinetImage"
-              name="cabinetImage"
-              type="file"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files?.[0]) {
-                  setCabinetImage(e.target.files?.[0]);
-                  setImageError("");
-                }
-              }}
-            />
-          </Button>
-          <FormHelperText error={!!imageError}>{imageError}</FormHelperText>
-        </FormControl>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
           <Button variant="contained" type="submit">

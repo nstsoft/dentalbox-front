@@ -14,7 +14,7 @@ const initCabinet = {
   address: "",
   notes: "",
   chairs: [""],
-  image: ''
+  image: "",
 };
 
 export const CabinetPage = () => {
@@ -53,7 +53,10 @@ export const CabinetPage = () => {
         cabinetForm={cabinetForm}
         setCabinetForm={setCabinetForm}
         open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setCabinetForm(initCabinet);
+        }}
       />
       <GridSearchFilter
         search={search}

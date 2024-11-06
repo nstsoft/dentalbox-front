@@ -1,4 +1,4 @@
-import { CustomMultiSelect, VisuallyHiddenInput } from "@elements";
+import { CustomMultiSelect } from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -13,8 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
 import { User, UserRole } from "@types";
 import { useUpdateUserMutation } from "@api";
-import CardMedia from "@mui/material/CardMedia";
-import EditIcon from "@mui/icons-material/Edit";
+import { AvatarUpload } from "@components";
 
 type StaffModalProps = {
   open: boolean;
@@ -50,7 +49,6 @@ export const StaffModal: FC<StaffModalProps> = ({
   const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
   const [staffImage, setStaffImage] = useState<File>();
-  const [staffImageError, setStaffImageError] = useState<string>();
 
   useEffect(() => {
     if (selectedUser) {
@@ -166,61 +164,7 @@ export const StaffModal: FC<StaffModalProps> = ({
           p: 4,
         }}
       >
-        <FormControl sx={{ mb: 2, flexDirection: "row" }}>
-          <Box sx={{ position: "relative" }}>
-            <CardMedia
-              sx={{ width: "70px", height: "70px", borderRadius: "50%" }}
-              component="img"
-              image={staffForm.image}
-              alt={staffForm.name}
-            />
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                p: 0,
-                minWidth: "30px",
-              }}
-            >
-              <EditIcon />
-              <VisuallyHiddenInput
-                id="staffImage"
-                name="staffImage"
-                type="file"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    setStaffImage(file);
-                    reader.onloadend = () => {
-                      setStaffForm((prevState) => ({
-                        ...prevState,
-                        image: `${reader.result}`,
-                      }));
-                    };
-                    reader.onerror = () => {
-                      setStaffImageError(t("error", { keyPrefix: "image" }));
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
-            </Button>
-          </Box>
-          {staffImage && (
-            <FormHelperText>
-              {t("success", { keyPrefix: "image" })}
-            </FormHelperText>
-          )}
-          {staffImageError && (
-            <FormHelperText>{staffImageError}</FormHelperText>
-          )}
-        </FormControl>
+        <AvatarUpload image={staffForm.image ?? ""} onUpload={setStaffImage} />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "dob" && (

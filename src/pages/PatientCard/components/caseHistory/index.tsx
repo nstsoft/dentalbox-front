@@ -20,7 +20,6 @@ import {
 import { CustomModal } from "@elements";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { use } from "i18next";
 
 type Props = { patientId: string; dateFilter: { to?: Dayjs; from?: Dayjs } };
 
@@ -81,7 +80,10 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
       patient: patientId,
       date: (selectedHistoryItem.date ?? days()).toISOString(),
       files: files.map((file) => file.file),
-      selectedFiles: selectedHistoryItem.selectedFiles?.map((file) => file._id),
+      selectedFiles: selectedHistoryItem.selectedFiles?.map((file) => ({
+        _id: file._id,
+        notes: file.notes,
+      })),
       ...descriptions,
     };
 
@@ -168,9 +170,9 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
         isOpen={isOpenAddUpdateModal}
         setIsOpen={setIsOpenAddUpdateModal}
         onSubmitModal={onSubmitModal}
-        setHistoryData={(data) =>
-          setSelectedHistoryItem((prev) => ({ ...prev, ...data }))
-        }
+        setHistoryData={(data) => {
+          setSelectedHistoryItem((prev) => ({ ...prev, ...data }));
+        }}
         onCloseModal={() => {
           setSelectedHistoryItem(initialData);
           setFiles([]);

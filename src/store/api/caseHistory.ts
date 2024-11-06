@@ -10,7 +10,7 @@ type CreateHistoryData = Omit<HistoryData, "id" | "date" | "files"> & {
   patient: string;
   date: string;
   files?: File[];
-  selectedFiles?: string[];
+  selectedFiles?: { _id: string; notes: string }[];
   _id?: string;
 };
 

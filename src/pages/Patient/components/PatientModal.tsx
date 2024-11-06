@@ -1,5 +1,4 @@
 import { useCreatePatientMutation, useUpdatePatientMutation } from "@api";
-import { VisuallyHiddenInput } from "@elements";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -19,8 +18,7 @@ import Select from "@mui/material/Select";
 import { CustomModal } from "@elements";
 
 import { Patient, Sex } from "@types";
-import { CardMedia } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { AvatarUpload } from "@components";
 
 type PatientModalProps = {
   open: boolean;
@@ -42,7 +40,6 @@ export const PatientModal: FC<PatientModalProps> = ({
   const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
   const [patientImage, setPatientImage] = useState<File>();
-  const [patientImageError, setPatientImageError] = useState<string>();
 
   const [createPatient, { isSuccess, error }] = useCreatePatientMutation();
   const [updatePatient, { isSuccess: isUpdateSuccess, error: updateError }] =
@@ -177,61 +174,7 @@ export const PatientModal: FC<PatientModalProps> = ({
   return (
     <CustomModal width="auto" open={open} onClose={onClose}>
       <Box component="form" onSubmit={submitFormHandler}>
-        <FormControl sx={{ mb: 2, flexDirection: "row" }}>
-          <Box sx={{ position: "relative" }}>
-            <CardMedia
-              sx={{ width: "70px", height: "70px", borderRadius: "50%" }}
-              component="img"
-              image={patientData.image}
-              alt={patientData.image}
-            />
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                p: 0,
-                minWidth: "30px",
-              }}
-            >
-              <EditIcon />
-              <VisuallyHiddenInput
-                id="staffImage"
-                name="staffImage"
-                type="file"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    setPatientImage(file);
-                    reader.onloadend = () => {
-                      setPatientData((prevState) => ({
-                        ...prevState,
-                        image: `${reader.result}`,
-                      }));
-                    };
-                    reader.onerror = () => {
-                      setPatientImageError(t("error", { keyPrefix: "image" }));
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
-            </Button>
-          </Box>
-          {patientImage && (
-            <FormHelperText>
-              {t("success", { keyPrefix: "image" })}
-            </FormHelperText>
-          )}
-          {patientImageError && (
-            <FormHelperText>{patientImageError}</FormHelperText>
-          )}
-        </FormControl>
+        <AvatarUpload image={patientData.image ?? ""} onUpload={setPatientImage} />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
