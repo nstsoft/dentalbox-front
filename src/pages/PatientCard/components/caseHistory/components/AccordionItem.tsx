@@ -42,31 +42,45 @@ export const AccordionItem: FC<Props> = ({
           </IconButton>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("complaints")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("complaints")}
+          </Typography>
           <Typography>{item.complaints}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("anamnesis")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("anamnesis")}
+          </Typography>
           <Typography>{item.anamnesis}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("objectiveData")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("objectiveData")}
+          </Typography>
           <Typography>{item.objectiveData}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("diagnosis")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("diagnosis")}
+          </Typography>
           <Typography>{item.diagnosis}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("treatment")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("treatment")}
+          </Typography>
           <Typography>{item.treatment}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("materials")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("materials")}
+          </Typography>
           <Typography>{item.materials}</Typography>
         </Box>
         <Box className="history-accordion-container">
-          <Typography variant="h6">{t("anesthesia")}</Typography>
+          <Typography color="primary" variant="h6">
+            {t("anesthesia")}
+          </Typography>
           <Typography>{item.anesthesia}</Typography>
         </Box>
         <Divider sx={{ m: 3 }} />

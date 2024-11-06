@@ -37,7 +37,7 @@ export const CaseHistoryModal: FC<Props> = ({
       sx={{
         minWidth: "300px",
         maxWidth: isMobile ? "100%" : "700px",
-        width: isMobile ? "100%" : "auto",
+        width: isMobile ? "100%" : "70vw",
         maxHeight: "95vh",
       }}
       open={open}
@@ -98,7 +98,6 @@ export const CaseHistoryModal: FC<Props> = ({
             selectedFiles={data.selectedFiles}
             setFiles={setFiles}
             updateSelectedFile={(id: string, notes: string) => {
-              console.log("updateSelectedFile", id, notes);
               setHistoryData({
                 selectedFiles: data.selectedFiles?.map((f) =>
                   f._id === id ? { ...f, notes } : f

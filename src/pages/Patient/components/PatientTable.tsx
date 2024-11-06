@@ -8,8 +8,10 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
-import { Button, Menu, MenuItem } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import days from "dayjs";
+import { TablePopover } from "@components";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -31,6 +33,7 @@ export const PatientsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
 
   const mobileColumns: GridColDef<Patient>[] = [
     {
@@ -79,34 +82,18 @@ export const PatientsTable: FC<Props> = ({
       width: 80,
       renderCell: (params) => {
         return (
-          <>
+          <Box className={params.row._id} key={params.row._id}>
             <Button
               onClick={(event) => {
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
+                setIsPopoverOpen(true);
+                onSelectPatient(params.row);
               }}
             >
               <GridMoreVertIcon />
             </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem
-                onClick={() => {
-                  onSelectPatient(params.row);
-                  setIsModalOpen(true);
-                }}
-              >
-                {t("update", { keyPrefix: "buttons" })}
-              </MenuItem>
-              <MenuItem>{t("delete", { keyPrefix: "buttons" })}</MenuItem>
-            </Menu>
-          </>
+          </Box>
         );
       },
     },
@@ -117,18 +104,32 @@ export const PatientsTable: FC<Props> = ({
   if (!data) return <NoData />;
 
   return (
-    <CustomTable
-      rows={data.data}
-      columns={(isMobile ? mobileColumns : columns).map((col) => ({
-        ...col,
-        sortable: false,
-        filterable: false,
-        editable: false,
-      }))}
-      rowCount={data.count}
-      loading={isLoading}
-      onPagination={setPaginationModel}
-      onRowClick={(data: Row) => navigate(data.id)}
-    />
+    <div>
+      <TablePopover
+        open={isPopoverOpen}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setIsPopoverOpen(false);
+        }}
+        onUpdate={() => {
+          setIsModalOpen(true);
+        }}
+        onDelete={() => {}}
+      ></TablePopover>
+
+      <CustomTable
+        rows={data.data}
+        columns={(isMobile ? mobileColumns : columns).map((col) => ({
+          ...col,
+          sortable: false,
+          filterable: false,
+          editable: false,
+        }))}
+        rowCount={data.count}
+        loading={isLoading}
+        onPagination={setPaginationModel}
+        onRowClick={(data: Row) => navigate(data.id)}
+      />
+    </div>
   );
 };
