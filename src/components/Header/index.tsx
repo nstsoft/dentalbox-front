@@ -1,8 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import {
   UserBadge,
   RightToolbar,
@@ -11,8 +9,6 @@ import {
   AuthButtons,
 } from "./components";
 import { type FC } from "react";
-import { useSideMenu, useAuth } from "@hooks";
-import { isMobile, isTablet } from "react-device-detect";
 
 const sx = {
   display: "flex",
@@ -26,16 +22,9 @@ const sx = {
 };
 
 export const Header: FC = () => {
-  const { toggle } = useSideMenu();
-  const { isLoggedIn } = useAuth();
   return (
     <Box>
       <AppBar position="relative" sx={sx}>
-        {(isMobile || isTablet) && isLoggedIn && (
-          <IconButton color="inherit" onClick={toggle}>
-            <MenuIcon />
-          </IconButton>
-        )}
         <Toolbar sx={{ p: 0 }}>
           <WorkspaceBadge />
         </Toolbar>

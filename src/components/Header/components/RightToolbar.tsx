@@ -6,6 +6,7 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAuth } from "@hooks";
+import { isMobile } from "react-device-detect";
 
 type ToolBar = {
   mailContentCount?: number;
@@ -19,10 +20,13 @@ export const RightToolbar: FC<ToolBar> = ({
   const { isLoggedIn } = useAuth();
   if (!isLoggedIn) return null;
   return (
-    <Toolbar variant="dense">
+    <Toolbar
+      variant="dense"
+      sx={{ pl: isMobile ? 1 : 2, pr: isMobile ? 0 : 2 }}
+    >
       <IconButton
         onClick={() => {}}
-        size="large"
+        size={isMobile ? "medium" : "large"}
         aria-label="show 4 new mails"
         color="inherit"
       >
@@ -31,7 +35,7 @@ export const RightToolbar: FC<ToolBar> = ({
         </Badge>
       </IconButton>
       <IconButton
-        size="large"
+        size={isMobile ? "medium" : "large"}
         aria-label="show 17 new notifications"
         color="inherit"
         onClick={() => {}}

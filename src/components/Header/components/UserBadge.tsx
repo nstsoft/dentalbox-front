@@ -14,10 +14,11 @@ import { useTranslation } from "react-i18next";
 
 export const UserBadge: FC = () => {
   const { t } = useTranslation("", { keyPrefix: "header" });
-  const { user, isLoggedIn, logout, availableWorkspaces, changeWorkspace } =
+  const { user, workspace, isLoggedIn, logout, availableWorkspaces, changeWorkspace } =
     useAuth();
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement>();
   const navigate = useNavigate();
+  const workspaces = availableWorkspaces.filter((w) => w._id !== workspace?._id);
 
   if (!isLoggedIn || !user) return null;
 
@@ -46,8 +47,7 @@ export const UserBadge: FC = () => {
         open={Boolean(anchorElUser)}
         onClose={() => setAnchorElUser(undefined)}
       >
-        {availableWorkspaces.length > 1 &&
-          availableWorkspaces.map((workspace) => (
+        {workspaces.map((workspace) => (
             <MenuItem key={workspace._id} onClick={() => {}}>
               <IconButton
                 onClick={(event) => {

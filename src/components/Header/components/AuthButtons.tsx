@@ -33,7 +33,7 @@ export const AuthButtons: FC = () => {
 
   return (
     <Box>
-      <Button color="inherit" onClick={handleClick}>
+      <Button color="inherit" onClick={handleClick} sx={{ minWidth: "40px" }}>
         <PersonPinIcon />
       </Button>
       <Menu

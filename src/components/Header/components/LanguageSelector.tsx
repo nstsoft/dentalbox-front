@@ -3,6 +3,7 @@ import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { useLanguage } from "@hooks";
 import { LANGUAGES } from "@types";
+import { isMobile } from "react-device-detect";
 
 const CustomSelect = styled(Select)({ ".MuiSelect-icon": { display: "none" } });
 
@@ -18,9 +19,13 @@ export function LanguageSelector() {
           "&:hover": { border: "none" },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": { border: "none" },
         },
-        width: 80,
+        width: isMobile ? 60 : 80,
         color: "white",
         textAlign: "center",
+        "& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input": {
+          pr: 1,
+          pl: 1,
+        },
       }}
       labelId="language-select-label"
       id="language-select"
