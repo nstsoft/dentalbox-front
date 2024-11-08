@@ -276,8 +276,8 @@ export const UA: ResourceLanguage = {
       patientCard: {
         patientCard: "Картка пацієнта",
         name: "Ім'я",
-        secondName: "Прізвище",
-        surname: "По батькові",
+        secondName: "По батькові",
+        surname: "Прізвище",
         dob: "Дата народження",
         phone: "Телефон",
         email: "Емейл",

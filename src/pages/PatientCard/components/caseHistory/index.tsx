@@ -21,7 +21,7 @@ import { CustomModal } from "@elements";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-type Props = { patientId: string; dateFilter: { to?: Dayjs; from?: Dayjs } };
+type Props = { patientId: string };
 
 const initialData = {
   date: days(),

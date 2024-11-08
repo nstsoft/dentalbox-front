@@ -33,13 +33,16 @@ type Props = {
     value?: string;
     type?: string;
     error?: string;
-    setPatientData: Dispatch<SetStateAction<Patient>>;
+    setPatientData: Dispatch<
+      SetStateAction<Patient & { clearAvatarCache?: boolean }>
+    >;
     onError?: (error: string | Error | null) => void;
   }[];
   onSubmit: (event: FormEvent) => void;
   onChange: () => void;
-  onUpload?: (file: File) => void;
+  onUpload: (file: File) => void;
   isDataChanged: boolean;
+  setCacheDate: (date: Dayjs) => void;
 };
 
 export const EditForm: FC<Props> = ({
@@ -48,6 +51,7 @@ export const EditForm: FC<Props> = ({
   onUpload,
   fields,
   isDataChanged,
+  setCacheDate,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
   const [imageSuccess, setImageSuccess] = useState<string>();
@@ -92,7 +96,9 @@ export const EditForm: FC<Props> = ({
                           field.setPatientData((prev) => ({
                             ...prev,
                             image: `${reader.result}`,
+                            clearAvatarCache: true,
                           }));
+                          setCacheDate(days());
                           setImageSuccess(t("success", { keyPrefix: "image" }));
                         };
                         reader.onerror = () => {

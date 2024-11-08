@@ -6,7 +6,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid2 from "@mui/material/Grid2";
 import { Patient } from "@types";
-import { type FC, FormEvent, useCallback, useEffect, useState } from "react";
+import {
+  type FC,
+  type Dispatch,
+  type SetStateAction,
+  type FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,14 +23,15 @@ import { matchIsValidTel } from "mui-tel-input";
 import { validateLogin } from "@utils";
 import { useUpdatePatientMutation } from "@api";
 import { EditForm, InfoSection } from "./components";
+import { type Dayjs } from "dayjs";
 
 const sx = { width: "100%", height: "100%" };
 
 const FIELDS_SET: Array<keyof Patient> = [
   "image",
+  "surname",
   "name",
   "secondName",
-  "surname",
   "sex",
   "dob",
   "phone",
@@ -30,9 +39,20 @@ const FIELDS_SET: Array<keyof Patient> = [
   "address",
 ];
 
-export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
+type Props = {
+  patient: Patient & { clearAvatarCache?: boolean };
+  setPatient: Dispatch<
+    SetStateAction<Patient & { clearAvatarCache?: boolean }>
+  >;
+  setCacheDate: (date: Dayjs) => void;
+};
+
+export const PatientInfo: FC<Props> = ({
+  patient,
+  setPatient,
+  setCacheDate,
+}) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-  const [patientData, setPatientData] = useState(patient);
   const [isEdit, setIsEdit] = useState(false);
   const [emailError, setEmailError] = useState<string>();
   const [imageError, setImageError] = useState<string>();
@@ -41,12 +61,6 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
   const [updatePatient, { isSuccess }] = useUpdatePatientMutation();
   const [isDataChanged, setIsDataChanged] = useState(false);
   const [patientImage, setPatientImage] = useState<File>();
-
-  useEffect(() => {
-    if (patient) {
-      setPatientData(patient);
-    }
-  }, [patient]);
 
   const errorSet: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,8 +80,8 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
     return {
       id: field,
       label: t(field),
-      value: patientData?.[field] as string,
-      setPatientData,
+      value: patient?.[field] as string,
+      setPatientData: setPatient,
       type: "text",
       error: errorSet?.[field]?.value,
       onError: errorSet?.[field]?.setter,
@@ -80,17 +94,17 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
     setBirthDateError(undefined);
     setEmailError(undefined);
 
-    if (!matchIsValidTel(patientData.phone)) {
+    if (!matchIsValidTel(patient.phone)) {
       setPhoneError("Please enter a valid phone number.");
       return false;
     }
 
-    if (patientData.dob && !days(patientData.dob).isValid()) {
+    if (patient.dob && !days(patient.dob).isValid()) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
 
-    if (!validateLogin(patientData.email)) {
+    if (!validateLogin(patient.email)) {
       setEmailError("Please enter a valid email address.");
       return false;
     }
@@ -103,30 +117,46 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      updatePatient({ ...patientData, image: patientImage });
+      const data = patient;
+      if (patient.dob) {
+        data.dob = days(data.dob).toISOString();
+      }
+
+      updatePatient({
+        name: patient.name,
+        surname: patient.surname,
+        secondName: patient.secondName,
+        sex: patient.sex,
+        dob: patient.dob,
+        phone: patient.phone,
+        email: patient.email,
+        address: patient.address,
+        _id: patient._id,
+        image: patientImage,
+      });
     }
   };
 
-  const editToggle = useCallback(() => {
+  const toggleEdit = useCallback(() => {
     if (isEdit) {
-      setPatientData(patient);
       setIsDataChanged(false);
     }
 
-    setIsEdit(!isEdit);
-  }, [isEdit, patient]);
+    setIsEdit((prev) => !prev);
+  }, [isEdit]);
 
   useEffect(() => {
     if (isSuccess) {
-      editToggle();
+      setIsDataChanged(false);
+      setIsEdit(false);
     }
-  }, [isSuccess, editToggle]);
+  }, [isSuccess]);
 
   return (
     <Card sx={{ m: 0, position: "relative" }}>
       <Button
         sx={{ position: "absolute", top: 0, right: 0 }}
-        onClick={editToggle}
+        onClick={toggleEdit}
       >
         {isEdit ? <CloseIcon /> : <EditIcon />}
       </Button>
@@ -141,12 +171,12 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
                   position: "relative",
                 }}
               >
-                {patientData?.image ? (
+                {patient?.image ? (
                   <CardMedia
                     sx={sx}
                     component="img"
-                    image={patientData?.image as string}
-                    alt={patientData.name}
+                    image={patient?.image}
+                    alt={patient.name}
                   />
                 ) : (
                   <ClinicIconIcon sx={sx} />
@@ -161,6 +191,8 @@ export const PatientInfo: FC<{ patient: Patient }> = ({ patient }) => {
                 onSubmit={onEditPatientInfo}
                 onChange={() => setIsDataChanged(true)}
                 isDataChanged={isDataChanged}
+                onUpload={setPatientImage}
+                setCacheDate={setCacheDate}
               />
             ) : (
               <InfoSection fields={fieldsMap.slice(1, 4)} />

@@ -25,11 +25,16 @@ export const InfoSection: FC<Props> = ({ fields }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
 
   const renderValue = (field: Field) => {
-    if (field.id === "sex" && field.value) return t(`sexItems.${field.value}`);
-    if (field.id === "dob" && field.value)
+    if (field.id === "sex" && field.value) {
+      return t(`sexItems.${field.value}`);
+    }
+    if (field.id === "dob" && field.value) {
       return days(field.value).format("YYYY/MM/DD");
+    }
+
     return field.value;
   };
+
   return (
     <>
       {fields.map((field) => (

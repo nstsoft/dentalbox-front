@@ -9,21 +9,44 @@ import { useEffect, useState } from "react";
 import { Patient } from "@types";
 import { Tab, Tabs } from "@mui/material";
 import { CustomTabPanel } from "../../components";
+import days, { type Dayjs } from "dayjs";
 
 export const PatientCardPage = () => {
   const { patientId } = useParams();
-  const { data } = useGetPatientByIdQuery(patientId!);
+  const { data, isFetching } = useGetPatientByIdQuery(patientId!);
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-  const [patient, setPatient] = useState<Patient>();
+  const [patient, setPatient] = useState<
+    Patient & { clearAvatarCache?: boolean }
+  >();
   const [updatePatient] = useUpdatePatientMutation();
+  const [cacheDate, setCacheDate] = useState<Dayjs | null>();
 
   const [tabIndex, setTabIndex] = useState(1);
 
   useEffect(() => {
-    if (data) {
-      setPatient(data);
+    if (data && !isFetching) {
+      setPatient({
+        ...data,
+        workspace: undefined,
+        image: patient?.image ?? data.image,
+      });
     }
-  }, [data]);
+  }, [data, isFetching, patient?.image]);
+
+  useEffect(() => {
+    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+
+    if (patient?.image && cacheDate && urlPattern.test(patient?.image)) {
+      setCacheDate(null);
+      setPatient(
+        (prev) =>
+          prev && {
+            ...prev,
+            image: `${prev.image}?${days().format("YYYYMMDDHHmm")}`,
+          }
+      );
+    }
+  }, [patient?.image, cacheDate]);
 
   if (!patient || !patientId || !data) return null;
   const tabs = [
@@ -37,6 +60,10 @@ export const PatientCardPage = () => {
     { label: t("tabs.files"), component: "dddd" },
   ];
 
+  if (!patient) {
+    return null;
+  }
+
   return (
     <Box>
       <Typography variant="h4">{t("patientCard")}</Typography>
@@ -48,12 +75,18 @@ export const PatientCardPage = () => {
           flexFlow: "row wrap",
         }}
       >
-        <PatientInfo patient={patient!} />
+        <PatientInfo
+          setCacheDate={(date) => setCacheDate(date)}
+          setPatient={setPatient}
+          patient={patient!}
+        />
         <Notes
           value={patient?.notes ?? ""}
-          setValue={(value) => setPatient({ ...patient!, notes: value })}
+          setValue={(value) => setPatient({ ...patient, notes: value })}
           label={t("notes")}
-          onConfirm={() => updatePatient(patient)}
+          onConfirm={() =>
+            updatePatient({ _id: patient._id, notes: patient.notes })
+          }
         />
       </Box>
       <Box sx={{ width: "100%" }}>

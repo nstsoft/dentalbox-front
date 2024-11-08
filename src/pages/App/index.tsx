@@ -61,10 +61,8 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   useEffect(() => {
     if (statusWorkspaces == "uninitialized") {
       getMyWorkspaces();
-      getMetadata();
-      getServices();
     }
-  }, [getMyWorkspaces, statusWorkspaces, workspace, getMetadata, getServices]);
+  }, [getMyWorkspaces, statusWorkspaces, workspace]);
 
   useEffect(() => {
     if (!availableWorkspaces.length && workspaces) {
@@ -97,8 +95,10 @@ export const ProtectedApp: FC<Props> = ({ isAuthenticated }) => {
   useEffect(() => {
     if (me?.workspace) {
       setAuthWorkspace(me?.workspace);
+      getMetadata();
+      getServices();
     }
-  }, [me?.workspace, setAuthWorkspace]);
+  }, [getMetadata, getServices, me?.workspace, setAuthWorkspace]);
 
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" />;

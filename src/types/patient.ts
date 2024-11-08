@@ -12,6 +12,7 @@ export type Patient = {
   address: string;
   image?: string;
   notes?: string;
+  workspace?: string;
 };
 
 export type PatientSummaryListItem = Pick<

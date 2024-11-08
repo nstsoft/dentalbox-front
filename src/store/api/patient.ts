@@ -5,8 +5,16 @@ import { baseQuery } from "./baseQuery";
 
 type PatientNameFilter = { search?: string };
 
-type UpdatePatient = Omit<Patient, "image"> & { image?: File };
+type UpdatePatient = Omit<Patient, "image" | "workspace"> & {
+  image?: File;
+};
 type CreatePatient = Omit<UpdatePatient, "_id">;
+
+const invalidatesTags = [
+  PATIENT_TAG.PATIENT_LIST,
+  PATIENT_TAG.PATIENT_RECORD,
+  PATIENT_TAG.PATIENT_SUMMARY,
+];
 
 export const patientApi = createApi({
   reducerPath: REDUCER.PATIENT,
@@ -43,27 +51,25 @@ export const patientApi = createApi({
 
         return { body: formData, url: "/patient", method: "POST" };
       },
-      invalidatesTags: [PATIENT_TAG.PATIENT_LIST],
+      invalidatesTags,
     }),
-    getPatientById: builder.query<Patient, string>({
+    getPatientById: builder.query<Patient & { workspace: string }, string>({
       query: (id) => `/patient/${id}`,
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_RECORD }],
     }),
-    updatePatient: builder.mutation<unknown, UpdatePatient>({
+    updatePatient: builder.mutation<unknown, Partial<UpdatePatient>>({
       query: ({ image, ...body }) => {
+        const { _id, ...data } = body;
         const formData = new FormData();
         if (image) {
           formData.append("file", image);
         }
 
-        formData.append(
-          "data",
-          JSON.stringify({ ...body, dob: body.dob.toString() })
-        );
+        formData.append("data", JSON.stringify(data));
 
-        return { body: formData, url: `/patient/${body._id}`, method: "PATCH" };
+        return { body: formData, url: `/patient/${_id}`, method: "PATCH" };
       },
-      invalidatesTags: [PATIENT_TAG.PATIENT_LIST],
+      invalidatesTags,
     }),
     getPatientSummary: builder.query<PatientSummaryListItem[], void>({
       query: () => "/patient/summary",
