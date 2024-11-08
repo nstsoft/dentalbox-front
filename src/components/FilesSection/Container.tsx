@@ -37,7 +37,9 @@ export const Files: FC<Props> = ({ files }) => {
     <Box className="files-section">
       {rest.map((file) => (
         <Box className="rest-file-item" key={file._id}>
-          <Typography variant="h6">{file.name}</Typography>
+          <Typography variant="h6">
+            <a href={file.url}>{file.name}</a>
+          </Typography>
           <Typography>{file.notes}</Typography>
         </Box>
       ))}
