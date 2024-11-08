@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef, type GridValidRowModel } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridValidRowModel } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 
 export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({

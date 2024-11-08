@@ -58,6 +58,10 @@ export const cabinetApi = createApi({
       query: () => "/cabinet/summary",
       providesTags: () => [{ type: CABINET_TAG.CABINET_SUMMARY }],
     }),
+    deleteCabinet: builder.mutation<void, string>({
+      query: (cabinetId) => ({ url: `/patient/${cabinetId}`, method: "DELETE" }),
+      invalidatesTags: [CABINET_TAG.CABINET_LIST]
+    }),
   }),
 });
 
@@ -66,6 +70,7 @@ export const {
   useCreateCabinetMutation,
   useGetCabinetSummaryQuery,
   useUpdateCabinetMutation,
+  useDeleteCabinetMutation
 } = cabinetApi;
 
 export default { cabinetApi };

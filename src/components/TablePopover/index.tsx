@@ -2,8 +2,6 @@ import "./style.scss";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { IconButton } from "@elements";
-import Close from "@mui/icons-material/Close";
 import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -28,21 +26,16 @@ export const TablePopover: FC<Props> = ({
       className="table-popover-container"
       open={open}
       anchorEl={anchorEl}
-      onClose={() => {}}
+      onClose={onClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       transformOrigin={{ vertical: "top", horizontal: "center" }}
     >
       <Box className="popover">
-        <Box className="popover__header">
-          <IconButton onClick={onClose}>
-            <Close />
-          </IconButton>
-        </Box>
         <Box className="popover__buttons">
-          <Button onClick={onUpdate}>
+          <Button className="popover__button" onClick={onUpdate}>
             {t("update", { keyPrefix: "buttons" })}
           </Button>
-          <Button onClick={onDelete}>
+          <Button className="popover__button" onClick={onDelete}>
             {t("delete", { keyPrefix: "buttons" })}
           </Button>
         </Box>

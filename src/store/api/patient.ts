@@ -69,6 +69,10 @@ export const patientApi = createApi({
       query: () => "/patient/summary",
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_SUMMARY }],
     }),
+    deletePatient: builder.mutation<void, string>({
+      query: (patientId) => ({ url: `/patient/${patientId}`, method: "DELETE" }),
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
+    }),
   }),
 });
 
@@ -78,6 +82,7 @@ export const {
   useCreatePatientMutation,
   useUpdatePatientMutation,
   useGetPatientSummaryQuery,
+  useDeletePatientMutation,
 } = patientApi;
 
 export default { patientApi };

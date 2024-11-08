@@ -1,4 +1,4 @@
-import { type GridColDef } from "@mui/x-data-grid";
+import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
@@ -10,14 +10,12 @@ import {
   useState,
   useEffect,
 } from "react";
-import { CustomTable, Loader, NoData } from "@components";
+import { CustomTable, Loader, NoData, TablePopover } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { isMobile } from "react-device-detect";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { StaffModal } from "./modal";
 import { useDeleteUserMutation } from "@api";
 
@@ -38,6 +36,7 @@ export const UsersTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [deleteUser, { isSuccess }] = useDeleteUserMutation();
 
@@ -92,34 +91,18 @@ export const UsersTable: FC<Props> = ({
       width: 80,
       renderCell: (params) => {
         return (
-          <>
+          <Box className={params.row._id} key={params.row._id}>
             <Button
               onClick={(event) => {
+                event.stopPropagation();
                 setAnchorEl(event.currentTarget);
+                setIsPopoverOpen(true);
                 setSelectedUser(params.row);
               }}
             >
-              <MoreVertIcon />
+              <GridMoreVertIcon />
             </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => {
-                setAnchorEl(null);
-                setSelectedUser(null);
-              }}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={() => setIsModalOpen(true)}>
-                {t("update", { keyPrefix: "buttons" })}
-              </MenuItem>
-              <MenuItem onClick={() => deleteUser(selectedUser?._id ?? "")}>
-                {t("delete", { keyPrefix: "buttons" })}
-              </MenuItem>
-            </Menu>
-          </>
+          </Box>
         );
       },
     },
@@ -153,6 +136,20 @@ export const UsersTable: FC<Props> = ({
         selectedUser={selectedUser}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <TablePopover
+        open={isPopoverOpen}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setIsPopoverOpen(false);
+        }}
+        onUpdate={() => {
+          setIsPopoverOpen(false);
+          setIsModalOpen(true);
+        }}
+        onDelete={() => {
+          deleteUser(selectedUser?._id ?? "");
+        }}
       />
     </div>
   );

@@ -1,16 +1,16 @@
 import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import { Cabinet } from "@types";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
-import { CustomTable, Loader, NoData } from "@components";
+import { CustomTable, Loader, NoData, TablePopover } from "@components";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { CabinetForm } from "../types";
+import { useDeleteCabinetMutation } from "@api";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -29,6 +29,9 @@ export const CabinetsTable: FC<Props> = ({
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.cabinet" });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [selectedCabinet, setSelectedCabinet] = useState<Cabinet>();
+  const [deleteCabinet] = useDeleteCabinetMutation();
 
   const mobileColumns: GridColDef<Cabinet>[] = [
     {
@@ -71,12 +74,13 @@ export const CabinetsTable: FC<Props> = ({
       width: 80,
       renderCell: (params) => {
         return (
-          <>
+          <Box className={params.row._id} key={params.row._id}>
             <Button
               onClick={(event) => {
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
-                console.log(params.row);
+                setIsPopoverOpen(true);
+                setSelectedCabinet(params.row)
                 onSelectCabinet({
                   ...params.row,
                   chairs: (params.row.chairs ?? []).map((chair) => chair.name),
@@ -85,20 +89,7 @@ export const CabinetsTable: FC<Props> = ({
             >
               <GridMoreVertIcon />
             </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={() => setIsModalOpen(true)}>
-                {t("update", { keyPrefix: "buttons" })}
-              </MenuItem>
-              <MenuItem>{t("delete", { keyPrefix: "buttons" })}</MenuItem>
-            </Menu>
-          </>
+          </Box>
         );
       },
     },
@@ -109,17 +100,33 @@ export const CabinetsTable: FC<Props> = ({
   if (!data) return <NoData />;
 
   return (
-    <CustomTable
-      rows={data.data}
-      columns={(isMobile ? mobileColumns : columns).map((col) => ({
-        ...col,
-        sortable: false,
-        filterable: false,
-        editable: false,
-      }))}
-      rowCount={data.count}
-      loading={isLoading}
-      onPagination={setPaginationModel}
-    />
+    <div>
+      <TablePopover
+        open={isPopoverOpen}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setIsPopoverOpen(false);
+        }}
+        onUpdate={() => {
+          setIsPopoverOpen(false);
+          setIsModalOpen(true);
+        }}
+        onDelete={() => {
+          deleteCabinet(selectedCabinet?._id ?? "");
+        }}
+      />
+      <CustomTable
+        rows={data.data}
+        columns={(isMobile ? mobileColumns : columns).map((col) => ({
+          ...col,
+          sortable: false,
+          filterable: false,
+          editable: false,
+        }))}
+        rowCount={data.count}
+        loading={isLoading}
+        onPagination={setPaginationModel}
+      />
+    </div>
   );
 };

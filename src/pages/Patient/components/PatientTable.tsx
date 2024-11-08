@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import days from "dayjs";
 import { TablePopover } from "@components";
+import { useDeletePatientMutation } from "@api";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -33,7 +34,9 @@ export const PatientsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient>();
+  const [deletePatient] = useDeletePatientMutation();
 
   const mobileColumns: GridColDef<Patient>[] = [
     {
@@ -88,6 +91,7 @@ export const PatientsTable: FC<Props> = ({
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
                 setIsPopoverOpen(true);
+                setSelectedPatient(params.row);
                 onSelectPatient(params.row);
               }}
             >
@@ -112,10 +116,13 @@ export const PatientsTable: FC<Props> = ({
           setIsPopoverOpen(false);
         }}
         onUpdate={() => {
+          setIsPopoverOpen(false);
           setIsModalOpen(true);
         }}
-        onDelete={() => {}}
-      ></TablePopover>
+        onDelete={() => {
+          deletePatient(selectedPatient?._id ?? "");
+        }}
+      />
 
       <CustomTable
         rows={data.data}
