@@ -25,7 +25,10 @@ export const Notes: FC<NotesProps> = ({
   const [isDataChanged, setIsDataChanged] = useState(false);
 
   return (
-    <Card sx={{ m: 0, position: "relative", gap: 0, alignSelf: "flex-start" }}>
+    <Card
+      className="patient-notes"
+      sx={{ m: 0, position: "relative", gap: 0, alignSelf: "flex-start" }}
+    >
       <Button
         sx={{ position: "absolute", top: 0, right: 0 }}
         onClick={() => setIsEdit((prev) => !prev)}
@@ -52,18 +55,20 @@ export const Notes: FC<NotesProps> = ({
         )}
       </FormControl>
 
-      {isEdit &&<Button
-        type="submit"
-        variant={"contained"}
-        disabled={!isDataChanged}
-        sx={{ mt: 2 }}
-        onClick={() => {
-          setIsEdit(false);
-          onConfirm();
-        }}
-      >
-        {t("save", { keyPrefix: "buttons" })}
-      </Button>}
+      {isEdit && (
+        <Button
+          type="submit"
+          variant={"contained"}
+          disabled={!isDataChanged}
+          sx={{ mt: 2 }}
+          onClick={() => {
+            setIsEdit(false);
+            onConfirm();
+          }}
+        >
+          {t("save", { keyPrefix: "buttons" })}
+        </Button>
+      )}
     </Card>
   );
 };

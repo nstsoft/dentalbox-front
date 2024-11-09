@@ -100,4 +100,4 @@ export type UserSummaryListItem = Pick<
   | "_id"
   | "role"
   | "image"
->;
+> & { deleted: boolean };

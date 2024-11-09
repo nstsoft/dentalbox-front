@@ -14,3 +14,4 @@ export * from "./metadata";
 export * from "./service";
 export * from "./file";
 export * from "./history";
+export * from "./anamnesis";

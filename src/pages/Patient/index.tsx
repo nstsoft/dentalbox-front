@@ -57,7 +57,6 @@ export const PatientsPage = () => {
           setPatient(initPatient);
         }}
         patient={patient}
-        setPatient={setPatient}
       />
       <GridSearchFilter
         search={search}

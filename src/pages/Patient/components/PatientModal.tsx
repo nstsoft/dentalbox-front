@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
@@ -24,14 +24,12 @@ type PatientModalProps = {
   open: boolean;
   onClose: () => void;
   patient: Omit<Patient, "_id"> & { _id?: string };
-  setPatient: (patient: Omit<Patient, "_id"> & { _id?: string }) => void;
 };
 
 export const PatientModal: FC<PatientModalProps> = ({
   open,
   onClose,
   patient,
-  setPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const [patientData, setPatientData] = useState(patient);
@@ -57,7 +55,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("name"),
       value: patientData.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatient({
+        setPatientData({
           ...patientData,
           name: event.target.value,
         }),
@@ -67,7 +65,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("secondName"),
       value: patientData.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatient({
+        setPatientData({
           ...patientData,
           secondName: event.target.value,
         }),
@@ -77,7 +75,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("surname"),
       value: patientData.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatient({
+        setPatientData({
           ...patientData,
           surname: event.target.value,
         }),
@@ -91,9 +89,6 @@ export const PatientModal: FC<PatientModalProps> = ({
       id: "dob",
       label: t("dob"),
       value: patientData.dob,
-      onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatient({ ...patientData, dob: target.value });
-      },
       error: birthDateError,
     },
     {
@@ -101,7 +96,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("email"),
       value: patientData.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatient({ ...patientData, email: target.value });
+        setPatientData({ ...patientData, email: target.value });
       },
       error: emailError,
     },
@@ -116,10 +111,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       label: t("address"),
       value: patientData.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatient({
-          ...patientData,
-          address: event.target.value,
-        }),
+        setPatientData({ ...patientData, address: event.target.value }),
     },
   ];
 
@@ -146,13 +138,15 @@ export const PatientModal: FC<PatientModalProps> = ({
     return true;
   };
 
-  const submitFormHandler = (event: FormEvent) => {
-    event.preventDefault();
-
+  const submitFormHandler = () => {
     if (!validateForm()) {
       return;
     }
-    const data = { ...patientData, image: patientImage };
+    const data = {
+      ...patientData,
+      image: patientImage,
+      dob: days(patientData.dob).toISOString(),
+    };
     if (patientData._id) {
       return updatePatient({ ...data, _id: patientData._id });
     }
@@ -173,16 +167,19 @@ export const PatientModal: FC<PatientModalProps> = ({
 
   return (
     <CustomModal width="auto" open={open} onClose={onClose}>
-      <Box component="form" onSubmit={submitFormHandler}>
-        <AvatarUpload image={patientData.image ?? ""} onUpload={setPatientImage} />
+      <Box>
+        <AvatarUpload
+          image={patientData.image ?? ""}
+          onUpload={setPatientImage}
+        />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
               <MuiTelInput
                 value={input.value}
                 onChange={(newValue: string) =>
-                  setPatient({
-                    ...patient,
+                  setPatientData({
+                    ...patientData,
                     phone: newValue.replace(/\s+/g, ""),
                   })
                 }
@@ -198,8 +195,8 @@ export const PatientModal: FC<PatientModalProps> = ({
                   labelId="radio-label"
                   value={patient.sex}
                   onChange={({ target }) =>
-                    setPatient({
-                      ...patient,
+                    setPatientData({
+                      ...patientData,
                       sex: target.value as Sex,
                     })
                   }
@@ -221,9 +218,9 @@ export const PatientModal: FC<PatientModalProps> = ({
               <DatePicker
                 value={input.value ? days(input.value) : null}
                 onChange={(newValue: Dayjs | null) =>
-                  setPatient({
-                    ...patient,
-                    dob: newValue?.toString() ?? "",
+                  setPatientData({
+                    ...patientData,
+                    dob: newValue?.toISOString() ?? "",
                   })
                 }
                 disableFuture
@@ -232,12 +229,6 @@ export const PatientModal: FC<PatientModalProps> = ({
                     err ? "Please enter valid date." : undefined
                   )
                 }
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: birthDateError ? "red" : "none",
-                    },
-                }}
               />
             )}
             {!["phone", "dob", "sex"].includes(input.id) && (
@@ -261,7 +252,7 @@ export const PatientModal: FC<PatientModalProps> = ({
         ))}
 
         <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" onClick={submitFormHandler}>
             {patient._id
               ? t("update", { keyPrefix: "buttons" })
               : t("create", { keyPrefix: "buttons" })}

@@ -35,6 +35,12 @@
   .appointment-event.finished {
     background-color: #6c757d;
   }
+  .rbc-event {
+    border: none;
+    border-left: 3px solid #008fba;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+  }
   .appointment-event {
     .custom-event-container {
       .note {

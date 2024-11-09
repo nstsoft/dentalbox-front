@@ -13,3 +13,4 @@ export * from "./NoData";
 export * from "./Loader";
 export * from "./AvatarUpload";
 export * from "./TablePopover";
+export * from "./InfoCard";

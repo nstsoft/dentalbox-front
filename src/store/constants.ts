@@ -33,6 +33,9 @@ export enum SERVICE_TAG {
 export enum DISEASE_HISTORY_TAG {
   HISTORY = "HISTORY",
 }
+export enum ANAMNESIS_TAG {
+  ANAMNESIS = "ANAMNESIS",
+}
 
 export enum PAYMENT_TAG {
   PAYMENT = "PAYMENT",
@@ -80,6 +83,7 @@ export enum REDUCER {
   METADATA = "METADATA",
   SERVICE = "SERVICE",
   HISTORY = "HISTORY",
+  ANAMNESIS = "ANAMNESIS",
 }
 
 export enum CACHE_KEYS {

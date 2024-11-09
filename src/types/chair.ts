@@ -6,4 +6,9 @@ export type ChairType = {
   _id: string;
 };
 
-export type ChairSummaryListItem = Pick<ChairType, "name" | "_id" | "cabinet">;
+export type ChairSummaryListItem = Pick<
+  ChairType,
+  "name" | "_id" | "cabinet"
+> & {
+  deleted: boolean;
+};

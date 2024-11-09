@@ -23,4 +23,6 @@ export type CreateCabinet = {
   chairs: string[];
 };
 
-export type CabinetSummaryListItem = Pick<Cabinet, "name" | "_id" | "image">;
+export type CabinetSummaryListItem = Pick<Cabinet, "name" | "_id" | "image"> & {
+  deleted: boolean;
+};

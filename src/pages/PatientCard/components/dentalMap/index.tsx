@@ -33,7 +33,6 @@ import {
   LeftBottomToothKeys,
 } from "./constants";
 import { useTranslation } from "react-i18next";
-import { Card } from "@elements";
 
 const getNextColor = (color: string, colorsSet: string[]) => {
   if (color === colorsSet[colorsSet.length - 1]) {

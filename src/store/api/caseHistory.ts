@@ -10,15 +10,25 @@ type CreateHistoryData = Omit<HistoryData, "id" | "date" | "files"> & {
   patient: string;
   date: string;
   files?: File[];
-  selectedFiles?: { _id: string; notes: string }[];
   _id?: string;
 };
 
 type CreateHistoryItem = Omit<
-  { [key: string]: string | File[] | string[] | undefined },
+  {
+    [key: string]:
+      | string
+      | File[]
+      | string[]
+      | undefined
+      | { _id: string; notes?: string }[];
+  },
   keyof CreateHistoryData
 > &
   CreateHistoryData;
+
+type UpdateHistoryItem = CreateHistoryItem & {
+  selectedFiles?: { _id: string; notes?: string }[];
+};
 
 export const historyApi = createApi({
   reducerPath: REDUCER.HISTORY,
@@ -45,7 +55,7 @@ export const historyApi = createApi({
       },
       invalidatesTags: [DISEASE_HISTORY_TAG.HISTORY],
     }),
-    updateHistoryItem: builder.mutation<HistoryResponse, CreateHistoryItem>({
+    updateHistoryItem: builder.mutation<HistoryResponse, UpdateHistoryItem>({
       query: ({ files, ...data }) => {
         const formData = new FormData();
         if (files?.length) {

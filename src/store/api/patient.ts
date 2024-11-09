@@ -76,8 +76,11 @@ export const patientApi = createApi({
       providesTags: () => [{ type: PATIENT_TAG.PATIENT_SUMMARY }],
     }),
     deletePatient: builder.mutation<void, string>({
-      query: (patientId) => ({ url: `/patient/${patientId}`, method: "DELETE" }),
-      invalidatesTags: [PATIENT_TAG.PATIENT_LIST]
+      query: (patientId) => ({
+        url: `/patient/${patientId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [PATIENT_TAG.PATIENT_LIST, PATIENT_TAG.PATIENT_SUMMARY],
     }),
   }),
 });

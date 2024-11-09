@@ -1,0 +1,26 @@
+.info-card-component {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 25px 1fr;
+  .submit-button {
+    margin-top: 20px;
+  }
+  .content {
+    padding: 0 10px 10px 10px;
+  }
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .footer {
+    height: fit-content;
+  }
+  .submit-button {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+.info-card-component.edit-mode {
+  grid-template-rows: 25px 1fr 50px;
+}

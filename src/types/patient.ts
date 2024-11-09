@@ -18,4 +18,4 @@ export type Patient = {
 export type PatientSummaryListItem = Pick<
   Patient,
   "name" | "surname" | "secondName" | "email" | "phone" | "_id" | "image"
->;
+> & { deleted: boolean };

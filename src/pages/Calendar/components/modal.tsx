@@ -73,7 +73,7 @@ export const CalenderModal: FC<CalendarModalProps> = ({
   const chairValues = useMemo(() => {
     const arr: { key: string; value: string }[] = [];
     resources.chairsMap.forEach((p) => {
-      if (p.cabinet === cabinet) {
+      if (p.cabinet === cabinet && !p.deleted) {
         arr.push({ key: p._id, value: p.name });
       }
     });
@@ -88,18 +88,26 @@ export const CalenderModal: FC<CalendarModalProps> = ({
     AppointmentStatus
   ).map((key) => ({ key, value: t(`eventStatuses.${key}`) }));
 
-  resources.usersMap.forEach((u) =>
-    doctorValues.push({ key: u._id, value: getPersonNames(u) })
-  );
-  resources.cabinetsMap.forEach((c) =>
-    cabinetValues.push({ key: c._id, value: c.name })
-  );
-  resources.patientsMap.forEach((p) =>
-    patientValues.push({ key: p._id, value: getPersonNames(p) })
-  );
-  resources.assistantMap.forEach((p) =>
-    assistantValues.push({ key: p._id, value: getPersonNames(p) })
-  );
+  resources.usersMap.forEach((u) => {
+    if (!u.deleted) {
+      doctorValues.push({ key: u._id, value: getPersonNames(u) });
+    }
+  });
+  resources.cabinetsMap.forEach((c) => {
+    if (!c.deleted) {
+      cabinetValues.push({ key: c._id, value: c.name });
+    }
+  });
+  resources.patientsMap.forEach((p) => {
+    if (!p.deleted) {
+      patientValues.push({ key: p._id, value: getPersonNames(p) });
+    }
+  });
+  resources.assistantMap.forEach((p) => {
+    if (!p.deleted) {
+      assistantValues.push({ key: p._id, value: getPersonNames(p) });
+    }
+  });
 
   useEffect(() => {
     if (event) {

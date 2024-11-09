@@ -1,0 +1,143 @@
+.patient-info-section {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  .patient-info-section-wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "main secondary anamnesis";
+    grid-template-columns: minmax(320px, 350px) 300px minmax(300px, 500px);
+    grid-column-gap: 10px;
+    .main {
+      grid-area: main;
+      .patient-main-info-card {
+        width: 100%;
+        min-height: 350px;
+        .content {
+          padding: 0 10px 10px 10px;
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          flex-direction: column;
+          align-items: center;
+          .image-block {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 70%;
+            .media-card {
+              height: 200px;
+              width: 200px;
+              position: relative;
+              border-radius: 50%;
+              border: 1px solid #008fba;
+            }
+          }
+          .info-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .edit-mode-props {
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+              flex-direction: column;
+              div {
+                margin: 5px 0;
+              }
+            }
+            .view-mode-props {
+              margin-top: 10px;
+              .info-block-item {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+          }
+        }
+      }
+    }
+    .secondary {
+      grid-area: secondary;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      .patient-secondary-info-card {
+        height: fit-content;
+        .view-mode-props {
+          display: flex;
+          flex-direction: column;
+          .secondary-info-item {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            align-items: center;
+          }
+        }
+      }
+    }
+    .anamnesis {
+      grid-area: anamnesis;
+      .patient-anamnesis-info-card {
+        max-height: 350px;
+        overflow-y: auto;
+        .view-mode-props {
+          display: flex;
+          flex-direction: column;
+          .info-block-item {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+          }
+        }
+        .edit-mode-props {
+          display: flex;
+          flex-direction: column;
+          .checkbox {
+            margin-top: 5px;
+            display: grid;
+            width: 100%;
+            grid-template-columns: 3fr 1fr;
+          }
+        }
+      }
+      .patient-anamnesis-info-card.edit-mode {
+        max-height: none;
+      }
+    }
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: minmax(320px, 1fr) 2fr;
+      grid-template-areas:
+        "main anamnesis"
+        "secondary secondary";
+      .secondary {
+        display: grid;
+        margin-top: 10px;
+        grid-template-columns: minmax(320px, 1fr) 2fr;
+        width: 100%;
+        .patient-notes {
+          max-width: none;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+    @media screen and (max-width: 800px) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "main"
+        "anamnesis"
+        "secondary";
+      .secondary {
+        grid-template-columns: 1fr;
+      }
+      .anamnesis {
+        margin-top: 10px;
+      }
+    }
+  }
+}

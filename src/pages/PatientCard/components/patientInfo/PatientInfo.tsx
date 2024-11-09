@@ -1,95 +1,81 @@
-import { ClinicIconIcon } from "@assets";
-import { Card } from "@elements";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Grid2 from "@mui/material/Grid2";
-import { Patient } from "@types";
-import {
-  type FC,
-  type Dispatch,
-  type SetStateAction,
-  type FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import "./style.scss";
+import { AnamnesisData, Patient } from "@types";
+import { type FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import EditIcon from "@mui/icons-material/Edit";
-import CloseIcon from "@mui/icons-material/Close";
 import days from "dayjs";
 import { matchIsValidTel } from "mui-tel-input";
 import { validateLogin } from "@utils";
-import { useUpdatePatientMutation } from "@api";
-import { EditForm, InfoSection } from "./components";
-import { type Dayjs } from "dayjs";
-
-const sx = { width: "100%", height: "100%" };
-
-const FIELDS_SET: Array<keyof Patient> = [
-  "image",
-  "surname",
-  "name",
-  "secondName",
-  "sex",
-  "dob",
-  "phone",
-  "email",
-  "address",
-];
+import {
+  useUpdatePatientMutation,
+  useGetAnamnesisQuery,
+  useGetPatientByIdQuery,
+  useUpdateAnamnesisMutation,
+} from "@api";
+import { MainInfo, SecondaryInfo, AnamnesisInfo } from "./components";
+import { Notes } from "@components";
+import Box from "@mui/material/Box";
 
 type Props = {
-  patient: Patient & { clearAvatarCache?: boolean };
-  setPatient: Dispatch<
-    SetStateAction<Patient & { clearAvatarCache?: boolean }>
-  >;
-  setCacheDate: (date: Dayjs) => void;
+  patientId: string;
 };
 
-export const PatientInfo: FC<Props> = ({
-  patient,
-  setPatient,
-  setCacheDate,
-}) => {
+export const PatientInfo: FC<Props> = ({ patientId }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-  const [isEdit, setIsEdit] = useState(false);
+  const { data, isFetching } = useGetPatientByIdQuery(patientId);
+  const { data: anamnesisData } = useGetAnamnesisQuery(patientId!);
+
+  const [patient, setPatient] = useState<Patient>();
+  const [anamnesis, setAnamnesis] = useState<AnamnesisData>();
   const [emailError, setEmailError] = useState<string>();
-  const [imageError, setImageError] = useState<string>();
   const [phoneError, setPhoneError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
   const [updatePatient, { isSuccess }] = useUpdatePatientMutation();
-  const [isDataChanged, setIsDataChanged] = useState(false);
+  const [updateAnamnesis, { isSuccess: isSuccessAnamnesis }] =
+    useUpdateAnamnesisMutation();
+
+  const [isDataChanged, setIsDataChanged] = useState({
+    primary: false,
+    secondary: false,
+    anamnesis: false,
+  });
   const [patientImage, setPatientImage] = useState<File>();
 
-  const errorSet: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: { value?: string; setter?: (...args: any) => void };
-  } = {
-    email: { value: emailError, setter: setEmailError },
-    phone: { value: phoneError, setter: setEmailError },
-    dob: {
-      value: birthDateError,
-      setter: (err: string | Error | null) =>
-        setBirthDateError(err ? "Please enter valid date." : undefined),
-    },
-    image: { value: imageError, setter: setImageError },
-  };
+  useEffect(() => {
+    if (data && !isFetching) {
+      setPatient({
+        ...data,
+        workspace: undefined,
+        image: patient?.image ?? data.image,
+      });
+    }
+  }, [data, isFetching, patient?.image]);
 
-  const fieldsMap = FIELDS_SET.map((field) => {
-    return {
-      id: field,
-      label: t(field),
-      value: patient?.[field] as string,
-      setPatientData: setPatient,
-      type: "text",
-      error: errorSet?.[field]?.value,
-      onError: errorSet?.[field]?.setter,
-      onUpload: setPatientImage,
-    };
-  });
+  useEffect(() => {
+    if (anamnesisData && !anamnesis) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _id, patient, workspace, ...data } = anamnesisData;
+      setAnamnesis(data);
+    }
+  }, [anamnesis, anamnesisData]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsDataChanged((prev) => ({
+        ...prev,
+        primary: false,
+        secondary: false,
+      }));
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isSuccessAnamnesis) {
+      setIsDataChanged((prev) => ({ ...prev, anamnesis: false }));
+    }
+  }, [isSuccessAnamnesis]);
 
   const validateForm = () => {
+    if (!patient) return;
     setPhoneError(undefined);
     setBirthDateError(undefined);
     setEmailError(undefined);
@@ -112,14 +98,16 @@ export const PatientInfo: FC<Props> = ({
     return true;
   };
 
-  const onEditPatientInfo = (event: FormEvent) => {
-    event.preventDefault();
-
+  const onEditPatientInfo = () => {
+    if (!patient) return;
     const isFormValid = validateForm();
     if (isFormValid) {
       const data = patient;
       if (patient.dob) {
         data.dob = days(data.dob).toISOString();
+      }
+      if (patient.phone) {
+        data.phone = data.phone.replace(/\s+/g, "");
       }
 
       updatePatient({
@@ -137,74 +125,65 @@ export const PatientInfo: FC<Props> = ({
     }
   };
 
-  const toggleEdit = useCallback(() => {
-    if (isEdit) {
-      setIsDataChanged(false);
-    }
+  const onSubmitEditAnamnesis = () => {
+    if (!anamnesis) return;
+    updateAnamnesis({ patient: patientId, data: anamnesis });
+  };
 
-    setIsEdit((prev) => !prev);
-  }, [isEdit]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setIsDataChanged(false);
-      setIsEdit(false);
-    }
-  }, [isSuccess]);
+  if (!patient || !anamnesis) return null;
 
   return (
-    <Card sx={{ m: 0, position: "relative" }}>
-      <Button
-        sx={{ position: "absolute", top: 0, right: 0 }}
-        onClick={toggleEdit}
-      >
-        {isEdit ? <CloseIcon /> : <EditIcon />}
-      </Button>
-      <CardContent sx={{ padding: "0 5px" }}>
-        <Grid2 gap={2} container wrap="wrap" sx={{ width: "100%" }}>
-          {!isEdit && (
-            <Grid2 size={{ xs: 12, md: 4 }} sx={{ maxWidth: "100px" }}>
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  position: "relative",
-                }}
-              >
-                {patient?.image ? (
-                  <CardMedia
-                    sx={sx}
-                    component="img"
-                    image={patient?.image}
-                    alt={patient.name}
-                  />
-                ) : (
-                  <ClinicIconIcon sx={sx} />
-                )}
-              </Box>
-            </Grid2>
-          )}
-          <Grid2 sx={{ width: isEdit ? "100%" : "unset", pt: 2 }}>
-            {isEdit ? (
-              <EditForm
-                fields={fieldsMap}
-                onSubmit={onEditPatientInfo}
-                onChange={() => setIsDataChanged(true)}
-                isDataChanged={isDataChanged}
-                onUpload={setPatientImage}
-                setCacheDate={setCacheDate}
-              />
-            ) : (
-              <InfoSection fields={fieldsMap.slice(1, 4)} />
-            )}
-          </Grid2>
-          {!isEdit && (
-            <Grid2>
-              <InfoSection fields={fieldsMap.slice(5)} />
-            </Grid2>
-          )}
-        </Grid2>
-      </CardContent>
-    </Card>
+    <div className="patient-info-section">
+      <Box className="patient-info-section-wrapper">
+        <Box className="wrapper-item main">
+          <MainInfo
+            onUpload={(file: File) => {
+              setIsDataChanged((prev) => ({ ...prev, primary: true }));
+              setPatientImage(file);
+            }}
+            errors={{ email: emailError, phone: phoneError }}
+            patient={patient}
+            setPatient={setPatient}
+            setIsDataChanged={(primary) =>
+              setIsDataChanged((prev) => ({ ...prev, primary }))
+            }
+            isDataChanged={isDataChanged.primary}
+            onSubmit={onEditPatientInfo}
+          />
+        </Box>
+        <Box className="wrapper-item secondary">
+          <SecondaryInfo
+            errors={{ dob: birthDateError }}
+            patient={patient}
+            setPatient={setPatient}
+            isDataChanged={isDataChanged.secondary}
+            setIsDataChanged={(secondary) =>
+              setIsDataChanged((prev) => ({ ...prev, secondary }))
+            }
+            onSubmit={onEditPatientInfo}
+            setBirthDateError={setBirthDateError}
+          />
+          <Notes
+            value={patient?.notes ?? ""}
+            setValue={(value) => setPatient({ ...patient, notes: value })}
+            label={t("notes")}
+            onConfirm={() =>
+              updatePatient({ _id: patient._id, notes: patient.notes })
+            }
+          />
+        </Box>
+        <Box className="wrapper-item anamnesis">
+          <AnamnesisInfo
+            anamnesis={anamnesis}
+            setAnamnesis={setAnamnesis}
+            isDataChanged={isDataChanged.anamnesis}
+            setIsDataChanged={(anamnesis) =>
+              setIsDataChanged((prev) => ({ ...prev, anamnesis }))
+            }
+            onSubmit={onSubmitEditAnamnesis}
+          />
+        </Box>
+      </Box>
+    </div>
   );
 };
