@@ -1,8 +1,15 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import Checkbox from "@mui/material/Checkbox";
-import { type FC, type Dispatch, type SetStateAction, useState } from "react";
+import {
+  type FC,
+  type Dispatch,
+  type SetStateAction,
+  useState,
+  Fragment,
+} from "react";
 import { type AnamnesisData } from "@types";
 import { useTranslation } from "react-i18next";
 import { InfoCard } from "@components";
@@ -101,15 +108,18 @@ export const AnamnesisInfo: FC<Props> = ({
     return (
       <Box className="view-mode-props">
         {STRING_PROPS.map((prop) => (
-          <Box key={prop} className="info-block-item">
-            <Typography className="name" variant="body1" mr={2}>
-              {t(prop)}:
-            </Typography>
+          <Fragment key={prop}>
+            <Box className="info-block-item">
+              <Typography className="name" variant="body1" mr={2}>
+                {t(prop)}:
+              </Typography>
 
-            <Typography className="value" variant="body1" mr={2}>
-              {anamnesis[prop] ?? "-"}
-            </Typography>
-          </Box>
+              <Typography className="value" variant="body1" mr={2}>
+                {anamnesis[prop] ?? "-"}
+              </Typography>
+            </Box>
+            <Divider />
+          </Fragment>
         ))}
 
         {BOOL_PROPS.map((prop) => (

@@ -295,7 +295,7 @@ export const UA: ResourceLanguage = {
           toothColorName: "Назва кольору",
         },
         tabs: {
-          map: "Зубно формула",
+          map: "Зубна формула",
           history: "Історія хвороби",
           plan: "План лікування",
           periodentalCard: "Періодентальна карта",
