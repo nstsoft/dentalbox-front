@@ -6,5 +6,74 @@
     min-height: calc(100vh - 64px);
     flex-direction: column;
     justify-content: flex-start;
+
+    .register-bg {
+      position: relative;
+      left: -10px;
+      top: -20px;
+      height: 450px;
+      width: calc(100% + 20px);
+      filter: blur(10px);
+    }
+
+    .product {
+      gap: 0;
+      border-radius: 16px;
+      box-shadow: hsla(220, 30%, 5%, 0.05) 0px 5px 0px 0px;
+
+      &__header {
+        padding: 0;
+        text-align: center;
+        & .MuiCardHeader-title {
+          font-size: 28px;
+          color: #21d7fc;
+        }
+      }
+
+      &__space {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        background: #f0f9ff;
+        top: -14px;
+        z-index: 20;
+        border-radius: 50%;
+        &.left {
+          left: -35px;
+        }
+        &.right {
+          right: -35px;
+        }
+      }
+
+      &__divider {
+        border-style: dashed;
+        border-color: #21d7fc;
+        border-width: 2px;
+      }
+
+      &__content {
+        padding: 0 30px;
+        color: #21d7fc;
+
+        .quantity {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 1;
+        }
+      }
+    }
+
+    .actions {
+      justify-content: center;
+      margin-top: 2;
+
+      .MuiButton-root {
+        width: 110px;
+        border-radius: 25px;
+        background: linear-gradient(to right, #21d7fc, #46aefd);
+      }
+    }
   }
 }

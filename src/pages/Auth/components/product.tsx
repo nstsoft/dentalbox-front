@@ -6,6 +6,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
 import GroupsIcon from "@mui/icons-material/Groups";
 
@@ -26,87 +27,47 @@ interface IUserWorkspaceStepProps {
 export const ProductItem = (
   props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
 ) => {
-  const { product, onProductSelect, nextStep, interval, color } = props;
+  const { product, onProductSelect, nextStep, interval } = props;
   const { t, i18n } = useTranslation();
 
   return (
-    <Card
-      sx={{
-        padding: 0,
-        backgroundClip: "border-box",
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        height: "100%",
-        position: "relative",
-        zIndex: 1,
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url(${product.image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: "0.2",
-          zIndex: -10,
-        }}
-      ></div>
+    <Card className="product">
       <CardHeader
-        disableTypography
+        className="product__header"
         title={
           i18n.language === "ua"
             ? product.metadata.ua_name
             : product.metadata.en_name
         }
-        sx={{
-          padding: 0,
-          "& .MuiCardHeader-content": {
-            textAlign: "center",
-            fontWeight: "900",
-            padding: 1,
-            background: color,
-          },
-        }}
       />
-      <CardContent sx={{ padding: "0 16px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 2,
-          }}
-        />
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h5">
-            {product.prices[0].amount / 100}
-            {icons[product.prices[0].currency?.toUpperCase()]?.symbol} /{" "}
-            {t(`signUpWizard.userProduct.intervals.${interval}`).toLowerCase()}
-          </Typography>
+      <Box sx={{ mb: 2 }}>
+        <Typography sx={{ textAlign: "center", color: "#21d7fc" }}>
+          {icons[product.prices[0].currency?.toUpperCase()]?.symbol}{" "}
+          {product.prices[0].amount / 100} /{" "}
+          {t(`signUpWizard.userProduct.intervals.${interval}`).toLowerCase()}
+        </Typography>
+      </Box>
+      <Box sx={{ position: "relative", mb: 2 }}>
+        <Box className="product__space left"></Box>
+        <Divider className="product__divider" />
+        <Box className="product__space right"></Box>
+      </Box>
+      <CardContent className="product__content">
+        <Box className="quantity">
           <GroupsIcon />
-          <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
+          <Typography variant="body2" sx={{ ml: 1 }}>
             {product.metadata.team > 0 ? product.metadata.team : "~"}{" "}
             {t("signUpWizard.userProduct.people")}
           </Typography>
         </Box>
+        <Typography variant="caption" sx={{ textAlign: "center" }}>
+          {i18n.language === "ua"
+            ? product.metadata.ua_description
+            : product.metadata.en_description}
+        </Typography>
       </CardContent>
       {onProductSelect && (
-        <CardActions
-          sx={{
-            justifyContent: "center",
-          }}
-        >
+        <CardActions className="actions">
           <Button
             variant="contained"
             onClick={() => {
@@ -118,18 +79,6 @@ export const ProductItem = (
           </Button>
         </CardActions>
       )}
-      <CardContent>
-        <Box>
-          <Typography
-            variant="caption"
-            sx={{ color: "text.secondary", textAlign: "center" }}
-          >
-            {i18n.language === "ua"
-              ? product.metadata.ua_description
-              : product.metadata.en_description}
-          </Typography>
-        </Box>
-      </CardContent>
     </Card>
   );
 };

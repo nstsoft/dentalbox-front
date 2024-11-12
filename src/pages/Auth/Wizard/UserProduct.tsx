@@ -5,11 +5,13 @@ import { StepWizardChildProps } from "react-step-wizard";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Grid2 from "@mui/material/Grid2";
+import Box from "@mui/material/Box";
 
 import { Product } from "@types";
 import { ProductItem } from "../components";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import RegisterBg from "@images/register-bg.webp";
 
 interface IUserWorkspaceStepProps {
   onProductSelect: (product: Product) => void;
@@ -46,12 +48,13 @@ export const UserProduct = (
   if (!data) return null;
   return (
     <>
+      <Box className="register-bg" component="img" src={RegisterBg} />
       <Tabs value={tabValue} onChange={handleChange}>
         <Tab label={t("packageIntervals.week")} />
         <Tab label={t("packageIntervals.month")} />
         <Tab label={t("packageIntervals.year")} />
       </Tabs>
-      <Grid2 container spacing={2} justifyContent={"center"} sx={{ mt: 2 }}>
+      <Grid2 container spacing={2} justifyContent={"center"} sx={{ mt: 2, mb: 2 }}>
         {sortedProducts.map((product, index) => (
           <Grid2 key={product.productId} width={300} flexGrow={1}>
             <ProductItem
