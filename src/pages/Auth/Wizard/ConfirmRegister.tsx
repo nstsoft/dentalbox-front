@@ -7,7 +7,7 @@ import type { UserForm } from "@types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
-import CardActionArea from "@mui/material/CardActionArea";
+import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
@@ -24,6 +24,7 @@ type Props = {
   user: UserForm;
   product: Product;
   confirmRegister: (event: FormEvent<HTMLFormElement>) => void;
+  previousStep: () => void;
 };
 
 export const ConfirmRegister: FC<Props> = ({
@@ -31,6 +32,7 @@ export const ConfirmRegister: FC<Props> = ({
   product,
   user,
   confirmRegister,
+  previousStep,
 }) => {
   const [, { error: registerError, status }] = useRegisterMutation();
 
@@ -83,54 +85,59 @@ export const ConfirmRegister: FC<Props> = ({
         container
         spacing={2}
         justifyContent="center"
-        alignContent="center"
-        wrap="wrap"
         alignSelf="center"
         sx={{ maxWidth: "1000px" }}
       >
-        <Grid2 size={6} minWidth={350} wrap="wrap">
-          <Card>
-            <CardActionArea>
-              <CardHeader sx={{ textAlign: "center" }} title={t("userData")} />
-              <CardContent>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("email")}:</a> {user.email}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("name")}:</a> {user.name}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("secondName")}:</a> {user.secondName}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("surname")}:</a> {user.surname}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("dob")}:</a> {user.dob}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("role")}:</a> {t("owner")}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+        <Grid2 size={6} minWidth={350}>
+          <Card sx={{ minHeight: "360px" }}>
+            <CardHeader sx={{ textAlign: "center" }} title={t("userData")} />
+            <CardContent>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("email")}:</a> {user.email}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("name")}:</a> {user.name}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("secondName")}:</a> {user.secondName}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("surname")}:</a> {user.surname}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("dob")}:</a> {user.dob}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("role")}:</a> {t("owner")}
+              </Typography>
+            </CardContent>
           </Card>
         </Grid2>
-        <Grid2 size={6} minWidth={350} sx={{ height: "100%" }}>
-          <Card sx={{ height: "100%" }}>
-            <CardActionArea>
-              <CardHeader
-                sx={{ textAlign: "center" }}
-                title={t("workspaceData")}
+        <Grid2 size={6} minWidth={350}>
+          <Card sx={{ minHeight: "360px" }}>
+            <CardHeader
+              sx={{ textAlign: "center" }}
+              title={t("workspaceData")}
+            />
+            <CardContent>
+              <CardMedia
+                sx={{
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "50%",
+                  mb: 2,
+                }}
+                component="img"
+                image={workspace.image}
+                alt={workspace.image}
               />
-              <CardContent>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("workspaceName")}:</a> {workspace.name}
-                </Typography>
-                <Typography textAlign="left" gutterBottom variant="subtitle1">
-                  <a>{t("workspaceDescription")}:</a> {workspace.description}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("workspaceName")}:</a> {workspace.name}
+              </Typography>
+              <Typography textAlign="left" gutterBottom variant="subtitle1">
+                <a>{t("workspaceDescription")}:</a> {workspace.description}
+              </Typography>
+            </CardContent>
           </Card>
         </Grid2>
         <Grid2 size={8} spacing={2}>
@@ -141,6 +148,7 @@ export const ConfirmRegister: FC<Props> = ({
               justifyContent: "center",
               flexDirection: "row",
               flexWrap: "wrap",
+              gap: 0,
             }}
           >
             <ErrorTypography gutterBottom variant="subtitle1">
@@ -162,10 +170,10 @@ export const ConfirmRegister: FC<Props> = ({
                 <CircularProgress />
               </Box>
             ) : (
-              <>
+              <Box sx={{ display: "flex", gap: 2 }}>
                 <Button
+                  onClick={previousStep}
                   sx={{ width: "150px" }}
-                  type="submit"
                   fullWidth
                   variant="outlined"
                 >
@@ -179,7 +187,7 @@ export const ConfirmRegister: FC<Props> = ({
                 >
                   {t("signUp", { keyPrefix: "buttons" })}
                 </Button>
-              </>
+              </Box>
             )}
           </Card>
         </Grid2>

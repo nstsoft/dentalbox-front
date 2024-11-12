@@ -1,8 +1,8 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, type FC, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { StepWizardChildProps } from "react-step-wizard";
 import { WorkspaceForm } from "./types";
-import { Card, VisuallyHiddenInput } from "@elements";
+import { Card } from "@elements";
+import { AvatarUpload } from "@components";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -11,19 +11,22 @@ import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-interface IUserWorkspaceStepProps {
+type IUserWorkspaceStepProps = {
   workspaceForm: WorkspaceForm;
   onUpdate: (data: Partial<WorkspaceForm>) => void;
   setWorkspaceImage: (file: File) => void;
-}
+  nextStep: () => void;
+  previousStep: () => void;
+};
 
-export const Workspace = (
-  props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
-) => {
-  const { workspaceForm, onUpdate, nextStep, previousStep, setWorkspaceImage } =
-    props;
+export const Workspace: FC<IUserWorkspaceStepProps> = ({
+  workspaceForm,
+  onUpdate,
+  nextStep,
+  previousStep,
+  setWorkspaceImage,
+}) => {
   const { t } = useTranslation();
 
   const signUpInputs = [
@@ -75,6 +78,16 @@ export const Workspace = (
           gap: 2,
         }}
       >
+        <FormControl>
+          <FormLabel htmlFor="workspaceImage">
+            {t("signUpWizard.workspace.image")}
+          </FormLabel>
+          <AvatarUpload
+            image={workspaceForm.image ?? ""}
+            onUpload={setWorkspaceImage}
+            getImage={(image) => onUpdate({ image })}
+          />
+        </FormControl>
         {signUpInputs.map((input) => (
           <FormControl key={input.id}>
             <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
@@ -90,28 +103,6 @@ export const Workspace = (
             />
           </FormControl>
         ))}
-        <FormControl>
-          <FormLabel htmlFor="workspaceImage">
-            {t("signUpWizard.workspace.image")}
-          </FormLabel>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            {t("buttons.upload")}
-            <VisuallyHiddenInput
-              id="workspaceImage"
-              name="workspaceImage"
-              type="file"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                e.target.files?.[0] && setWorkspaceImage(e.target.files?.[0]);
-              }}
-            />
-          </Button>
-        </FormControl>
         <Box
           sx={{
             display: "flex",

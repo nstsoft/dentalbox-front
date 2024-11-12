@@ -1,5 +1,4 @@
 import { useEffect, useState, type FormEvent } from "react";
-import StepWizard from "react-step-wizard";
 
 import {
   UserData,
@@ -11,20 +10,15 @@ import {
 
 import type { Sex, UserForm } from "@types";
 
-import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
 import { WORKSPACE, useLocalStorage, useAuth } from "@hooks";
 import { AuthContainer } from "@elements";
 import { Product } from "@types";
 import { useNavigate } from "react-router-dom";
-
-const transitions = {
-  enterRight: `${transitionsStyles.animated} ${transitionsStyles.enterRight}`,
-  enterLeft: `${transitionsStyles.animated} ${transitionsStyles.enterLeft}`,
-  exitRight: `${transitionsStyles.animated} ${transitionsStyles.exitRight}`,
-  exitLeft: `${transitionsStyles.animated} ${transitionsStyles.exitLeft}`,
-  intro: `${transitionsStyles.animated} ${transitionsStyles.intro}`,
-};
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import { useTranslation } from "react-i18next";
 
 export const SignUp = () => {
   const [, setWorkspaceId] = useLocalStorage(WORKSPACE, null);
@@ -42,6 +36,7 @@ export const SignUp = () => {
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",
     description: "",
+    image: "",
   });
   const [workspaceImage, setWorkspaceImage] = useState<File>();
   const [product, setProduct] = useState<Product | undefined>();
@@ -49,6 +44,10 @@ export const SignUp = () => {
   const [register, { data, status }] = useRegisterMutation();
   const auth = useAuth();
   const navigate = useNavigate();
+  const [isStepperActive, setIsStepperActive] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const { t } = useTranslation("", { keyPrefix: "signUpWizard.steps" });
+  const steps = [t("userData"), t("workspace"), t("confirmRegister")];
 
   const confirmRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -67,6 +66,12 @@ export const SignUp = () => {
     setUser((prevState) => ({ ...prevState, ...form }));
   };
 
+  const handleNext = () =>
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+  const handleBack = () =>
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
   useEffect(() => {
     if (status === "fulfilled" && !auth.isLoggedIn) {
       auth.login(data);
@@ -75,44 +80,68 @@ export const SignUp = () => {
     }
   }, [auth, data, navigate, setWorkspaceId, status]);
 
+  const stepsSet = [
+    <UserData
+      userData={user}
+      confirm={confirmUserForm}
+      type="signUp"
+      nextStep={handleNext}
+      previousStep={() => setIsStepperActive(false)}
+    />,
+    <Workspace
+      workspaceForm={workspace}
+      onUpdate={(value: {
+        name?: string;
+        description?: string;
+        image?: string;
+      }) => {
+        setWorkspace((prevState) => ({ ...prevState, ...value }));
+      }}
+      setWorkspaceImage={setWorkspaceImage}
+      nextStep={handleNext}
+      previousStep={handleBack}
+    />,
+    product ? (
+      <ConfirmRegister
+        user={user}
+        workspace={workspace}
+        product={product}
+        confirmRegister={confirmRegister}
+        previousStep={handleBack}
+      />
+    ) : (
+      <></>
+    ),
+  ];
+
   return (
     <AuthContainer>
-      <StepWizard transitions={transitions}>
+      {!isStepperActive ? (
         <UserProduct
-          hashKey={"userProduct"}
-          stepName="userProduct"
-          onProductSelect={(value: Product) => setProduct(value)}
-        />
-        <UserData
-          stepName="userData"
-          hashKey={"userData"}
-          confirm={confirmUserForm}
-          type="signUp"
-        />
-        <Workspace
-          stepName="workspace"
-          hashKey={"workspace"}
-          workspaceForm={workspace}
-          onUpdate={(value: {
-            name?: string;
-            description?: string;
-            image?: null;
-          }) => {
-            setWorkspace((prevState) => ({ ...prevState, ...value }));
+          onProductSelect={(value: Product) => {
+            setProduct(value);
+            setIsStepperActive(true);
           }}
-          setWorkspaceImage={setWorkspaceImage}
         />
-        {product ? (
-          <ConfirmRegister
-            user={user}
-            workspace={workspace}
-            product={product}
-            confirmRegister={confirmRegister}
-          />
-        ) : (
-          <></>
-        )}
-      </StepWizard>
+      ) : (
+        <>
+          <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+
+              if (index < activeStep) {
+                stepProps.completed = true;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          {stepsSet[activeStep]}
+        </>
+      )}
     </AuthContainer>
   );
 };

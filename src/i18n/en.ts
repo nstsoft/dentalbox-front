@@ -65,6 +65,11 @@ export const EN: ResourceLanguage = {
       createCabinet: "Create Cabinet",
     },
     signUpWizard: {
+      steps: {
+        userData: 'User Data',
+        workspace: "Workspace",
+        confirmRegister: "Confirm Register",
+      },
       userData: {
         title: "User Data",
         name: "Name",

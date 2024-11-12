@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 type Props = {
   image: string;
   onUpload: (file: File) => void;
+  getImage?: (image: string) => void;
 };
 
-export const AvatarUpload: FC<Props> = ({ image, onUpload }) => {
+export const AvatarUpload: FC<Props> = ({ image, onUpload, getImage }) => {
   const { t } = useTranslation("", { keyPrefix: "image" });
   const [imageUrl, setImageUrl] = useState<string>(image);
   const [imageMessage, setImageMessage] = useState<string>();
@@ -56,6 +57,7 @@ export const AvatarUpload: FC<Props> = ({ image, onUpload }) => {
                 onUpload(file);
                 reader.onloadend = () => {
                   setImageUrl(`${reader.result}`);
+                  getImage?.(`${reader.result}`);
                   setImageMessage(t("success"));
                 };
                 reader.onerror = () => {
