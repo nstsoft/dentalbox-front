@@ -1,5 +1,3 @@
-import { StepWizardChildProps } from "react-step-wizard";
-
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CardHeader from "@mui/material/CardHeader";
@@ -24,10 +22,8 @@ interface IUserWorkspaceStepProps {
   onProductSelect?: (product: Product) => void;
 }
 
-export const ProductItem = (
-  props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
-) => {
-  const { product, onProductSelect, nextStep, interval } = props;
+export const ProductItem = (props: IUserWorkspaceStepProps) => {
+  const { product, onProductSelect, interval } = props;
   const { t, i18n } = useTranslation();
 
   return (
@@ -70,10 +66,7 @@ export const ProductItem = (
         <CardActions className="actions">
           <Button
             variant="contained"
-            onClick={() => {
-              onProductSelect?.(product);
-              nextStep?.();
-            }}
+            onClick={() => onProductSelect?.(product)}
           >
             {t("buttons.select")}
           </Button>

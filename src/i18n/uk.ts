@@ -65,6 +65,11 @@ export const UA: ResourceLanguage = {
       createCabinet: "Створити кабінет",
     },
     signUpWizard: {
+      steps: {
+        userData: "Персональні дані",
+        workspace: "Кабінет",
+        confirmRegister: "Підтвердження реєстрації",
+      },
       userData: {
         title: "Персональні дані",
         name: "Ім'я",

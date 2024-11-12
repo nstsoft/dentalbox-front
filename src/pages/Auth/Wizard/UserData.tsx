@@ -1,5 +1,4 @@
-import { ChangeEvent, FormEvent, Fragment, useState } from "react";
-import { StepWizardChildProps } from "react-step-wizard";
+import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from "react";
 import { Sex, UserForm } from "@types";
 import { useTranslation } from "react-i18next";
 import { Card } from "@elements";
@@ -19,7 +18,7 @@ import days, { type Dayjs } from "dayjs";
 import { Invitation } from "../AcceptInvitation";
 import { ListItemText, MenuItem, Select } from "@mui/material";
 
-interface IUserDataStepProps {
+type IUserDataStepProps = {
   type: "signUp" | "invite";
   confirm: (form: UserForm) => void;
   workspaceName?: string;
@@ -32,11 +31,12 @@ interface IUserDataStepProps {
     password?: string;
   };
   prefilled?: Partial<UserForm>;
+  nextStep: () => void;
+  previousStep: () => void;
+  userData?: UserForm;
 }
 
-export const UserData = (
-  props: IUserDataStepProps & Partial<StepWizardChildProps>
-) => {
+export const UserData = (props: IUserDataStepProps) => {
   const {
     previousStep,
     prefilled,
@@ -46,6 +46,7 @@ export const UserData = (
     errors,
     confirm,
     nextStep,
+    userData,
   } = props;
   const { t } = useTranslation();
   const [emailError, setEmailError] = useState<string>();
@@ -192,6 +193,12 @@ export const UserData = (
       ],
     },
   ];
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+    }
+  }, [userData]);
 
   const validateForm = () => {
     setPhoneError(undefined);

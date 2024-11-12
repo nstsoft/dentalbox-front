@@ -1,6 +1,5 @@
 import "../auth.scss";
 import { useGetProductsQuery } from "@api";
-import { StepWizardChildProps } from "react-step-wizard";
 
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -9,23 +8,20 @@ import Box from "@mui/material/Box";
 
 import { Product } from "@types";
 import { ProductItem } from "../components";
-import { useState } from "react";
+import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RegisterBg from "@images/register-bg.webp";
 
-interface IUserWorkspaceStepProps {
+type IUserWorkspaceStepProps = {
   onProductSelect: (product: Product) => void;
-}
+};
 
 type Interval = "week" | "month" | "year";
 const intervals: Interval[] = ["week", "month", "year"];
 const colors = ["#9fcced", "#009688", "#870050", "#8a4af3"];
 
-export const UserProduct = (
-  props: IUserWorkspaceStepProps & Partial<StepWizardChildProps>
-) => {
+export const UserProduct: FC<IUserWorkspaceStepProps> = ({ onProductSelect }) => {
   const [tabValue, setTabValue] = useState(0);
-  const { onProductSelect, nextStep } = props;
   const { data } = useGetProductsQuery();
   const [interval, setInterval] = useState<Interval>("week");
   const { t } = useTranslation("", { keyPrefix: "signUpWizard" });
@@ -59,7 +55,6 @@ export const UserProduct = (
           <Grid2 key={product.productId} width={300} flexGrow={1}>
             <ProductItem
               key={product.productId}
-              nextStep={nextStep}
               product={product}
               interval={interval}
               onProductSelect={onProductSelect}
