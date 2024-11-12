@@ -45,22 +45,20 @@ export const UsersTable: FC<Props> = ({
       field: "name",
       headerName: `${t("secondName")} ${t("name")} ${t("surname")}`,
       width: isMobile ? 360 : 300,
-      renderCell: ({ row }) =>
-        isMobile ? (
-          <Grid2 height="100%" display="flex" alignItems="center">
-            <Avatar
-              sx={{ width: 30, height: 30, mr: 1 }}
-              sizes="small"
-              alt={row.name}
-              src={row.image}
-            />
-            <Typography>
-              {row.surname} {row.name[0]}. {row.secondName[0]}.
-            </Typography>
-          </Grid2>
-        ) : (
-          `${row.name} ${row.surname} ${row.secondName}`
-        ),
+      renderCell: ({ row }) => (
+        <Grid2 height="100%" display="flex" alignItems="center">
+          <Avatar
+            sx={{ width: 30, height: 30, mr: 1 }}
+            sizes="small"
+            alt={row.name}
+            src={row.image}
+          />
+          <Typography>
+            {row.surname} {isMobile ? row.name[0] + "." : row.name}{" "}
+            {isMobile ? row.secondName[0] + "." : row.secondName}
+          </Typography>
+        </Grid2>
+      ),
     },
   ];
 
