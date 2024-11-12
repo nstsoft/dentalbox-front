@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
-import type { UserForm } from "@types";
+import { Sex, UserForm } from "@types";
 import { useTranslation } from "react-i18next";
 import { Card } from "@elements";
 
@@ -17,6 +17,7 @@ import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
 import { Invitation } from "../AcceptInvitation";
+import { ListItemText, MenuItem, Select } from "@mui/material";
 
 interface IUserDataStepProps {
   type: "signUp" | "invite";
@@ -62,6 +63,7 @@ export const UserData = (
     dob: "",
     address: "",
     email: prefilled?.email || "",
+    sex: "male" as Sex,
   });
 
   const signUpInputs = [
@@ -111,12 +113,13 @@ export const UserData = (
           value: user.phone.replace(/\s+/g, ""),
           error: phoneError || errors?.phone,
           disabled: prefilled?.phone,
+          type: "phone",
         },
       ],
     },
     {
-      name: "dob-address-email-password",
-      direction: "column",
+      name: "dob-sex",
+      direction: "row",
       content: [
         {
           id: "birthDate",
@@ -127,7 +130,20 @@ export const UserData = (
           },
           error: birthDateError || errors?.dob,
           disabled: prefilled?.dob,
+          type: "date",
         },
+        {
+          id: "sex",
+          label: t("signUpWizard.userData.sex"),
+          value: user.sex,
+          type: "select",
+        },
+      ],
+    },
+    {
+      name: "dob-address-email-password",
+      direction: "column",
+      content: [
         {
           id: "address",
           label: t("signUpWizard.userData.address"),
@@ -136,6 +152,7 @@ export const UserData = (
           onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
             setUser((prev) => ({ ...prev, address: target.value }));
           },
+          type: "text",
         },
         {
           id: "email",
@@ -268,6 +285,34 @@ export const UserData = (
                     color={input.error ? "error" : "primary"}
                   />
                 )}
+                {input.id === "sex" && (
+                  <>
+                    <InputLabel id="radio-label">{input.label}</InputLabel>
+                    <Select
+                      labelId="radio-label"
+                      value={user.sex}
+                      onChange={({ target }) =>
+                        setUser({
+                          ...user,
+                          sex: target.value as Sex,
+                        })
+                      }
+                      required
+                      input={<OutlinedInput label={input.label} />}
+                    >
+                      {Object.keys(Sex).map((item) => (
+                        <MenuItem key={item} value={item}>
+                          <ListItemText
+                            primary={t(
+                              `signUpWizard.userData.sexItems.${item}`
+                            )}
+                            sx={{ m: 0 }}
+                          />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </>
+                )}
                 {input.id === "birthDate" && (
                   <DatePicker
                     key={input.id}
@@ -292,13 +337,13 @@ export const UserData = (
                     }}
                   />
                 )}
-                {input.id !== "phone" && input.id !== "birthDate" && (
+                {!["phone", "birthDate", "sex"].includes(input.id) && (
                   <Fragment key={input.id}>
                     <InputLabel htmlFor={input.id}>{input.label}</InputLabel>
                     <OutlinedInput
                       error={!!input.error}
                       id={input.id}
-                      type={input.type}
+                      type={input.type ?? "text"}
                       required
                       onChange={input.onChange}
                       value={input.value}

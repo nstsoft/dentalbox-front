@@ -52,7 +52,9 @@ export const PatientsTable: FC<Props> = ({
               alt={row.name}
               src={row.image as string}
             />
-            <Typography> {row.name}</Typography>
+            <Typography>
+              {row.name} {row.surname} {row.secondName}
+            </Typography>
           </Grid2>
         );
       },

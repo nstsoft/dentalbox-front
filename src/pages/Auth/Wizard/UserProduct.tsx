@@ -46,33 +46,14 @@ export const UserProduct = (
   if (!data) return null;
   return (
     <>
-      <Tabs
-        value={tabValue}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-      >
+      <Tabs value={tabValue} onChange={handleChange}>
         <Tab label={t("packageIntervals.week")} />
         <Tab label={t("packageIntervals.month")} />
         <Tab label={t("packageIntervals.year")} />
       </Tabs>
-      <Grid2
-        container
-        spacing={2}
-        justifyContent={"center"}
-        alignContent={"center"}
-        alignItems={"center"}
-      >
+      <Grid2 container spacing={2} justifyContent={"center"} sx={{ mt: 2 }}>
         {sortedProducts.map((product, index) => (
-          <Grid2
-            key={product.productId}
-            size={1}
-            alignItems="center"
-            justifyContent="space-around"
-            alignContent="center"
-            width={300}
-            height={700}
-            flexGrow={1}
-          >
+          <Grid2 key={product.productId} width={300} flexGrow={1}>
             <ProductItem
               key={product.productId}
               nextStep={nextStep}

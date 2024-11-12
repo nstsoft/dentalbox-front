@@ -77,6 +77,7 @@ export type UserForm = {
   secondName: string;
   phone: string;
   dob: string;
+  sex: Sex;
   address?: string;
 };
 

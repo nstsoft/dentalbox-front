@@ -76,6 +76,8 @@ export const EN: ResourceLanguage = {
         phone: "Phone",
         birthDate: "Birth Date",
         address: "Address",
+        sex: "Sex",
+        sexItems: { male: "Male", female: "Female" },
       },
       workspace: {
         title: "Workspace Data",

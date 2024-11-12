@@ -76,6 +76,8 @@ export const UA: ResourceLanguage = {
         phone: "Номер телефону",
         birthDate: "Дата народження",
         address: "Адреса",
+        sex: "Стать",
+        sexItems: { male: "Чоловік", female: "Жінка" },
       },
       workspace: {
         title: "Виберіть кабінет",

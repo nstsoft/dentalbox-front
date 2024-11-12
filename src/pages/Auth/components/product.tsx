@@ -33,14 +33,12 @@ export const ProductItem = (
     <Card
       sx={{
         padding: 0,
-        backfaceVisibility: "",
         backgroundClip: "border-box",
         backgroundSize: "contain",
         backgroundPosition: "center",
         height: "100%",
         position: "relative",
         zIndex: 1,
-        maxWidth: "300px",
       }}
     >
       <div
@@ -82,7 +80,7 @@ export const ProductItem = (
             alignItems: "center",
             mb: 2,
           }}
-        ></Box>
+        />
 
         <Box
           sx={{

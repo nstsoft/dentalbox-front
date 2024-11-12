@@ -9,7 +9,7 @@ import {
   type WorkspaceForm,
 } from "./Wizard";
 
-import type { UserForm } from "@types";
+import type { Sex, UserForm } from "@types";
 
 import transitionsStyles from "./Wizard/transitions.module.scss";
 import { useRegisterMutation } from "@api";
@@ -37,6 +37,7 @@ export const SignUp = () => {
     phone: "+380",
     dob: "",
     address: "",
+    sex: "male" as Sex,
   });
   const [workspace, setWorkspace] = useState<WorkspaceForm>({
     name: "",

@@ -26,6 +26,7 @@ import { validateLogin } from "@utils";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 export const Login = () => {
   const [loginForm, setLoginForm] = useState({ login: "", password: "" });
@@ -96,8 +97,11 @@ export const Login = () => {
 
   return (
     <section className="page">
-      <AuthContainer direction="row" justifyContent="space-around">
-        <Box>
+      <AuthContainer
+        direction={isMobile ? "column" : "row"}
+        justifyContent="space-around"
+      >
+        <Box sx={{ mb: isMobile ? 3 : 0 }}>
           <Typography
             component="h1"
             variant="h4"
