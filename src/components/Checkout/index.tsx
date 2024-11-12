@@ -7,7 +7,6 @@ import { type StripeElementsOptions } from "@stripe/stripe-js";
 import { CheckoutForm } from "./CheckoutForm";
 import { ProductItem } from "../../pages/Auth/components";
 import Box from "@mui/material/Box";
-import { Card } from "@elements";
 import { SubscriptionInfo } from "../../pages";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
