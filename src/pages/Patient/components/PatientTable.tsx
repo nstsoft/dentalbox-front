@@ -42,7 +42,7 @@ export const PatientsTable: FC<Props> = ({
     {
       field: "name",
       headerName: t("name"),
-      width: 300,
+      width: isMobile ? 360 : 300,
       renderCell: ({ row }) => {
         return (
           <Grid2 height="100%" display="flex" alignItems="center">
@@ -50,10 +50,11 @@ export const PatientsTable: FC<Props> = ({
               sx={{ width: 30, height: 30, mr: 1 }}
               sizes="small"
               alt={row.name}
-              src={row.image as string}
+              src={row.image}
             />
             <Typography>
-              {row.name} {row.surname} {row.secondName}
+              {row.surname} {isMobile ? row.name[0] + "." : row.name}{" "}
+              {isMobile ? row.secondName[0] + "." : row.secondName}
             </Typography>
           </Grid2>
         );

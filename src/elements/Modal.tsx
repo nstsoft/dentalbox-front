@@ -43,7 +43,6 @@ export const CustomModal: FC<Props> = ({
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
-            borderBottom: "1px solid #e0e0e0",
             marginBottom: "5px",
             position: "relative",
           }}
