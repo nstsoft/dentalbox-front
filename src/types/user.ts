@@ -20,6 +20,9 @@ export type UserRequest = {
   phone: string;
   surname: string;
   secondName: string;
+  address?: string;
+  dob: string;
+  sex: Sex
 };
 
 export type User = {
