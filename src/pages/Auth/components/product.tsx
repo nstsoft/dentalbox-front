@@ -20,7 +20,7 @@ interface IUserWorkspaceStepProps {
   product: Product;
   interval: "week" | "month" | "year";
   color: string;
-  onProductSelect: (product: Product) => void;
+  onProductSelect?: (product: Product) => void;
 }
 
 export const ProductItem = (
@@ -101,21 +101,23 @@ export const ProductItem = (
           </Typography>
         </Box>
       </CardContent>
-      <CardActions
-        sx={{
-          justifyContent: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          onClick={() => {
-            onProductSelect(product);
-            nextStep?.();
+      {onProductSelect && (
+        <CardActions
+          sx={{
+            justifyContent: "center",
           }}
         >
-          {t("buttons.select")}
-        </Button>
-      </CardActions>
+          <Button
+            variant="contained"
+            onClick={() => {
+              onProductSelect?.(product);
+              nextStep?.();
+            }}
+          >
+            {t("buttons.select")}
+          </Button>
+        </CardActions>
+      )}
       <CardContent>
         <Box>
           <Typography
