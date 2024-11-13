@@ -101,7 +101,7 @@ export const SignUp = () => {
       nextStep={handleNext}
       previousStep={handleBack}
     />,
-    product ? (
+    product && (
       <ConfirmRegister
         user={user}
         workspace={workspace}
@@ -109,8 +109,6 @@ export const SignUp = () => {
         confirmRegister={confirmRegister}
         previousStep={handleBack}
       />
-    ) : (
-      <></>
     ),
   ];
 
