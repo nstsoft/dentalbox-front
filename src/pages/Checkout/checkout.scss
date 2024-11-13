@@ -1,0 +1,14 @@
+.checkout {
+  display: flex;
+  gap: 32px;
+
+  .product,
+  .checkout-form {
+    margin: 0;
+    align-self: flex-start;
+  }
+
+  .MuiCard-root {
+    min-height: 360px;
+  }
+}

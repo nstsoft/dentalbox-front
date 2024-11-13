@@ -102,7 +102,7 @@ export const CheckoutForm: FC<Props> = ({
   };
 
   return (
-    <Card variant="outlined">
+    <Card className="checkout-form" variant="outlined">
       <Typography variant="h2" sx={{ mb: 2 }}>
         {label}
       </Typography>

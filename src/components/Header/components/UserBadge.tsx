@@ -48,23 +48,14 @@ export const UserBadge: FC = () => {
         onClose={() => setAnchorElUser(undefined)}
       >
         {workspaces.map((workspace) => (
-            <MenuItem key={workspace._id} onClick={() => {}}>
-              <IconButton
-                onClick={(event) => {
-                  setAnchorElUser(event.currentTarget);
-                  changeWorkspace(workspace._id);
-                }}
-                sx={{ p: 0 }}
-              >
-                <Avatar
-                  alt={workspace.name}
-                  src={workspace.image}
-                  sx={{ mr: 1 }}
-                />
-                <Typography variant="body1">{workspace.name}</Typography>
-              </IconButton>
-            </MenuItem>
-          ))}
+          <MenuItem
+            key={workspace._id}
+            onClick={() => changeWorkspace(workspace._id)}
+          >
+            <Avatar alt={workspace.name} src={workspace.image} sx={{ mr: 1 }} />
+            <Typography variant="body1">{workspace.name}</Typography>
+          </MenuItem>
+        ))}
 
         <MenuItem
           key="logout"
