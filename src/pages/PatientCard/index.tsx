@@ -1,5 +1,10 @@
 import { useParams } from "react-router-dom";
-import { DentalMap, PatientInfo, CaseHistory } from "./components";
+import {
+  DentalMap,
+  PatientInfo,
+  CaseHistory,
+  TreatmentPlan,
+} from "./components";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
@@ -12,7 +17,7 @@ export const PatientCardPage = () => {
 
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
 
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(2);
 
   if (!patientId) return null;
 
@@ -22,7 +27,10 @@ export const PatientCardPage = () => {
       label: t("tabs.history"),
       component: <CaseHistory patientId={patientId} />,
     },
-    { label: t("tabs.plan"), component: "dddd" },
+    {
+      label: t("tabs.plan"),
+      component: <TreatmentPlan patientId={patientId} />,
+    },
     { label: t("tabs.periodentalCard"), component: "dddd" },
     { label: t("tabs.files"), component: "dddd" },
   ];
@@ -30,14 +38,7 @@ export const PatientCardPage = () => {
   return (
     <Box>
       <Typography variant="h4">{t("patientCard")}</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          mb: 1,
-          flexFlow: "row wrap",
-        }}
-      >
+      <Box sx={{ display: "flex", gap: 2, mb: 1, flexFlow: "row wrap" }}>
         <PatientInfo patientId={patientId} />
       </Box>
       <Box sx={{ width: "100%" }}>

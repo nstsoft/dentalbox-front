@@ -13,3 +13,4 @@ export * from "./metadata";
 export * from "./service";
 export * from "./caseHistory";
 export * from "./anamnesis";
+export * from "./treatmentPlan";

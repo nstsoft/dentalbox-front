@@ -1,0 +1,65 @@
+.treatment-plan {
+  .treatment-history {
+    max-width: 1200px;
+    .history-accordion-item {
+      .treatment-history-item {
+        width: 100%;
+
+        .treatment-history-item-info {
+          display: grid;
+          grid-template-columns: 1fr 200px;
+          .treatment-history-item-info-price {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+        }
+
+        .treatment-history-item-actions {
+          display: flex;
+        }
+      }
+      .treatment-history-item.add {
+        .treatment-history-item-info {
+          margin: 10px 0;
+          grid-template-columns: 1fr 300px;
+          .add-treatment-history-item-control-panel {
+            display: grid;
+            grid-template-columns: 25px 50px 25px 25px;
+            .count {
+              text-align: center;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+    .treatment-history-actions {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 5px;
+      margin: 5px 0;
+    }
+    .history-summary {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      padding-right: 20px;
+      .treatment-history-header-pricing {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        .treatment-history-header-pricing-item {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          margin: 0 10px;
+        }
+      }
+    }
+  }
+}

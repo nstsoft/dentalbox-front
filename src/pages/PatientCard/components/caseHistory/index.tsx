@@ -2,7 +2,7 @@ import "./styles.scss";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {
-  useLazyGetHistoryItemsQuery,
+  useGetHistoryItemsQuery,
   useCreateHistoryItemMutation,
   useUpdateHistoryItemMutation,
   useDeleteHistoryItemMutation,
@@ -54,7 +54,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<string | undefined>();
 
-  const [fetchHistory, { data }] = useLazyGetHistoryItemsQuery();
+  const { data } = useGetHistoryItemsQuery({ patientId });
   const [create, { isSuccess }] = useCreateHistoryItemMutation();
   const [deleteItem] = useDeleteHistoryItemMutation();
   const [update, { isSuccess: isSuccessUpdate }] =
@@ -93,12 +93,6 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
       create(item);
     }
   };
-
-  useEffect(() => {
-    if (patientId) {
-      fetchHistory({ patientId });
-    }
-  }, [fetchHistory, patientId]);
 
   useEffect(() => {
     if (data?.length) {

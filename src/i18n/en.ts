@@ -22,6 +22,7 @@ export const EN: ResourceLanguage = {
       delete: "Delete",
       add: "Add",
       reset: "Reset",
+      addRecord: "Add new record",
     },
     image: {
       success: "Image successfully uploaded",
@@ -66,7 +67,7 @@ export const EN: ResourceLanguage = {
     },
     signUpWizard: {
       steps: {
-        userData: 'User Data',
+        userData: "User Data",
         workspace: "Workspace",
         confirmRegister: "Confirm Register",
       },
@@ -341,6 +342,11 @@ export const EN: ResourceLanguage = {
           addFiles: "Upload files with description",
           confirmDelete: "Confirm delete?",
         },
+        treatmentPlan: {
+          total: "Total",
+          deposit: "Deposit",
+          payed: "Payed",
+        },
       },
       calendar: {
         messages: {
@@ -377,6 +383,9 @@ export const EN: ResourceLanguage = {
       enterValidPhone: "Please enter a valid phone number.",
       enterValidDate: "Please enter a valid date.",
       enterValidEmail: "Please enter a valid email address",
+    },
+    common: {
+      service: "Service",
     },
   },
 };

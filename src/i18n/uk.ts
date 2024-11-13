@@ -22,6 +22,7 @@ export const UA: ResourceLanguage = {
       delete: "Видалити",
       add: "Додати",
       reset: "Скинути",
+      addRecord: "Додати новий запис",
     },
     image: {
       success: "Фото успішно завантажене",
@@ -341,6 +342,11 @@ export const UA: ResourceLanguage = {
           diabetes: "Пацієнт страждає діабетом?",
           chronicDisorders: "Хронічні захворювання",
         },
+        treatmentPlan: {
+          total: "Загалом",
+          deposit: "Внесено",
+          payed: "Оплачено",
+        },
       },
       calendar: {
         messages: {
@@ -377,6 +383,9 @@ export const UA: ResourceLanguage = {
       enterValidPhone: "Будь ласка, введіть дійсний номер телефону.",
       enterValidDate: "Будь ласка, введіть дійсний формат дати.",
       enterValidEmail: "Будь ласка, введіть дійсний формат емейлу.",
+    },
+    common: {
+      service: "Послуга",
     },
   },
 };

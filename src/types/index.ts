@@ -15,3 +15,4 @@ export * from "./service";
 export * from "./file";
 export * from "./history";
 export * from "./anamnesis";
+export * from "./treatmentPlan";
