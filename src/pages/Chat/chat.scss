@@ -1,0 +1,38 @@
+.chat-container {
+  min-height: calc(100vh - 115px);
+  padding: 0;
+  border: 1px solid #ccc;
+
+  .chat-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #ccc;
+
+    .new-chat-button {
+      padding: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+      padding: 0;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .no-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}

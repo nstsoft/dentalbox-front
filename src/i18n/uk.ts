@@ -23,6 +23,7 @@ export const UA: ResourceLanguage = {
       add: "Додати",
       reset: "Скинути",
       addRecord: "Додати новий запис",
+      send: "Надіслати",
     },
     image: {
       success: "Фото успішно завантажене",
@@ -368,6 +369,12 @@ export const UA: ResourceLanguage = {
           in_cabinet: "На прийомі",
           finished: "Прийом закінено",
         },
+      },
+      chat: {
+        newChat: "Нова переписка",
+        search: "Пошук...",
+        noActive: "Будь ласка, оберіть чат, щоб почати обговорення",
+        writeMessage: "Написати повідомлення...",
       },
     },
     components: {

@@ -23,6 +23,7 @@ export const EN: ResourceLanguage = {
       add: "Add",
       reset: "Reset",
       addRecord: "Add new record",
+      send: "Send",
     },
     image: {
       success: "Image successfully uploaded",
@@ -368,6 +369,12 @@ export const EN: ResourceLanguage = {
           in_cabinet: "In cabinet",
           finished: "Finished",
         },
+      },
+      chat: {
+        newChat: "New chat",
+        search: "Search...",
+        noActive: "Please select chat to start conversation",
+        writeMessage: "Write message...",
       },
     },
     components: {

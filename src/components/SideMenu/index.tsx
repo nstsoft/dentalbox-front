@@ -65,9 +65,10 @@ export const SideMenu: FC = () => {
   const { isOpenMenu, setIsOpen, toggle } = useSideMenu();
   const { t } = useTranslation("", { keyPrefix: "sideMenu" });
 
-  const [page, setPage] = useState<(typeof PAGES)[number]>(
-    PAGES.find((page) => page === location.pathname.split("/")[2]) ??
-      "workspace"
+  const [page, setPage] = useState<Pages | "chat">(
+    ([...PAGES, "chat"].find(
+      (page) => page === location.pathname.split("/")[2]
+    ) as Pages | "chat") ?? "workspace"
   );
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -108,7 +109,15 @@ export const SideMenu: FC = () => {
       <Divider />
       <List>
         {["chat"].map((text) => (
-          <ListItem key={text} disablePadding>
+          <ListItem
+            key={text}
+            disablePadding
+            className={page === text ? "Mui-selected" : ""}
+            onClick={() => {
+              setPage("chat");
+              navigate("chat");
+            }}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <ForumIcon />
