@@ -8,6 +8,13 @@ type UpdateTreatmentPlanItem = {
   data: Omit<TreatmentPlan, "workspace" | "_id" | "patient">;
 };
 
+ type CreateTreatmentPlan = {
+  patient: string;
+  items: {
+    [key: string]: number;
+  };
+};
+
 export const treatmentPlanApi = createApi({
   reducerPath: REDUCER.TREATMENT_PLAN,
   tagTypes: Object.values(TREATMENT_PLAN_TAG),
@@ -25,12 +32,21 @@ export const treatmentPlanApi = createApi({
       }),
       invalidatesTags: [TREATMENT_PLAN_TAG.TREATMENT_PLAN],
     }),
+    createTreatmentPlan: builder.mutation<void, CreateTreatmentPlan>({
+      query: (data) => ({
+        url: `/treatment-plan`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [TREATMENT_PLAN_TAG.TREATMENT_PLAN],
+    }),
   }),
 });
 
 export const {
   useGetTreatmentPlanListQuery,
   useUpdateTreatmentPlanItemMutation,
+  useCreateTreatmentPlanMutation,
 } = treatmentPlanApi;
 
 export default { treatmentPlanApi };

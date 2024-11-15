@@ -347,6 +347,7 @@ export const EN: ResourceLanguage = {
           total: "Total",
           deposit: "Deposit",
           payed: "Payed",
+          addRecord: "Add new record",
         },
       },
       calendar: {

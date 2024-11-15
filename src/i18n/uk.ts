@@ -338,7 +338,7 @@ export const UA: ResourceLanguage = {
           autoimmune: "Автоімунні захворювання",
           blood: "Кров",
           infectionsHistory: "Інфекційні захворювання",
-          smoking: "Пацієнт куріть?",
+          smoking: "Пацієнт курить?",
           alcohol: "Пацієнт вживає алкоголь?",
           diabetes: "Пацієнт страждає діабетом?",
           chronicDisorders: "Хронічні захворювання",
@@ -347,6 +347,7 @@ export const UA: ResourceLanguage = {
           total: "Загалом",
           deposit: "Внесено",
           payed: "Оплачено",
+          addRecord: "Додати новий запис",
         },
       },
       calendar: {

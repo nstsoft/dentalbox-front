@@ -63,3 +63,28 @@
     }
   }
 }
+
+.add-treatment-history-modal-content {
+  .treatment-history-item-info {
+    margin: 10px 0;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    padding: 8px;
+    .add-treatment-history-item-control-panel {
+      display: grid;
+      grid-template-columns: 25px 40px 25px 25px;
+      .count {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .treatment-buttons {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
