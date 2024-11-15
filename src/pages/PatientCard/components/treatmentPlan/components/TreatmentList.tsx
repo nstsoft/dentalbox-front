@@ -23,6 +23,7 @@ import {
 } from "@api";
 import { Modal } from "./Modal";
 import { useParams } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 type Props = { items: TreatmentPlan[]; services: Service[] };
 
@@ -63,7 +64,7 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
   const renderViewMode = (plan: TreatmentPlan) => {
     return plan.items.map((item) => (
       <Box className="treatment-history-item" key={item._id}>
-        <Box className="treatment-history-item-info">
+        <Box className={`treatment-history-item-info ${ isMobile ? "mobile" : "" }`}>
           <Typography>{item.name}</Typography>
           <Box className="treatment-history-item-info-price">
             <Typography variant="h6">

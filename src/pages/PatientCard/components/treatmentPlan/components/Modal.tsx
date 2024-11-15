@@ -11,6 +11,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import { useTranslation } from "react-i18next";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { isMobile } from "react-device-detect";
 
 import "../style.scss";
 
@@ -53,9 +54,9 @@ export const Modal: FC<Props> = ({ open, onClose, services, onSubmit }) => {
         clearFields();
       }}
       sx={{
-        minWidth: "500px",
+        minWidth: isMobile ? "100%" : "500px",
         minHeight: "350px",
-        maxHeight: "450px",
+        maxHeight: isMobile ? "400px" : "450px",
       }}
     >
       <Box className="add-treatment-history-modal-content">
@@ -85,7 +86,7 @@ export const Modal: FC<Props> = ({ open, onClose, services, onSubmit }) => {
               />
             )}
           />
-          <Box className="add-treatment-history-item-control-panel">
+          <Box className={`add-treatment-history-item-control-panel ${ isMobile ? "mobile" : "" }`}>
             <IconButton
               onClick={() =>
                 setSelectedPlanItem(
@@ -162,6 +163,7 @@ export const Modal: FC<Props> = ({ open, onClose, services, onSubmit }) => {
                     <AddIcon />
                   </IconButton>
                   <IconButton
+                    sx={{ maxWidth: "unset" }}
                     onClick={() => {
                       setItemsList((prev) =>
                         prev.filter((el) => el._id !== item._id)

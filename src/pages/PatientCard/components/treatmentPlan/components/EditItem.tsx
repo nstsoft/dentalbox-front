@@ -9,6 +9,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { Service, PlanItem, TreatmentPlan } from "@types";
 import { type FC, type Dispatch, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   options: (Service & { value: string; label: string })[];
@@ -29,11 +30,11 @@ export const EditItem: FC<Props> = ({
     keyPrefix: "pages.patientCard.treatmentPlan",
   });
   return (
-    <Box className="treatment-history-item-info">
+    <Box className={`treatment-history-item-info edit ${ isMobile ? "mobile" : "" }`}>
       <Autocomplete
         disablePortal
         options={options}
-        sx={{ width: 300 }}
+        sx={{ width: isMobile ? 200 : 300 }}
         onChange={(_, value) => {
           if (!value) return;
           setSelectedPlanItem({
@@ -50,7 +51,11 @@ export const EditItem: FC<Props> = ({
           />
         )}
       />
-      <Box className="add-treatment-history-item-control-panel">
+      <Box
+        className={`add-treatment-history-item-control-panel ${
+          isMobile ? "mobile" : ""
+        }`}
+      >
         <IconButton
           onClick={() =>
             setSelectedPlanItem(
@@ -78,6 +83,7 @@ export const EditItem: FC<Props> = ({
           <AddIcon />
         </IconButton>
         <IconButton
+          sx={{ maxWidth: "unset" }}
           onClick={() => {
             setSelectedPlan(
               (prev) =>

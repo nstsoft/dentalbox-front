@@ -140,6 +140,7 @@ export const UA: ResourceLanguage = {
         staff: "Персонал",
         profile: "Профіль",
         patients: "Пацієнти",
+        chat: "Чат",
       },
     },
     pages: {

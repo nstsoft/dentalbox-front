@@ -12,6 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import { DatePicker } from "@mui/x-date-pickers";
 
+import "../style.scss";
+
 type Props = {
   patient: Patient;
   setPatient: Dispatch<SetStateAction<Patient | undefined>>;
@@ -39,54 +41,68 @@ export const SecondaryInfo: FC<Props> = ({
   const renderEditModeInputs = () => {
     return (
       <Box className="edit-mode-props">
-        <TextField
-          label={t("address")}
-          variant="standard"
-          value={patient.address}
-          onChange={(e) => {
-            setIsDataChanged(true);
-            setPatient((prev) => prev && { ...prev, address: e.target.value });
-          }}
-        />
+        <Box>
+          <TextField
+            fullWidth
+            label={t("address")}
+            variant="standard"
+            value={patient.address}
+            onChange={(e) => {
+              setIsDataChanged(true);
+              setPatient(
+                (prev) => prev && { ...prev, address: e.target.value }
+              );
+            }}
+          />
+        </Box>
 
-        <InputLabel id="radio-label">{t("sex")}</InputLabel>
-        <Select
-          sx={{ height: "40px", width: "150px" }}
-          labelId="radio-label"
-          value={patient.sex}
-          variant="outlined"
-          onChange={({ target }) => {
-            setIsDataChanged(true);
-            setPatient((prev) => prev && { ...prev, sex: target.value as Sex });
-          }}
-          required
-        >
-          {Object.keys(Sex).map((item) => (
-            <MenuItem key={item} value={item}>
-              <ListItemText primary={t(`sexItems.${item}`)} sx={{ m: 0 }} />
-            </MenuItem>
-          ))}
-        </Select>
-        <InputLabel id="radio-label">{t("dob")}</InputLabel>
-        <DatePicker
-          value={patient.dob ? days(patient.dob) : null}
-          onChange={(newValue: Dayjs | null) => {
-            setIsDataChanged(true);
-            setPatient(
-              (prev) =>
-                prev && {
-                  ...prev,
-                  dob: newValue?.toString() ?? "",
-                }
-            );
-          }}
-          disableFuture
-          onError={(err) => setBirthDateError(err?.toString())}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
-              { borderColor: errors.dob ? "red" : "none" },
-          }}
-        />
+        <Box>
+          <InputLabel id="radio-label">{t("sex")}</InputLabel>
+          <Select
+            fullWidth
+            sx={{ height: "40px" }}
+            labelId="radio-label"
+            value={patient.sex}
+            variant="outlined"
+            onChange={({ target }) => {
+              setIsDataChanged(true);
+              setPatient(
+                (prev) => prev && { ...prev, sex: target.value as Sex }
+              );
+            }}
+            required
+          >
+            {Object.keys(Sex).map((item) => (
+              <MenuItem key={item} value={item}>
+                <ListItemText primary={t(`sexItems.${item}`)} sx={{ m: 0 }} />
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+
+        <Box>
+          <InputLabel id="radio-label">{t("dob")}</InputLabel>
+          <DatePicker
+            value={patient.dob ? days(patient.dob) : null}
+            onChange={(newValue: Dayjs | null) => {
+              setIsDataChanged(true);
+              setPatient(
+                (prev) =>
+                  prev && {
+                    ...prev,
+                    dob: newValue?.toString() ?? "",
+                  }
+              );
+            }}
+            disableFuture
+            onError={(err) => setBirthDateError(err?.toString())}
+            sx={{
+              width: "100%",
+              "& .MuiOutlinedInput-notchedOutline, &:hover .MuiOutlinedInput-notchedOutline, & .Mui-focused .MuiOutlinedInput-notchedOutline":
+                { borderColor: errors.dob ? "red" : "none" },
+            }}
+          />
+        </Box>
       </Box>
     );
   };

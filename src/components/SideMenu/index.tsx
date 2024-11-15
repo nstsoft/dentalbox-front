@@ -122,7 +122,7 @@ export const SideMenu: FC = () => {
               <ListItemIcon>
                 <ForumIcon />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={t(`pages.${text}`)} />
             </ListItemButton>
           </ListItem>
         ))}

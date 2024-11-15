@@ -140,6 +140,7 @@ export const EN: ResourceLanguage = {
         staff: "Staff",
         profile: "Profile",
         patients: "Patients",
+        chat: "Chat",
       },
     },
     pages: {

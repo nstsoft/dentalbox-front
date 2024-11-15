@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { type FC, type Dispatch, type SetStateAction } from "react";
 import { IconButton } from "@elements";
+import { isMobile } from "react-device-detect";
 
 type Props = CardProps & {
   children: React.ReactNode | React.ReactNode[];
@@ -35,7 +36,10 @@ export const InfoCard: FC<Props> = ({
       }
     >
       <Box className="header">
-        <IconButton onClick={() => setIsEditMode((prev) => !prev)}>
+        <IconButton
+          onClick={() => setIsEditMode((prev) => !prev)}
+          sx={{ m: isMobile ? "16px 24px" : 0 }}
+        >
           {isEditMode ? <CloseIcon /> : <EditIcon />}
         </IconButton>
       </Box>

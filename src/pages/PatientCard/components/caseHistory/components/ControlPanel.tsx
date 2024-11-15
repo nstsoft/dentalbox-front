@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { CaseHistoryModal } from "./CaseHistoryModal";
 import type { HistoryData, FileWithDescription, PatientFile } from "@types";
 import days from "dayjs";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   dateFilter: { to?: Dayjs | null; from?: Dayjs | null };
@@ -56,7 +57,11 @@ export const ControlPanel: FC<Props> = ({
           {t("addItem")}
         </Button>
       </Box>
-      <Box className="case-history-control-segment filter">
+      <Box
+        className={`case-history-control-segment filter ${
+          isMobile ? "mobile" : ""
+        }`}
+      >
         <DatePicker
           className="item"
           label={t("from")}

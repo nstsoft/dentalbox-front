@@ -32,7 +32,7 @@ export const ChatPage = () => {
       <Grid2 className="chat-sidebar" size={3}>
         <Button
           className="new-chat-button"
-          onClick={() => setIsFilterShown(true)}
+          onClick={() => setIsFilterShown(!isFilterShown)}
         >
           <AddCircleOutlineIcon />
           <Typography variant="h6">{t("newChat")}</Typography>

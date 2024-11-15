@@ -1,0 +1,11 @@
+.patient-notes {
+  width: 100%;
+  margin: 0;
+  position: relative;
+  gap: 0;
+  align-self: flex-start;
+
+  #patientNotes {
+    padding: 4px 8px;
+  }
+}

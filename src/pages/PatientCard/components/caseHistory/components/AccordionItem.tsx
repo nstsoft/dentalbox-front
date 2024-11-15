@@ -33,7 +33,6 @@ export const AccordionItem: FC<Props> = ({
       </AccordionSummary>
       <AccordionDetails>
         <Box className="history-accordion-header">
-          <Typography>{days(item.date).format("YYYY MMMM DD")}</Typography>
           <IconButton onClick={() => onEdit(item)}>
             <EditIcon />
           </IconButton>

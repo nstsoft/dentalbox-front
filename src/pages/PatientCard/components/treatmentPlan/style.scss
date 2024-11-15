@@ -4,6 +4,7 @@
     .history-accordion-item {
       .treatment-history-item {
         width: 100%;
+        padding-right: 5px;
 
         .treatment-history-item-info {
           display: grid;
@@ -12,6 +13,10 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            justify-content: flex-end;
+          }
+          &.mobile {
+            grid-template-columns: 1fr 90px;
           }
         }
 
@@ -32,6 +37,22 @@
               justify-content: center;
               align-items: center;
             }
+
+            &.mobile {
+              grid-template-columns: 25px 30px 25px 35px;
+            }
+          }
+
+          &.edit {
+            grid-template-columns: 320px 1fr;
+
+            &.mobile {
+              grid-template-columns: 220px 1fr;
+            }
+          }
+
+          &.mobile {
+            grid-template-columns: 1fr 90px;
           }
         }
       }
@@ -46,7 +67,7 @@
     .history-summary {
       width: 100%;
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 140px 1fr;
       padding-right: 20px;
       .treatment-history-header-pricing {
         display: flex;
@@ -79,6 +100,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      &.mobile {
+        grid-template-columns: 25px 30px 25px 35px;
       }
     }
   }

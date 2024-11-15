@@ -37,7 +37,7 @@ export const PatientCardPage = () => {
 
   return (
     <Box>
-      <Typography variant="h4">{t("patientCard")}</Typography>
+      <Typography variant="h4" sx={{ mb: 1 }}>{t("patientCard")}</Typography>
       <Box sx={{ display: "flex", gap: 2, mb: 1, flexFlow: "row wrap" }}>
         <PatientInfo patientId={patientId} />
       </Box>

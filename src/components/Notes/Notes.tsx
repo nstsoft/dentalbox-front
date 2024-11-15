@@ -1,11 +1,11 @@
-import { Card, Textarea } from "@elements";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import CloseIcon from "@mui/icons-material/Close";
-import { FC, useState } from "react";
+import { Textarea } from "@elements";
+import { type FC, useState } from "react";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import { useTranslation } from "react-i18next";
+import { InfoCard } from "../InfoCard";
+
+import "./style.scss";
 
 type NotesProps = {
   label: string;
@@ -25,19 +25,18 @@ export const Notes: FC<NotesProps> = ({
   const [isDataChanged, setIsDataChanged] = useState(false);
 
   return (
-    <Card
+    <InfoCard
+      buttonLabel={t("save", { keyPrefix: "buttons" })}
+      onSubmit={() => {
+        onConfirm();
+        setIsDataChanged(false);
+      }}
+      disabledButton={!isDataChanged}
+      isEditMode={isEdit}
+      setIsEditMode={setIsEdit}
       className="patient-notes"
-      sx={{ m: 0, position: "relative", gap: 0, alignSelf: "flex-start" }}
     >
-      <Button
-        sx={{ position: "absolute", top: 0, right: 0 }}
-        onClick={() => setIsEdit((prev) => !prev)}
-      >
-        {isEdit ? <CloseIcon /> : <EditIcon />}
-      </Button>
-      <Typography variant="h6" sx={{ mb: 1 }}>
-        {label}
-      </Typography>
+      <Typography variant="h6">{label}</Typography>
       <FormControl sx={{ width: "100%" }}>
         {isEdit ? (
           <Textarea
@@ -54,21 +53,6 @@ export const Notes: FC<NotesProps> = ({
           <Typography>{value ?? ""}</Typography>
         )}
       </FormControl>
-
-      {isEdit && (
-        <Button
-          type="submit"
-          variant={"contained"}
-          disabled={!isDataChanged}
-          sx={{ mt: 2 }}
-          onClick={() => {
-            setIsEdit(false);
-            onConfirm();
-          }}
-        >
-          {t("save", { keyPrefix: "buttons" })}
-        </Button>
-      )}
-    </Card>
+    </InfoCard>
   );
 };

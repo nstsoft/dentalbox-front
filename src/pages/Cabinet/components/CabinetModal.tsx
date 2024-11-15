@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
-import Modal from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -23,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useCreateCabinetMutation, useUpdateCabinetMutation } from "@api";
 import { CabinetForm } from "../types";
 import { AvatarUpload } from "@components";
+import { CustomModal } from "@elements";
 
 type CabinetModalProps = {
   cabinetForm: CabinetForm & { _id?: string };
@@ -128,23 +128,11 @@ export const CabinetModal: FC<CabinetModalProps> = ({
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <CustomModal open={open} onClose={onClose}>
       <Box
         component="form"
         onSubmit={submitFormHandler}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          maxHeight: "90vh",
-          bgcolor: "background.paper",
-          overflow: "auto",
-          boxShadow: 24,
-          borderRadius: "8px",
-          p: 4,
-        }}
+        sx={{ maxHeight: 500 }}
       >
         <AvatarUpload image={cabinetForm.image} onUpload={setCabinetImage} />
         {fieldsMap.map((input) => (
@@ -186,7 +174,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
           </FormControl>
         ))}
         {cabinetForm.chairs.map((chair, index) => (
-          <FormControl key={index} fullWidth sx={{ mb: 1 }}>
+          <FormControl key={index} fullWidth sx={{ mb: 2 }}>
             <InputLabel htmlFor={t("pages.cabinet.chair") + (index + 1)}>
               {t("pages.cabinet.chair") + (index + 1)}
             </InputLabel>
@@ -227,7 +215,7 @@ export const CabinetModal: FC<CabinetModalProps> = ({
         ))}
 
         <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" sx={{ mb: 1 }}>
             {cabinetForm._id
               ? t("update", { keyPrefix: "buttons" })
               : t("create", { keyPrefix: "buttons" })}
@@ -245,6 +233,6 @@ export const CabinetModal: FC<CabinetModalProps> = ({
           )}
         </Box>
       </Box>
-    </Modal>
+    </CustomModal>
   );
 };
