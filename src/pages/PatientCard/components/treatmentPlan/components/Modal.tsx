@@ -39,10 +39,19 @@ export const Modal: FC<Props> = ({ open, onClose, services, onSubmit }) => {
       ...service,
     }));
 
+  const clearFields = () => {
+    setItemsList([]);
+    setSearchService(null);
+    setSelectedPlanItem(null);
+  };
+
   return (
     <CustomModal
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        clearFields();
+      }}
       sx={{
         minWidth: "500px",
         minHeight: "350px",
@@ -171,8 +180,7 @@ export const Modal: FC<Props> = ({ open, onClose, services, onSubmit }) => {
             variant="contained"
             onClick={() => {
               onSubmit(itemsList);
-              onClose();
-              setItemsList([]);
+              clearFields();
             }}
           >
             {t("addRecord")}

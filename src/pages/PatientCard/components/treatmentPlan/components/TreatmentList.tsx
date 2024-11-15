@@ -132,11 +132,12 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
       updatedItems[item._id as string] = item.quantity;
     });
 
-    if (params.patientId) {
+    if (params.patientId && items.length) {
       createTreatment({
         patient: params.patientId,
         items: updatedItems,
       });
+      setShowModal(false);
     }
   };
 
