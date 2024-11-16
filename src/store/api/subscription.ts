@@ -1,32 +1,39 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { SubscriptionResponse } from "@types";
-import { SUBSCRIPTION_TAG, REDUCER } from "../constants";
+import { SUBSCRIPTION_TAG, REDUCER, WORKSPACE_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 
-type CreatePaymentParam = { id: string; client_secret: string };
-type GetSecretParam = { type: "setup" | "payment"; clientSecret: string };
+type ChangePlan = { priceId: string };
+
+console.log(Object.values({ ...WORKSPACE_TAG, ...SUBSCRIPTION_TAG }));
 
 export const subscriptionApi = createApi({
   reducerPath: REDUCER.SUBSCRIPTION,
-  tagTypes: Object.values(SUBSCRIPTION_TAG),
+  tagTypes: Object.values({ ...WORKSPACE_TAG, ...SUBSCRIPTION_TAG }),
   baseQuery,
   endpoints: (builder) => ({
     getMySubscription: builder.query<SubscriptionResponse, void>({
       query: () => `/subscription`,
       providesTags: () => [{ type: SUBSCRIPTION_TAG.SUBSCRIPTION }],
     }),
-    createPaymentIntent: builder.query<CreatePaymentParam, void>({
-      query: () => `/payment/create-payment-intent`,
-      providesTags: () => [{ type: SUBSCRIPTION_TAG.INTENT }],
-    }),
-    getClientSecret: builder.query<GetSecretParam, void>({
-      query: () => `/payment/client-secret`,
-      providesTags: () => [{ type: SUBSCRIPTION_TAG.SECRET }],
+    changeSubscriptionPlan: builder.mutation<unknown, ChangePlan>({
+      query: (body) => ({
+        url: `/subscription/change-plan`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: () => [
+        WORKSPACE_TAG.WORKSPACE,
+        SUBSCRIPTION_TAG.SUBSCRIPTION,
+      ],
     }),
   }),
 });
 
-export const { useLazyGetMySubscriptionQuery, useGetClientSecretQuery, useGetMySubscriptionQuery } =
-  subscriptionApi;
+export const {
+  useLazyGetMySubscriptionQuery,
+  useGetMySubscriptionQuery,
+  useChangeSubscriptionPlanMutation,
+} = subscriptionApi;
 
 export default { subscriptionApi };

@@ -1,3 +1,4 @@
+import "./style.scss";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CardHeader from "@mui/material/CardHeader";
@@ -13,7 +14,6 @@ import { Card } from "@elements";
 import { Product } from "@types";
 
 import icons from "currency-icons";
-import "../auth.scss";
 
 interface IUserWorkspaceStepProps {
   product: Product;
@@ -27,7 +27,7 @@ export const ProductItem = (props: IUserWorkspaceStepProps) => {
   const { t, i18n } = useTranslation();
 
   return (
-    <Card className="product">
+    <Card className="product-item">
       <CardHeader
         className="product__header"
         title={

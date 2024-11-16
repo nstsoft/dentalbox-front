@@ -1,6 +1,6 @@
 import { useGetMySubscriptionQuery } from "@api";
 import { Checkout } from "@components";
-import { ProductItem } from "../Auth/components";
+import { ProductItem } from "@components";
 import { SubscriptionInfo } from "../Workspace";
 
 import "./checkout.scss";

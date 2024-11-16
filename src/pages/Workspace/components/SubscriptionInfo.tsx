@@ -16,6 +16,8 @@ import { useAuth } from "@hooks";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
+import { ChangePlan } from "./ChangePlan";
+
 const statusColor: { [key in string]: "warning" | "primary" | "error" } = {
   active: "primary",
   canceled: "warning",
@@ -135,6 +137,10 @@ export const SubscriptionInfo = () => {
               "DD.MM.YYYY"
             )}
           </Typography>
+        </Box>
+        <Divider variant="inset" sx={{ mt: 2, mb: 2 }} />
+        <Box sx={{ display: "flex", alignItems: "baseline" }}>
+          <ChangePlan />
         </Box>
       </Box>
     </Card>

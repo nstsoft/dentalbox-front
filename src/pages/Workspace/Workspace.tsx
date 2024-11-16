@@ -40,7 +40,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const WorkspacePage = () => {
   const { workspace, user } = useAuth();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
   const { data: metadata } = useGetWorkspaceMetadataQuery();
 

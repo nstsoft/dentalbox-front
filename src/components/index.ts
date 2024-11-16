@@ -14,3 +14,5 @@ export * from "./Loader";
 export * from "./AvatarUpload";
 export * from "./TablePopover";
 export * from "./InfoCard";
+export * from "./ProductSelect";
+export * from "./ProductItem";

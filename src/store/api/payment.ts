@@ -4,6 +4,9 @@ import { REDUCER, PAYMENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 import { createQueryStringFromObject } from "@utils";
 
+type CreatePaymentParam = { id: string; client_secret: string };
+type GetSecretParam = { type: "setup" | "payment"; clientSecret: string };
+
 export const paymentApi = createApi({
   reducerPath: REDUCER.PAYMENT,
   tagTypes: Object.values(PAYMENT_TAG),
@@ -27,6 +30,14 @@ export const paymentApi = createApi({
         })}`,
       providesTags: () => [{ type: PAYMENT_TAG.INVOICE_LIST }],
     }),
+    createPaymentIntent: builder.query<CreatePaymentParam, void>({
+      query: () => `/payment/create-payment-intent`,
+      providesTags: () => [{ type: PAYMENT_TAG.INTENT }],
+    }),
+    getClientSecret: builder.query<GetSecretParam, void>({
+      query: () => `/payment/client-secret`,
+      providesTags: () => [{ type: PAYMENT_TAG.SECRET }],
+    }),
   }),
 });
 
@@ -35,6 +46,7 @@ export const {
   useDeletePaymentMethodMutation,
   useSetDefaultPaymentMethodMutation,
   useGetInvoiceListQuery,
+  useGetClientSecretQuery,
 } = paymentApi;
 
 export default { paymentApi };
