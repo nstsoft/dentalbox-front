@@ -100,3 +100,16 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-thumb-hover);
 }
+
+.Toastify__toast-container {
+  padding: 0;
+  top: 0;
+  &--top-right {
+    right: 0;
+  }
+
+  .Toastify__close-button {
+    position: absolute;
+    left: 15px;
+  }
+}

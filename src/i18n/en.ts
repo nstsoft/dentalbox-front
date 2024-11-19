@@ -168,6 +168,22 @@ export const EN: ResourceLanguage = {
           trialing: "Trialing",
           unpaid: "Unpaid",
         },
+        buttons: {
+          renew: "Renew subscription",
+          cancel: "Cancel subscription",
+          reactivate: "Reactivate subscription",
+        },
+        labels: {
+          cancel: "Canceling subscription",
+          renew: "Renewing subscription",
+          reactivate: "Reactivating subscription",
+          cancelConfirm:
+            "Are you sure you want to cancel the subscription? Subscription will be active until {{endDate}}. Next payment will not be taken.",
+          renewConfirm:
+            "Are you sure you want to renew the subscription? Current subscription will be active until {{endDate}}. Next payment will be taken.",
+          reactivateConfirm:
+            "Are you sure you want to reactivate the subscription? Next payment will be taken.",
+        },
         interval: { week: "Weekly", month: "Monthly", year: "Annual" },
         period: "Period",
         cancel: "Cancel",

@@ -21,6 +21,8 @@ export type SubscriptionStatus =
   | "trialing"
   | "unpaid";
 
+export const SubscriptionInactiveStatuses = ["canceled", "unpaid"] as const;
+
 export type PriceGeneral = {
   active: boolean;
   created: number;
@@ -47,6 +49,7 @@ export type SubscriptionResponse = {
     feedback: string | null;
     reason: string | null;
   };
+  cancelAtPeriodEnd: boolean;
   created: number;
   currency: string;
   current_period_end: number;

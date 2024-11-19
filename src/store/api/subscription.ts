@@ -27,6 +27,26 @@ export const subscriptionApi = createApi({
         SUBSCRIPTION_TAG.SUBSCRIPTION,
       ],
     }),
+    reactivateSubscription: builder.mutation<void, void>({
+      query: () => ({
+        url: `/subscription/reactivate`,
+        method: "PATCH",
+      }),
+      invalidatesTags: () => [
+        WORKSPACE_TAG.WORKSPACE,
+        SUBSCRIPTION_TAG.SUBSCRIPTION,
+      ],
+    }),
+    renewCancelSubscription: builder.mutation<void, void>({
+      query: () => ({
+        url: `/subscription/cancel-renew`,
+        method: "PATCH",
+      }),
+      invalidatesTags: () => [
+        WORKSPACE_TAG.WORKSPACE,
+        SUBSCRIPTION_TAG.SUBSCRIPTION,
+      ],
+    }),
   }),
 });
 
@@ -34,6 +54,8 @@ export const {
   useLazyGetMySubscriptionQuery,
   useGetMySubscriptionQuery,
   useChangeSubscriptionPlanMutation,
+  useReactivateSubscriptionMutation,
+  useRenewCancelSubscriptionMutation,
 } = subscriptionApi;
 
 export default { subscriptionApi };

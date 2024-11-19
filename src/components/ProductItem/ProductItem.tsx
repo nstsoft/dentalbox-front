@@ -29,7 +29,7 @@ export const ProductItem = (props: IUserWorkspaceStepProps) => {
   return (
     <Card className="product-item">
       <CardHeader
-        className="product__header"
+        className="product-item__header"
         title={
           i18n.language === "ua"
             ? product.metadata.ua_name
@@ -44,11 +44,11 @@ export const ProductItem = (props: IUserWorkspaceStepProps) => {
         </Typography>
       </Box>
       <Box sx={{ position: "relative", mb: 2 }}>
-        <Box className="product__space left"></Box>
-        <Divider className="product__divider" />
-        <Box className="product__space right"></Box>
+        <Box className="product-item__space left"></Box>
+        <Divider className="product-item__divider" />
+        <Box className="product-item__space right"></Box>
       </Box>
-      <CardContent className="product__content">
+      <CardContent className="product-item__content">
         <Box className="quantity">
           <GroupsIcon />
           <Typography variant="body2" sx={{ ml: 1 }}>

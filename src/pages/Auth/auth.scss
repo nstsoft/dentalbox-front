@@ -15,16 +15,5 @@
       width: calc(100% + 20px);
       filter: blur(10px);
     }
-
-    .actions {
-      justify-content: center;
-      margin-top: 2;
-
-      .MuiButton-root {
-        width: 110px;
-        border-radius: 25px;
-        background: linear-gradient(to right, #21d7fc, #46aefd);
-      }
-    }
   }
 }

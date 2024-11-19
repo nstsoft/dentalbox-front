@@ -17,6 +17,7 @@ import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 import { ChangePlan } from "./ChangePlan";
+import { Actions } from "./Actions";
 
 const statusColor: { [key in string]: "warning" | "primary" | "error" } = {
   active: "primary",
@@ -139,8 +140,9 @@ export const SubscriptionInfo = () => {
           </Typography>
         </Box>
         <Divider variant="inset" sx={{ mt: 2, mb: 2 }} />
-        <Box sx={{ display: "flex", alignItems: "baseline" }}>
+        <Box sx={{ display: "flex", alignItems: "baseline", gap: 2 }}>
           <ChangePlan />
+          <Actions subscription={subscription} />
         </Box>
       </Box>
     </Card>
