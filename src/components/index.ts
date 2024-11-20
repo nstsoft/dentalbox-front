@@ -17,3 +17,4 @@ export * from "./InfoCard";
 export * from "./ProductSelect";
 export * from "./ProductItem";
 export * from "./Toaster";
+export * from './TabsMenu';

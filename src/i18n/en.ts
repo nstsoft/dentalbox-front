@@ -210,6 +210,7 @@ export const EN: ResourceLanguage = {
           subscription: "Subscription",
           paymentMethods: "Payment methods",
           invoices: "Invoices",
+          services: "Services",
         },
         paymentMethods: {
           confirmDeleteLabel:

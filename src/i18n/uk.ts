@@ -217,6 +217,7 @@ export const UA: ResourceLanguage = {
           subscription: "Підписка",
           paymentMethods: "Платіжні методи",
           invoices: "Інвойси",
+          services: "Сервіси",
         },
         services: {
           addService: "Додати сервіс",
