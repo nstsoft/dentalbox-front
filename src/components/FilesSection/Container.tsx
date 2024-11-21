@@ -73,7 +73,6 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
 
   useEffect(() => {
     if (updateError ?? uploadError) {
-      console.log(updateError);
       toast.error(
         <Toaster
           actionName={`${updateError ? "Update" : "Upload"} File Error`}

@@ -94,7 +94,6 @@ export const ToothColorBox: FC<Props> = ({ dentalMapColors, isEditable }) => {
   };
 
   const onRemoveColor = (id: string, removeType: "crown" | "root") => {
-    console.log(id, "=======", type);
     (removeType === "root" ? setRootColors : setCrownColors)((prev) =>
       prev.filter((color) => color.id !== id)
     );

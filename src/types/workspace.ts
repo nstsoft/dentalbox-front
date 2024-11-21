@@ -5,6 +5,7 @@ export type Workspace = {
   maxMembersCount: number;
   name: string;
   _id: string;
+  patientMaxStorage: number;
 };
 
 export type WorkspaceShortenItem = {

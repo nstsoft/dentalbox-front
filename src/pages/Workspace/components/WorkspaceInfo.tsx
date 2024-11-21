@@ -100,6 +100,10 @@ export const WorkspaceInfo: FC<WorkspaceInfoProps> = ({ workspace }) => {
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {t("maxStaff")}: {workspace.maxMembersCount}
               </Typography>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                {t("maxStorage")}:{" "}
+                {Math.round(workspace.patientMaxStorage / (100 * 100 * 100))}Gb
+              </Typography>
               <Divider sx={{ my: 1 }} />
               <Button
                 disabled={!canInviteUser}

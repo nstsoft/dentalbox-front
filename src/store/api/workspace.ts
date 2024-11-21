@@ -15,6 +15,6 @@ export const workspaceApi = createApi({
   }),
 });
 
-export const { useLazyGetMyWorkspacesQuery } = workspaceApi;
+export const { useLazyGetMyWorkspacesQuery, useGetMyWorkspacesQuery } = workspaceApi;
 
 export default { workspaceApi };

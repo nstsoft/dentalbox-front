@@ -11,6 +11,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import { DatePicker } from "@mui/x-date-pickers";
+import LinearProgress from "@mui/material/LinearProgress";
+import { useGetMeQuery } from "@api";
 
 import "../style.scss";
 
@@ -37,6 +39,8 @@ export const SecondaryInfo: FC<Props> = ({
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
+  const { data: me } = useGetMeQuery();
+  console.log(patient);
 
   const renderEditModeInputs = () => {
     return (
@@ -122,6 +126,28 @@ export const SecondaryInfo: FC<Props> = ({
           <Typography variant="body1">{t("dob")}</Typography>
           <Typography variant="h6">
             {days(patient.dob).format("DD.MM.YYYY")}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography gutterBottom variant="body1">
+            {t("storage")}
+          </Typography>
+          <LinearProgress
+            variant="determinate"
+            value={
+              (patient.storage * 100) / (me?.workspace?.patientMaxStorage ?? 1)
+            }
+          />
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {t("currentStorage")}:{" "}
+            {Math.round(patient.storage / (100 * 100 * 100))}Gb
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {t("maxStorage")}:{" "}
+            {Math.round(
+              me?.workspace?.patientMaxStorage ?? 0 / (100 * 100 * 100)
+            )}
+            Gb
           </Typography>
         </Box>
       </Box>

@@ -5,8 +5,6 @@ import { baseQuery } from "./baseQuery";
 
 type ChangePlan = { priceId: string };
 
-console.log(Object.values({ ...WORKSPACE_TAG, ...SUBSCRIPTION_TAG }));
-
 export const subscriptionApi = createApi({
   reducerPath: REDUCER.SUBSCRIPTION,
   tagTypes: Object.values({ ...WORKSPACE_TAG, ...SUBSCRIPTION_TAG }),
