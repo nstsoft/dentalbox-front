@@ -11,12 +11,16 @@ import { shortenString } from "@utils";
 import { isMobile } from "react-device-detect";
 import { FileModal } from "./FileModal";
 import {
+  useDeletePatientFileMutation,
   useUpdatePatientFileCommentMutation,
   useUploadPatientFileMutation,
 } from "@api";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { Toaster } from "../Toaster";
+import { useParams } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@elements";
 
 type Props = {
   files: PatientFile[];
@@ -35,6 +39,10 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
   const { t } = useTranslation("", {
     keyPrefix: "pages.patientCard.files",
   });
+  const [deletePatientFile, { error: deleteError }] =
+    useDeletePatientFileMutation();
+  const { patientId } = useParams();
+  const [hoveredElementId, setHoveredElementId] = useState<string>();
 
   const handleClickOpen = (image: PatientFile) => {
     setSelectedImage(image);
@@ -46,17 +54,21 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
     setSelectedImage(undefined);
   };
 
-  const updateFileNotes = (fileData: FileItem & { patientId: string }) => {
+  const updateFileNotes = (fileData: FileItem) => {
     if (!selectedImage) {
       uploadPatientFile({
         notes: fileData.notes ?? "",
         file: fileData.file!,
-        patientId: fileData.patientId,
+        patientId: patientId!,
       });
     } else {
       updatePatientFileComment({ notes: fileData.notes, fileId: fileData.id });
     }
     handleClose();
+  };
+
+  const deleteFile = (fileId: string) => {
+    deletePatientFile(fileId);
   };
 
   useEffect(() => {
@@ -103,8 +115,21 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
             key={item.url}
             sx={{ cursor: "pointer" }}
             onClick={() => handleClickOpen(item)}
+            onMouseOver={() => setHoveredElementId(item._id)}
+            onMouseOut={() => setHoveredElementId("")}
           >
             <img src={item.url} loading="lazy" />
+            {hoveredElementId === item._id && (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteFile(item._id);
+                }}
+                sx={{ position: "absolute", top: 0, right: 0 }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
             <ImageListItemBar
               title={shortenString(item.notes ?? "", 30)}
               subtitle={item._id}

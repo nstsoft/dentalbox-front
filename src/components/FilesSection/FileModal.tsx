@@ -19,7 +19,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
   fileData?: PatientFile;
-  onSubmit?: (data: FileItem & { patientId: string }) => void;
+  onSubmit?: (data: FileItem) => void;
 };
 
 export const FileModal: FC<Props> = ({ open, onClose, fileData, onSubmit }) => {
@@ -44,7 +44,6 @@ export const FileModal: FC<Props> = ({ open, onClose, fileData, onSubmit }) => {
       notes,
       file,
       id: fileData?._id ?? "",
-      patientId: fileData?.patient ?? "",
     });
   };
 
