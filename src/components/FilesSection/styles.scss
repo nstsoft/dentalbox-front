@@ -4,3 +4,28 @@
     grid-template-columns: 300px 1fr;
   }
 }
+
+.file-box {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+  position: relative;
+  .upload-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    color: gray;
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+}

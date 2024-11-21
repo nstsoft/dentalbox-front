@@ -1,27 +1,40 @@
 import "./styles.scss";
-import { type FC, useState } from "react";
-import { PatientFile } from "@types";
+import { type FC, useEffect, useState } from "react";
+import { FileItem, PatientFile } from "@types";
 import ImageList from "@mui/material/ImageList";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { shortenString } from "@utils";
+import { isMobile } from "react-device-detect";
+import { FileModal } from "./FileModal";
+import {
+  useUpdatePatientFileCommentMutation,
+  useUploadPatientFileMutation,
+} from "@api";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { Toaster } from "../Toaster";
 
 type Props = {
   files: PatientFile[];
+  enableAddFile?: boolean;
 };
 
-export const Files: FC<Props> = ({ files }) => {
+export const Files: FC<Props> = ({ files, enableAddFile }) => {
   const images = files.filter((file) => file.mimeType.includes("image"));
   const rest = files.filter((file) => !file.mimeType.includes("image"));
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PatientFile | undefined>();
+  const [updatePatientFileComment, { error: updateError }] =
+    useUpdatePatientFileCommentMutation();
+  const [uploadPatientFile, { error: uploadError }] =
+    useUploadPatientFileMutation();
+  const { t } = useTranslation("", {
+    keyPrefix: "pages.patientCard.files",
+  });
 
   const handleClickOpen = (image: PatientFile) => {
     setSelectedImage(image);
@@ -33,8 +46,43 @@ export const Files: FC<Props> = ({ files }) => {
     setSelectedImage(undefined);
   };
 
+  const updateFileNotes = (fileData: FileItem & { patientId: string }) => {
+    if (!selectedImage) {
+      uploadPatientFile({
+        notes: fileData.notes ?? "",
+        file: fileData.file!,
+        patientId: fileData.patientId,
+      });
+    } else {
+      updatePatientFileComment({ notes: fileData.notes, fileId: fileData.id });
+    }
+    handleClose();
+  };
+
+  useEffect(() => {
+    if (updateError ?? uploadError) {
+      console.log(updateError);
+      toast.error(
+        <Toaster
+          actionName={`${updateError ? "Update" : "Upload"} File Error`}
+          message={updateError?.data.message ?? uploadError?.data.message}
+        />
+      );
+    }
+  }, [updateError, uploadError]);
+
   return (
     <Box className="files-section">
+      {enableAddFile && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpen(true)}
+        >
+          {t("addFile")}
+        </Button>
+      )}
+
       {rest.map((file) => (
         <Box className="rest-file-item" key={file._id}>
           <Typography variant="h6">
@@ -45,10 +93,9 @@ export const Files: FC<Props> = ({ files }) => {
       ))}
       <Divider sx={{ m: 2 }} />
       <ImageList
-        sx={{ width: "100%" }}
         variant="quilted"
-        cols={3}
-        gap={8}
+        cols={isMobile ? 1 : 4}
+        gap={10}
         rowHeight={200}
       >
         {images.map((item) => (
@@ -66,30 +113,12 @@ export const Files: FC<Props> = ({ files }) => {
         ))}
       </ImageList>
 
-      <Dialog open={open} onClose={handleClose} maxWidth="md">
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          {selectedImage && (
-            <Box>
-              <img
-                src={selectedImage.url}
-                style={{ width: "100%", height: "auto" }}
-              />
-              <Typography variant="body1">{selectedImage.notes}</Typography>
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
+      <FileModal
+        open={open}
+        onClose={handleClose}
+        fileData={selectedImage}
+        onSubmit={updateFileNotes}
+      />
     </Box>
   );
 };

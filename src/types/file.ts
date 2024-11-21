@@ -13,3 +13,9 @@ export type FileWithDescription = {
   description: string;
   id: string;
 };
+
+export type FileItem = {
+  file?: File;
+  notes: string;
+  id: string;
+};

@@ -367,6 +367,12 @@ export const EN: ResourceLanguage = {
           payed: "Payed",
           addRecord: "Add new record",
         },
+        files: {
+          addFile: "New file",
+          notes: "Notes...",
+          select: "Select file",
+          saveFile: "Save file",
+        }
       },
       calendar: {
         messages: {

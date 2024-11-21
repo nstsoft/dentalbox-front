@@ -367,6 +367,12 @@ export const UA: ResourceLanguage = {
           payed: "Оплачено",
           addRecord: "Додати новий запис",
         },
+        files: {
+          addFile: "Новий файл",
+          notes: "Нотатки...",
+          select: "Вибрати файл",
+          saveFile: "Зберегти файл",
+        },
       },
       calendar: {
         messages: {
