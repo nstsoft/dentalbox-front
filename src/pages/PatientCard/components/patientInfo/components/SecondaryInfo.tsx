@@ -111,6 +111,16 @@ export const SecondaryInfo: FC<Props> = ({
     );
   };
 
+  function formatStorage(storage: number) {
+    const MB = 1024 * 1024;
+    const GB = MB * 1024;
+
+    if (storage < GB) {
+      return `${(storage / MB).toFixed(2)} Mb`;
+    }
+    return `${(storage / GB).toFixed(2)} Gb`;
+  }
+
   const renderViewMode = () => {
     return (
       <Box className="view-mode-props">
@@ -139,15 +149,11 @@ export const SecondaryInfo: FC<Props> = ({
             }
           />
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {t("currentStorage")}:{" "}
-            {Math.round(patient.storage / (100 * 100 * 100))}Gb
+            {t("currentStorage")}: {formatStorage(patient.storage)}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {t("maxStorage")}:{" "}
-            {Math.round(
-              me?.workspace?.patientMaxStorage ?? 0 / (100 * 100 * 100)
-            )}
-            Gb
+            {t("maxStorage")}:{" "} 
+            {formatStorage(me?.workspace?.patientMaxStorage ?? 0)}
           </Typography>
         </Box>
       </Box>
