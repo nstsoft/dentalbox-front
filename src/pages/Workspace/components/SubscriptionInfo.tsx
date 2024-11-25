@@ -18,6 +18,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import { ChangePlan } from "./ChangePlan";
 import { SubscriptionActions } from "./SubscriptionActions";
+import { NoData } from "@components";
 
 const statusColor: { [key in string]: "warning" | "primary" | "error" } = {
   active: "primary",
@@ -43,7 +44,7 @@ export const SubscriptionInfo = () => {
     setAnchorEl(null);
   };
 
-  if (!subscription || !user) return null;
+  if (!subscription || !user) return <NoData />;
 
   return (
     <Card sx={{ m: 0, alignSelf: "flex-start", position: "relative" }}>

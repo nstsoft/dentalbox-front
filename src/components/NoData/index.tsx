@@ -1,18 +1,24 @@
 import Box from "@mui/material/Box";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import NoDataFound from "@images/noDataFound.png";
+import { useTranslation } from "react-i18next";
 
 export const NoData = () => {
+  const { t } = useTranslation();
+
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        pt: 2,
+      }}
     >
-      <CardMedia
-        component="img"
-        src="https://files.slack.com/files-tmb/T06PJ3PE2PK-F07UGQN3VK9-d9f08cd86f/nodataimage_360.png"
-        sx={{ height: "50px", width: "50px" }}
-      />
-      <Typography variant="h6">No data</Typography>
+      <img src={NoDataFound} />
+      <Typography variant="h4">{t("noDataFound")}</Typography>
     </Box>
   );
 };

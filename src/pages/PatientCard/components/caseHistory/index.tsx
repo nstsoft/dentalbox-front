@@ -20,6 +20,7 @@ import {
 import { CustomModal } from "@elements";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { NoData } from "@components";
 
 type Props = { patientId: string };
 
@@ -123,43 +124,6 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
 
   return (
     <Box className="case-history">
-      <CustomModal
-        open={isOpenDeleteModal}
-        onClose={() => {
-          setItemIdToDelete(undefined);
-          setIsOpenDeleteModal(false);
-        }}
-      >
-        <Box>
-          <Box>
-            <Typography variant="h4"> {t("confirmDelete")}</Typography>
-          </Box>
-          <Box mt={2}>
-            <Button
-              onClick={() => {
-                setItemIdToDelete(undefined);
-                setIsOpenDeleteModal(false);
-              }}
-              sx={{ marginRight: "10px" }}
-              variant="contained"
-            >
-              {t("cancel", { keyPrefix: "buttons" })}
-            </Button>
-            <Button
-              onClick={() => {
-                if (itemIdToDelete) {
-                  deleteItem(itemIdToDelete);
-                  setItemIdToDelete(undefined);
-                  setIsOpenDeleteModal(false);
-                }
-              }}
-              variant="outlined"
-            >
-              {t("delete", { keyPrefix: "buttons" })}
-            </Button>
-          </Box>
-        </Box>
-      </CustomModal>
       <ControlPanel
         isOpen={isOpenAddUpdateModal}
         setIsOpen={setIsOpenAddUpdateModal}
@@ -178,28 +142,72 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
         resetDates={() => setDateFilter({ from: null, to: null })}
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}
+        isDataEmpty={!historyData.length}
       />
-      <Box className="history-container">
-        {historyData?.map((item) => (
-          <AccordionItem
-            onSelectDeleteItem={(id: string) => {
-              setItemIdToDelete(id);
-              setIsOpenDeleteModal(true);
+      {historyData.length > 0 ? (
+        <>
+          <CustomModal
+            open={isOpenDeleteModal}
+            onClose={() => {
+              setItemIdToDelete(undefined);
+              setIsOpenDeleteModal(false);
             }}
-            onEdit={(item) => {
-              setSelectedHistoryItem({
-                ...item,
-                date: days(item.date),
-                selectedFiles: item.files,
-                files: [],
-              });
-              setIsOpenAddUpdateModal(true);
-            }}
-            key={item._id}
-            item={item}
-          />
-        ))}
-      </Box>
+          >
+            <Box>
+              <Box>
+                <Typography variant="h4"> {t("confirmDelete")}</Typography>
+              </Box>
+              <Box mt={2}>
+                <Button
+                  onClick={() => {
+                    setItemIdToDelete(undefined);
+                    setIsOpenDeleteModal(false);
+                  }}
+                  sx={{ marginRight: "10px" }}
+                  variant="contained"
+                >
+                  {t("cancel", { keyPrefix: "buttons" })}
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (itemIdToDelete) {
+                      deleteItem(itemIdToDelete);
+                      setItemIdToDelete(undefined);
+                      setIsOpenDeleteModal(false);
+                    }
+                  }}
+                  variant="outlined"
+                >
+                  {t("delete", { keyPrefix: "buttons" })}
+                </Button>
+              </Box>
+            </Box>
+          </CustomModal>
+          <Box className="history-container">
+            {historyData?.map((item) => (
+              <AccordionItem
+                onSelectDeleteItem={(id: string) => {
+                  setItemIdToDelete(id);
+                  setIsOpenDeleteModal(true);
+                }}
+                onEdit={(item) => {
+                  setSelectedHistoryItem({
+                    ...item,
+                    date: days(item.date),
+                    selectedFiles: item.files,
+                    files: [],
+                  });
+                  setIsOpenAddUpdateModal(true);
+                }}
+                key={item._id}
+                item={item}
+              />
+            ))}
+          </Box>
+        </>
+      ) : (
+        <NoData />
+      )}
     </Box>
   );
 };

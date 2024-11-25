@@ -40,7 +40,6 @@ export const SecondaryInfo: FC<Props> = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
   const { data: me } = useGetMeQuery();
-  console.log(patient);
 
   const renderEditModeInputs = () => {
     return (

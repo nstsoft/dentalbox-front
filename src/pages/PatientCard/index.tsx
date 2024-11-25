@@ -5,6 +5,7 @@ import {
   CaseHistory,
   TreatmentPlan,
   PatientFiles,
+  PeriodontalCard,
 } from "./components";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -34,7 +35,7 @@ export const PatientCardPage = () => {
       label: t("tabs.plan"),
       component: <TreatmentPlan patientId={patientId} />,
     },
-    { label: t("tabs.periodentalCard"), component: "dddd" },
+    { label: t("tabs.periodontalCard"), component: <PeriodontalCard /> },
     {
       label: t("tabs.files"),
       component: <PatientFiles patientId={patientId} />,

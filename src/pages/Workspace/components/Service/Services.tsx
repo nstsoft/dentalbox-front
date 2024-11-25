@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Service } from "@types";
 import { AccordionItem, AddService } from "./components";
 import { useTranslation } from "react-i18next";
-import { Loader } from "@components";
+import { Loader, NoData } from "@components";
 
 export const Services = () => {
   const [create] = useAddServiceItemMutation();
@@ -24,6 +24,8 @@ export const Services = () => {
     ) ?? {};
 
   if (isLoading) return <Loader />;
+
+  if (!data) return <NoData />;
 
   return (
     <Box sx={{ maxWidth: 1000 }}>

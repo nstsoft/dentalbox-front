@@ -17,19 +17,13 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import { EditItem } from "./EditItem";
-import {
-  useCreateTreatmentPlanMutation,
-  useUpdateTreatmentPlanItemMutation,
-} from "@api";
-import { Modal } from "./Modal";
-import { useParams } from "react-router-dom";
+import { useUpdateTreatmentPlanItemMutation } from "@api";
 import { isMobile } from "react-device-detect";
 
 type Props = { items: TreatmentPlan[]; services: Service[] };
 
 export const TreatmentList: FC<Props> = ({ items, services }) => {
   const theme = useTheme();
-  const params = useParams();
   const [edited, setIsEdited] = useState<string>();
   const [itemsList, setItemsList] = useState(items);
   const [showAddPlanItem, setShowAddPlanItem] = useState(false);
@@ -37,13 +31,11 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
   const [selectedPlanItem, setSelectedPlanItem] = useState<PlanItem | null>(
     null
   );
-  const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation("", {
     keyPrefix: "pages.patientCard.treatmentPlan",
   });
 
   const [updateTreatmentPlanItem] = useUpdateTreatmentPlanItemMutation();
-  const [createTreatment] = useCreateTreatmentPlanMutation();
 
   useEffect(() => {
     if (selectedPlan) {
@@ -64,7 +56,7 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
   const renderViewMode = (plan: TreatmentPlan) => {
     return plan.items.map((item) => (
       <Box className="treatment-history-item" key={item._id}>
-        <Box className={`treatment-history-item-info ${ isMobile ? "mobile" : "" }`}>
+        <Box className={`treatment-history-item-info ${isMobile ? "mobile" : ""}`}>
           <Typography>{item.name}</Typography>
           <Box className="treatment-history-item-info-price">
             <Typography variant="h6">
@@ -126,116 +118,84 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
     });
   };
 
-  const onCreateTreatment = (items: PlanItem[]) => {
-    const updatedItems: { [key: string]: number } = {};
-
-    items.forEach((item) => {
-      updatedItems[item._id as string] = item.quantity;
-    });
-
-    if (params.patientId && items.length) {
-      createTreatment({
-        patient: params.patientId,
-        items: updatedItems,
-      });
-      setShowModal(false);
-    }
-  };
-
   return (
-    <>
-      <Box className="treatment-history">
-        <Box mt="10px" mb="10px">
-          <Button variant="contained" onClick={() => setShowModal(true)}>
-            {t("addRecord", { keyPrefix: "buttons" })}
-          </Button>
-        </Box>
-        {itemsList.map(({ items, ...treatmentItem }) => {
-          const total = items.reduce(
-            (acc, item) => acc + item.price * item.quantity,
-            0
-          );
-          return (
-            <Accordion
-              key={treatmentItem._id}
-              className="history-accordion-item"
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Box className="history-summary">
-                  <Typography>
-                    {days(treatmentItem.date).format("YYYY MMMM DD")}
-                  </Typography>
-                  <Box className="treatment-history-header-pricing">
-                    <Box className="treatment-history-header-pricing-item">
-                      <Typography>{t("total")}</Typography>
-                      <Typography variant="h6">
-                        {total}
-                        {treatmentItem.currency}
-                      </Typography>
-                    </Box>
-                    <Box
-                      className="treatment-history-header-pricing-item"
-                      color={
-                        total < treatmentItem.deposit
-                          ? theme.palette.error.main
-                          : theme.palette.warning.main
-                      }
-                    >
-                      <Typography>{t("deposit")}</Typography>
-                      <Typography variant="h6">
-                        {treatmentItem.deposit}
-                        {treatmentItem.currency}
-                      </Typography>
-                    </Box>
+    <Box className="treatment-history">
+      {itemsList.map(({ items, ...treatmentItem }) => {
+        const total = items.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        );
+        return (
+          <Accordion key={treatmentItem._id} className="history-accordion-item">
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Box className="history-summary">
+                <Typography>
+                  {days(treatmentItem.date).format("YYYY MMMM DD")}
+                </Typography>
+                <Box className="treatment-history-header-pricing">
+                  <Box className="treatment-history-header-pricing-item">
+                    <Typography>{t("total")}</Typography>
+                    <Typography variant="h6">
+                      {total}
+                      {treatmentItem.currency}
+                    </Typography>
+                  </Box>
+                  <Box
+                    className="treatment-history-header-pricing-item"
+                    color={
+                      total < treatmentItem.deposit
+                        ? theme.palette.error.main
+                        : theme.palette.warning.main
+                    }
+                  >
+                    <Typography>{t("deposit")}</Typography>
+                    <Typography variant="h6">
+                      {treatmentItem.deposit}
+                      {treatmentItem.currency}
+                    </Typography>
                   </Box>
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Box className="treatment-history-actions">
-                  <Button>{t("payed")}</Button>
-                  {edited === treatmentItem._id ? (
-                    <>
-                      <IconButton onClick={onSaveEditedItem}>
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          setSelectedPlan(null);
-                          setIsEdited(undefined);
-                        }}
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    </>
-                  ) : (
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box className="treatment-history-actions">
+                <Button>{t("payed")}</Button>
+                {edited === treatmentItem._id ? (
+                  <>
+                    <IconButton onClick={onSaveEditedItem}>
+                      <SaveIcon />
+                    </IconButton>
                     <IconButton
                       onClick={() => {
-                        setSelectedPlan({ ...treatmentItem, items });
-                        setIsEdited(treatmentItem._id);
+                        setSelectedPlan(null);
+                        setIsEdited(undefined);
                       }}
                     >
-                      <EditIcon />
+                      <CloseIcon />
                     </IconButton>
-                  )}
-
-                  <IconButton>
-                    <DeleteIcon />
+                  </>
+                ) : (
+                  <IconButton
+                    onClick={() => {
+                      setSelectedPlan({ ...treatmentItem, items });
+                      setIsEdited(treatmentItem._id);
+                    }}
+                  >
+                    <EditIcon />
                   </IconButton>
-                </Box>
-                {edited === treatmentItem._id
-                  ? renderEditMode()
-                  : renderViewMode({ ...treatmentItem, items })}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
-      </Box>
-      <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        services={services}
-        onSubmit={onCreateTreatment}
-      />
-    </>
+                )}
+
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+              {edited === treatmentItem._id
+                ? renderEditMode()
+                : renderViewMode({ ...treatmentItem, items })}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </Box>
   );
 };

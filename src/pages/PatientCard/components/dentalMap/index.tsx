@@ -24,7 +24,7 @@ import SkullBottom from "@images/backgrounds/skull-bottom.png";
 import SkullTop from "@images/backgrounds/skull-top.png";
 import Button from "@mui/material/Button";
 import { isMobile } from "react-device-detect";
-import { Notes, ToothColorBox } from "@components";
+import { NoData, Notes, ToothColorBox } from "@components";
 import { QuarterLayout } from "./components";
 import {
   LeftUpToothKeys,
@@ -215,7 +215,7 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     updateDentalMap({ chart, patientId });
   };
 
-  if (!data?.chart) return null;
+  if (!data?.chart) return <NoData />;
 
   const mergedChart = deepMerge(data?.chart, chart ?? {});
 

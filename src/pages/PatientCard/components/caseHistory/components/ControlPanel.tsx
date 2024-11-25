@@ -24,6 +24,7 @@ type Props = {
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
   onCloseModal: () => void;
+  isDataEmpty: boolean;
 };
 
 export const ControlPanel: FC<Props> = ({
@@ -38,6 +39,7 @@ export const ControlPanel: FC<Props> = ({
   isOpen,
   setIsOpen,
   onCloseModal,
+  isDataEmpty,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard.history" });
 
@@ -57,37 +59,39 @@ export const ControlPanel: FC<Props> = ({
           {t("addItem")}
         </Button>
       </Box>
-      <Box
-        className={`case-history-control-segment filter ${
-          isMobile ? "mobile" : ""
-        }`}
-      >
-        <DatePicker
-          className="item"
-          label={t("from")}
-          value={dateFilter.from}
-          onChange={(from) => {
-            if (!from) return;
-            setDateFilter({ from, to: dateFilter.to });
-          }}
-          maxDate={days().endOf("day")}
-        />
+      {!isDataEmpty && (
+        <Box
+          className={`case-history-control-segment filter ${
+            isMobile ? "mobile" : ""
+          }`}
+        >
+          <DatePicker
+            className="item"
+            label={t("from")}
+            value={dateFilter.from}
+            onChange={(from) => {
+              if (!from) return;
+              setDateFilter({ from, to: dateFilter.to });
+            }}
+            maxDate={days().endOf("day")}
+          />
 
-        <DatePicker
-          className="item"
-          value={dateFilter.to}
-          onChange={(to) => {
-            if (!to) return;
-            setDateFilter({ to, from: dateFilter.from });
-          }}
-          label={t("to")}
-        />
-        <Box className="item">
-          <Button onClick={resetDates}>
-            {t("reset", { keyPrefix: "buttons" })}
-          </Button>
+          <DatePicker
+            className="item"
+            value={dateFilter.to}
+            onChange={(to) => {
+              if (!to) return;
+              setDateFilter({ to, from: dateFilter.from });
+            }}
+            label={t("to")}
+          />
+          <Box className="item">
+            <Button onClick={resetDates}>
+              {t("reset", { keyPrefix: "buttons" })}
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 };

@@ -21,13 +21,15 @@ import { Toaster } from "../Toaster";
 import { useParams } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@elements";
+import { NoData } from "../NoData";
 
 type Props = {
   files: PatientFile[];
   enableAddFile?: boolean;
+  isEmptyData?: boolean;
 };
 
-export const Files: FC<Props> = ({ files, enableAddFile }) => {
+export const Files: FC<Props> = ({ files, enableAddFile, isEmptyData }) => {
   const images = files.filter((file) => file.mimeType.includes("image"));
   const rest = files.filter((file) => !file.mimeType.includes("image"));
   const [open, setOpen] = useState(false);
@@ -75,7 +77,10 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
       toast.error(
         <Toaster
           actionName={`${updateError ? "Update" : "Upload"} File Error`}
-          message={(updateError as any)?.data?.message ?? (uploadError as any)?.data?.message}
+          message={
+            (updateError as any)?.data?.message ??
+            (uploadError as any)?.data?.message
+          }
         />
       );
     }
@@ -92,56 +97,61 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
           {t("addFile")}
         </Button>
       )}
-
-      {rest.map((file) => (
-        <Box className="rest-file-item" key={file._id}>
-          <Typography variant="h6">
-            <a href={file.url}>{file.name}</a>
-          </Typography>
-          <Typography>{file.notes}</Typography>
-        </Box>
-      ))}
-      <Divider sx={{ m: 2 }} />
-      <ImageList
-        variant="quilted"
-        cols={isMobile ? 1 : 4}
-        gap={10}
-        rowHeight={200}
-      >
-        {images.map((item) => (
-          <ImageListItem
-            key={item.url}
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleClickOpen(item)}
-            onMouseOver={() => setHoveredElementId(item._id)}
-            onMouseOut={() => setHoveredElementId("")}
-          >
-            <img src={item.url} loading="lazy" />
-            {hoveredElementId === item._id && (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteFile(item._id);
-                }}
-                sx={{ position: "absolute", top: 0, right: 0 }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            )}
-            <ImageListItemBar
-              title={shortenString(item.notes ?? "", 30)}
-              subtitle={item._id}
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-
       <FileModal
         open={open}
         onClose={handleClose}
         fileData={selectedImage}
         onSubmit={updateFileNotes}
       />
+
+      {isEmptyData ? (
+        <NoData />
+      ) : (
+        <>
+          {rest.map((file) => (
+            <Box className="rest-file-item" key={file._id}>
+              <Typography variant="h6">
+                <a href={file.url}>{file.name}</a>
+              </Typography>
+              <Typography>{file.notes}</Typography>
+            </Box>
+          ))}
+          <Divider sx={{ m: 2 }} />
+          <ImageList
+            variant="quilted"
+            cols={isMobile ? 1 : 4}
+            gap={10}
+            rowHeight={200}
+          >
+            {images.map((item) => (
+              <ImageListItem
+                key={item.url}
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleClickOpen(item)}
+                onMouseOver={() => setHoveredElementId(item._id)}
+                onMouseOut={() => setHoveredElementId("")}
+              >
+                <img src={item.url} loading="lazy" />
+                {hoveredElementId === item._id && (
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteFile(item._id);
+                    }}
+                    sx={{ position: "absolute", top: 0, right: 0 }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+                <ImageListItemBar
+                  title={shortenString(item.notes ?? "", 30)}
+                  subtitle={item._id}
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </>
+      )}
     </Box>
   );
 };

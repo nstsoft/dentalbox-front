@@ -4,3 +4,4 @@ export * from "./patientInfo";
 export * from "./caseHistory";
 export * from "./treatmentPlan";
 export * from "./files";
+export * from './periodontalCard';

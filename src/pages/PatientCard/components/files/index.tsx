@@ -10,11 +10,13 @@ type Props = {
 export const PatientFiles: FC<Props> = ({ patientId }) => {
   const { data: files } = useGetFilesQuery(patientId);
 
-  if (!files) return null;
-
   return (
     <Box sx={{ pt: 1 }}>
-      <Files files={files.data ?? []} enableAddFile />
+      <Files
+        files={files?.data ?? []}
+        enableAddFile
+        isEmptyData={!files?.data.length}
+      />
     </Box>
   );
 };

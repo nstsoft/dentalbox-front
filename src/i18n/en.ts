@@ -2,6 +2,7 @@ import { ResourceLanguage } from "i18next";
 
 export const EN: ResourceLanguage = {
   translation: {
+    noDataFound: 'No Data Found',
     buttons: {
       cancel: "Cancel",
       next: "Next",
@@ -344,7 +345,7 @@ export const EN: ResourceLanguage = {
           map: "Dental Map",
           history: "Disease history",
           plan: "Treatment plan",
-          periodentalCard: "Periodental card",
+          periodontalCard: "Periodontal card",
           files: "Files",
         },
         history: {

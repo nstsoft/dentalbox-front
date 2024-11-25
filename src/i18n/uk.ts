@@ -2,6 +2,7 @@ import { ResourceLanguage } from "i18next";
 
 export const UA: ResourceLanguage = {
   translation: {
+    noDataFound: 'Дані не знайдені',
     buttons: {
       cancel: "Відмінити",
       next: "Вперед",
@@ -327,7 +328,7 @@ export const UA: ResourceLanguage = {
           map: "Зубна формула",
           history: "Історія хвороби",
           plan: "План лікування",
-          periodentalCard: "Періодентальна карта",
+          periodontalCard: "Періодентальна карта",
           files: "Файли",
         },
         history: {
