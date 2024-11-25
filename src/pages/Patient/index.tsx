@@ -17,6 +17,7 @@ const initPatient = {
   email: "",
   phone: "+380",
   address: "",
+  storage: 0
 };
 
 export const PatientsPage = () => {

@@ -31,8 +31,8 @@ type IUserDataStepProps = {
     password?: string;
   };
   prefilled?: Partial<UserForm>;
-  nextStep: () => void;
-  previousStep: () => void;
+  nextStep?: () => void;
+  previousStep?: () => void;
   userData?: UserForm;
 }
 

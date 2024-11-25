@@ -1,11 +1,9 @@
 import { type FC, useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { useAuth } from "@hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {
   useChangeSubscriptionPlanMutation,
-  useGetProductsQuery,
   workspaceApi,
 } from "@api";
 import { API_CONSTANTS } from "@store";
@@ -21,8 +19,6 @@ export const ChangePlan: FC = () => {
   const [open, setOpen] = useState(false);
   const [changePlan, { data, isSuccess, error }] =
     useChangeSubscriptionPlanMutation();
-  const { data: products } = useGetProductsQuery();
-  const { t, i18n } = useTranslation("", { keyPrefix: "pages.workspace" });
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,7 +33,7 @@ export const ChangePlan: FC = () => {
   useEffect(() => {
     if (error) {
       toast.error(
-        <Toaster actionName="Change Plan Error" message={error?.error} />
+        <Toaster actionName="Change Plan Error" message={(error as any)?.error} />
       );
     }
   }, [error]);

@@ -39,8 +39,7 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
   const { t } = useTranslation("", {
     keyPrefix: "pages.patientCard.files",
   });
-  const [deletePatientFile, { error: deleteError }] =
-    useDeletePatientFileMutation();
+  const [deletePatientFile] = useDeletePatientFileMutation();
   const { patientId } = useParams();
   const [hoveredElementId, setHoveredElementId] = useState<string>();
 
@@ -76,7 +75,7 @@ export const Files: FC<Props> = ({ files, enableAddFile }) => {
       toast.error(
         <Toaster
           actionName={`${updateError ? "Update" : "Upload"} File Error`}
-          message={updateError?.data.message ?? uploadError?.data.message}
+          message={(updateError as any)?.data?.message ?? (uploadError as any)?.data?.message}
         />
       );
     }
