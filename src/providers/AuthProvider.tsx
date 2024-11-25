@@ -1,7 +1,8 @@
 import { useState, useCallback, type FC, type ReactElement } from "react";
-
+import { useDispatch } from "react-redux";
 import { User, AuthState, Workspace } from "@types";
 import { AuthContext } from "./context";
+import { authApi } from "@api";
 
 const AUTH_TOKEN = "auth-token";
 const REFRESH_TOKEN = "refresh-token";
@@ -9,6 +10,8 @@ const USER = "user";
 const WORKSPACE = "workspace";
 
 export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
+  const dispatch = useDispatch();
+
   const [authToken, setAuthToken] = useState<string | null>(() => {
     try {
       const item = localStorage.getItem(AUTH_TOKEN);
@@ -54,6 +57,7 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
   );
 
   const logout = useCallback(() => {
+    dispatch(authApi.util.resetApiState());
     setAuthToken(null);
     setRefreshToken(null);
     setUser(null);

@@ -9,7 +9,6 @@ import Menu from "@mui/material/Menu";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const UserBadge: FC = () => {
@@ -17,7 +16,6 @@ export const UserBadge: FC = () => {
   const { user, workspace, isLoggedIn, logout, availableWorkspaces, changeWorkspace } =
     useAuth();
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement>();
-  const navigate = useNavigate();
   const workspaces = availableWorkspaces.filter((w) => w._id !== workspace?._id);
 
   if (!isLoggedIn || !user) return null;
@@ -61,7 +59,7 @@ export const UserBadge: FC = () => {
           key="logout"
           onClick={() => {
             logout();
-            navigate("/");
+            setAnchorElUser(undefined);
           }}
         >
           <Typography sx={{ textAlign: "center" }}>{t("logout")}</Typography>
