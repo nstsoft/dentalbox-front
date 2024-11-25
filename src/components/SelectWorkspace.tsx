@@ -11,6 +11,7 @@ import Grid2 from "@mui/material/Grid2";
 import { useTranslation } from "react-i18next";
 import { WorkspaceShortenItem } from "@types";
 import { ClinicIconIcon } from "@assets";
+import { isMobile } from "react-device-detect";
 
 type SelectWorkspaceProps = {
   workspaces: WorkspaceShortenItem[];
@@ -44,11 +45,12 @@ export const SelectWorkspaceDialog = ({
   };
 
   return (
-    <Dialog fullWidth disableEscapeKeyDown maxWidth={"lg"} open={isActive}>
+    <Dialog fullWidth disableEscapeKeyDown maxWidth={"sm"} open={isActive}>
       <DialogTitle>{t("workspaces")}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{t("selectWorkspaceTest")}</DialogContentText>
-        <br></br>
+        <DialogContentText sx={{ mb: 1 }}>
+          {t("selectWorkspaceTest")}
+        </DialogContentText>
         <Grid2
           container
           spacing={2}
@@ -68,7 +70,10 @@ export const SelectWorkspaceDialog = ({
               onClick={() => selectWorkspace(workspace._id)}
             >
               <Card
-                sx={{ height: { xs: 150, sm: 170, md: 190, lg: 220, xl: 250 } }}
+                sx={{
+                  height: { xs: 150, sm: 170, md: 190, lg: 220, xl: 250 },
+                  width: isMobile ? "unset" : "270px",
+                }}
                 onClick={() => selectWorkspace(workspace._id)}
               >
                 <CardActionArea>
