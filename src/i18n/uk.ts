@@ -369,6 +369,7 @@ export const UA: ResourceLanguage = {
         treatmentPlan: {
           total: "Загалом",
           deposit: "Внесено",
+          addDeposit: "Додати внесок",
           payed: "Оплачено",
           addRecord: "Додати новий запис",
         },

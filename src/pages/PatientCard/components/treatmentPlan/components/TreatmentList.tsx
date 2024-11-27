@@ -19,6 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { EditItem } from "./EditItem";
 import { useUpdateTreatmentPlanItemMutation } from "@api";
 import { isMobile } from "react-device-detect";
+import { DepositModal } from "./DepositModal";
 
 type Props = { items: TreatmentPlan[]; services: Service[] };
 
@@ -34,7 +35,7 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
   const { t } = useTranslation("", {
     keyPrefix: "pages.patientCard.treatmentPlan",
   });
-
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [updateTreatmentPlanItem] = useUpdateTreatmentPlanItemMutation();
 
   useEffect(() => {
@@ -118,6 +119,21 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
     });
   };
 
+  const onDeposit = (deposit: number) => {
+    if (!selectedPlan) return;
+
+    updateTreatmentPlanItem({
+      plan: selectedPlan._id,
+      data: {
+        items: selectedPlan.items,
+        deposit: deposit,
+        currency: selectedPlan.currency,
+        date: selectedPlan.date,
+      },
+    });
+    setIsDepositModalOpen(false);
+  };
+
   return (
     <Box className="treatment-history">
       {itemsList.map(({ items, ...treatmentItem }) => {
@@ -159,7 +175,14 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Box className="treatment-history-actions">
-                <Button>{t("payed")}</Button>
+                <Button
+                  onClick={() => {
+                    setSelectedPlan({ ...treatmentItem, items });
+                    setIsDepositModalOpen(true);
+                  }}
+                >
+                  {t("payed")}
+                </Button>
                 {edited === treatmentItem._id ? (
                   <>
                     <IconButton onClick={onSaveEditedItem}>
@@ -196,6 +219,12 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
           </Accordion>
         );
       })}
+      <DepositModal
+        open={isDepositModalOpen}
+        onClose={() => setIsDepositModalOpen(false)}
+        selectedPlan={selectedPlan}
+        onSubmit={onDeposit}
+      />
     </Box>
   );
 };

@@ -369,6 +369,7 @@ export const EN: ResourceLanguage = {
         treatmentPlan: {
           total: "Total",
           deposit: "Deposit",
+          addDeposit: "Add deposit",
           payed: "Payed",
           addRecord: "Add new record",
         },
