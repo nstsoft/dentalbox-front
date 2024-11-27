@@ -5,4 +5,5 @@ export type WorkspaceMetadata = {
     crown: { color: string; name: string }[];
   };
   workingHours: { start: string; end: string };
+  showPricing: boolean;
 };

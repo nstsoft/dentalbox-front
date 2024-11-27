@@ -12,6 +12,7 @@ type Props = {
   setValue: (value: string) => void;
   label: string;
   renderValue?: (selected: string) => string;
+  width?: number;
 };
 
 export const CustomSelect: FC<Props> = ({
@@ -19,9 +20,10 @@ export const CustomSelect: FC<Props> = ({
   setValue,
   selected,
   label,
+  width,
 }) => {
   return (
-    <FormControl sx={{ m: 0, mt: 1, mb: 1, p: 0, width: 300 }}>
+    <FormControl sx={{ m: 0, mt: 1, mb: 1, p: 0, width: width ?? 300 }}>
       <InputLabel sx={{ mt: "-7px" }} id="checkbox-label">
         {label}
       </InputLabel>

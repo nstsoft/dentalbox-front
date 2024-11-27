@@ -12,6 +12,7 @@ import { useUpdateMetadataMutation } from "@api";
 import Button from "@mui/material/Button";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import days from "dayjs";
+import { Android12Switch } from "./elements/Switcher";
 
 type Props = {
   metadata?: WorkspaceMetadata;
@@ -28,6 +29,9 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
     start: days(metadata?.workingHours.start ?? "08:00", "HH:mm"),
     end: days(metadata?.workingHours.end ?? "17:00", "HH:mm"),
   });
+  const [showPricing, setShowPricing] = useState(
+    metadata?.showPricing ?? false
+  );
 
   const onUpdateMetadata = () => {
     updateMetadata({
@@ -36,6 +40,7 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
         start: workingHours.start.format("HH:mm"),
         end: workingHours.end.format("HH:mm"),
       },
+      showPricing,
     });
   };
 
@@ -48,23 +53,30 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
       </Box>
       <Box className="metadata-container">
         <Box className="metadata-item">
-          <Typography variant="h6">{t("currency")}</Typography>
+          <Typography className="metadata-item-title" variant="h6">
+            {t("currency")}
+          </Typography>
           {isEditingMode ? (
-            <CustomSelect
-              label=""
-              data={currencies.map((currency) => ({
-                value: currency,
-                label: currency,
-              }))}
-              selected={currency}
-              setValue={(value) => setCurrency(value)}
-            />
+            <Box className="metadata-item-value">
+              <CustomSelect
+                label=""
+                data={currencies.map((currency) => ({
+                  value: currency,
+                  label: currency,
+                }))}
+                selected={currency}
+                setValue={(value) => setCurrency(value)}
+                width={184}
+              />
+            </Box>
           ) : (
             <Typography variant="body1">{metadata?.currency}</Typography>
           )}
         </Box>
         <Box className="metadata-item">
-          <Typography variant="h6">{t("workingHours")}</Typography>
+          <Typography className="metadata-item-title" variant="h6">
+            {t("workingHours")}
+          </Typography>
           {isEditingMode ? (
             <>
               <MobileTimePicker
@@ -100,10 +112,22 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
               />
             </>
           ) : (
-            <Typography variant="body1">
+            <Typography className="metadata-item-title" variant="body1">
               {metadata?.workingHours.start} - {metadata?.workingHours.end}
             </Typography>
           )}
+        </Box>
+        <Box className="metadata-item">
+          <Typography className="metadata-item-title" variant="h6">
+            {t("showPricing")}
+          </Typography>
+
+          <Android12Switch
+            className="metadata-item-value"
+            checked={showPricing}
+            onChange={({ target }) => setShowPricing(target.checked)}
+            disabled={!isEditingMode}
+          />
         </Box>
       </Box>
       {isEditingMode && (

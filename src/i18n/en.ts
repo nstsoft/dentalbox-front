@@ -2,7 +2,7 @@ import { ResourceLanguage } from "i18next";
 
 export const EN: ResourceLanguage = {
   translation: {
-    noDataFound: 'No Data Found',
+    noDataFound: "No Data Found",
     buttons: {
       cancel: "Cancel",
       next: "Next",
@@ -241,6 +241,7 @@ export const EN: ResourceLanguage = {
         metadata: {
           currency: "Currency",
           workingHours: "Working hours",
+          showPricing: "Show pricing",
         },
       },
       staff: {
@@ -378,7 +379,7 @@ export const EN: ResourceLanguage = {
           notes: "Notes...",
           select: "Select file",
           saveFile: "Save file",
-        }
+        },
       },
       calendar: {
         messages: {

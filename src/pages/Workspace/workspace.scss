@@ -8,10 +8,19 @@
     }
     .metadata-container {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
       .metadata-item {
         display: flex;
         align-items: center;
         gap: 8px;
+        &-title {
+          width: 150px;
+        }
+        &-value {
+          max-width: 190px;
+        }
         .mobile-time-picker {
           width: 80px;
         }

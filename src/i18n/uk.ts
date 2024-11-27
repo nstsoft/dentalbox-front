@@ -2,7 +2,7 @@ import { ResourceLanguage } from "i18next";
 
 export const UA: ResourceLanguage = {
   translation: {
-    noDataFound: 'Дані не знайдені',
+    noDataFound: "Дані не знайдені",
     buttons: {
       cancel: "Відмінити",
       next: "Вперед",
@@ -241,6 +241,7 @@ export const UA: ResourceLanguage = {
         metadata: {
           currency: "Валюта",
           workingHours: "Графік роботи",
+          showPricing: "Показувати ціну",
         },
       },
       staff: {
