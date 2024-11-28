@@ -8,6 +8,7 @@ import { Textarea } from "@elements";
 import { isMobile } from "react-device-detect";
 import { MultipleFileUploadWithDescriptions } from "./FileInput";
 import type { FileWithDescription, PatientFile } from "@types";
+import { ChipInput } from "./ChipInput";
 
 type Props = {
   open: boolean;
@@ -91,6 +92,18 @@ export const CaseHistoryModal: FC<Props> = ({
             className="input"
             value={data?.materials}
             onChange={(e) => setHistoryData({ materials: e.target.value })}
+          />
+          <ChipInput
+            fullWidth
+            value={data?.tooths ?? []}
+            onEnter={(tooth) =>
+              setHistoryData({ tooths: [...(data?.tooths ?? []), tooth] })
+            }
+            onDelete={(tooth) =>
+              setHistoryData({
+                tooths: data?.tooths?.filter((t) => t !== tooth),
+              })
+            }
           />
 
           <MultipleFileUploadWithDescriptions

@@ -349,6 +349,7 @@ export const UA: ResourceLanguage = {
           filter: "Фільтрувати",
           addFiles: "Завантажити файли",
           confirmDelete: "Видалити запис?",
+          tooths: "Зуби",
         },
         anamnesis: {
           allergies: "Аллергії",

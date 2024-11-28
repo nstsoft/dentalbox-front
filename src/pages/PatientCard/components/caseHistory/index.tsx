@@ -35,6 +35,7 @@ const initialData = {
   notes: "",
   objectiveData: "",
   files: [],
+  tooths: [],
 };
 
 type SelectedItem = HistoryData & {
@@ -50,6 +51,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
     from: null,
     to: null,
   });
+  const [toothsFilter, setToothsFilter] = useState<string[]>([]);
 
   const [isOpenAddUpdateModal, setIsOpenAddUpdateModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -139,7 +141,12 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
         files={files}
         setFiles={setFiles}
         selectedHistoryItem={selectedHistoryItem}
-        resetDates={() => setDateFilter({ from: null, to: null })}
+        toothsFilter={toothsFilter}
+        setToothsFilter={setToothsFilter}
+        resetFilters={() => {
+          setDateFilter({ from: null, to: null });
+          setToothsFilter([]);
+        }}
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}
         isDataEmpty={!historyData.length}
@@ -196,6 +203,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
                     date: days(item.date),
                     selectedFiles: item.files,
                     files: [],
+                    tooths: item.tooths ?? [],
                   });
                   setIsOpenAddUpdateModal(true);
                 }}

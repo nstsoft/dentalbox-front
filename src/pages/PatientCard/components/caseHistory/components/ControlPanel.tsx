@@ -8,6 +8,7 @@ import { CaseHistoryModal } from "./CaseHistoryModal";
 import type { HistoryData, FileWithDescription, PatientFile } from "@types";
 import days from "dayjs";
 import { isMobile } from "react-device-detect";
+import { ChipInput } from "./ChipInput";
 
 type Props = {
   dateFilter: { to?: Dayjs | null; from?: Dayjs | null };
@@ -15,7 +16,9 @@ type Props = {
     to?: Dayjs | null;
     from?: Dayjs | null;
   }) => void;
-  resetDates: () => void;
+  resetFilters: () => void;
+  toothsFilter: string[];
+  setToothsFilter: Dispatch<SetStateAction<string[]>>;
   selectedHistoryItem: Partial<HistoryData & { selectedFiles?: PatientFile[] }>;
   setHistoryData: (data: Partial<HistoryData>) => void;
   onSubmitModal: () => void;
@@ -30,7 +33,9 @@ type Props = {
 export const ControlPanel: FC<Props> = ({
   dateFilter,
   setDateFilter,
-  resetDates,
+  toothsFilter,
+  setToothsFilter,
+  resetFilters,
   selectedHistoryItem,
   setHistoryData,
   onSubmitModal,
@@ -85,8 +90,16 @@ export const ControlPanel: FC<Props> = ({
             }}
             label={t("to")}
           />
+          <ChipInput
+            value={toothsFilter || []}
+            onEnter={(tooth) => setToothsFilter([...toothsFilter, tooth])}
+            onDelete={(tooth) =>
+              setToothsFilter(toothsFilter.filter((t) => t !== tooth))
+            }
+            sx={{ mt: 2 }}
+          />
           <Box className="item">
-            <Button onClick={resetDates}>
+            <Button onClick={resetFilters}>
               {t("reset", { keyPrefix: "buttons" })}
             </Button>
           </Box>

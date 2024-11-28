@@ -366,6 +366,7 @@ export const EN: ResourceLanguage = {
           filter: "Filter",
           addFiles: "Upload files with description",
           confirmDelete: "Confirm delete?",
+          tooths: "Tooths",
         },
         treatmentPlan: {
           total: "Total",

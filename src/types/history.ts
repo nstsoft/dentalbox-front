@@ -15,6 +15,7 @@ export type History = {
   treatment?: string;
   date?: string;
   _id: string;
+  tooths?: string[];
 };
 
 export type HistoryData = Omit<
