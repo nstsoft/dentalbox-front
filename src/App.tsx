@@ -5,12 +5,13 @@ import "./i18n";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { getRoutes } from "./Router";
-import { useAuth, useLanguage } from "@hooks";
+import { useAuth, useLanguage, useWebsocket } from "@hooks";
 import { ToastContainer } from "react-toastify";
 
 function App() {
   const { isLoggedIn } = useAuth();
   const { language } = useLanguage();
+  const { isConnected, connect } = useWebsocket();
 
   const { i18n } = useTranslation();
 
@@ -18,6 +19,12 @@ function App() {
     i18n.changeLanguage(language);
     days.locale(language);
   }, [i18n, language]);
+
+  useEffect(() => {
+    if (isLoggedIn && !isConnected) {
+      connect();
+    }
+  }, [connect, isConnected, isLoggedIn]);
 
   return (
     <div className="App">

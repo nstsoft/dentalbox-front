@@ -50,3 +50,31 @@ export const baseQuery: BaseQueryFn = async (args, api, extraOptions) => {
 
   return baseQuery(args, api, extraOptions);
 };
+export const baseSocket: BaseQueryFn = async (args, api, extraOptions) => {
+  const result: any = await baseQueryInstance(args, api, extraOptions);
+  if (result?.error?.data?.error?.type !== "Expired") {
+    return result;
+  }
+
+  try {
+    const response = await baseQueryInstance(
+      "/auth/refresh-token",
+      api,
+      extraOptions
+    );
+
+    const { data } = response as {
+      data: { authToken: string; refreshToken: string };
+    };
+
+    window.localStorage.setItem(
+      "refresh-token",
+      JSON.stringify(data.refreshToken)
+    );
+    window.localStorage.setItem("auth-token", JSON.stringify(data.authToken));
+  } catch (error: any) {
+    throw new Error(error);
+  }
+
+  return baseQuery(args, api, extraOptions);
+};

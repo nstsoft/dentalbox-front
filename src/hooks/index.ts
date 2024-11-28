@@ -5,3 +5,4 @@ export * from "./useAuth";
 export * from "./useSideMenu";
 export * from "./usePagination";
 export * from "./useLanguage";
+export * from "./useWebsocket";

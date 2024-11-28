@@ -1,3 +1,5 @@
+import { SocketMessage } from "./websocket";
+
 export interface MenuContextType {
   isOpenMenu: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -16,4 +18,11 @@ export enum LANGUAGES {
 export interface LanguageContextType {
   language: LANGUAGES;
   setLanguage: (language: LANGUAGES) => void;
+}
+
+export interface WebsocketContextType {
+  message: SocketMessage | null;
+  isConnected: boolean;
+  checkedIn: boolean;
+  connect: () => void;
 }
