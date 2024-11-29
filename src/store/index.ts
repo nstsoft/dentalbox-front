@@ -18,6 +18,7 @@ import {
   anamnesisApi,
   treatmentPlanApi,
   fileApi,
+  chatApi,
 } from "./api";
 
 export * as API_CONSTANTS from "./constants";
@@ -41,6 +42,7 @@ export const store = configureStore({
     [anamnesisApi.reducerPath]: anamnesisApi.reducer,
     [treatmentPlanApi.reducerPath]: treatmentPlanApi.reducer,
     [fileApi.reducerPath]: fileApi.reducer,
+    [chatApi.reducerPath]: chatApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -62,6 +64,7 @@ export const store = configureStore({
       anamnesisApi.middleware,
       treatmentPlanApi.middleware,
       fileApi.middleware,
+      chatApi.middleware,
     ]),
 });
 

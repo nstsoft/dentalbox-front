@@ -17,6 +17,7 @@ import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
 import { Autocomplete, TextField } from "@mui/material";
+import { Rooms } from "./components";
 
 export const ChatPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
@@ -59,7 +60,8 @@ export const ChatPage = () => {
             )}
           />
         )}
-        <List>
+        <Rooms />
+        {/* <List>
           {users?.map((user) => (
             <ListItem
               className={`chat-item ${
@@ -87,7 +89,7 @@ export const ChatPage = () => {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Grid2>
       <Grid2 size={9}>
         {activeUser ? (

@@ -9,7 +9,7 @@ import { useAuth, useLanguage, useWebsocket } from "@hooks";
 import { ToastContainer } from "react-toastify";
 
 function App() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, workspace } = useAuth();
   const { language } = useLanguage();
   const { isConnected, connect } = useWebsocket();
 
@@ -21,10 +21,10 @@ function App() {
   }, [i18n, language]);
 
   useEffect(() => {
-    if (isLoggedIn && !isConnected) {
+    if (isLoggedIn && !isConnected && workspace) {
       connect();
     }
-  }, [connect, isConnected, isLoggedIn]);
+  }, [connect, isConnected, isLoggedIn, workspace]);
 
   return (
     <div className="App">

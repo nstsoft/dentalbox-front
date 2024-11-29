@@ -14,4 +14,5 @@ export * from "./service";
 export * from "./caseHistory";
 export * from "./anamnesis";
 export * from "./treatmentPlan";
-export * from './file';
+export * from "./file";
+export * from "./chat";

@@ -47,6 +47,7 @@ export const WebsocketProvider: FC<{
 
       socketRef.current.onmessage = (event) => {
         const message = JSON.parse(event.data) as SocketMessage;
+        console.log(message);
         if (message.action === WS_EVENTS.checkin_completed) {
           setCheckedIn(true);
         } else {
@@ -56,6 +57,7 @@ export const WebsocketProvider: FC<{
 
       socketRef.current.onclose = () => {
         console.log("WebSocket disconnected");
+        setCheckedIn(false);
         setIsConnected(false);
       };
 
@@ -79,6 +81,7 @@ export const WebsocketProvider: FC<{
         socketRef.current.close();
         socketRef.current = null;
       }
+      setCheckedIn(false);
       setIsConnected(false);
     };
   }, []);
