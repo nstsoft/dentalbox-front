@@ -1,5 +1,5 @@
 import { useGetFilesQuery } from "@api";
-import { Files } from "@components";
+import { Files, Loader } from "@components";
 import Box from "@mui/material/Box";
 import { type FC } from "react";
 
@@ -8,7 +8,9 @@ type Props = {
 };
 
 export const PatientFiles: FC<Props> = ({ patientId }) => {
-  const { data: files } = useGetFilesQuery(patientId);
+  const { data: files, isLoading } = useGetFilesQuery(patientId);
+
+  if (isLoading) return <Loader />;
 
   return (
     <Box sx={{ pt: 1 }}>

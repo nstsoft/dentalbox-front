@@ -20,7 +20,7 @@ import {
 import { CustomModal } from "@elements";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { NoData } from "@components";
+import { Loader, NoData } from "@components";
 
 type Props = { patientId: string };
 
@@ -57,7 +57,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<string | undefined>();
 
-  const { data } = useGetHistoryItemsQuery({ patientId });
+  const { data, isLoading } = useGetHistoryItemsQuery({ patientId });
   const [create, { isSuccess }] = useCreateHistoryItemMutation();
   const [deleteItem] = useDeleteHistoryItemMutation();
   const [update, { isSuccess: isSuccessUpdate }] =
@@ -124,6 +124,8 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
     }
   }, [isSuccess, isSuccessUpdate]);
 
+  if (isLoading) return <Loader />;
+
   return (
     <Box className="case-history">
       <ControlPanel
@@ -149,9 +151,9 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
         }}
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}
-        isDataEmpty={!historyData.length}
+        isDataEmpty={!data || !data?.length}
       />
-      {historyData.length > 0 ? (
+      {data && data.length > 0 ? (
         <>
           <CustomModal
             open={isOpenDeleteModal}

@@ -7,6 +7,11 @@
     flex-direction: column;
     .case-history-control-segment {
       margin-bottom: 10px;
+      &.empty {
+        width: "100%";
+        display: flex;
+        justify-content: center;
+      }
     }
     .case-history-control-segment.filter {
       width: 100%;

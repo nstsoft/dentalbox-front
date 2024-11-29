@@ -16,7 +16,7 @@ import { isMobile } from "react-device-detect";
 import { CardItem } from "./elements";
 import { useEffect, useState } from "react";
 
-import { Checkout } from "@components";
+import { Checkout, Loader, NoData } from "@components";
 
 export const Payments = () => {
   const {
@@ -81,6 +81,7 @@ export const Payments = () => {
           </Button>
         </div>
         <div className="payment-methods__list">
+          {(isFetchingSubscription ?? isFetchingMethods) && <Loader />}
           {sorted?.map((paymentMethod) => (
             <CardItem
               isLoading={isFetchingSubscription || isFetchingMethods}
@@ -90,6 +91,7 @@ export const Payments = () => {
               setDefaultPaymentMethod={setDefaultPaymentMethod}
             />
           ))}
+          {sorted?.length === 0 && <NoData />}
         </div>
       </div>
       <Modal

@@ -59,7 +59,7 @@ export const ControlPanel: FC<Props> = ({
         files={files}
         setFiles={setFiles}
       />
-      <Box className="case-history-control-segment">
+      <Box className={`case-history-control-segment ${isDataEmpty && "empty"}`}>
         <Button onClick={() => setIsOpen(true)} variant="contained">
           {t("addItem")}
         </Button>

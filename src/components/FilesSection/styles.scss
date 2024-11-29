@@ -1,4 +1,9 @@
 .files-section {
+  .add-file-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   .rest-file-item {
     display: grid;
     grid-template-columns: 300px 1fr;

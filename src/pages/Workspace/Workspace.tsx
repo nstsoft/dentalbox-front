@@ -14,7 +14,7 @@ import { UserRole } from "@types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetWorkspaceMetadataQuery } from "@api";
-import { TabsMenu, ToothColorBox } from "@components";
+import { Loader, TabsMenu, ToothColorBox } from "@components";
 import { isMobile } from "react-device-detect";
 
 interface TabPanelProps {
@@ -43,7 +43,7 @@ export const WorkspacePage = () => {
   const { workspace, user } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
-  const { data: metadata } = useGetWorkspaceMetadataQuery();
+  const { data: metadata, isLoading } = useGetWorkspaceMetadataQuery();
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -63,6 +63,8 @@ export const WorkspacePage = () => {
 
     return tabLabelsArray;
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <Box sx={{ width: "100%" }}>

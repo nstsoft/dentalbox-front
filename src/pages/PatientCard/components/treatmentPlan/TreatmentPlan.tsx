@@ -11,15 +11,16 @@ import Button from "@mui/material/Button";
 import { PlanItem } from "@types";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { NoData } from "@components";
+import { Loader, NoData } from "@components";
 
 type Props = {
   patientId: string;
 };
 
 export const TreatmentPlan: FC<Props> = ({ patientId }) => {
-  const { data } = useGetTreatmentPlanListQuery(patientId);
-  const { data: services } = useGetServicesQuery();
+  const { data, isLoading } = useGetTreatmentPlanListQuery(patientId);
+  const { data: services, isLoading: isLoadingServices } =
+    useGetServicesQuery();
   const [createTreatment] = useCreateTreatmentPlanMutation();
   const [showModal, setShowModal] = useState(false);
   const params = useParams();
@@ -41,9 +42,11 @@ export const TreatmentPlan: FC<Props> = ({ patientId }) => {
     }
   };
 
+  if (isLoading ?? isLoadingServices) return <Loader />;
+
   return (
     <Box className="treatment-plan">
-      <Box mt="10px" mb="10px">
+      <Box className={`treatment-plan__header ${!data && "empty"}`}>
         <Button variant="contained" onClick={() => setShowModal(true)}>
           {t("addRecord", { keyPrefix: "buttons" })}
         </Button>

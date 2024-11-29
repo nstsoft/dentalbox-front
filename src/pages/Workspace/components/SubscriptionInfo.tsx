@@ -18,7 +18,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import { ChangePlan } from "./ChangePlan";
 import { SubscriptionActions } from "./SubscriptionActions";
-import { NoData } from "@components";
+import { Loader, NoData } from "@components";
 
 const statusColor: { [key in string]: "warning" | "primary" | "error" } = {
   active: "primary",
@@ -33,7 +33,7 @@ const statusColor: { [key in string]: "warning" | "primary" | "error" } = {
 
 export const SubscriptionInfo = () => {
   const { user } = useAuth();
-  const { data: subscription } = useGetMySubscriptionQuery();
+  const { data: subscription, isLoading } = useGetMySubscriptionQuery();
   const { t, i18n } = useTranslation("", { keyPrefix: "pages.workspace" });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -43,6 +43,8 @@ export const SubscriptionInfo = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (isLoading) return <Loader />;
 
   if (!subscription || !user) return <NoData />;
 

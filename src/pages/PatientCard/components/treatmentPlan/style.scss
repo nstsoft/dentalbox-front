@@ -1,4 +1,13 @@
 .treatment-plan {
+  &__header {
+    margin: 10px 0;
+
+    &.empty {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
   .treatment-history {
     max-width: 1200px;
     .history-accordion-item {

@@ -58,6 +58,7 @@ export const ChipInput: FC<Props> = ({
                   label={tooth}
                   onDelete={() => onDelete(tooth)}
                   size="small"
+                  color="primary"
                 />
               ))}
             </Box>

@@ -4,7 +4,7 @@ import {
   useUpdateDentalMapMutation,
   useGetWorkspaceMetadataQuery,
 } from "@api";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { extractNumber } from "@utils";
 
 import type {
@@ -24,7 +24,7 @@ import SkullBottom from "@images/backgrounds/skull-bottom.png";
 import SkullTop from "@images/backgrounds/skull-top.png";
 import Button from "@mui/material/Button";
 import { isMobile } from "react-device-detect";
-import { NoData, Notes, ToothColorBox } from "@components";
+import { Loader, NoData, Notes, ToothColorBox } from "@components";
 import { QuarterLayout } from "./components";
 import {
   LeftUpToothKeys,
@@ -52,14 +52,15 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
     keyPrefix: "pages.patientCard.dentalMap",
   });
   const [updateDentalMap] = useUpdateDentalMapMutation();
-  const { data } = useGetDentalMapQuery(patientId);
+  const { data, isLoading } = useGetDentalMapQuery(patientId);
   const [chart, setChart] = useState<Partial<Chart> | undefined>();
   const [description, setDescription] = useState<string | undefined>();
   const [selectedToothKey, setSelectedToothKey] = useState<
     keyof Chart | undefined
   >();
 
-  const { data: metadata } = useGetWorkspaceMetadataQuery();
+  const { data: metadata, isLoading: isLoadingMetadata } =
+    useGetWorkspaceMetadataQuery();
   const rootColors = metadata?.dentalMapColors?.root?.map(({ color }) => color);
   const crownColors = metadata?.dentalMapColors?.crown?.map(
     ({ color }) => color
@@ -218,6 +219,8 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
   if (!data?.chart) return <NoData />;
 
   const mergedChart = deepMerge(data?.chart, chart ?? {});
+
+  if (isLoading ?? isLoadingMetadata) return <Loader />;
 
   return (
     <div className="dental-map-container">

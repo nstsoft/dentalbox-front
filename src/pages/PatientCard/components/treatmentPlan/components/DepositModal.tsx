@@ -37,13 +37,7 @@ export const DepositModal: FC<Props> = ({
 
   useEffect(() => {
     if (selectedPlan) {
-      setDeposit(
-        `${
-          selectedPlan.deposit
-            ? totalDeposit - selectedPlan.deposit
-            : totalDeposit
-        }`
-      );
+      setDeposit(`${totalDeposit}`);
     }
   }, [selectedPlan]);
 

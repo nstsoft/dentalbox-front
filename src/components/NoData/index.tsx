@@ -15,6 +15,7 @@ export const NoData = () => {
         justifyContent: "center",
         alignItems: "center",
         pt: 2,
+        mb: 4,
       }}
     >
       <img src={NoDataFound} />

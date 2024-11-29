@@ -89,13 +89,15 @@ export const Files: FC<Props> = ({ files, enableAddFile, isEmptyData }) => {
   return (
     <Box className="files-section">
       {enableAddFile && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpen(true)}
-        >
-          {t("addFile")}
-        </Button>
+        <Box className={`${isEmptyData && "add-file-button"}`}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpen(true)}
+          >
+            {t("addFile")}
+          </Button>
+        </Box>
       )}
       <FileModal
         open={open}
