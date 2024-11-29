@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { CabinetModal, CabinetsTable } from "./components";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { GridSearchFilter } from "@components";
+import { GridSearchFilter, Loader, NoData } from "@components";
 import { CabinetForm } from "./types";
 
 const initCabinet = {
@@ -31,7 +31,7 @@ export const CabinetPage = () => {
     limit: 20,
   });
 
-  const { status, isLoading, data } = useGetMyCabinetsQuery({
+  const { isLoading, data } = useGetMyCabinetsQuery({
     skip: paginationModel.skip,
     limit: paginationModel.limit,
     filter: {
@@ -39,7 +39,9 @@ export const CabinetPage = () => {
     },
   });
 
-  if (!data || ["uninitialized", "loading"].includes(status)) return null;
+  if (isLoading) return <Loader />;
+
+  if (!data) return <NoData />;
 
   return (
     <>

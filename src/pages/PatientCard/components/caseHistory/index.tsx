@@ -99,22 +99,29 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
 
   useEffect(() => {
     if (data?.length) {
-      const dateFiltered = data.filter(({ date }) => {
-        let withinRange = true;
-        if (
-          dateFilter.from &&
-          days(date).isBefore(dateFilter.from.startOf("day"))
-        ) {
-          withinRange = false;
-        }
-        if (dateFilter.to && days(date).isAfter(dateFilter.to.endOf("day"))) {
-          withinRange = false;
-        }
-        return withinRange;
-      });
+      const dateFiltered = data
+        .filter(({ date }) => {
+          let withinRange = true;
+          if (
+            dateFilter.from &&
+            days(date).isBefore(dateFilter.from.startOf("day"))
+          ) {
+            withinRange = false;
+          }
+          if (dateFilter.to && days(date).isAfter(dateFilter.to.endOf("day"))) {
+            withinRange = false;
+          }
+          return withinRange;
+        })
+        .filter(({ tooths }) => {
+          if (toothsFilter.length) {
+            return tooths?.some((tooth) => toothsFilter.includes(tooth));
+          }
+          return true;
+        });
       setHistoryData(dateFiltered);
     }
-  }, [data, dateFilter.from, dateFilter.to]);
+  }, [data, dateFilter.from, dateFilter.to, toothsFilter]);
 
   useEffect(() => {
     if (isSuccess || isSuccessUpdate) {
@@ -153,7 +160,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
         setDateFilter={setDateFilter}
         isDataEmpty={!data || !data?.length}
       />
-      {data && data.length > 0 ? (
+      {historyData.length > 0 ? (
         <>
           <CustomModal
             open={isOpenDeleteModal}

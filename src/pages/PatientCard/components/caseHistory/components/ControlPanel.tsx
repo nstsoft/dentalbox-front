@@ -19,7 +19,7 @@ type Props = {
   resetFilters: () => void;
   toothsFilter: string[];
   setToothsFilter: Dispatch<SetStateAction<string[]>>;
-  selectedHistoryItem: Partial<HistoryData & { selectedFiles?: PatientFile[] }>;
+  selectedHistoryItem: HistoryData & { selectedFiles?: PatientFile[] };
   setHistoryData: (data: Partial<HistoryData>) => void;
   onSubmitModal: () => void;
   files: FileWithDescription[];
