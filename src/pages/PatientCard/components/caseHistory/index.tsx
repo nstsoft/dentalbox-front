@@ -35,7 +35,7 @@ const initialData = {
   notes: "",
   objectiveData: "",
   files: [],
-  tooths: [],
+  teeth: [],
 };
 
 type SelectedItem = HistoryData & {
@@ -113,9 +113,9 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
           }
           return withinRange;
         })
-        .filter(({ tooths }) => {
+        .filter(({ teeth }) => {
           if (toothsFilter.length) {
-            return tooths?.some((tooth) => toothsFilter.includes(tooth));
+            return teeth?.some((tooth) => toothsFilter.includes(tooth));
           }
           return true;
         });
@@ -212,7 +212,7 @@ export const CaseHistory: FC<Props> = ({ patientId }) => {
                     date: days(item.date),
                     selectedFiles: item.files,
                     files: [],
-                    tooths: item.tooths ?? [],
+                    teeth: item.teeth ?? [],
                   });
                   setIsOpenAddUpdateModal(true);
                 }}

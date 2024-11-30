@@ -29,7 +29,7 @@ export const ChipInput: FC<Props> = ({
   return (
     <FormControl sx={{ mb: 2, ...sx }} fullWidth={fullWidth}>
       <OutlinedInput
-        id="tooths"
+        id="teeth"
         type="text"
         onKeyDown={(e) => {
           if (
@@ -46,9 +46,9 @@ export const ChipInput: FC<Props> = ({
         }}
         value={toothText}
         color="primary"
-        name="tooths"
-        sx={{ ariaLabel: "tooths", pl: 1 }}
-        placeholder={t("tooths")}
+        name="teeth"
+        sx={{ ariaLabel: "teeth", pl: 1 }}
+        placeholder={t("teeth")}
         startAdornment={
           <InputAdornment position="start">
             <Box sx={{ display: "flex", gap: 0.5 }}>

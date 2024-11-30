@@ -95,13 +95,13 @@ export const CaseHistoryModal: FC<Props> = ({
           />
           <ChipInput
             fullWidth
-            value={data?.tooths ?? []}
+            value={data?.teeth ?? []}
             onEnter={(tooth) =>
-              setHistoryData({ tooths: [...(data?.tooths ?? []), tooth] })
+              setHistoryData({ teeth: [...(data?.teeth ?? []), tooth] })
             }
             onDelete={(tooth) =>
               setHistoryData({
-                tooths: data?.tooths?.filter((t) => t !== tooth),
+                teeth: data?.teeth?.filter((t) => t !== tooth),
               })
             }
           />

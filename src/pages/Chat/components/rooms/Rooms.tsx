@@ -2,44 +2,47 @@ import { FC, useEffect, useState, useCallback } from "react";
 import {
   useGetRoomsQuery,
   useGetUserSummaryQuery,
-  useLazyGetConnectionsQuery,
+  useGetConnectionsQuery,
 } from "@api";
 import { useAuth } from "@hooks";
 import { RoomItem } from "./RoomItem";
 import { useWebsocket } from "@hooks";
 import { WS_EVENTS, RoomResponse, Room, UserSummaryListItem } from "@types";
 
+type UsersMap = { [key: string]: UserSummaryListItem & { online: boolean } };
+
 export const Rooms: FC = () => {
   const { data: rooms } = useGetRoomsQuery();
   const { data: usersSummary } = useGetUserSummaryQuery();
-  const [fetchConnections, { data: connections, isSuccess }] =
-    useLazyGetConnectionsQuery();
-  const { message, checkedIn } = useWebsocket();
+  const { data: connections, isSuccess } = useGetConnectionsQuery();
+  const { message } = useWebsocket();
   const { user } = useAuth();
   const [roomsList, setRoomsList] = useState<Room[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const [usersMap, setUsersMap] = useState<UsersMap>();
+
+  useEffect(() => {
+    if (usersSummary?.length) {
+      const users: UsersMap = usersSummary.reduce(
+        (acc, el) => ({ ...acc, [el._id]: { ...el, online: false } }),
+        {}
+      );
+      onlineUsers?.forEach((user) => (users[user].online = true));
+      setUsersMap(users);
+    }
+  }, [usersSummary, onlineUsers]);
 
   const parseRoom = useCallback(
     (room: RoomResponse): Room => {
-      const parsedUsers = room.userids
+      const users = room.userids
         .filter((id) => id !== user?._id)
-        .map((id) => ({
-          ...(usersSummary?.find(
-            (user) => user._id === id
-          ) as UserSummaryListItem),
-          online: onlineUsers.includes(id),
-        }));
+        .map((id) => usersMap?.[id])
+        .filter((el) => !!el);
 
-      return { ...room, users: parsedUsers };
+      return { ...room, users: users ?? [] };
     },
-    [onlineUsers, user?._id, usersSummary]
+    [user?._id, usersMap]
   );
-
-  useEffect(() => {
-    if (checkedIn) {
-      fetchConnections();
-    }
-  }, [checkedIn, fetchConnections]);
 
   useEffect(() => {
     if (connections?.length && isSuccess) {
@@ -68,16 +71,11 @@ export const Rooms: FC = () => {
   }, [message, parseRoom]);
 
   useEffect(() => {
-    if (
-      rooms?.length &&
-      usersSummary?.length &&
-      user?._id &&
-      onlineUsers?.length
-    ) {
+    if (rooms?.length && usersSummary?.length && user?._id) {
       const roomsList = rooms.map((room) => parseRoom(room));
       setRoomsList(roomsList);
     }
-  }, [onlineUsers?.length, parseRoom, rooms, user?._id, usersSummary?.length]);
+  }, [parseRoom, rooms, user?._id, usersSummary?.length]);
 
   if (!rooms?.length || !usersSummary?.length || !user) {
     return null;
