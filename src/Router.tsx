@@ -19,7 +19,6 @@ import {
   AcceptInvitation,
   PatientCardPage,
   ChatPage,
-  ChatBoxPage,
 } from "./pages";
 
 export const getRoutes = (isAuthenticated: boolean) => {
@@ -55,11 +54,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
             { path: "/app/cabinets", Component: CabinetPage },
             { path: "/app/calendar", Component: CalendarPage },
             { path: "/app/profile", Component: ProfilePage },
-            {
-              path: "/app/chat",
-              Component: ChatPage,
-              children: [{ path: "/app/chat/:id", Component: ChatBoxPage }],
-            },
+            { path: "/app/chat", Component: ChatPage },
           ],
         },
       ],

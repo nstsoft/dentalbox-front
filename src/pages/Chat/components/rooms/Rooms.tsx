@@ -11,7 +11,12 @@ import { WS_EVENTS, RoomResponse, Room, UserSummaryListItem } from "@types";
 
 type UsersMap = { [key: string]: UserSummaryListItem & { online: boolean } };
 
-export const Rooms: FC = () => {
+type Props = {
+  selectedRoomId: string;
+  onSelect: (id: string) => void;
+};
+
+export const Rooms: FC<Props> = ({ selectedRoomId, onSelect }) => {
   const { data: rooms } = useGetRoomsQuery();
   const { data: usersSummary } = useGetUserSummaryQuery();
   const { data: connections, isSuccess } = useGetConnectionsQuery();
@@ -84,7 +89,12 @@ export const Rooms: FC = () => {
   return (
     <div>
       {roomsList.map((room) => (
-        <RoomItem key={room.id} room={room} onSelect={() => {}} />
+        <RoomItem
+          key={room.id}
+          room={room}
+          selected={room.id === selectedRoomId}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );

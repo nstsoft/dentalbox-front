@@ -11,4 +11,3 @@ export * from "./Profile";
 export * from "./App";
 export * from "./PatientCard";
 export * from "./Chat";
-export * from "./ChatBox";

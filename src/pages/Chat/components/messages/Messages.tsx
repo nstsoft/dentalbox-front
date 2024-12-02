@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export const ChatBoxPage = () => {
+export const Messages = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const [messages, setMessages] = useState([
     { id: 1, text: "Привіт! Як справи?", createdAt: "13/11/20024 12:00" },
