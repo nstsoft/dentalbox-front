@@ -94,7 +94,6 @@ export const Rooms: FC<Props> = ({ selectedRoomId, onSelect }) => {
           room={room}
           selected={room.id === selectedRoomId}
           onSelect={onSelect}
-          onlineUsers={onlineUsers}
         />
       ))}
     </div>

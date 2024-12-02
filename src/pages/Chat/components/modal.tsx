@@ -37,10 +37,12 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
         onClose();
         clearData();
       }}
-      sx={{ minHeight: "300px" }}
+      sx={{ minHeight: "250px" }}
     >
       <>
-        <Button onClick={() => setIsMultiple(true)}>New group</Button>
+        <Button variant="outlined" onClick={() => setIsMultiple(!isMultiple)}>
+          {isMultiple ? "New room" : "New group"}
+        </Button>
         <Autocomplete
           multiple={isMultiple}
           fullWidth
@@ -66,6 +68,7 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
           renderInput={(params) => (
             <TextField {...params} label={t("search")} />
           )}
+          sx={{ mt: 2 }}
         />
 
         {isMultiple && (
@@ -83,8 +86,8 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
             />
           </FormControl>
         )}
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button>New room</Button>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+          <Button variant="contained">New room</Button>
         </Box>
       </>
     </CustomModal>
