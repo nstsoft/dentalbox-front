@@ -13,6 +13,7 @@ import { IconButton } from "@elements";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Files } from "@components";
+import { Chip } from "@mui/material";
 
 type Props = {
   item: HistoryResponse;
@@ -30,6 +31,16 @@ export const AccordionItem: FC<Props> = ({
     <Accordion className="history-accordion-item">
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         {days(item.date).format("YYYY MMMM DD")}
+        <Box sx={{ ml: 1, display: "flex", gap: 1 }}>
+          {item.teeth?.map((tooth, index) => (
+            <Chip
+              key={tooth + index}
+              label={tooth}
+              size="small"
+              color="primary"
+            />
+          ))}
+        </Box>
       </AccordionSummary>
       <AccordionDetails>
         <Box className="history-accordion-header">
