@@ -1,6 +1,6 @@
 import "./chat.scss";
 
-import { useGetUserSummaryQuery } from "@api";
+import { useCreateRoomMutation, useGetUserSummaryQuery } from "@api";
 import Grid2 from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
-import { Rooms, Messages, ChatModal } from "./components";
+import { Rooms, Messages, ChatDrawer } from "./components";
 
 export const ChatPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
@@ -16,6 +16,7 @@ export const ChatPage = () => {
   const [activeRoom, setActiveRoom] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const filteredUsers = users?.filter((user) => !user.deleted) ?? [];
+  const [createRoom] = useCreateRoomMutation();
 
   return (
     <Grid2 className="chat-container" container>
@@ -31,10 +32,11 @@ export const ChatPage = () => {
           onSelect={(id) => setActiveRoom(id)}
           selectedRoomId={activeRoom}
         />
-        <ChatModal
+        <ChatDrawer
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           users={filteredUsers}
+          onSubmit={(newRoom) => createRoom(newRoom)}
         />
       </Grid2>
       <Grid2 size={9}>

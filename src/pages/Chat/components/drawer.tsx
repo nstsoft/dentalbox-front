@@ -1,12 +1,12 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { CustomModal } from "@elements";
-import { UserSummaryListItem } from "@types";
+import { RoomRequest, UserSummaryListItem } from "@types";
 import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
+  Drawer,
   FormControl,
   InputLabel,
   OutlinedInput,
@@ -16,9 +16,10 @@ type Props = {
   open: boolean;
   onClose: () => void;
   users: UserSummaryListItem[];
+  onSubmit: (room: RoomRequest) => void;
 };
 
-export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
+export const ChatDrawer: FC<Props> = ({ open, onClose, users, onSubmit }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const [isMultiple, setIsMultiple] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<UserSummaryListItem[]>([]);
@@ -30,17 +31,35 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
     setRoomName("");
   };
 
+  const createRoom = () => {
+    if (selectedUsers.length > 0) {
+      onSubmit({
+        userids: selectedUsers.map((u) => u._id),
+        name: isMultiple
+          ? roomName
+          : `${selectedUsers[0]?.surname} ${selectedUsers[0]?.name[0]} ${selectedUsers[0]?.secondName[0]}`,
+      });
+      clearData();
+    }
+  };
+
   return (
-    <CustomModal
+    <Drawer
       open={open}
       onClose={() => {
         onClose();
         clearData();
       }}
-      sx={{ minHeight: "250px" }}
+      anchor="left"
     >
-      <>
-        <Button variant="outlined" onClick={() => setIsMultiple(!isMultiple)}>
+      <Box sx={{ width: "300px", padding: 2 }}>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setIsMultiple(!isMultiple);
+            setSelectedUsers([]);
+          }}
+        >
           {isMultiple ? "New room" : "New group"}
         </Button>
         <Autocomplete
@@ -55,15 +74,15 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
               ...user,
             })) ?? []
           }
-          value={isMultiple ? selectedUsers : selectedUsers[0] || null}
+          value={isMultiple ? selectedUsers : selectedUsers[0] || ""}
           onChange={(_, value) => {
             setSelectedUsers(
               isMultiple
                 ? (value as UserSummaryListItem[])
-                : [value as UserSummaryListItem]
+                : value
+                ? [value as UserSummaryListItem]
+                : []
             );
-
-            console.log(value);
           }}
           renderInput={(params) => (
             <TextField {...params} label={t("search")} />
@@ -87,9 +106,11 @@ export const ChatModal: FC<Props> = ({ open, onClose, users }) => {
           </FormControl>
         )}
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Button variant="contained">New room</Button>
+          <Button variant="contained" onClick={() => createRoom()}>
+            New room
+          </Button>
         </Box>
-      </>
-    </CustomModal>
+      </Box>
+    </Drawer>
   );
 };

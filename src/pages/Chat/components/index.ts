@@ -1,3 +1,3 @@
 export * from "./rooms";
 export * from "./messages";
-export * from './modal';
+export * from './drawer';
