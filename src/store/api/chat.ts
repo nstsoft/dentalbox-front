@@ -20,7 +20,6 @@ export const chatApi = createApi({
 
     createRoom: builder.mutation<void, RoomRequest>({
       query: (body) => ({ url: "/room", method: "POST", body }),
-      invalidatesTags: [CHAT_TAG.ROOMS],
     }),
 
     addUsersToRoom: builder.mutation<
@@ -32,7 +31,6 @@ export const chatApi = createApi({
         method: "PATCH",
         body: { userids },
       }),
-      invalidatesTags: [CHAT_TAG.ROOMS],
     }),
 
     leaveTheRoom: builder.mutation<void, string>({
@@ -40,12 +38,10 @@ export const chatApi = createApi({
         url: `/room/${roomId}/leave`,
         method: "PATCH",
       }),
-      invalidatesTags: [CHAT_TAG.ROOMS],
     }),
 
     deleteTheRoom: builder.mutation<void, string>({
       query: (roomId) => ({ url: `/room/${roomId}`, method: "DELETE" }),
-      invalidatesTags: [CHAT_TAG.ROOMS],
     }),
 
     transferRoomOwnership: builder.mutation<
@@ -57,7 +53,6 @@ export const chatApi = createApi({
         method: "PATCH",
         body: { owner },
       }),
-      invalidatesTags: [CHAT_TAG.ROOMS],
     }),
   }),
 });

@@ -42,11 +42,30 @@
     cursor: pointer;
     border-bottom: 1px solid #ccc;
     padding: 10px;
+
     &-name {
       margin-left: 10px;
     }
+
     &.selected {
       background-color: #ccc;
+    }
+
+    &__avatar {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      flex-flow: row wrap;
+      position: relative;
+      border-radius: 50%;
+
+      .avatar-group {
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        background-position: center;
+        background-size: cover;
+      }
     }
   }
 }

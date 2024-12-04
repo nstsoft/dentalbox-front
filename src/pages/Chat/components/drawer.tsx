@@ -77,11 +77,7 @@ export const ChatDrawer: FC<Props> = ({ open, onClose, users, onSubmit }) => {
           value={isMultiple ? selectedUsers : selectedUsers[0] || ""}
           onChange={(_, value) => {
             setSelectedUsers(
-              isMultiple
-                ? (value as UserSummaryListItem[])
-                : value
-                ? [value as UserSummaryListItem]
-                : []
+              value ? ([] as UserSummaryListItem[]).concat(value) : []
             );
           }}
           renderInput={(params) => (
