@@ -19,19 +19,6 @@ export const WebsocketProvider: FC<{
   const [checkedIn, setCheckedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
-  const checkIn = useCallback(() => {
-    const data = {
-      action: WS_ACTIONS.checkin,
-      data: {
-        token: JSON.parse(localStorage.getItem("auth-token") ?? ""),
-        workspace: JSON.parse(localStorage.getItem("workspace") ?? ""),
-        timestamp: new Date().toISOString(),
-      },
-    };
-    console.log("Sending check-in data:", data);
-    socketRef.current?.send(JSON.stringify(data));
-  }, []);
-
   const connect = useCallback(() => {
     if (
       !socketRef.current ||
@@ -43,6 +30,16 @@ export const WebsocketProvider: FC<{
       socketRef.current.onopen = () => {
         setIsConnected(true);
         console.log("WebSocket connected:", socketUrl);
+        const data = {
+          action: WS_ACTIONS.checkin,
+          data: {
+            token: JSON.parse(localStorage.getItem("auth-token") ?? ""),
+            workspace: JSON.parse(localStorage.getItem("workspace") ?? ""),
+            timestamp: new Date().toISOString(),
+          },
+        };
+        console.log("Sending check-in data:", data);
+        socketRef.current?.send(JSON.stringify(data));
       };
 
       socketRef.current.onmessage = (event) => {
@@ -67,12 +64,6 @@ export const WebsocketProvider: FC<{
       console.log("WebSocket already connected or in progress.");
     }
   }, []);
-
-  useEffect(() => {
-    if (isConnected && socketRef.current?.readyState === WebSocket.OPEN) {
-      checkIn();
-    }
-  }, [checkIn, isConnected]);
 
   useEffect(() => {
     return () => {
