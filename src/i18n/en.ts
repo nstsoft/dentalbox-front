@@ -408,6 +408,16 @@ export const EN: ResourceLanguage = {
         search: "Search...",
         noActive: "Please select chat to start conversation",
         writeMessage: "Write message...",
+        menu: {
+          addUsers: "Add users",
+          leave: "Leave the room",
+          delete: "Delete the room",
+          transferOwnership: "Transfer room ownership",
+        },
+        modal: {
+          addUsers: "Adding users",
+          transferOwnership: "Transferring room ownership",
+        },
       },
     },
     components: {

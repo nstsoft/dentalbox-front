@@ -408,6 +408,16 @@ export const UA: ResourceLanguage = {
         search: "Пошук...",
         noActive: "Будь ласка, оберіть чат, щоб почати обговорення",
         writeMessage: "Написати повідомлення...",
+        menu: {
+          addUsers: "Додати користувачів",
+          leave: "Виийти з чату",
+          delete: "Видалити чат",
+          transferOwnership: "Передати права власності",
+        },
+        modal: {
+          addUsers: "Додавання користувачів",
+          transferOwnership: "Передача прав власності",
+        },
       },
     },
     components: {

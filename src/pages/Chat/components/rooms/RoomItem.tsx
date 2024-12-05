@@ -5,10 +5,11 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Badge from "@mui/material/Badge";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { ActionsMenu } from "./Menu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import "../../chat.scss";
+import { IconButton } from "@elements";
 
 type Props = {
   room: Room;
@@ -22,16 +23,11 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
     mouseY: number;
   } | null>(null);
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setContextMenu(
-      (e.target as HTMLElement).classList.contains("room-item")
-        ? {
-            mouseX: e.clientX - 2,
-            mouseY: e.clientY - 4,
-          }
-        : null
-    );
+  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setContextMenu({
+      mouseX: e.clientX - 2,
+      mouseY: e.clientY - 4,
+    });
   };
 
   const handleClose = () => {
@@ -80,7 +76,7 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
           onSelect(room.id);
         }
       }}
-      onContextMenu={handleContextMenu}
+      // onContextMenu={handleContextMenu}
     >
       <Box className="room-item__avatar">
         {room.users.map((user) => (
@@ -90,27 +86,32 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
               : renderAvatar(user)}
           </Fragment>
         ))}
-        <Menu
-          open={contextMenu !== null}
+        <ActionsMenu
+          room={room}
+          open={!!contextMenu}
           onClose={handleClose}
-          anchorReference="anchorPosition"
           anchorPosition={{
             top: contextMenu?.mouseY ?? 0,
             left: contextMenu?.mouseX ?? 0,
           }}
-        >
-          <MenuItem onClick={() => console.log(`Edit ${room.name}`)}>
-            Edit
-          </MenuItem>
-          <MenuItem onClick={() => console.log(`Delete ${room.name}`)}>
-            Delete
-          </MenuItem>
-        </Menu>
+        />
       </Box>
 
       <Box className="room-item-name">
         <Typography variant="h6">{room.name}</Typography>
       </Box>
+      <IconButton
+        onClick={handleContextMenu}
+        sx={{
+          width: 30,
+          height: 30,
+          maxWidth: 30,
+          position: "absolute",
+          right: 20,
+        }}
+      >
+        <MoreVertIcon />
+      </IconButton>
     </Box>
   );
 };
