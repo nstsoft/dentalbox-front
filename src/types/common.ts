@@ -23,6 +23,5 @@ export interface LanguageContextType {
 export interface WebsocketContextType {
   message: SocketMessage | null;
   isConnected: boolean;
-  checkedIn: boolean;
   connect: () => void;
 }
