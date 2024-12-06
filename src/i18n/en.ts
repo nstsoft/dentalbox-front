@@ -416,7 +416,10 @@ export const EN: ResourceLanguage = {
         },
         modal: {
           addUsers: "Adding users",
+          leave: "Leaving the room",
+          delete: "Deleting the room",  
           transferOwnership: "Transferring room ownership",
+          confirm: "Are you sure you want to do this? This action cannot be undone.",
         },
       },
     },

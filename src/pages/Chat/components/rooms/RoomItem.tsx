@@ -18,20 +18,20 @@ type Props = {
 };
 
 export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
-  const [contextMenu, setContextMenu] = useState<{
+  const [menu, setMenu] = useState<{
     mouseX: number;
     mouseY: number;
   } | null>(null);
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setContextMenu({
+  const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setMenu({
       mouseX: e.clientX - 2,
       mouseY: e.clientY - 4,
     });
   };
 
   const handleClose = () => {
-    setContextMenu(null);
+    setMenu(null);
   };
 
   const renderAvatar = (user: UserSummaryListItem & { online: boolean }) => (
@@ -76,7 +76,6 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
           onSelect(room.id);
         }
       }}
-      // onContextMenu={handleContextMenu}
     >
       <Box className="room-item__avatar">
         {room.users.map((user) => (
@@ -88,11 +87,11 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
         ))}
         <ActionsMenu
           room={room}
-          open={!!contextMenu}
+          open={!!menu}
           onClose={handleClose}
           anchorPosition={{
-            top: contextMenu?.mouseY ?? 0,
-            left: contextMenu?.mouseX ?? 0,
+            top: menu?.mouseY ?? 0,
+            left: menu?.mouseX ?? 0,
           }}
         />
       </Box>
@@ -101,7 +100,7 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
         <Typography variant="h6">{room.name}</Typography>
       </Box>
       <IconButton
-        onClick={handleContextMenu}
+        onClick={openMenu}
         sx={{
           width: 30,
           height: 30,

@@ -416,7 +416,11 @@ export const UA: ResourceLanguage = {
         },
         modal: {
           addUsers: "Додавання користувачів",
+          leave: "Вихід з чату",
+          delete: "Видалення чату",
           transferOwnership: "Передача прав власності",
+          confirm:
+            "Ви впевнені, що хочете зробити це? Ви не зможете відмінити цю дію.",
         },
       },
     },
