@@ -1,11 +1,11 @@
 import type { Room, UserSummaryListItem } from "@types";
-import { Fragment, useState, type FC } from "react";
+import { Fragment, type FC } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Badge from "@mui/material/Badge";
-import { ActionsMenu } from "./Menu";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import "../../chat.scss";
@@ -13,27 +13,17 @@ import { IconButton } from "@elements";
 
 type Props = {
   room: Room;
-  onSelect: (id: string) => void;
+  setSelectedRoom: (room?: Room) => void;
   selected: boolean;
+  openMenu: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
-  const [menu, setMenu] = useState<{
-    mouseX: number;
-    mouseY: number;
-  } | null>(null);
-
-  const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setMenu({
-      mouseX: e.clientX - 2,
-      mouseY: e.clientY - 4,
-    });
-  };
-
-  const handleClose = () => {
-    setMenu(null);
-  };
-
+export const RoomItem: FC<Props> = ({
+  room,
+  setSelectedRoom,
+  selected,
+  openMenu,
+}) => {
   const renderAvatar = (user: UserSummaryListItem & { online: boolean }) => (
     <Badge
       overlap="circular"
@@ -71,11 +61,7 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
   return (
     <Box
       className={`room-item ${selected && "selected"}`}
-      onClick={(e) => {
-        if ((e.target as HTMLElement).classList.contains("room-item")) {
-          onSelect(room.id);
-        }
-      }}
+      onClick={() => setSelectedRoom(room)}
     >
       <Box className="room-item__avatar">
         {room.users.map((user) => (
@@ -85,15 +71,6 @@ export const RoomItem: FC<Props> = ({ room, onSelect, selected }) => {
               : renderAvatar(user)}
           </Fragment>
         ))}
-        <ActionsMenu
-          room={room}
-          open={!!menu}
-          onClose={handleClose}
-          anchorPosition={{
-            top: menu?.mouseY ?? 0,
-            left: menu?.mouseX ?? 0,
-          }}
-        />
       </Box>
 
       <Box className="room-item-name">

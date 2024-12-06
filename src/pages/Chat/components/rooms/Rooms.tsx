@@ -8,15 +8,15 @@ import { useAuth } from "@hooks";
 import { RoomItem } from "./RoomItem";
 import { useWebsocket } from "@hooks";
 import { WS_EVENTS, RoomResponse, Room, UserSummaryListItem } from "@types";
-
+import { ActionsMenu } from "./Menu";
 type UsersMap = { [key: string]: UserSummaryListItem & { online: boolean } };
 
 type Props = {
-  selectedRoomId: string;
-  onSelect: (id: string) => void;
+  selectedRoom?: Room;
+  setSelectedRoom: (room?: Room) => void;
 };
 
-export const Rooms: FC<Props> = ({ selectedRoomId, onSelect }) => {
+export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
   const { data: rooms } = useGetRoomsQuery();
   const { data: usersSummary } = useGetUserSummaryQuery();
   const { data: connections, isSuccess } = useGetConnectionsQuery();
@@ -25,6 +25,21 @@ export const Rooms: FC<Props> = ({ selectedRoomId, onSelect }) => {
   const [roomsList, setRoomsList] = useState<Room[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [usersMap, setUsersMap] = useState<UsersMap>();
+  const [menu, setMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+
+  const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setMenu({
+      mouseX: e.clientX - 2,
+      mouseY: e.clientY - 4,
+    });
+  };
+
+  const handleClose = () => {
+    setMenu(null);
+  };
 
   useEffect(() => {
     if (usersSummary?.length) {
@@ -92,10 +107,19 @@ export const Rooms: FC<Props> = ({ selectedRoomId, onSelect }) => {
         <RoomItem
           key={room.id}
           room={room}
-          selected={room.id === selectedRoomId}
-          onSelect={onSelect}
+          selected={room.id === selectedRoom?.id}
+          setSelectedRoom={setSelectedRoom}
+          openMenu={openMenu}
         />
       ))}
+      {selectedRoom && (
+        <ActionsMenu
+          room={selectedRoom}
+          open={!!menu}
+          onClose={handleClose}
+          anchorPosition={{ top: menu?.mouseY ?? 0, left: menu?.mouseX ?? 0 }}
+        />
+      )}
     </div>
   );
 };

@@ -9,11 +9,12 @@ import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTranslation } from "react-i18next";
 import { Rooms, Messages, ChatDrawer } from "./components";
+import { Room } from "@types";
 
 export const ChatPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const { data: users } = useGetUserSummaryQuery();
-  const [activeRoom, setActiveRoom] = useState<string>("");
+  const [selectedRoom, setSelectedRoom] = useState<Room | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const filteredUsers = users?.filter((user) => !user.deleted) ?? [];
   const [createRoom] = useCreateRoomMutation();
@@ -28,10 +29,7 @@ export const ChatPage = () => {
           <AddCircleOutlineIcon />
           <Typography variant="h6">{t("newChat")}</Typography>
         </Button>
-        <Rooms
-          onSelect={(id) => setActiveRoom(id)}
-          selectedRoomId={activeRoom}
-        />
+        <Rooms selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
         <ChatDrawer
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -40,7 +38,7 @@ export const ChatPage = () => {
         />
       </Grid2>
       <Grid2 size={9}>
-        {activeRoom ? (
+        {selectedRoom ? (
           <Messages />
         ) : (
           <Box className="no-active">{t("noActive")}</Box>

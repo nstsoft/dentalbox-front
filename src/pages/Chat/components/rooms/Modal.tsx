@@ -7,12 +7,13 @@ import { UserSummaryListItem } from "@types";
 import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+type ModalType = "addUsers" | "delete" | "leave" | "transferOwnership";
 type Props = {
   open: boolean;
   onClose: () => void;
   users: UserSummaryListItem[];
   onSubmit: (userids: string[]) => void;
-  type: string;
+  type?: ModalType;
 };
 
 export const RoomModal: FC<Props> = ({

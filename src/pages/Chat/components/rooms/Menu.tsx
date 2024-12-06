@@ -1,7 +1,6 @@
 import {
   useAddUsersToRoomMutation,
   useDeleteTheRoomMutation,
-  useGetMeQuery,
   useGetUserSummaryQuery,
   useLeaveTheRoomMutation,
   useTransferRoomOwnershipMutation,
@@ -13,6 +12,7 @@ import { Room, UserSummaryListItem } from "@types";
 import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RoomModal } from "./Modal";
+import { useAuth } from "@hooks";
 
 type Props = {
   room: Room;
@@ -20,6 +20,8 @@ type Props = {
   onClose: () => void;
   anchorPosition: PopoverProps["anchorPosition"];
 };
+
+type ModalType = "addUsers" | "delete" | "leave" | "transferOwnership";
 
 export const ActionsMenu: FC<Props> = ({
   room,
@@ -32,45 +34,48 @@ export const ActionsMenu: FC<Props> = ({
   const [leaveTheRoom] = useLeaveTheRoomMutation();
   const [transferOwnership] = useTransferRoomOwnershipMutation();
   const [addUsers] = useAddUsersToRoomMutation();
-  const { data: me } = useGetMeQuery();
+  const { user } = useAuth();
   const { data: users } = useGetUserSummaryQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentModalType, setCurrentModalType] = useState<string>("");
-  const isOwner = room.owner === me?.user._id;
-  const activeUsers = users?.filter((user) => !user.deleted);
-  const [usersForMenu, setUsersForMenu] = useState<UserSummaryListItem[]>([]);
+  const [modalType, setModalType] = useState<ModalType | undefined>();
+  const isOwner = room?.owner === user?._id;
+  const userList =
+    users?.filter((u) => !u.deleted && user?._id !== u._id) ?? [];
+
+  const usersToAdd = userList.filter(
+    (u) => !room?.users.some((r) => r._id === u._id)
+  );
+  const usersToTransferOwnership =
+    room?.users.filter(({ _id }) => _id !== user?._id) ?? [];
 
   const submitHandler = (userids: string[]) => {
-    if (currentModalType === "transferOwnership") {
+    if (modalType === "transferOwnership") {
       transferOwnership({ roomId: room.id, owner: userids[0] });
       return;
     }
-    if (currentModalType === "delete") {
+    if (modalType === "delete") {
       deleteTheRoom(room.id);
       return;
     }
-    if (currentModalType === "leave") {
+    if (modalType === "leave") {
       leaveTheRoom(room.id);
       return;
     }
     addUsers({ roomId: room.id, userids });
   };
 
-  const onActionHandler = (type: string) => {
-    setUsersForMenu(
-      type === "addUsers"
-        ? activeUsers?.filter(
-            (user) =>
-              ![...room.users.map((u) => u._id), me?.user._id].includes(
-                user._id
-              )
-          ) ?? []
-        : room.users
-    );
-    setCurrentModalType(type);
+  const onActionHandler = (type: ModalType) => {
+    setModalType(type);
     setIsModalOpen(true);
     onClose();
   };
+
+  let usersFormModal: UserSummaryListItem[] = [];
+  if (modalType === "addUsers") {
+    usersFormModal = usersToAdd;
+  } else if (modalType === "transferOwnership") {
+    usersFormModal = usersToTransferOwnership;
+  }
 
   return (
     <>
@@ -104,9 +109,9 @@ export const ActionsMenu: FC<Props> = ({
       <RoomModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        users={usersForMenu}
+        users={usersFormModal}
         onSubmit={submitHandler}
-        type={currentModalType}
+        type={modalType}
       />
     </>
   );
