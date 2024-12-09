@@ -15,6 +15,7 @@ import {
   MenuProvider,
   LanguageProvider,
   WebsocketProvider,
+  NotificationsProvider,
 } from "@providers";
 import "./index.scss";
 import "dayjs/locale/uk";
@@ -28,12 +29,14 @@ createRoot(document.getElementById("root")!).render(
           <WebsocketProvider>
             <Provider store={store}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <CssBaseline />
-                <AuthProvider>
-                  <MenuProvider>
-                    <App />
-                  </MenuProvider>
-                </AuthProvider>
+                <NotificationsProvider>
+                  <CssBaseline />
+                  <AuthProvider>
+                    <MenuProvider>
+                      <App />
+                    </MenuProvider>
+                  </AuthProvider>
+                </NotificationsProvider>
               </LocalizationProvider>
             </Provider>
           </WebsocketProvider>

@@ -4,7 +4,7 @@ import {
   useGetUserSummaryQuery,
   useGetConnectionsQuery,
 } from "@api";
-import { useAuth } from "@hooks";
+import { useAuth, useNotifications } from "@hooks";
 import { RoomItem } from "./RoomItem";
 import { useWebsocket } from "@hooks";
 import { WS_EVENTS, RoomResponse, Room, UserSummaryListItem } from "@types";
@@ -29,6 +29,8 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     mouseX: number;
     mouseY: number;
   } | null>(null);
+
+  const notifications = useNotifications();
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setMenu({

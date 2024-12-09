@@ -2,13 +2,9 @@
 export enum WS_EVENTS {
   ROOM_CREATED = "ROOM_CREATED",
   ROOM_UPDATED = "ROOM_UPDATED",
-  checkin_completed = "checkin-completed",
   USER_ONLINE = "USER_ONLINE",
   USER_OFFLINE = "USER_OFFLINE",
-}
-
-export enum WS_ACTIONS {
-  checkin = "checkin",
+  NEW_MESSAGE = "NEW_MESSAGE",
 }
 
 export type SocketMessage<T = { [key: string]: any }> = {

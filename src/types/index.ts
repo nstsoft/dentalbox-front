@@ -18,3 +18,5 @@ export * from "./anamnesis";
 export * from "./treatmentPlan";
 export * from "./websocket";
 export * from "./chat";
+export * from "./notifications";
+export * from "./message";

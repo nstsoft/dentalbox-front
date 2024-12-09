@@ -14,7 +14,7 @@ const socketUrl = import.meta.env.VITE_SOCKET_URL;
 export const WebsocketProvider: FC<{
   children: ReactElement[] | ReactElement;
 }> = ({ children }) => {
-  const [message, setMessages] = useState<SocketMessage | null>(null);
+  const [message, setMessage] = useState<SocketMessage | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -36,7 +36,7 @@ export const WebsocketProvider: FC<{
 
       socketRef.current.onmessage = (event) => {
         console.log("Websocket event", event.data);
-        setMessages(JSON.parse(event.data));
+        setMessage(JSON.parse(event.data));
       };
 
       socketRef.current.onclose = () => setIsConnected(false);

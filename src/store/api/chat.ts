@@ -1,5 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { RoomResponse, ConnectionResponse, RoomRequest } from "@types";
+import type {
+  RoomResponse,
+  ConnectionResponse,
+  RoomRequest,
+  Stats,
+} from "@types";
 import { CHAT_TAG, REDUCER } from "../constants";
 import { chatBaseQuery } from "./baseQuery";
 
@@ -12,16 +17,17 @@ export const chatApi = createApi({
       query: () => `/room`,
       providesTags: () => [{ type: CHAT_TAG.ROOMS }],
     }),
-
+    getStats: builder.query<Stats, void>({
+      query: () => `/message/stats`,
+      providesTags: () => [{ type: CHAT_TAG.STATS }],
+    }),
     getConnections: builder.query<ConnectionResponse[], void>({
       query: () => `/connection`,
       providesTags: () => [{ type: CHAT_TAG.CONNECTIONS }],
     }),
-
     createRoom: builder.mutation<void, RoomRequest>({
       query: (body) => ({ url: "/room", method: "POST", body }),
     }),
-
     addUsersToRoom: builder.mutation<
       void,
       { roomId: string; userids: string[] }
@@ -66,4 +72,5 @@ export const {
   useLeaveTheRoomMutation,
   useDeleteTheRoomMutation,
   useTransferRoomOwnershipMutation,
+  useLazyGetStatsQuery,
 } = chatApi;
