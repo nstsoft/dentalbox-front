@@ -23,7 +23,7 @@ import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
 import { useSideMenu } from "@hooks";
 import { FaUserDoctor } from "react-icons/fa6";
-import { SvgIcon } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
 
 const isMenuMobile = isMobile || isTablet;
 

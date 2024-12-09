@@ -13,7 +13,7 @@ import { IconButton } from "@elements";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Files } from "@components";
-import { Chip } from "@mui/material";
+import Chip from "@mui/material/Chip";
 
 type Props = {
   item: HistoryResponse;

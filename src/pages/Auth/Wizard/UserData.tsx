@@ -16,7 +16,9 @@ import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
 import { Invitation } from "../AcceptInvitation";
-import { ListItemText, MenuItem, Select } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 type IUserDataStepProps = {
   type: "signUp" | "invite";
@@ -34,7 +36,7 @@ type IUserDataStepProps = {
   nextStep?: () => void;
   previousStep?: () => void;
   userData?: UserForm;
-}
+};
 
 export const UserData = (props: IUserDataStepProps) => {
   const {

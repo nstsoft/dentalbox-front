@@ -22,7 +22,7 @@ import { AppointmentStatus } from "@types";
 import { useTranslation } from "react-i18next";
 import { getPersonNames } from "./helpers";
 import { FaUserDoctor } from "react-icons/fa6";
-import { SvgIcon } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
 import { GiNurseFemale } from "react-icons/gi";
 import { FaClinicMedical } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";

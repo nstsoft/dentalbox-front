@@ -17,7 +17,7 @@ import {
 import TextField from "@mui/material/TextField";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 
 type Props = { title: string; services: Service[] };

@@ -4,7 +4,8 @@ import { IconButton } from "@elements";
 import { type FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomModal } from "@elements";
-import { Button, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 
 export type ColorPickerProps = {

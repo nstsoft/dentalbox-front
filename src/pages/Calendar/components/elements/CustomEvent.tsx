@@ -2,7 +2,8 @@ import { type EventProps } from "react-big-calendar";
 import { AppointmentEventListItem } from "@types";
 import { getPersonNames } from "../helpers";
 import { GiNurseFemale } from "react-icons/gi";
-import { SvgIcon, Typography } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
+import Typography from "@mui/material/Typography";
 
 export const CustomEvent = (el: EventProps<object>) => {
   const event = el.event as AppointmentEventListItem;
