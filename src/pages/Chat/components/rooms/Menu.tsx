@@ -1,7 +1,6 @@
 import {
   useAddUsersToRoomMutation,
   useDeleteTheRoomMutation,
-  useGetUserSummaryQuery,
   useLeaveTheRoomMutation,
   useTransferRoomOwnershipMutation,
 } from "@api";
@@ -13,21 +12,22 @@ import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RoomModal } from "./Modal";
 import { useAuth } from "@hooks";
+import { ModalType } from "../../types";
 
 type Props = {
   room: Room;
   open: boolean;
   onClose: () => void;
   anchorPosition: PopoverProps["anchorPosition"];
+  usersList: UserSummaryListItem[];
 };
-
-type ModalType = "addUsers" | "delete" | "leave" | "transferOwnership";
 
 export const ActionsMenu: FC<Props> = ({
   room,
   open,
   onClose,
   anchorPosition,
+  usersList,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const [deleteTheRoom] = useDeleteTheRoomMutation();
@@ -35,18 +35,14 @@ export const ActionsMenu: FC<Props> = ({
   const [transferOwnership] = useTransferRoomOwnershipMutation();
   const [addUsers] = useAddUsersToRoomMutation();
   const { user } = useAuth();
-  const { data: users } = useGetUserSummaryQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType | undefined>();
   const isOwner = room?.owner === user?._id;
-  const userList =
-    users?.filter((u) => !u.deleted && user?._id !== u._id) ?? [];
-
-  const usersToAdd = userList.filter(
+  const usersToAdd = usersList.filter(
     (u) => !room?.users.some((r) => r._id === u._id)
   );
   const usersToTransferOwnership =
-    room?.users.filter(({ _id }) => _id !== user?._id) ?? [];
+  room?.users.filter(({ _id }) => _id !== user?._id) ?? [];
 
   const submitHandler = (userids: string[]) => {
     if (modalType === "transferOwnership") {
@@ -87,9 +83,11 @@ export const ActionsMenu: FC<Props> = ({
       >
         {isOwner ? (
           [
-            <MenuItem key="add" onClick={() => onActionHandler("addUsers")}>
-              {t("menu.addUsers")}
-            </MenuItem>,
+            usersToAdd.length > 0 && (
+              <MenuItem key="add" onClick={() => onActionHandler("addUsers")}>
+                {t("menu.addUsers")}
+              </MenuItem>
+            ),
             <MenuItem
               key="transfer"
               onClick={() => onActionHandler("transferOwnership")}
@@ -99,7 +97,7 @@ export const ActionsMenu: FC<Props> = ({
             <MenuItem key="delete" onClick={() => onActionHandler("delete")}>
               {t("menu.delete")}
             </MenuItem>,
-          ]
+          ].filter(Boolean)
         ) : (
           <MenuItem key="leave" onClick={() => onActionHandler("leave")}>
             {t("menu.leave")}

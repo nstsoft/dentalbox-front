@@ -7,8 +7,8 @@ import TextField from "@mui/material/TextField";
 import { UserSummaryListItem } from "@types";
 import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ModalType } from "../../types";
 
-type ModalType = "addUsers" | "delete" | "leave" | "transferOwnership";
 type Props = {
   open: boolean;
   onClose: () => void;

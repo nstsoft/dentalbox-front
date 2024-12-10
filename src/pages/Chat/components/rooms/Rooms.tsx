@@ -7,9 +7,10 @@ import {
 import { useAuth, useNotifications } from "@hooks";
 import { RoomItem } from "./RoomItem";
 import { useWebsocket } from "@hooks";
-import { WS_EVENTS, RoomResponse, Room, UserSummaryListItem } from "@types";
+import { WS_EVENTS, RoomResponse, Room } from "@types";
 import { ActionsMenu } from "./Menu";
-type UsersMap = { [key: string]: UserSummaryListItem & { online: boolean } };
+import { UsersMap } from "../../types";
+import { UsersFilter } from "./UsersFilter";
 
 type Props = {
   selectedRoom?: Room;
@@ -29,6 +30,12 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     mouseX: number;
     mouseY: number;
   } | null>(null);
+  const usersList =
+    usersSummary?.filter((u) => !u.deleted && user?._id !== u._id) ?? [];
+
+  const usersToAdd = usersList.filter((u) =>
+    roomsList.every((room) => !room?.users.some((r) => r._id === u._id))
+  );
 
   const notifications = useNotifications();
 
@@ -102,29 +109,29 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     }
   }, [parseRoom, rooms, user?._id, usersSummary?.length]);
 
-  if (!rooms?.length || !usersSummary?.length || !user) {
-    return null;
-  }
-
   return (
-    <div>
-      {roomsList.map((room) => (
-        <RoomItem
-          key={room.id}
-          room={room}
-          selected={room.id === selectedRoom?.id}
-          setSelectedRoom={setSelectedRoom}
-          openMenu={openMenu}
-        />
-      ))}
-      {selectedRoom && (
-        <ActionsMenu
-          room={selectedRoom}
-          open={!!menu}
-          onClose={handleClose}
-          anchorPosition={{ top: menu?.mouseY ?? 0, left: menu?.mouseX ?? 0 }}
-        />
-      )}
-    </div>
+    <>
+      <UsersFilter availableUsers={usersToAdd} />
+      <div>
+        {roomsList.map((room) => (
+          <RoomItem
+            key={room.id}
+            room={room}
+            selected={room.id === selectedRoom?.id}
+            setSelectedRoom={setSelectedRoom}
+            openMenu={openMenu}
+          />
+        ))}
+        {selectedRoom && (
+          <ActionsMenu
+            room={selectedRoom}
+            open={!!menu}
+            onClose={handleClose}
+            anchorPosition={{ top: menu?.mouseY ?? 0, left: menu?.mouseX ?? 0 }}
+            usersList={usersList}
+          />
+        )}
+      </div>
+    </>
   );
 };
