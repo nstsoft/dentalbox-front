@@ -42,7 +42,7 @@ export const ActionsMenu: FC<Props> = ({
     (u) => !room?.users.some((r) => r._id === u._id)
   );
   const usersToTransferOwnership =
-  room?.users.filter(({ _id }) => _id !== user?._id) ?? [];
+    room?.users.filter(({ _id }) => _id !== user?._id) ?? [];
 
   const submitHandler = (userids: string[]) => {
     if (modalType === "transferOwnership") {
@@ -73,6 +73,12 @@ export const ActionsMenu: FC<Props> = ({
     usersFormModal = usersToTransferOwnership;
   }
 
+  const addUsersAction = usersToAdd.length > 0 && (
+    <MenuItem key="add" onClick={() => onActionHandler("addUsers")}>
+      {t("menu.addUsers")}
+    </MenuItem>
+  );
+
   return (
     <>
       <Menu
@@ -83,11 +89,7 @@ export const ActionsMenu: FC<Props> = ({
       >
         {isOwner ? (
           [
-            usersToAdd.length > 0 && (
-              <MenuItem key="add" onClick={() => onActionHandler("addUsers")}>
-                {t("menu.addUsers")}
-              </MenuItem>
-            ),
+            addUsersAction,
             <MenuItem
               key="transfer"
               onClick={() => onActionHandler("transferOwnership")}
@@ -97,7 +99,7 @@ export const ActionsMenu: FC<Props> = ({
             <MenuItem key="delete" onClick={() => onActionHandler("delete")}>
               {t("menu.delete")}
             </MenuItem>,
-          ].filter(Boolean)
+          ]
         ) : (
           <MenuItem key="leave" onClick={() => onActionHandler("leave")}>
             {t("menu.leave")}
