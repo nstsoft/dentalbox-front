@@ -422,6 +422,7 @@ export const UA: ResourceLanguage = {
           confirm:
             "Ви впевнені, що хочете зробити це? Ви не зможете відмінити цю дію.",
         },
+        newRoom: 'Новиа кімната',
       },
     },
     components: {

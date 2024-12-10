@@ -86,9 +86,12 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
   useEffect(() => {
     if (message && message.action === WS_EVENTS.ROOM_CREATED) {
       const data = message.data as RoomResponse;
-      console.log("Room created:", message.data);
       const newRoom = parseRoom(data);
-      setRoomsList((roomsList) => [...roomsList, newRoom]);
+      setRoomsList((roomsList) => [newRoom, ...roomsList]);
+    }
+    if (message && message.action === WS_EVENTS.ROOM_REMOVED) {
+      const data = message.data as RoomResponse;
+      setRoomsList((roomsList) => roomsList.filter((r) => r.id !== data.id));
     }
   }, [message, parseRoom]);
 
