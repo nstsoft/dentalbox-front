@@ -1,8 +1,9 @@
-import { FC, useEffect, useState, useCallback } from "react";
+import { type FC, useEffect, useState, useCallback } from "react";
 import {
   useGetRoomsQuery,
   useGetUserSummaryQuery,
   useGetConnectionsQuery,
+  useCreateRoomMutation,
 } from "@api";
 import { useAuth, useNotifications } from "@hooks";
 import { RoomItem } from "./RoomItem";
@@ -11,6 +12,11 @@ import { WS_EVENTS, RoomResponse, Room } from "@types";
 import { ActionsMenu } from "./Menu";
 import { UsersMap } from "../../types";
 import { UsersFilter } from "./UsersFilter";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { ChatDrawer } from "../drawer";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   selectedRoom?: Room;
@@ -18,6 +24,7 @@ type Props = {
 };
 
 export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
+  const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const { data: rooms } = useGetRoomsQuery();
   const { data: usersSummary } = useGetUserSummaryQuery();
   const { data: connections, isSuccess } = useGetConnectionsQuery();
@@ -30,6 +37,9 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     mouseX: number;
     mouseY: number;
   } | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [createRoom] = useCreateRoomMutation();
+
   const usersList =
     usersSummary?.filter((u) => !u.deleted && user?._id !== u._id) ?? [];
 
@@ -111,6 +121,14 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
 
   return (
     <>
+      <Button
+        disabled={usersToAdd.length === 0}
+        className="new-chat-button"
+        onClick={() => setIsDrawerOpen(true)}
+      >
+        <AddCircleOutlineIcon />
+        <Typography variant="h6">{t("newChat")}</Typography>
+      </Button>
       <UsersFilter availableUsers={usersToAdd} />
       <div>
         {roomsList.map((room) => (
@@ -132,6 +150,12 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
           />
         )}
       </div>
+      <ChatDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        users={usersToAdd}
+        onSubmit={(newRoom) => createRoom(newRoom)}
+      />
     </>
   );
 };
