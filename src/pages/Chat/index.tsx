@@ -18,7 +18,7 @@ export const ChatPage = () => {
       </Grid2>
       <Grid2 size={9}>
         {selectedRoom ? (
-          <Messages />
+          <Messages selectedRoomId={selectedRoom.id} />
         ) : (
           <Box className="no-active">{t("noActive")}</Box>
         )}

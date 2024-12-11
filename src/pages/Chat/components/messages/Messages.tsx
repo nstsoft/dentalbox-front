@@ -1,15 +1,25 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SendIcon from "@mui/icons-material/Send";
+import { IconButton, VisuallyHiddenInput } from "@elements";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import { useGetMessagesQuery } from "@api";
 
-export const Messages = () => {
+type Props = {
+  selectedRoomId: string;
+};
+
+export const Messages: FC<Props> = ({ selectedRoomId }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
+  const {data: mesages} = useGetMessagesQuery(selectedRoomId);
   const [messages, setMessages] = useState([
     { id: 1, text: "Привіт! Як справи?", createdAt: "13/11/20024 12:00" },
     {
@@ -92,11 +102,37 @@ export const Messages = () => {
               handleSendMessage();
             }
           }}
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button
+                    component="label"
+                    role={undefined}
+                    variant="text"
+                    tabIndex={-1}
+                    sx={{ minWidth: "30px", p: 0 }}
+                  >
+                    <AttachFileIcon />
+                    <VisuallyHiddenInput
+                      id="messageFile"
+                      name="messageFile"
+                      type="file"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        const file = e.target.files?.[0];
+                        console.log(file);
+                      }}
+                    />
+                  </Button>
+                </InputAdornment>
+              ),
+            },
+          }}
           sx={{ marginRight: 1 }}
         />
-        <Button variant="contained" onClick={handleSendMessage}>
-          {t("send", { keyPrefix: "buttons" })}
-        </Button>
+        <IconButton onClick={handleSendMessage} sx={{ ml: 1, mr: 1 }}>
+          <SendIcon />
+        </IconButton>
       </Box>
     </Box>
   );

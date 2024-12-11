@@ -5,32 +5,33 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useAuth } from "@hooks";
+import { useAuth, useNotifications } from "@hooks";
 import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 type ToolBar = {
-  mailContentCount?: number;
   notificationsContentCount?: number;
 };
 
-export const RightToolbar: FC<ToolBar> = ({
-  mailContentCount,
-  notificationsContentCount,
-}) => {
+export const RightToolbar: FC<ToolBar> = ({ notificationsContentCount }) => {
+  const { unreadRooms } = useNotifications();
+  const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+
   if (!isLoggedIn) return null;
+
   return (
     <Toolbar
       variant="dense"
       sx={{ pl: isMobile ? 1 : 2, pr: isMobile ? 0 : 2 }}
     >
       <IconButton
-        onClick={() => {}}
+        onClick={() => navigate("/app/chat")}
         size={isMobile ? "medium" : "large"}
         aria-label="show 4 new mails"
         color="inherit"
       >
-        <Badge badgeContent={mailContentCount ?? 0} color="error">
+        <Badge badgeContent={unreadRooms ?? 0} color="error">
           <MailIcon />
         </Badge>
       </IconButton>

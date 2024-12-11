@@ -5,11 +5,12 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Badge from "@mui/material/Badge";
-
+import { IconButton } from "@elements";
+import { useNotifications } from "@hooks";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useGetMessagesQuery } from "@api";
 
 import "../../chat.scss";
-import { IconButton } from "@elements";
 
 type Props = {
   room: Room;
@@ -24,6 +25,9 @@ export const RoomItem: FC<Props> = ({
   selected,
   openMenu,
 }) => {
+  const { roomNotifications } = useNotifications();
+  const { data: messages } = useGetMessagesQuery(room.id);
+
   const renderAvatar = (user: UserSummaryListItem & { online: boolean }) => (
     <Badge
       overlap="circular"
@@ -60,7 +64,7 @@ export const RoomItem: FC<Props> = ({
 
   return (
     <Box
-      className={`room-item ${selected && "selected"}`}
+      className={`room-item ${selected ? "selected" : ""}`}
       onClick={() => setSelectedRoom(room)}
     >
       <Box className="room-item__avatar">
@@ -73,21 +77,29 @@ export const RoomItem: FC<Props> = ({
         ))}
       </Box>
 
-      <Box className="room-item-name">
-        <Typography variant="h6">{room.name}</Typography>
+      <Box className="room-item-message">
+        <Typography className="name" variant="h6">
+          {room.name}
+        </Typography>
+        {messages && messages.length > 0 && roomNotifications && (
+          <Typography className="last-message" variant="body2">
+            {
+              messages?.find(
+                (message) => message.id === roomNotifications?.[room.id]?.last
+              )?.message
+            }
+          </Typography>
+        )}
       </Box>
-      <IconButton
-        onClick={openMenu}
-        sx={{
-          width: 30,
-          height: 30,
-          maxWidth: 30,
-          position: "absolute",
-          right: 20,
-        }}
-      >
-        <MoreVertIcon />
-      </IconButton>
+      <Box className="room-item__actions">
+        <Badge
+          badgeContent={roomNotifications?.[room.id]?.count ?? 0}
+          color="error"
+        />
+        <IconButton className="icon-button" onClick={openMenu}>
+          <MoreVertIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 };

@@ -29,7 +29,7 @@ export const Header: FC = () => {
           <WorkspaceBadge />
         </Toolbar>
         <Toolbar sx={{ p: 0 }}>
-          <RightToolbar mailContentCount={10} />
+          <RightToolbar />
           <UserBadge />
           <AuthButtons />
           <LanguageSelector />

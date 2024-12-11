@@ -51,12 +51,26 @@
     padding: 10px;
     position: relative;
 
-    &-name {
+    &-message {
       margin-left: 10px;
+      max-width: 70%;
+
+      .name {
+        font-size: 14px;
+      }
+
+      .last-message {
+        font-size: 12px;
+        color: #999;
+        font-style: italic;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     &.selected {
-      background-color: #ccc;
+      background-color: #d4d3d3;
     }
 
     &__avatar {
@@ -73,6 +87,20 @@
         color: #fff;
         background-position: center;
         background-size: cover;
+      }
+    }
+
+    &__actions {
+      position: absolute;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .icon-button {
+        width: 30;
+        height: 30;
+        max-width: 30;
       }
     }
   }

@@ -44,6 +44,10 @@ export enum TREATMENT_PLAN_TAG {
   TREATMENT_PLAN = "TREATMENT_PLAN",
 }
 
+export enum MESSAGE_TAG {
+  MESSAGES = "MESSAGES",
+}
+
 export enum PAYMENT_TAG {
   PAYMENT = "PAYMENT",
   PAYMENT_DELETE = "PAYMENT_DELETE",
@@ -102,6 +106,7 @@ export enum REDUCER {
   TREATMENT_PLAN = "TREATMENT_PLAN",
   FILE = "FILE",
   CHAT = "CHAT",
+  MESSAGE = "MESSAGE",
 }
 
 export enum CACHE_KEYS {
