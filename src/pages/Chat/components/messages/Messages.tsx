@@ -12,14 +12,21 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useGetMessagesQuery } from "@api";
+import { Room } from "@types";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Typography from "@mui/material/Typography";
+import { isMobile } from "react-device-detect";
+
+import "../../chat.scss";
 
 type Props = {
-  selectedRoomId: string;
+  room: Room;
+  setSelectedRoom: (room?: Room) => void;
 };
 
-export const Messages: FC<Props> = ({ selectedRoomId }) => {
+export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
-  const {data: mesages} = useGetMessagesQuery(selectedRoomId);
+  const { data: mesages } = useGetMessagesQuery(room.id);
   const [messages, setMessages] = useState([
     { id: 1, text: "Привіт! Як справи?", createdAt: "13/11/20024 12:00" },
     {
@@ -45,33 +52,20 @@ export const Messages: FC<Props> = ({ selectedRoomId }) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
-      }}
-    >
-      <Paper
-        elevation={0}
-        sx={{
-          flexGrow: 1,
-          overflowY: "auto",
-          padding: 2,
-        }}
-      >
+    <Box className="room-item-messages">
+      <Box className="room-item-messages__header">
+        {isMobile && (
+          <IconButton onClick={() => setSelectedRoom(undefined)}>
+            <ArrowBackIcon />
+          </IconButton>
+        )}
+        <Typography variant="h3">{room.name}</Typography>
+      </Box>
+      <Paper className="room-item-messages__list" elevation={0}>
         <List>
           {messages.map((message) => (
             <Box key={message.id} sx={{ display: "flex" }}>
-              <ListItem
-                sx={{
-                  width: "fit-content",
-                  backgroundColor: "#f5f5f5",
-                  mb: 1,
-                  mr: 1,
-                }}
-              >
+              <ListItem className="message-item">
                 <ListItemText primary={message.text} />
               </ListItem>
               <ListItemText
@@ -83,14 +77,7 @@ export const Messages: FC<Props> = ({ selectedRoomId }) => {
         </List>
       </Paper>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: 1,
-          borderTop: "1px solid #ccc",
-        }}
-      >
+      <Box className="room-item-messages__input">
         <TextField
           fullWidth
           variant="outlined"
