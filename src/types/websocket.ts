@@ -8,7 +8,8 @@ export enum WS_EVENTS {
   NEW_MESSAGE = "NEW_MESSAGE",
 }
 
-export type SocketMessage<T = { [key: string]: any }> = {
-  action: WS_EVENTS;
-  data: T;
-};
+import { Message } from "./message";
+
+export type SocketMessage<T = { [key: string]: any }> =
+  | { action: WS_EVENTS.NEW_MESSAGE; data: Message }
+  | { action: WS_EVENTS; data: T };

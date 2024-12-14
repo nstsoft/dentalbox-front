@@ -4,6 +4,7 @@ import {
   useGetUserSummaryQuery,
   useGetConnectionsQuery,
   useCreateRoomMutation,
+  useLazyReadMessagesInGroupQuery,
 } from "@api";
 import { useAuth, useNotifications } from "@hooks";
 import { RoomItem } from "./RoomItem";
@@ -18,10 +19,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { ChatDrawer } from "../drawer";
 import { useTranslation } from "react-i18next";
 
-type Props = {
-  selectedRoom?: Room;
-  setSelectedRoom: (room?: Room) => void;
-};
+type Props = { selectedRoom?: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
@@ -39,6 +37,9 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
   } | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [createRoom] = useCreateRoomMutation();
+  const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
+
+  const { readRoom } = useNotifications();
 
   const usersList =
     usersSummary?.filter((u) => !u.deleted && user?._id !== u._id) ?? [];
@@ -47,8 +48,6 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     roomsList.every((room) => !room?.users.some((r) => r._id === u._id))
   );
 
-  const notifications = useNotifications();
-
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setMenu({
       mouseX: e.clientX - 2,
@@ -56,9 +55,12 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
     });
   };
 
-  const handleClose = () => {
-    setMenu(null);
-  };
+  useEffect(() => {
+    if (selectedRoom) {
+      readRoom(selectedRoom.id);
+      readMessagesInGroup({ room: selectedRoom.id });
+    }
+  }, [readMessagesInGroup, readRoom, selectedRoom]);
 
   useEffect(() => {
     if (usersSummary?.length) {
@@ -144,7 +146,7 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
           <ActionsMenu
             room={selectedRoom}
             open={!!menu}
-            onClose={handleClose}
+            onClose={() => setMenu(null)}
             anchorPosition={{ top: menu?.mouseY ?? 0, left: menu?.mouseX ?? 0 }}
             usersList={usersList}
           />

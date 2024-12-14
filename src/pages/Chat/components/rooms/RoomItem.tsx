@@ -8,7 +8,6 @@ import Badge from "@mui/material/Badge";
 import { IconButton } from "@elements";
 import { useNotifications } from "@hooks";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useGetMessagesQuery } from "@api";
 
 import "../../chat.scss";
 
@@ -26,7 +25,6 @@ export const RoomItem: FC<Props> = ({
   openMenu,
 }) => {
   const { roomNotifications } = useNotifications();
-  const { data: messages } = useGetMessagesQuery(room.id);
 
   const renderAvatar = (user: UserSummaryListItem & { online: boolean }) => (
     <Badge
@@ -81,13 +79,9 @@ export const RoomItem: FC<Props> = ({
         <Typography className="name" variant="h6">
           {room.name}
         </Typography>
-        {messages && messages.length > 0 && roomNotifications && (
+        {roomNotifications?.[room.id] && (
           <Typography className="last-message" variant="body2">
-            {
-              messages?.find(
-                (message) => message.id === roomNotifications?.[room.id]?.last
-              )?.message
-            }
+            {roomNotifications?.[room.id]?.last}
           </Typography>
         )}
       </Box>

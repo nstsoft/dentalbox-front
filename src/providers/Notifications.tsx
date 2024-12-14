@@ -26,15 +26,21 @@ export const NotificationsProvider: FC<{
     }
   }, [data, isSuccess]);
 
+  useEffect(() => {
+    setUnreadRooms(Object.keys(roomNotifications ?? {}).length);
+  }, [roomNotifications]);
+
   const receiveMessage = useCallback(
     (message: Message) => {
-      if (message.id === lastMessageId) return;
+      const userId = JSON.parse(localStorage.getItem("user") ?? "{}")._id;
+
+      if (message.id === lastMessageId || message.author === userId) return;
+
       setLastMessageId(message.id);
-      setUnreadRooms((prev) => prev + 1);
       setRoomNotifications((prev) => ({
         ...prev,
         [message.room]: {
-          count: (prev?.[message.room].count ?? 0) + 1,
+          count: (prev?.[message.room]?.count ?? 0) + 1,
           last: message.message,
         },
       }));
@@ -42,9 +48,23 @@ export const NotificationsProvider: FC<{
     [lastMessageId]
   );
 
+  const readRoom = useCallback((room: string) => {
+    setRoomNotifications(
+      (prev) =>
+        prev &&
+        Object.fromEntries(Object.entries(prev).filter(([key]) => key !== room))
+    );
+  }, []);
+
   return (
     <NotificationsContext.Provider
-      value={{ roomNotifications, unreadRooms, receiveMessage, getStats }}
+      value={{
+        roomNotifications,
+        readRoom,
+        unreadRooms,
+        receiveMessage,
+        getStats,
+      }}
     >
       {children}
     </NotificationsContext.Provider>

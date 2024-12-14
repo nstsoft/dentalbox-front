@@ -9,4 +9,5 @@ export interface NotificationsContextType {
   unreadRooms: number;
   receiveMessage: (message: Message) => void;
   getStats: () => void;
+  readRoom: (room: string) => void;
 }

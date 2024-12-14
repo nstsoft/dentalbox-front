@@ -4,9 +4,20 @@ import type {
   ConnectionResponse,
   RoomRequest,
   Stats,
+  Message,
 } from "@types";
 import { CHAT_TAG, REDUCER } from "../constants";
 import { chatBaseQuery } from "./baseQuery";
+import { createQueryStringFromObject } from "@utils";
+
+type ExclusiveKey = { id?: string; room?: string; timestamp?: number };
+
+type MessageResponse = {
+  Items: Message[];
+  ExclusiveKey?: ExclusiveKey;
+};
+
+type MessagesQuery = { room: string; exclusiveKey?: ExclusiveKey };
 
 export const chatApi = createApi({
   reducerPath: REDUCER.CHAT,
@@ -50,6 +61,26 @@ export const chatApi = createApi({
       query: (roomId) => ({ url: `/room/${roomId}`, method: "DELETE" }),
     }),
 
+    getMessages: builder.query<MessageResponse, MessagesQuery>({
+      query: ({ room, exclusiveKey }) => ({
+        url: `/message/${room}?${createQueryStringFromObject(
+          exclusiveKey ?? {}
+        )}`,
+      }),
+      providesTags: () => [{ type: CHAT_TAG.MESSAGES }],
+    }),
+
+    readMessagesInGroup: builder.query<
+      unknown,
+      { room: string; messageids?: string[] }
+    >({
+      query: (body) => ({
+        url: `/message/read`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+
     transferRoomOwnership: builder.mutation<
       void,
       { roomId: string; owner: string }
@@ -73,4 +104,7 @@ export const {
   useDeleteTheRoomMutation,
   useTransferRoomOwnershipMutation,
   useLazyGetStatsQuery,
+  useGetMessagesQuery,
+  useLazyReadMessagesInGroupQuery,
+  useLazyGetMessagesQuery,
 } = chatApi;
