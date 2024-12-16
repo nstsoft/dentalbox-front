@@ -11,7 +11,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 
 type Props = {
   user: User;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  setUser: (user: Partial<User>) => void;
   isDataChanged: boolean;
   setIsDataChanged: (val: boolean) => void;
   onSubmit: () => void;
@@ -44,7 +44,7 @@ export const SecondaryInfo: FC<Props> = ({
             value={user.address}
             onChange={(e) => {
               setIsDataChanged(true);
-              setUser((prev) => prev && { ...prev, address: e.target.value });
+              setUser({ address: e.target.value });
             }}
           />
         </Box>
@@ -55,13 +55,7 @@ export const SecondaryInfo: FC<Props> = ({
             value={user.dob ? days(user.dob) : null}
             onChange={(newValue: Dayjs | null) => {
               setIsDataChanged(true);
-              setUser(
-                (prev) =>
-                  prev && {
-                    ...prev,
-                    dob: newValue?.toString() ?? "",
-                  }
-              );
+              setUser({ dob: newValue?.toString() ?? "" });
             }}
             disableFuture
             onError={(err) => setDobError(err?.toString())}

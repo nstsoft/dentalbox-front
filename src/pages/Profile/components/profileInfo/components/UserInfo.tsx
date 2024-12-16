@@ -18,7 +18,7 @@ import { VisuallyHiddenInput } from "@elements";
 
 type Props = {
   user: User;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: (user: Partial<User>) => void;
   isDataChanged: boolean;
   onUpload: (file: File) => void;
   setIsDataChanged: (val: boolean) => void;
@@ -54,7 +54,7 @@ export const UserInfo: FC<Props> = ({
               variant="standard"
               value={user[prop]}
               onChange={(e) => {
-                setUser((prev) => prev && { ...prev, [prop]: e.target.value });
+                setUser({ [prop]: e.target.value });
                 setIsDataChanged(true);
               }}
             />
@@ -68,7 +68,7 @@ export const UserInfo: FC<Props> = ({
           value={user.phone}
           onChange={(phone: string) => {
             setIsDataChanged(true);
-            setUser((prev) => prev && { ...prev, phone });
+            setUser({ phone });
           }}
           variant="filled"
           error={!user.phone || !!errors?.phone}
@@ -157,13 +157,7 @@ export const UserInfo: FC<Props> = ({
                     const reader = new FileReader();
                     onUpload?.(file);
                     reader.onloadend = () => {
-                      setUser(
-                        (prev) =>
-                          prev && {
-                            ...prev,
-                            image: `${reader.result}`,
-                          }
-                      );
+                      setUser({ image: `${reader.result}` });
                       setCacheDate(days());
                     };
                     reader.readAsDataURL(file);

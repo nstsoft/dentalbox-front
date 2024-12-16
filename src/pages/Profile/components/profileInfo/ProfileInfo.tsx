@@ -8,6 +8,7 @@ import { validateLogin } from "@utils";
 import { SecondaryInfo } from "./components/SecondaryInfo";
 import { Notes } from "@components";
 import { useTranslation } from "react-i18next";
+import { User } from "@types";
 
 import "./styles.scss";
 
@@ -52,15 +53,19 @@ export const ProfileInfo = () => {
   const onEditUserInfo = () => {
     if (!userData) return;
     const isFormValid = validateForm();
-    if (isFormValid) {
-      const data = userData;
-      if (userData.dob) {
-        data.dob = days(data.dob).toISOString();
-      }
-      if (userData.phone) {
-        data.phone = data.phone.replace(/\s+/g, "");
-      }
+    if (!isFormValid) return;
+
+    const data = userData;
+    if (userData.dob) {
+      data.dob = days(data.dob).toISOString();
     }
+    if (userData.phone) {
+      data.phone = data.phone.replace(/\s+/g, "");
+    }
+  };
+
+  const userUpdateHandler = (user: Partial<User>) => {
+    setUserData((prev) => ({ ...prev, ...user } as User));
   };
 
   if (!userData) return null;
@@ -70,7 +75,7 @@ export const ProfileInfo = () => {
       <Box className="wrapper-item main">
         <UserInfo
           user={userData}
-          setUser={setUserData}
+          setUser={userUpdateHandler}
           isDataChanged={isDataChanged.primary}
           setIsDataChanged={(primary) =>
             setIsDataChanged((prev) => ({ ...prev, primary }))
@@ -87,7 +92,7 @@ export const ProfileInfo = () => {
         <SecondaryInfo
           errors={{ dob: dobError }}
           user={userData}
-          setUser={setUserData}
+          setUser={userUpdateHandler}
           isDataChanged={isDataChanged.secondary}
           setIsDataChanged={(secondary) =>
             setIsDataChanged((prev) => ({ ...prev, secondary }))

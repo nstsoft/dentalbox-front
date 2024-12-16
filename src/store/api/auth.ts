@@ -19,7 +19,7 @@ export const authApi = createApi({
         }
 
         const stringData = JSON.stringify({
-          workspace,
+          workspace: { name: workspace.name, description: workspace.description },
           user,
           productId,
           priceId,
