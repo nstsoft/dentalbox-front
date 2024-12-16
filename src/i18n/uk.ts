@@ -424,6 +424,17 @@ export const UA: ResourceLanguage = {
         },
         newRoom: 'Новиа кімната',
       },
+      profile: {
+        profile: "Профіль",
+        address: "Адреса",
+        dob: "Дата народження",
+        notes: "Нотатки",
+        surname: "Прізвище",
+        name: "Ім'я",
+        secondName: "По-батькові",
+        email: "Емейл",
+        phone: "Телефон",
+      }
     },
     components: {
       toothMapLegend: {

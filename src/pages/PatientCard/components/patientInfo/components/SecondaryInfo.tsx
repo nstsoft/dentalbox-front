@@ -14,8 +14,6 @@ import { DatePicker } from "@mui/x-date-pickers";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useGetMeQuery } from "@api";
 
-import "../style.scss";
-
 type Props = {
   patient: Patient;
   setPatient: Dispatch<SetStateAction<Patient | undefined>>;

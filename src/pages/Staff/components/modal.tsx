@@ -57,7 +57,7 @@ export const StaffModal: FC<StaffModalProps> = ({
         name: selectedUser.name,
         secondName: selectedUser.secondName,
         surname: selectedUser.surname,
-        dob: selectedUser?.dob?.toString() ?? "",
+        dob: selectedUser?.dob ?? "",
         roles: selectedUser.roles.map((role) => role.role),
         image: selectedUser.image,
       });

@@ -133,57 +133,55 @@ export const PatientInfo: FC<Props> = ({ patientId }) => {
   if (!patient || !anamnesis) return null;
 
   return (
-    <div className="patient-info-section">
-      <Box className="patient-info-section-wrapper">
-        <Box className="wrapper-item main">
-          <MainInfo
-            onUpload={(file: File) => {
-              setIsDataChanged((prev) => ({ ...prev, primary: true }));
-              setPatientImage(file);
-            }}
-            errors={{ email: emailError, phone: phoneError }}
-            patient={patient}
-            setPatient={setPatient}
-            setIsDataChanged={(primary) =>
-              setIsDataChanged((prev) => ({ ...prev, primary }))
-            }
-            isDataChanged={isDataChanged.primary}
-            onSubmit={onEditPatientInfo}
-          />
-        </Box>
-        <Box className="wrapper-item secondary">
-          <SecondaryInfo
-            errors={{ dob: birthDateError }}
-            patient={patient}
-            setPatient={setPatient}
-            isDataChanged={isDataChanged.secondary}
-            setIsDataChanged={(secondary) =>
-              setIsDataChanged((prev) => ({ ...prev, secondary }))
-            }
-            onSubmit={onEditPatientInfo}
-            setBirthDateError={setBirthDateError}
-          />
-          <Notes
-            value={patient?.notes ?? ""}
-            setValue={(value) => setPatient({ ...patient, notes: value })}
-            label={t("notes")}
-            onConfirm={() =>
-              updatePatient({ _id: patient._id, notes: patient.notes })
-            }
-          />
-        </Box>
-        <Box className="wrapper-item anamnesis">
-          <AnamnesisInfo
-            anamnesis={anamnesis}
-            setAnamnesis={setAnamnesis}
-            isDataChanged={isDataChanged.anamnesis}
-            setIsDataChanged={(anamnesis) =>
-              setIsDataChanged((prev) => ({ ...prev, anamnesis }))
-            }
-            onSubmit={onSubmitEditAnamnesis}
-          />
-        </Box>
+    <Box className="patient-info-section-wrapper">
+      <Box className="wrapper-item main">
+        <MainInfo
+          onUpload={(file: File) => {
+            setIsDataChanged((prev) => ({ ...prev, primary: true }));
+            setPatientImage(file);
+          }}
+          errors={{ email: emailError, phone: phoneError }}
+          patient={patient}
+          setPatient={setPatient}
+          setIsDataChanged={(primary) =>
+            setIsDataChanged((prev) => ({ ...prev, primary }))
+          }
+          isDataChanged={isDataChanged.primary}
+          onSubmit={onEditPatientInfo}
+        />
       </Box>
-    </div>
+      <Box className="wrapper-item secondary">
+        <SecondaryInfo
+          errors={{ dob: birthDateError }}
+          patient={patient}
+          setPatient={setPatient}
+          isDataChanged={isDataChanged.secondary}
+          setIsDataChanged={(secondary) =>
+            setIsDataChanged((prev) => ({ ...prev, secondary }))
+          }
+          onSubmit={onEditPatientInfo}
+          setBirthDateError={setBirthDateError}
+        />
+        <Notes
+          value={patient?.notes ?? ""}
+          setValue={(value) => setPatient({ ...patient, notes: value })}
+          label={t("notes")}
+          onConfirm={() =>
+            updatePatient({ _id: patient._id, notes: patient.notes })
+          }
+        />
+      </Box>
+      <Box className="wrapper-item anamnesis">
+        <AnamnesisInfo
+          anamnesis={anamnesis}
+          setAnamnesis={setAnamnesis}
+          isDataChanged={isDataChanged.anamnesis}
+          setIsDataChanged={(anamnesis) =>
+            setIsDataChanged((prev) => ({ ...prev, anamnesis }))
+          }
+          onSubmit={onSubmitEditAnamnesis}
+        />
+      </Box>
+    </Box>
   );
 };

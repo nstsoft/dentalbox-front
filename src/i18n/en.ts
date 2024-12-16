@@ -423,6 +423,17 @@ export const EN: ResourceLanguage = {
         },
         newRoom: 'New room',
       },
+      profile: {
+        profile: "Profile",
+        address: "Address",
+        dob: "Date of birth",
+        notes: "Notes",
+        surname: "Surname",
+        name: "Name",
+        secondName: "Second Name",
+        email: "Email",
+        phone: "Phone",
+      }
     },
     components: {
       toothMapLegend: {
