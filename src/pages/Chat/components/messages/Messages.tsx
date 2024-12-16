@@ -1,57 +1,38 @@
 import "./style.scss";
-import { ChangeEvent, FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import { isMobile } from "react-device-detect";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import SendIcon from "@mui/icons-material/Send";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import Button from "@mui/material/Button";
-import InputAdornment from "@mui/material/InputAdornment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import { IconButton, VisuallyHiddenInput } from "@elements";
+import { IconButton } from "@elements";
 import { useLazyGetMessagesQuery, useLazyReadMessagesInGroupQuery } from "@api";
 import { Message, Room } from "@types";
 import { useWebsocket, useAuth } from "@hooks";
 import { WS_EVENTS } from "@types";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import "../../chat.scss";
 
-type ExclusiveKey = { id?: string; room?: string; timestamp?: number };
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
 
-  const [input, setInput] = useState("");
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
   const { message } = useWebsocket();
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [exclusiveKey, setExclusiveKey] = useState<ExclusiveKey | undefined>();
-  const [fetchMessages, { data }] = useLazyGetMessagesQuery();
+  const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState(data?.Items ?? []);
-
-  const containerRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchMessages({ room: room.id });
   }, [fetchMessages, room.id]);
-
-  useEffect(() => {
-    if (exclusiveKey) {
-      setIsLoading(true);
-      fetchMessages({ room: room.id, exclusiveKey });
-    }
-  }, [exclusiveKey, fetchMessages, room.id]);
 
   useEffect(() => {
     if (
@@ -69,48 +50,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
 
   useEffect(() => {
     if (data?.Items.length) {
-      setMessages((prev) => data.Items.concat(prev));
+      setMessages((prev) => prev.concat(data.Items));
     }
-
-    setIsLoading(false);
   }, [data]);
-
-  useEffect(() => {
-    const current = loaderRef.current;
-    if (!current) {
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
-          console.log("LOAD MORE");
-          setTimeout(() => {
-            setExclusiveKey(data?.ExclusiveKey);
-          }, 0);
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    observer.observe(current);
-    return () => observer.unobserve(current);
-  }, [data?.ExclusiveKey, isLoading]);
-
-  const handleSendMessage = () => {};
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const handleWheel = (event: HTMLElementEventMap["wheel"]) => {
-        event.preventDefault();
-        if (containerRef.current) {
-          containerRef.current.scrollTop -= event.deltaY;
-        }
-      };
-      containerRef.current.addEventListener("wheel", handleWheel, {
-        passive: false,
-      });
-    }
-  }, []);
 
   return (
     <Box className="room-item-messages">
@@ -122,19 +64,39 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
         )}
         <Typography variant="h3">{room.name}</Typography>
       </Box>
-      <Paper
-        ref={containerRef}
-        className="room-item-messages__list"
-        elevation={0}
-      >
-        <Box className="room-item-messages__list-container">
-          <List className="messages-list">
+      <Paper className="room-item-messages__list" elevation={0}>
+        <div
+          id="scrollableDiv"
+          style={{
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
+        >
+          <InfiniteScroll
+            inverse={true}
+            style={{ display: "flex", flexDirection: "column-reverse" }}
+            dataLength={messages.length}
+            next={() =>
+              fetchMessages({ room: room.id, exclusiveKey: data?.ExclusiveKey })
+            }
+            hasMore={isUninitialized || !!data?.ExclusiveKey}
+            height="60vh"
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>The end</b>
+              </p>
+            }
+            loader={<h4>Loading...</h4>}
+          >
             {messages.map((message, index) => (
               <Box
                 className="message-item-container"
                 ref={index === 0 ? lastMessageRef : null}
                 key={message.id}
-                sx={{ display: "flex" }}
+                sx={{
+                  display: "flex",
+                }}
               >
                 <ListItem className="message-item">
                   <ListItemText primary={message.message} />
@@ -145,64 +107,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                 />
               </Box>
             ))}
-          </List>
-
-          <div ref={messagesEndRef} />
-          <div ref={loaderRef} style={{ textAlign: "center", padding: "10px" }}>
-            {isLoading && <div>Loading...</div>}
-            {!exclusiveKey && (
-              <div style={{ textAlign: "center", padding: "10px" }}>
-                no messages
-              </div>
-            )}
-          </div>
-        </Box>
+          </InfiniteScroll>
+        </div>
       </Paper>
-
-      <Box className="room-item-messages__input">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder={t("writeMessage")}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              handleSendMessage();
-            }
-          }}
-          slotProps={{
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                    component="label"
-                    role={undefined}
-                    variant="text"
-                    tabIndex={-1}
-                    sx={{ minWidth: "30px", p: 0 }}
-                  >
-                    <AttachFileIcon />
-                    <VisuallyHiddenInput
-                      id="messageFile"
-                      name="messageFile"
-                      type="file"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const file = e.target.files?.[0];
-                        console.log(file);
-                      }}
-                    />
-                  </Button>
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{ marginRight: 1 }}
-        />
-        <IconButton onClick={handleSendMessage} sx={{ ml: 1, mr: 1 }}>
-          <SendIcon />
-        </IconButton>
-      </Box>
     </Box>
   );
 };

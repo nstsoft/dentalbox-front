@@ -1,11 +1,9 @@
 .room-item-messages {
   .room-item-messages__list {
     height: 40vh;
-    transform: rotate(180deg);
-    direction: rtl;
+
     .room-item-messages__list-container {
       .messages-list {
-        transform: rotate(-180deg);
         .message-item-container {
           display: flex;
           flex-direction: row-reverse;
