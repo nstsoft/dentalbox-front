@@ -1,6 +1,5 @@
 import "./style.scss";
-import { FC, useEffect, useState, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { type FC, useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import { isMobile } from "react-device-detect";
 import ListItem from "@mui/material/ListItem";
@@ -14,14 +13,13 @@ import { Message, Room } from "@types";
 import { useWebsocket, useAuth } from "@hooks";
 import { WS_EVENTS } from "@types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { MessageInput } from "./MessageInput";
 
 import "../../chat.scss";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
-  const { t } = useTranslation("", { keyPrefix: "pages.chat" });
-
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
   const { message } = useWebsocket();
   const { user } = useAuth();
@@ -110,6 +108,8 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
           </InfiniteScroll>
         </div>
       </Paper>
+
+      <MessageInput roomId={room.id} />
     </Box>
   );
 };

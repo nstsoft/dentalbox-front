@@ -8,7 +8,7 @@ type PatientNameFilter = { search?: string };
 type UpdatePatient = Omit<Patient, "image" | "workspace"> & {
   image?: File;
 };
-type CreatePatient = Omit<UpdatePatient, "_id">;
+type CreatePatient = Omit<UpdatePatient, "_id" | "storage">;
 
 const invalidatesTags = [
   PATIENT_TAG.PATIENT_LIST,

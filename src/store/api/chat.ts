@@ -70,6 +70,28 @@ export const chatApi = createApi({
       providesTags: () => [{ type: CHAT_TAG.MESSAGES }],
     }),
 
+    createMessage: builder.mutation<void, { room: string; message: string, files?: File[] }>({
+      query: ({ files, room, message }) => {
+        const formData = new FormData();
+        if (files?.length) {
+          files.forEach((file) => formData.append("files", file));
+        }
+
+        const stringData = JSON.stringify({
+          room,
+          message
+        });
+
+        formData.append("data", stringData);
+
+        return {
+          body: formData,
+          url: "message",
+          method: "POST",
+        };
+      },
+    }),
+
     readMessagesInGroup: builder.query<
       unknown,
       { room: string; messageids?: string[] }
@@ -107,4 +129,5 @@ export const {
   useGetMessagesQuery,
   useLazyReadMessagesInGroupQuery,
   useLazyGetMessagesQuery,
+  useCreateMessageMutation,
 } = chatApi;

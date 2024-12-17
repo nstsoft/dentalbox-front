@@ -108,7 +108,7 @@ export const PatientsTable: FC<Props> = ({
 
   if (isLoading) return <Loader />;
 
-  if (!data) return <NoData />;
+  if (!data || !data.data.length) return <NoData />;
 
   return (
     <div>

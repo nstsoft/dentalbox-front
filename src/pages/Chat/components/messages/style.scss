@@ -12,4 +12,18 @@
       }
     }
   }
+
+  &__input {
+    .files {
+      display: flex;
+      gap: 6px;
+
+      .file-name {
+        display: flex;
+        align-items: center;
+        cursor: default;
+        gap: 4px;
+      }
+    }
+  }
 }
