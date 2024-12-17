@@ -14,8 +14,15 @@
   }
 
   &__input {
+    .MuiInputAdornment-root {
+      max-height: 100%;
+    }
+
     .files {
+      padding: 10px 0;
+      max-width: 200px;
       display: flex;
+      flex-direction: column;
       gap: 6px;
 
       .file-name {

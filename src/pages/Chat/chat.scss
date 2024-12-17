@@ -129,7 +129,7 @@
 
     &__list {
       flex-grow: 1;
-      overflow-y: auto;
+      overflow-y: hidden;
       padding: 16px;
 
       .message-item {
