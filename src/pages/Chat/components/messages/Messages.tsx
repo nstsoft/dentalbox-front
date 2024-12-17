@@ -16,6 +16,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { MessageInput } from "./MessageInput";
 
 import "../../chat.scss";
+import { Divider } from "@mui/material";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -38,11 +39,14 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
       message.data.room === room.id
     ) {
       console.log("NEW MESSAGE", message.data);
-      setMessages((prev) => prev.concat(message.data as Message));
+      setMessages((prev) => [message.data as Message, ...prev]);
       if (message.data.author !== user?._id) {
         readMessagesInGroup({ room: room.id, messageids: [message.data.id] });
       }
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
     }
   }, [message, readMessagesInGroup, room.id, user?._id]);
 
@@ -63,14 +67,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
         <Typography variant="h3">{room.name}</Typography>
       </Box>
       <Paper className="room-item-messages__list" elevation={0}>
-        <div
-          id="scrollableDiv"
-          style={{
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-        >
+        <div className="scrollable-div">
           <InfiniteScroll
             inverse={true}
             style={{ display: "flex", flexDirection: "column-reverse" }}
@@ -87,14 +84,14 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
             }
             loader={<h4>Loading...</h4>}
           >
+            <div ref={messagesEndRef} />
+            <Box className="messages-divider"></Box>
             {messages.map((message, index) => (
               <Box
                 className="message-item-container"
                 ref={index === 0 ? lastMessageRef : null}
                 key={message.id}
-                sx={{
-                  display: "flex",
-                }}
+                sx={{ display: "flex" }}
               >
                 <ListItem className="message-item">
                   <ListItemText primary={message.message} />

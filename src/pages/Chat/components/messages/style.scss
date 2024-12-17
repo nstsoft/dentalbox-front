@@ -1,8 +1,14 @@
 .room-item-messages {
   .room-item-messages__list {
     height: 40vh;
-
-    .room-item-messages__list-container {
+    .scrollable-div {
+      overflow: auto;
+      display: flex;
+      flex-direction: column-reverse;
+      .messages-divider {
+        width: 100%;
+        padding: 20px;
+      }
       .messages-list {
         .message-item-container {
           display: flex;
