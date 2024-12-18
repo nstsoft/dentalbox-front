@@ -13,7 +13,6 @@ import {
 import type { Patient } from "@types";
 import EditIcon from "@mui/icons-material/Edit";
 import FormHelperText from "@mui/material/FormHelperText";
-import days from "dayjs";
 import { VisuallyHiddenInput } from "@elements";
 import CardMedia from "@mui/material/CardMedia";
 import { useTranslation } from "react-i18next";
@@ -44,7 +43,6 @@ export const MainInfo: FC<Props> = ({
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-  const [cacheDate, setCacheDate] = useState(days());
 
   const renderEditModeInputs = () => {
     const props = [
@@ -118,18 +116,6 @@ export const MainInfo: FC<Props> = ({
     );
   };
 
-  const getAvatar = () => {
-    if (!patient.image) return AvatarImage;
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    if (!patient?.image) {
-      return "";
-    }
-    if (urlPattern.test(patient?.image)) {
-      return `${patient.image}?${cacheDate.format("YYYYMMDDHHmmss")}`;
-    }
-    return patient.image;
-  };
-
   return (
     <InfoCard
       className="patient-main-info-card"
@@ -144,7 +130,7 @@ export const MainInfo: FC<Props> = ({
           <CardMedia
             className="media-card"
             component="img"
-            image={getAvatar()}
+            image={patient.image ?? AvatarImage}
             alt={patient.surname}
           />
           {isEditMode && (
@@ -179,7 +165,6 @@ export const MainInfo: FC<Props> = ({
                             image: `${reader.result}`,
                           }
                       );
-                      setCacheDate(days());
                     };
                     reader.readAsDataURL(file);
                   }
