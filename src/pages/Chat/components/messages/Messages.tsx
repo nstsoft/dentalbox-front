@@ -8,7 +8,11 @@ import Paper from "@mui/material/Paper";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import { IconButton } from "@elements";
-import { useLazyGetMessagesQuery, useLazyReadMessagesInGroupQuery } from "@api";
+import {
+  useGetUserSummaryQuery,
+  useLazyGetMessagesQuery,
+  useLazyReadMessagesInGroupQuery,
+} from "@api";
 import { Message, Room } from "@types";
 import { useWebsocket, useAuth } from "@hooks";
 import { WS_EVENTS } from "@types";
@@ -19,10 +23,15 @@ import days from "dayjs";
 import "../../chat.scss";
 import "./style.scss";
 import ImageGallery from "./ImageGallery";
+import Avatar from "@mui/material/Avatar";
+import { generateColor } from "../../utils";
+import Divider from "@mui/material/Divider";
+import { useTranslation } from "react-i18next";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
+  const { i18n } = useTranslation();
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
   const { message } = useWebsocket();
   const { user } = useAuth();
@@ -30,8 +39,10 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState(data?.Items ?? []);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-
-  console.log(messages);
+  const { data: usersSummary } = useGetUserSummaryQuery();
+  const contact = usersSummary?.find(
+    (u) => u._id === messages.find((m) => m.author !== user?._id)?.author
+  );
 
   useEffect(() => {
     fetchMessages({ room: room.id });
@@ -60,6 +71,18 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
     }
   }, [data]);
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(
+      i18n.language === "en" ? "en-US" : "uk-UA",
+      options
+    );
+  };
+
   return (
     <Box className="room-item-messages">
       <Box className="room-item-messages__header">
@@ -80,7 +103,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
               fetchMessages({ room: room.id, exclusiveKey: data?.ExclusiveKey })
             }
             hasMore={isUninitialized || !!data?.ExclusiveKey}
-            height="60vh"
+            height="70vh"
             endMessage={
               <p style={{ textAlign: "center" }}>
                 <b>The end</b>
@@ -89,31 +112,57 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
             loader={<h4>Loading...</h4>}
           >
             <div ref={messagesEndRef} />
-            <Box className="messages-divider"></Box>
-            {messages.map((message, index) => (
-              <Box
-                className={`message-item-container ${
-                  message.author === user?._id ? "me" : ""
-                }`}
-                ref={index === 0 ? lastMessageRef : null}
-                key={message.id}
-                sx={{ display: "flex" }}
-              >
-                <ListItem
-                  className={`message-item ${
-                    message.author === user?._id ? "me" : ""
-                  }`}
-                >
-                  <ListItemText primary={message.message} />
-                  <ImageGallery attachments={message.attachments} />
-                </ListItem>
-                <ListItemText
-                  className="date"
-                  secondary={days(message.createdAt).format("HH:mm")}
-                  sx={{ fontSize: 12 }}
-                />
-              </Box>
-            ))}
+            {messages.map((message, index) => {
+              const currentMessageDate = days(message.createdAt).format(
+                "YYYY-MM-DD"
+              );
+              const nextMessageDate = days(
+                messages[index + 1]?.createdAt
+              ).format("YYYY-MM-DD");
+              const isNewDate = currentMessageDate !== nextMessageDate;
+
+              return (
+                <Box key={message.id}>
+                  {isNewDate && (
+                    <Divider sx={{ my: 2 }}>
+                      <Typography variant="caption" color="textSecondary">
+                        {formatDate(message.createdAt)}
+                      </Typography>
+                    </Divider>
+                  )}
+                  <Box
+                    className={`message-item-container ${
+                      message.author === user?._id ? "me" : ""
+                    }`}
+                    ref={index === 0 ? lastMessageRef : null}
+                    key={message.id}
+                    sx={{ display: "flex" }}
+                  >
+                    {message.author !== user?._id && (
+                      <Avatar
+                        sx={{ background: generateColor(room.id) }}
+                        src={contact?.image}
+                      >
+                        {contact?.name[0]}
+                      </Avatar>
+                    )}
+                    <ListItem
+                      className={`message-item ${
+                        message.author === user?._id ? "me" : ""
+                      }`}
+                    >
+                      <ListItemText primary={message.message} />
+                      <ImageGallery attachments={message.attachments} />
+                    </ListItem>
+                    <ListItemText
+                      className="date"
+                      secondary={days(message.createdAt).format("HH:mm")}
+                      sx={{ fontSize: 12 }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })}
           </InfiniteScroll>
         </div>
       </Paper>
