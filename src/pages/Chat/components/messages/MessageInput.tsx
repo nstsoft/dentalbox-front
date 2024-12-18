@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
-import { type FC, useRef, useState } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { IconButton } from "@elements";
@@ -10,6 +10,8 @@ import SendIcon from "@mui/icons-material/Send";
 import { useCreateMessageMutation } from "@api";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import { Toaster } from "@components";
 
 type Props = {
   roomId: string;
@@ -19,7 +21,7 @@ export const MessageInput: FC<Props> = ({ roomId }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
   const [input, setInput] = useState("");
   const [messageFiles, setMessageFiles] = useState<File[]>([]);
-  const [createMessage] = useCreateMessageMutation();
+  const [createMessage, { error }] = useCreateMessageMutation();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleSendMessage = () => {
@@ -28,6 +30,18 @@ export const MessageInput: FC<Props> = ({ roomId }) => {
     setInput("");
     setMessageFiles([]);
   };
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      toast.error(
+        <Toaster
+          actionName="Send Message Error"
+          message={(error as any)?.data.message}
+        />
+      );
+    }
+  }, [error]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -65,7 +79,11 @@ export const MessageInput: FC<Props> = ({ roomId }) => {
                 <Box className="files">
                   {messageFiles.map((file) => (
                     <Box key={file.name} className="file-name">
-                      <Typography>{file.name}</Typography>
+                      <Typography>
+                        {file.name.length > 15
+                          ? `${file.name.slice(0, 15)}...`
+                          : file.name}
+                      </Typography>
                       <IconButton
                         onClick={() => {
                           setMessageFiles((prev) =>

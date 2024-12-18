@@ -14,9 +14,11 @@ import { useWebsocket, useAuth } from "@hooks";
 import { WS_EVENTS } from "@types";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { MessageInput } from "./MessageInput";
+import days from "dayjs";
 
 import "../../chat.scss";
-import { Divider } from "@mui/material";
+import "./style.scss";
+import ImageGallery from "./ImageGallery";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -28,6 +30,8 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState(data?.Items ?? []);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+
+  console.log(messages);
 
   useEffect(() => {
     fetchMessages({ room: room.id });
@@ -88,16 +92,24 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
             <Box className="messages-divider"></Box>
             {messages.map((message, index) => (
               <Box
-                className="message-item-container"
+                className={`message-item-container ${
+                  message.author === user?._id ? "me" : ""
+                }`}
                 ref={index === 0 ? lastMessageRef : null}
                 key={message.id}
                 sx={{ display: "flex" }}
               >
-                <ListItem className="message-item">
+                <ListItem
+                  className={`message-item ${
+                    message.author === user?._id ? "me" : ""
+                  }`}
+                >
                   <ListItemText primary={message.message} />
+                  <ImageGallery attachments={message.attachments} />
                 </ListItem>
                 <ListItemText
-                  secondary={message.createdAt}
+                  className="date"
+                  secondary={days(message.createdAt).format("HH:mm")}
                   sx={{ fontSize: 12 }}
                 />
               </Box>
