@@ -27,6 +27,7 @@ import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Divider from "@mui/material/Divider";
 import { useTranslation } from "react-i18next";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -154,6 +155,10 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                       <ListItemText primary={message.message} />
                       <ImageGallery attachments={message.attachments} />
                     </ListItem>
+                    {message.author === user?._id &&
+                      message.readBy.includes(contact?._id ?? "") && (
+                        <DoneAllIcon sx={{ alignSelf: "flex-start" }} />
+                      )}
                     <ListItemText
                       className="date"
                       secondary={days(message.createdAt).format("HH:mm")}
