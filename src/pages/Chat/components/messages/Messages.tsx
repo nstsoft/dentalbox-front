@@ -26,19 +26,19 @@ import ImageGallery from "./ImageGallery";
 import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Divider from "@mui/material/Divider";
-import { useTranslation } from "react-i18next";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
-  const { i18n } = useTranslation();
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
   const { message } = useWebsocket();
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState(data?.Items ?? []);
+  const [lastMessageId, setLastMessageId] = useState("");
+
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const { data: usersSummary } = useGetUserSummaryQuery();
   const contact = usersSummary?.find(
@@ -59,30 +59,22 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
       if (message.data.author !== user?._id) {
         readMessagesInGroup({ room: room.id, messageids: [message.data.id] });
       }
-      messagesEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
+      setLastMessageId(message.data.id);
     }
   }, [message, readMessagesInGroup, room.id, user?._id]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [lastMessageId]);
 
   useEffect(() => {
     if (data?.Items.length) {
       setMessages((prev) => prev.concat(data.Items));
     }
   }, [data]);
-
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString(
-      i18n.language === "en" ? "en-US" : "uk-UA",
-      options
-    );
-  };
 
   return (
     <Box className="room-item-messages">
@@ -98,13 +90,13 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
         <div className="scrollable-div">
           <InfiniteScroll
             inverse={true}
-            style={{ display: "flex", flexDirection: "column-reverse" }}
+            className="scrollable-div__scroller"
             dataLength={messages.length}
             next={() =>
               fetchMessages({ room: room.id, exclusiveKey: data?.ExclusiveKey })
             }
             hasMore={isUninitialized || !!data?.ExclusiveKey}
-            height="70vh"
+            height={"calc(100vh - 230px)"}
             endMessage={
               <p style={{ textAlign: "center" }}>
                 <b>The end</b>
@@ -127,7 +119,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                   {isNewDate && (
                     <Divider sx={{ my: 2 }}>
                       <Typography variant="caption" color="textSecondary">
-                        {formatDate(message.createdAt)}
+                        {days(message.createdAt).format("DD MMMM YYYY")}
                       </Typography>
                     </Divider>
                   )}

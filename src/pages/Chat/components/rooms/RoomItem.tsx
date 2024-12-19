@@ -60,6 +60,14 @@ export const RoomItem: FC<Props> = ({
     </Box>
   );
 
+  const getRoomName = () => {
+    if (room.name === "private__" && room.users?.[0]?.name) {
+      const user = room.users?.[0];
+      return `${user.surname} ${user.name.charAt(0).toUpperCase()} `;
+    }
+    return room.name;
+  };
+
   return (
     <Box
       className={`room-item ${selected ? "selected" : ""}`}
@@ -77,7 +85,7 @@ export const RoomItem: FC<Props> = ({
 
       <Box className="room-item-message">
         <Typography className="name" variant="h6">
-          {room.name}
+          {getRoomName()}
         </Typography>
         {roomNotifications?.[room.id] && (
           <Typography className="last-message" variant="body2">
