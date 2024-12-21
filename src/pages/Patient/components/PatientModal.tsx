@@ -143,9 +143,16 @@ export const PatientModal: FC<PatientModalProps> = ({
       return;
     }
     const data = {
-      ...patientData,
-      image: patientImage,
+      name: patientData.name,
+      secondName: patientData.secondName,
+      surname: patientData.surname,
+      sex: patientData.sex,
+      phone: patientData.phone,
+      email: patientData.email,
+      address: patientData.address,
+      notes: patientData.name,
       dob: days(patientData.dob).toISOString(),
+      image: patientImage,
     };
     if (patientData._id) {
       return updatePatient({ ...data, _id: patientData._id });
