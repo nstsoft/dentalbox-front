@@ -419,9 +419,10 @@ export const EN: ResourceLanguage = {
           leave: "Leaving the room",
           delete: "Deleting the room",
           transferOwnership: "Transferring room ownership",
-          confirm: "Are you sure you want to do this? This action cannot be undone.",
+          confirm:
+            "Are you sure you want to do this? This action cannot be undone.",
         },
-        newRoom: 'New room',
+        newRoom: "New room",
       },
       profile: {
         profile: "Profile",
@@ -433,7 +434,18 @@ export const EN: ResourceLanguage = {
         secondName: "Second Name",
         email: "Email",
         phone: "Phone",
-      }
+        notifications: "Notifications",
+        sex: "Sex",
+        sexItems: { male: "Male", female: "Female" },
+        password: {
+          current: "Current password",
+          new: "New password",
+          confirm: "Confirm password",
+          minLength: "Password must be at least 6 characters long",
+          match: "Passwords do not match",
+          required: "This field is required",
+        },
+      },
     },
     components: {
       toothMapLegend: {

@@ -422,7 +422,7 @@ export const UA: ResourceLanguage = {
           confirm:
             "Ви впевнені, що хочете зробити це? Ви не зможете відмінити цю дію.",
         },
-        newRoom: 'Новиа кімната',
+        newRoom: "Новиа кімната",
       },
       profile: {
         profile: "Профіль",
@@ -434,7 +434,18 @@ export const UA: ResourceLanguage = {
         secondName: "По-батькові",
         email: "Емейл",
         phone: "Телефон",
-      }
+        notifications: "Сповіщення",
+        sex: "Стать",
+        sexItems: { male: "Чоловік", female: "Жінка" },
+        password: {
+          current: "Поточний пароль",
+          new: "Новиий пароль",
+          confirm: "Підтвердження пароля",
+          minLength: "Пароль повинен містити не менше 6 символів",
+          match: "Паролі не співпадають",
+          required: "Це поле є обов'язковим",
+        },
+      },
     },
     components: {
       toothMapLegend: {

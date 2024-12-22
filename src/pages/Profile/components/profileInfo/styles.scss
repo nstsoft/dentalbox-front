@@ -1,12 +1,12 @@
-.patient-info-section-wrapper {
+.profile-info-section-wrapper {
   width: 100%;
   display: grid;
-  grid-template-areas: "main secondary";
-  grid-template-columns: minmax(320px, 350px) 300px;
+  grid-template-areas: "main secondary password";
+  grid-template-columns: minmax(320px, 350px) 300px minmax(320px, 350px);
   grid-column-gap: 10px;
   .main {
     grid-area: main;
-    .patient-main-info-card {
+    .profile-main-info-card {
       width: 100%;
       min-height: 350px;
       .content {
@@ -61,7 +61,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    .patient-secondary-info-card {
+    .profile-secondary-info-card {
       height: fit-content;
       .view-mode-props {
         display: flex;
@@ -79,6 +79,10 @@
       gap: 8px;
     }
   }
+  .password {
+    grid-area: password;
+    
+  }
   @media screen and (max-width: 1200px) {
     grid-template-columns: minmax(320px, 1fr) 2fr;
     grid-template-areas:
@@ -89,7 +93,7 @@
       margin-top: 10px;
       grid-template-columns: minmax(320px, 1fr) 2fr;
       width: 100%;
-      .patient-notes {
+      .profile-notes {
         max-width: none;
         height: 100%;
         width: 100%;

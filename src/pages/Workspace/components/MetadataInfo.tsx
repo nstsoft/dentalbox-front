@@ -12,7 +12,7 @@ import { useUpdateMetadataMutation } from "@api";
 import Button from "@mui/material/Button";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import days from "dayjs";
-import { Android12Switch } from "./elements/Switcher";
+import { Android12Switch } from "@elements";
 
 type Props = {
   metadata?: WorkspaceMetadata;

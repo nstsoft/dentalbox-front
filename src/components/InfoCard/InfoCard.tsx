@@ -10,11 +10,12 @@ import { isMobile } from "react-device-detect";
 
 type Props = CardProps & {
   children: React.ReactNode | React.ReactNode[];
-  isEditMode: boolean;
-  setIsEditMode: Dispatch<SetStateAction<boolean>>;
+  isEditMode?: boolean;
+  setIsEditMode?: Dispatch<SetStateAction<boolean>>;
   onSubmit: () => void;
   buttonLabel: string;
   disabledButton?: boolean;
+  onlyEdit?: boolean;
 };
 
 export const InfoCard: FC<Props> = ({
@@ -24,6 +25,7 @@ export const InfoCard: FC<Props> = ({
   onSubmit,
   buttonLabel,
   disabledButton,
+  onlyEdit,
   ...props
 }) => {
   return (
@@ -32,20 +34,22 @@ export const InfoCard: FC<Props> = ({
       className={
         "info-card-component " +
         (props.className || "") +
-        (isEditMode ? " edit-mode" : "")
+        (isEditMode ?? onlyEdit ? " edit-mode" : "")
       }
     >
       <Box className="header">
-        <IconButton
-          onClick={() => setIsEditMode((prev) => !prev)}
-          sx={{ m: isMobile ? "16px 24px" : 0 }}
-        >
-          {isEditMode ? <CloseIcon /> : <EditIcon />}
-        </IconButton>
+        {!onlyEdit && (
+          <IconButton
+            onClick={() => setIsEditMode?.((prev) => !prev)}
+            sx={{ m: isMobile ? "16px 24px" : 0 }}
+          >
+            {isEditMode ? <CloseIcon /> : <EditIcon />}
+          </IconButton>
+        )}
       </Box>
       <Box className="content">{children}</Box>
       <Box className="footer">
-        {isEditMode && (
+        {(isEditMode ?? onlyEdit) && (
           <Button
             className="submit-button"
             variant={"contained"}

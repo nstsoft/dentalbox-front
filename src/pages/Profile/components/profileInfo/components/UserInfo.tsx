@@ -57,6 +57,7 @@ export const UserInfo: FC<Props> = ({
                 setUser({ [prop]: e.target.value });
                 setIsDataChanged(true);
               }}
+              disabled={prop === "email"}
             />
             <FormHelperText error={!!errors?.[prop]}>
               {errors?.[prop]}

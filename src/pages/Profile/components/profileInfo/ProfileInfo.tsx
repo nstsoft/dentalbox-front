@@ -1,6 +1,6 @@
 import { useAuth } from "@hooks";
 import Box from "@mui/material/Box";
-import { UserInfo } from "./components";
+import { NewPassword, UserInfo } from "./components";
 import { useState } from "react";
 import { matchIsValidTel } from "mui-tel-input";
 import days from "dayjs";
@@ -71,7 +71,7 @@ export const ProfileInfo = () => {
   if (!userData) return null;
 
   return (
-    <Box className="patient-info-section-wrapper">
+    <Box className="profile-info-section-wrapper">
       <Box className="wrapper-item main">
         <UserInfo
           user={userData}
@@ -106,6 +106,9 @@ export const ProfileInfo = () => {
           label={t("notes")}
           onConfirm={() => {}}
         />
+      </Box>
+      <Box className="wrapper-item password">
+        <NewPassword onSubmit={() => {}} />
       </Box>
     </Box>
   );
