@@ -16,12 +16,8 @@ const ImageGallery: FC<Props> = ({ attachments }) => {
     (img) => !IMAGES_ENDINGS.some((ext) => img.endsWith(ext))
   );
 
-  const getGalleryCols = (attachmentsCount: number) => {
-    if (attachmentsCount === 0) return 0;
-    if (attachmentsCount === 1) return 1;
-    if (attachmentsCount <= 3) return 2;
-    return 3;
-  };
+  const getGalleryCols = (attachmentsCount: number) =>
+    [0, 1, 2, 2][attachmentsCount] ?? 3;
 
   if (attachments.length === 0) return null;
 
@@ -47,13 +43,7 @@ const ImageGallery: FC<Props> = ({ attachments }) => {
         </ImageList>
       )}
       {files.length > 0 && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
+        <Box className="file-list">
           {files.map((file) => (
             <a key={file} href={file}>
               {file.split("/").pop()}

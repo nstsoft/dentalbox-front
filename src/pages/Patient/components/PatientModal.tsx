@@ -150,7 +150,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       phone: patientData.phone,
       email: patientData.email,
       address: patientData.address,
-      notes: patientData.name,
+      notes: patientData.notes,
       dob: days(patientData.dob).toISOString(),
       image: patientImage,
     };
