@@ -51,6 +51,7 @@ export const InfoCard: FC<Props> = ({
       <Box className="footer">
         {(isEditMode ?? onlyEdit) && (
           <Button
+            fullWidth
             className="submit-button"
             variant={"contained"}
             disabled={disabledButton}

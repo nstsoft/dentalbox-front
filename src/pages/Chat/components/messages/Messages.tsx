@@ -144,13 +144,21 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                         message.author === user?._id ? "me" : ""
                       }`}
                     >
-                      {message.message && <ListItemText primary={message.message} />}
+                      {message.message && (
+                        <ListItemText primary={message.message} />
+                      )}
                       <ImageGallery attachments={message.attachments} />
                     </ListItem>
-                    {message.author === user?._id &&
-                      message.readBy.includes(contact?._id ?? "") && (
-                        <DoneAllIcon sx={{ alignSelf: "flex-start" }} />
-                      )}
+                    {message.author === user?._id && (
+                      <DoneAllIcon
+                        color={`${
+                          message.readBy.includes(contact?._id ?? "")
+                            ? "primary"
+                            : "disabled"
+                        }`}
+                        sx={{ alignSelf: "flex-start" }}
+                      />
+                    )}
                     <ListItemText
                       className="date"
                       secondary={days(message.createdAt).format("HH:mm")}
