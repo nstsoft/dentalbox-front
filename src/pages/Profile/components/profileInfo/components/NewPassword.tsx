@@ -24,8 +24,6 @@ export const NewPassword: FC<Props> = ({ onSubmit }) => {
     confirm: "",
   });
 
-  console.log(error);
-
   const validateFields = () => {
     if (password.current.length === 0) {
       setError({ ...error, currentPassword: t("required") });

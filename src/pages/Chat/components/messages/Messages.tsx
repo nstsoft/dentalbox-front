@@ -144,7 +144,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                         message.author === user?._id ? "me" : ""
                       }`}
                     >
-                      <ListItemText primary={message.message} />
+                      {message.message && <ListItemText primary={message.message} />}
                       <ImageGallery attachments={message.attachments} />
                     </ListItem>
                     {message.author === user?._id &&
