@@ -36,7 +36,7 @@ export const historyApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
     getHistoryItems: builder.query<HistoryResponse[], ListProps>({
-      query: ({ patientId }) => `/caseHistory?patient=${patientId}`,
+      query: ({ patientId }) => `/case-history?patient=${patientId}`,
       providesTags: () => [{ type: DISEASE_HISTORY_TAG.HISTORY }],
     }),
     createHistoryItem: builder.mutation<HistoryResponse, CreateHistoryItem>({
@@ -49,7 +49,7 @@ export const historyApi = createApi({
         formData.append("data", JSON.stringify(data));
         return {
           body: formData,
-          url: `/caseHistory/${patient}`,
+          url: `/case-history/${patient}`,
           method: "POST",
         };
       },
@@ -65,14 +65,14 @@ export const historyApi = createApi({
         formData.append("data", JSON.stringify(data));
         return {
           body: formData,
-          url: `/caseHistory`,
+          url: `/case-history`,
           method: "PATCH",
         };
       },
       invalidatesTags: [DISEASE_HISTORY_TAG.HISTORY],
     }),
     deleteHistoryItem: builder.mutation<unknown, string>({
-      query: (id) => ({ url: `/caseHistory/${id}`, method: "DELETE" }),
+      query: (id) => ({ url: `/case-history/${id}`, method: "DELETE" }),
       invalidatesTags: [DISEASE_HISTORY_TAG.HISTORY],
     }),
   }),
