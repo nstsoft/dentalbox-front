@@ -18,7 +18,8 @@ import Select from "@mui/material/Select";
 import { CustomModal } from "@elements";
 
 import { Patient, Sex } from "@types";
-import { AvatarUpload } from "@components";
+import { AvatarUpload, Toaster } from "@components";
+import { toast } from "react-toastify";
 
 type PatientModalProps = {
   open: boolean;
@@ -48,6 +49,15 @@ export const PatientModal: FC<PatientModalProps> = ({
       setPatientData(patient);
     }
   }, [patient]);
+
+  const clearFields = () => {
+    setPatientImage(undefined);
+    setPatientData({} as Patient);
+    setPhoneError(undefined);
+    setBirthDateError(undefined);
+    setEmailError(undefined);
+    setResponseError(undefined);
+  };
 
   const fieldsMap = [
     {
@@ -120,12 +130,10 @@ export const PatientModal: FC<PatientModalProps> = ({
     setBirthDateError(undefined);
     setEmailError(undefined);
 
-    if (!matchIsValidTel(patientData.phone)) {
-      setPhoneError("Please enter a valid phone number.");
-      return false;
-    }
-
-    if (patientData.dob && !days(patientData.dob).isValid()) {
+    if (
+      !patientData.dob ||
+      (patientData.dob && !days(patientData.dob).isValid())
+    ) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
@@ -135,29 +143,44 @@ export const PatientModal: FC<PatientModalProps> = ({
       return false;
     }
 
+    if (!matchIsValidTel(patientData.phone)) {
+      setPhoneError("Please enter a valid phone number.");
+      return false;
+    }
+
     return true;
   };
 
   const submitFormHandler = () => {
-    if (!validateForm()) {
-      return;
+    try {
+      if (!validateForm()) {
+        return;
+      }
+      const data = {
+        name: patientData.name,
+        secondName: patientData.secondName,
+        surname: patientData.surname,
+        sex: patientData.sex,
+        phone: patientData.phone,
+        email: patientData.email,
+        address: patientData.address,
+        notes: patientData.notes,
+        dob: days(patientData.dob).toISOString(),
+        image: patientImage,
+      };
+      if (patientData._id) {
+        return updatePatient({ ...data, _id: patientData._id });
+      }
+      createPatient(data);
+    } catch (err: any) {
+      console.log(err);
+      // toast.error(
+      //   <Toaster
+      //     actionName={patientData._id ? "Update" : "Create" + " Patient Error"}
+      //     message={err.message}
+      //   />
+      // );
     }
-    const data = {
-      name: patientData.name,
-      secondName: patientData.secondName,
-      surname: patientData.surname,
-      sex: patientData.sex,
-      phone: patientData.phone,
-      email: patientData.email,
-      address: patientData.address,
-      notes: patientData.notes,
-      dob: days(patientData.dob).toISOString(),
-      image: patientImage,
-    };
-    if (patientData._id) {
-      return updatePatient({ ...data, _id: patientData._id });
-    }
-    return createPatient(data);
   };
 
   useEffect(() => {
@@ -167,13 +190,22 @@ export const PatientModal: FC<PatientModalProps> = ({
   }, [error, updateError]);
 
   useEffect(() => {
-    if (isSuccess ?? isUpdateSuccess) {
+    if (isSuccess || isUpdateSuccess) {
+      console.log("success on CLose", isSuccess, isUpdateSuccess);
       onClose();
     }
   }, [isSuccess, onClose, isUpdateSuccess]);
 
   return (
-    <CustomModal width="auto" open={open} onClose={onClose}>
+    <CustomModal
+      width="auto"
+      open={open}
+      onClose={() => {
+        console.log("close modal");
+        onClose();
+        clearFields();
+      }}
+    >
       <Box>
         <AvatarUpload
           image={patientData.image ?? ""}
@@ -224,18 +256,27 @@ export const PatientModal: FC<PatientModalProps> = ({
             {input.id === "dob" && (
               <DatePicker
                 value={input.value ? days(input.value) : null}
-                onChange={(newValue: Dayjs | null) =>
-                  setPatientData({
-                    ...patientData,
-                    dob: newValue?.toISOString() ?? "",
-                  })
-                }
+                onChange={(newValue: Dayjs | null) => {
+                  if (newValue?.isValid()) {
+                    setPatientData({
+                      ...patientData,
+                      dob: newValue?.toISOString() ?? "",
+                    });
+                  }
+                }}
                 disableFuture
                 onError={(err) =>
                   setBirthDateError(
                     err ? "Please enter valid date." : undefined
                   )
                 }
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: birthDateError
+                      ? "error.main"
+                      : "rgba(0, 0, 0, 0.23)",
+                  },
+                }}
               />
             )}
             {!["phone", "dob", "sex"].includes(input.id) && (
@@ -247,10 +288,17 @@ export const PatientModal: FC<PatientModalProps> = ({
                   required
                   onChange={input.onChange}
                   value={input.value}
-                  color="primary"
+                  color={input.error ? "error" : "primary"}
                   name={input.id}
                   label={input.label}
-                  sx={{ ariaLabel: input.id }}
+                  sx={{
+                    ariaLabel: input.id,
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: input.error
+                        ? "error.main"
+                        : "rgba(0, 0, 0, 0.23)",
+                    },
+                  }}
                 />
               </>
             )}

@@ -396,12 +396,16 @@ export const UA: ResourceLanguage = {
           event: "Подія",
         },
         eventStatuses: {
-          pending: "Не підтверджений",
+          pending: "Не підтверджений",  
           confirmed: "Підтверджений",
           awaiting: "Очікує",
           in_cabinet: "На прийомі",
           finished: "Прийом закінено",
         },
+        empty: {
+          title: "Календар недоступний",
+          description: "Будь ласка, створіть пацієнта, кабінет або крісло",
+        }
       },
       chat: {
         newChat: "Нова переписка",

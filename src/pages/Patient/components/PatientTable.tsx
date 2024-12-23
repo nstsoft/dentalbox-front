@@ -124,6 +124,7 @@ export const PatientsTable: FC<Props> = ({
         }}
         onDelete={() => {
           deletePatient(selectedPatient?._id ?? "");
+          setIsPopoverOpen(false);
         }}
       />
 

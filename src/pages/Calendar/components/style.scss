@@ -72,3 +72,14 @@
     height: 100px; // Match this with the min-height above
   }
 }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  .empty-icon {
+    font-size: 4rem;
+  }
+}

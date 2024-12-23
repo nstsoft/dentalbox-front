@@ -54,6 +54,7 @@ export const PatientsPage = () => {
       <PatientModal
         open={isModalOpen}
         onClose={() => {
+          console.log('onClose global');
           setIsModalOpen(false);
           setPatient(initPatient);
         }}

@@ -402,6 +402,10 @@ export const EN: ResourceLanguage = {
           in_cabinet: "In cabinet",
           finished: "Finished",
         },
+        empty: {
+          title: "Calendar is not available",
+          description: "Please create patient, cabinet or chair",
+        }
       },
       chat: {
         newChat: "New chat",

@@ -1,4 +1,4 @@
-import { CalendarResource } from "./components";
+import { CalendarResource, EmptyData } from "./components";
 import days from "dayjs";
 import {
   useGetAppointmentsQuery,
@@ -35,7 +35,7 @@ export const CalendarPage = () => {
   }, [date, refetch, view]);
 
   if (!cabinetSummary || !patientSummary || !userSummary || !chairSummary) {
-    return null;
+    return <EmptyData />;
   }
 
   const cabinetsMap = new Map<string, CabinetSummaryListItem>();
