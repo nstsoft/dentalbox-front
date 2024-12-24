@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, type FC, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DatePicker } from "@mui/x-date-pickers";
 import days, { type Dayjs } from "dayjs";
@@ -18,22 +18,22 @@ import Select from "@mui/material/Select";
 import { CustomModal } from "@elements";
 
 import { Patient, Sex } from "@types";
-import { AvatarUpload, Toaster } from "@components";
-import { toast } from "react-toastify";
+import { AvatarUpload } from "@components";
 
 type PatientModalProps = {
   open: boolean;
   onClose: () => void;
   patient: Omit<Patient, "_id"> & { _id?: string };
+  setPatient: (patient: Omit<Patient, "_id"> & { _id?: string }) => void;
 };
 
 export const PatientModal: FC<PatientModalProps> = ({
   open,
   onClose,
   patient,
+  setPatient
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
-  const [patientData, setPatientData] = useState(patient);
   const [phoneError, setPhoneError] = useState<string>();
   const [emailError, setEmailError] = useState<string>();
   const [birthDateError, setBirthDateError] = useState<string>();
@@ -44,15 +44,8 @@ export const PatientModal: FC<PatientModalProps> = ({
   const [updatePatient, { isSuccess: isUpdateSuccess, error: updateError }] =
     useUpdatePatientMutation();
 
-  useEffect(() => {
-    if (patient) {
-      setPatientData(patient);
-    }
-  }, [patient]);
-
   const clearFields = () => {
     setPatientImage(undefined);
-    setPatientData({} as Patient);
     setPhoneError(undefined);
     setBirthDateError(undefined);
     setEmailError(undefined);
@@ -63,32 +56,35 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "name",
       label: t("name"),
-      value: patientData.name,
+      value: patient.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientData({
-          ...patientData,
+        setPatient({
+          ...patient,
           name: event.target.value,
         }),
+      required: true,
     },
     {
       id: "secondName",
       label: t("secondName"),
-      value: patientData.secondName,
+      value: patient.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientData({
-          ...patientData,
+        setPatient({
+          ...patient,
           secondName: event.target.value,
         }),
+      required: true,
     },
     {
       id: "surname",
       label: t("surname"),
-      value: patientData.surname,
+      value: patient.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientData({
-          ...patientData,
+        setPatient({
+          ...patient,
           surname: event.target.value,
         }),
+      required: true,
     },
     {
       id: "sex",
@@ -98,30 +94,30 @@ export const PatientModal: FC<PatientModalProps> = ({
     {
       id: "dob",
       label: t("dob"),
-      value: patientData.dob,
+      value: patient.dob,
       error: birthDateError,
     },
     {
       id: "email",
       label: t("email"),
-      value: patientData.email,
+      value: patient.email,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setPatientData({ ...patientData, email: target.value });
+        setPatient({ ...patient, email: target.value });
       },
       error: emailError,
     },
     {
       id: "phone",
       label: t("phone"),
-      value: patientData.phone,
+      value: patient.phone,
       error: phoneError,
     },
     {
       id: "address",
       label: t("address"),
-      value: patientData.address,
+      value: patient.address,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setPatientData({ ...patientData, address: event.target.value }),
+        setPatient({ ...patient, address: event.target.value }),
     },
   ];
 
@@ -131,19 +127,19 @@ export const PatientModal: FC<PatientModalProps> = ({
     setEmailError(undefined);
 
     if (
-      !patientData.dob ||
-      (patientData.dob && !days(patientData.dob).isValid())
+      !patient.dob ||
+      (patient.dob && !days(patient.dob).isValid())
     ) {
       setBirthDateError("Please enter valid date.");
       return false;
     }
 
-    if (!validateLogin(patientData.email)) {
+    if (!validateLogin(patient.email)) {
       setEmailError("Please enter a valid email address.");
       return false;
     }
 
-    if (!matchIsValidTel(patientData.phone)) {
+    if (!matchIsValidTel(patient.phone)) {
       setPhoneError("Please enter a valid phone number.");
       return false;
     }
@@ -151,50 +147,41 @@ export const PatientModal: FC<PatientModalProps> = ({
     return true;
   };
 
-  const submitFormHandler = () => {
-    try {
-      if (!validateForm()) {
-        return;
-      }
-      const data = {
-        name: patientData.name,
-        secondName: patientData.secondName,
-        surname: patientData.surname,
-        sex: patientData.sex,
-        phone: patientData.phone,
-        email: patientData.email,
-        address: patientData.address,
-        notes: patientData.notes,
-        dob: days(patientData.dob).toISOString(),
-        image: patientImage,
-      };
-      if (patientData._id) {
-        return updatePatient({ ...data, _id: patientData._id });
-      }
-      createPatient(data);
-    } catch (err: any) {
-      console.log(err);
-      // toast.error(
-      //   <Toaster
-      //     actionName={patientData._id ? "Update" : "Create" + " Patient Error"}
-      //     message={err.message}
-      //   />
-      // );
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!validateForm()) return;
+
+    const formData = {
+      name: patient.name,
+      secondName: patient.secondName,
+      surname: patient.surname,
+      sex: patient.sex,
+      dob: days(patient.dob).toISOString(),
+      email: patient.email,
+      phone: patient.phone,
+      address: patient.address,
+      image: patientImage,
+    };
+
+    if (patient._id) {
+      return updatePatient({ ...formData, _id: patient._id });
     }
+    createPatient(formData);
   };
 
   useEffect(() => {
     if (error ?? updateError) {
-      setResponseError(((error as any) ?? (updateError as any)).message);
+      setResponseError(((error as any) ?? (updateError as any)).data.message);
     }
   }, [error, updateError]);
 
   useEffect(() => {
     if (isSuccess || isUpdateSuccess) {
-      console.log("success on CLose", isSuccess, isUpdateSuccess);
       onClose();
+      clearFields();
     }
   }, [isSuccess, onClose, isUpdateSuccess]);
+
 
   return (
     <CustomModal
@@ -206,9 +193,9 @@ export const PatientModal: FC<PatientModalProps> = ({
         clearFields();
       }}
     >
-      <Box>
+      <Box component="form" onSubmit={handleSubmit}>
         <AvatarUpload
-          image={patientData.image ?? ""}
+          image={patient.image ?? ""}
           onUpload={setPatientImage}
         />
         {fieldsMap.map((input) => (
@@ -217,8 +204,8 @@ export const PatientModal: FC<PatientModalProps> = ({
               <MuiTelInput
                 value={input.value}
                 onChange={(newValue: string) =>
-                  setPatientData({
-                    ...patientData,
+                  setPatient({
+                    ...patient,
                     phone: newValue.replace(/\s+/g, ""),
                   })
                 }
@@ -234,8 +221,8 @@ export const PatientModal: FC<PatientModalProps> = ({
                   labelId="radio-label"
                   value={patient.sex}
                   onChange={({ target }) =>
-                    setPatientData({
-                      ...patientData,
+                    setPatient({
+                      ...patient,
                       sex: target.value as Sex,
                     })
                   }
@@ -258,8 +245,8 @@ export const PatientModal: FC<PatientModalProps> = ({
                 value={input.value ? days(input.value) : null}
                 onChange={(newValue: Dayjs | null) => {
                   if (newValue?.isValid()) {
-                    setPatientData({
-                      ...patientData,
+                    setPatient({
+                      ...patient,
                       dob: newValue?.toISOString() ?? "",
                     });
                   }
@@ -285,7 +272,7 @@ export const PatientModal: FC<PatientModalProps> = ({
                 <OutlinedInput
                   id={input.id}
                   type="text"
-                  required
+                  required={input.required}
                   onChange={input.onChange}
                   value={input.value}
                   color={input.error ? "error" : "primary"}
@@ -306,8 +293,8 @@ export const PatientModal: FC<PatientModalProps> = ({
           </FormControl>
         ))}
 
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" onClick={submitFormHandler}>
+        <Box sx={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+          <Button variant="contained" type="submit">
             {patient._id
               ? t("update", { keyPrefix: "buttons" })
               : t("create", { keyPrefix: "buttons" })}

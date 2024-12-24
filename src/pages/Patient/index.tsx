@@ -3,22 +3,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GridSearchFilter } from "@components";
 import { PatientsTable, PatientModal } from "./components";
-import { Patient, Sex } from "@types";
-
-const initPatient = {
-  name: "",
-  secondName: "",
-  surname: "",
-  sex: Sex.male,
-  dob: "",
-  email: "",
-  phone: "+380",
-  address: "",
-  storage: 0
-};
+import { Patient } from "@types";
+import { initPatient } from "./initValue";
 
 export const PatientsPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
@@ -41,6 +30,11 @@ export const PatientsPage = () => {
     },
   });
 
+  const onCloseHandler = useCallback(() => {
+    setIsModalOpen(false);
+    setPatient(initPatient);
+  }, []);
+
   if (!data || ["uninitialized", "loading"].includes(status)) return null;
 
   return (
@@ -53,12 +47,9 @@ export const PatientsPage = () => {
       </Box>
       <PatientModal
         open={isModalOpen}
-        onClose={() => {
-          console.log('onClose global');
-          setIsModalOpen(false);
-          setPatient(initPatient);
-        }}
+        onClose={onCloseHandler}
         patient={patient}
+        setPatient={setPatient}
       />
       <GridSearchFilter
         search={search}

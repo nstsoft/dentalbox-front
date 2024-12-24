@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import days from "dayjs";
 import { TablePopover } from "@components";
 import { useDeletePatientMutation } from "@api";
+import { initPatient } from "../initValue";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -117,6 +118,7 @@ export const PatientsTable: FC<Props> = ({
         anchorEl={anchorEl}
         onClose={() => {
           setIsPopoverOpen(false);
+          onSelectPatient(initPatient);
         }}
         onUpdate={() => {
           setIsPopoverOpen(false);
