@@ -118,7 +118,7 @@ export const UserInfo: FC<Props> = ({
 
   return (
     <InfoCard
-      className="patient-main-info-card"
+      className="profile-main-info-card"
       onSubmit={onSubmit}
       buttonLabel={t("save", { keyPrefix: "buttons" })}
       isEditMode={isEditMode}

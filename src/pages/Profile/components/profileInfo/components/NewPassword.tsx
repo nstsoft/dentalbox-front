@@ -64,7 +64,10 @@ export const NewPassword: FC<Props> = ({ onSubmit }) => {
       buttonLabel={t("save", { keyPrefix: "buttons" })}
       onlyEdit
     >
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box
+        component="form"
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
         {["current", "new", "confirm"].map((input) => (
           <FormControl fullWidth key={input}>
             <InputLabel htmlFor={`${input}-password`}>{t(input)}</InputLabel>
@@ -81,6 +84,7 @@ export const NewPassword: FC<Props> = ({ onSubmit }) => {
               name="current-password"
               label={t(input)}
               sx={{ ariaLabel: t(input) }}
+              autoComplete="off"
             />
             <FormHelperText error={!!error[input]}>
               {error[input]}
