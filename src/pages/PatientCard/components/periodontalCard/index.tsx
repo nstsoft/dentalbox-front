@@ -31,7 +31,6 @@ export const PeriodontalCard: FC = () => {
     "Furcation",
     "Note",
   ];
-
   const cols2 = [
     "Notes",
     "Furcation",
@@ -58,9 +57,9 @@ export const PeriodontalCard: FC = () => {
 
       <Row cols={cols} tooths={tooths} toothNumberPosition="top" />
 
-      <ToothGraph name="Buccal" />
-
-      <ToothGraph name="Palatal" />
+      {["Buccal", "Palatal"].map((name) => (
+        <ToothGraph name={name} />
+      ))}
 
       <Row cols={cols1} tooths={tooths} />
 
@@ -75,9 +74,9 @@ export const PeriodontalCard: FC = () => {
 
       <Row cols={cols2} tooths={tooths} />
 
-      <ToothGraph name="Lingual" />
-
-      <ToothGraph name="Buccal" />
+      {["Lingual", "Palatal"].map((name) => (
+        <ToothGraph name={name} />
+      ))}
 
       <Row cols={cols} tooths={tooths1} toothNumberPosition="bottom" />
     </Box>
