@@ -18,11 +18,8 @@ import { isMobile } from "react-device-detect";
 
 export const PatientCardPage = () => {
   const { patientId } = useParams();
-
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
-
-  const [tabIndex, setTabIndex] = useState(2);
-
+  const [tabIndex, setTabIndex] = useState(3);
   if (!patientId) return null;
 
   const tabs = [
@@ -35,7 +32,10 @@ export const PatientCardPage = () => {
       label: t("tabs.plan"),
       component: <TreatmentPlan patientId={patientId} />,
     },
-    { label: t("tabs.periodontalCard"), component: <PeriodontalCard /> },
+    {
+      label: t("tabs.periodontalCard"),
+      component: <PeriodontalCard patientId={patientId} />,
+    },
     {
       label: t("tabs.files"),
       component: <PatientFiles patientId={patientId} />,

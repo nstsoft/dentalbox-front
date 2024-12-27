@@ -19,6 +19,7 @@ import {
   treatmentPlanApi,
   fileApi,
   chatApi,
+  periodontalChartApi,
 } from "./api";
 
 export * as API_CONSTANTS from "./constants";
@@ -43,6 +44,7 @@ export const store = configureStore({
     [treatmentPlanApi.reducerPath]: treatmentPlanApi.reducer,
     [fileApi.reducerPath]: fileApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
+    [periodontalChartApi.reducerPath]: periodontalChartApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -65,6 +67,7 @@ export const store = configureStore({
       treatmentPlanApi.middleware,
       fileApi.middleware,
       chatApi.middleware,
+      periodontalChartApi.middleware,
     ]),
 });
 

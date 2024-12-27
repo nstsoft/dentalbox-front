@@ -20,3 +20,4 @@ export * from "./websocket";
 export * from "./chat";
 export * from "./notifications";
 export * from "./message";
+export * from "./periodontalChart";

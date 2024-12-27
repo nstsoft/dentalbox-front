@@ -16,3 +16,4 @@ export * from "./anamnesis";
 export * from "./treatmentPlan";
 export * from "./file";
 export * from "./chat";
+export * from "./periodontalChart";
