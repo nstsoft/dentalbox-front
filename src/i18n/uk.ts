@@ -376,6 +376,8 @@ export const UA: ResourceLanguage = {
           addDeposit: "Додати внесок",
           payed: "Оплачено",
           addRecord: "Додати новий запис",
+          delete: "Видалити план лікування",
+          deleteMessage: "Видалення плану лікування також видалить всі записи та файли. Видалити?",
         },
         files: {
           addFile: "Новий файл",

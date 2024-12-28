@@ -17,9 +17,13 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import { EditItem } from "./EditItem";
-import { useUpdateTreatmentPlanItemMutation } from "@api";
+import {
+  useDeleteTreatmentPlanMutation,
+  useUpdateTreatmentPlanItemMutation,
+} from "@api";
 import { isMobile } from "react-device-detect";
 import { DepositModal } from "./DepositModal";
+import { DeleteModal } from "./DeleteModal";
 
 type Props = { items: TreatmentPlan[]; services: Service[] };
 
@@ -36,7 +40,9 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
     keyPrefix: "pages.patientCard.treatmentPlan",
   });
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [updateTreatmentPlanItem] = useUpdateTreatmentPlanItemMutation();
+  const [deleteTreatmentPlanItem] = useDeleteTreatmentPlanMutation();
 
   useEffect(() => {
     if (selectedPlan) {
@@ -57,7 +63,9 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
   const renderViewMode = (plan: TreatmentPlan) => {
     return plan.items.map((item) => (
       <Box className="treatment-history-item" key={item._id}>
-        <Box className={`treatment-history-item-info ${isMobile ? "mobile" : ""}`}>
+        <Box
+          className={`treatment-history-item-info ${isMobile ? "mobile" : ""}`}
+        >
           <Typography>{item.name}</Typography>
           <Box className="treatment-history-item-info-price">
             <Typography variant="h6">
@@ -132,6 +140,12 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
       },
     });
     setIsDepositModalOpen(false);
+  };
+
+  const onDelete = () => {
+    if (!selectedPlan) return;
+    setIsDeleteModalOpen(false);
+    deleteTreatmentPlanItem(selectedPlan._id);
   };
 
   return (
@@ -209,7 +223,12 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
                 )}
 
                 <IconButton>
-                  <DeleteIcon />
+                  <DeleteIcon
+                    onClick={() => {
+                      setSelectedPlan({ ...treatmentItem, items });
+                      setIsDeleteModalOpen(true);
+                    }}
+                  />
                 </IconButton>
               </Box>
               {edited === treatmentItem._id
@@ -224,6 +243,11 @@ export const TreatmentList: FC<Props> = ({ items, services }) => {
         onClose={() => setIsDepositModalOpen(false)}
         selectedPlan={selectedPlan}
         onSubmit={onDeposit}
+      />
+      <DeleteModal
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onSubmit={onDelete}
       />
     </Box>
   );

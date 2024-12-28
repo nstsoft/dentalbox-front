@@ -376,6 +376,8 @@ export const EN: ResourceLanguage = {
           addDeposit: "Add deposit",
           payed: "Payed",
           addRecord: "Add new record",
+          delete: "Deleting treatment plan",
+          deleteMessage: "Deleting treatment plan will also delete all records and files. Confirm delete?",
         },
         files: {
           addFile: "New file",

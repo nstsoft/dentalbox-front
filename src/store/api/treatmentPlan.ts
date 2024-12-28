@@ -8,7 +8,7 @@ type UpdateTreatmentPlanItem = {
   data: Omit<TreatmentPlan, "workspace" | "_id" | "patient">;
 };
 
- type CreateTreatmentPlan = {
+type CreateTreatmentPlan = {
   patient: string;
   items: {
     [key: string]: number;
@@ -40,6 +40,13 @@ export const treatmentPlanApi = createApi({
       }),
       invalidatesTags: [TREATMENT_PLAN_TAG.TREATMENT_PLAN],
     }),
+    deleteTreatmentPlan: builder.mutation<void, string>({
+      query: (planId) => ({
+        url: `/treatment-plan/${planId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [TREATMENT_PLAN_TAG.TREATMENT_PLAN],
+    }),
   }),
 });
 
@@ -47,6 +54,7 @@ export const {
   useGetTreatmentPlanListQuery,
   useUpdateTreatmentPlanItemMutation,
   useCreateTreatmentPlanMutation,
+  useDeleteTreatmentPlanMutation,
 } = treatmentPlanApi;
 
 export default { treatmentPlanApi };
