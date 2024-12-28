@@ -4,6 +4,8 @@ import { CustomTable, Loader, NoData } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { type Dispatch, type SetStateAction, type FC } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 type Props = {
   isLoading: boolean;
@@ -18,6 +20,13 @@ export const InvitationsTable: FC<Props> = ({
   data,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
+
+  const statusColors: Record<string, string> = {
+    pending: "#f9b071",
+    accepted: "#c3f7c3",
+    declined: "#f7c3c3",
+    expired: "#f7c3c3",
+  };
 
   const columns: GridColDef<UserInvitation>[] = [
     {
@@ -34,14 +43,30 @@ export const InvitationsTable: FC<Props> = ({
     {
       field: "status",
       headerName: t("status"),
+      cellClassName: "status",
       width: 150,
       valueGetter: (_, r) => t(`invitationStatuses.${r.status}`),
+      renderCell: (params) => {
+        return (
+          <Box sx={{ backgroundColor: statusColors[params.row.status], px: 1 }}>
+            {params.value}
+          </Box>
+        );
+      },
     },
     {
       field: "activeTill",
       headerName: t("activeTill"),
       width: 150,
       valueGetter: (_, r) => days(r.activeTill * 1000).format("DD.MM.YYYY"),
+    },
+    {
+      field: "actions",
+      headerName: t("actions"),
+      renderCell: (params) =>
+        params.row.status === "pending" && (
+          <Button>{t("cancel", { keyPrefix: "buttons" })}</Button>
+        ),
     },
   ];
 

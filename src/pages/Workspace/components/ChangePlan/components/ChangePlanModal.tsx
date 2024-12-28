@@ -2,6 +2,7 @@ import { CustomModal } from "@elements";
 import { type FC } from "react";
 import { ProductSelect } from "@components";
 import { Product } from "@types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -14,12 +15,18 @@ export const ChangePlanModal: FC<Props> = ({
   onClose,
   onProductSelect,
 }) => {
+  const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
+
   return (
-    <CustomModal sx={{ width: "100%" }} open={open} onClose={onClose}>
-      <div>
-        <h1>Change Plan Modal</h1>
+    <CustomModal
+      sx={{ width: "100%", height: "100%", maxHeight: "100%" }}
+      open={open}
+      onClose={onClose}
+    >
+      <>
+        <h3>{t("labels.change")}</h3>
         <ProductSelect onProductSelect={onProductSelect} />
-      </div>
+      </>
     </CustomModal>
   );
 };

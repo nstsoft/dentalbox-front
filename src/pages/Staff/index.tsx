@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { CustomTabPanel } from "@components";
 
+import './styles.scss';
+
 export const StaffPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.staff" });
 

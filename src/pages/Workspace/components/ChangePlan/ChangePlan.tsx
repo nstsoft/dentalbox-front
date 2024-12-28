@@ -2,16 +2,14 @@ import { type FC, useState, useEffect } from "react";
 import { useAuth } from "@hooks";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import {
-  useChangeSubscriptionPlanMutation,
-  workspaceApi,
-} from "@api";
+import { useChangeSubscriptionPlanMutation, workspaceApi } from "@api";
 import { API_CONSTANTS } from "@store";
 import { ChangePlanModal } from "./components";
 import { UserRole, type Product } from "@types";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Toaster } from "@components";
+import { useTranslation } from "react-i18next";
 
 export const ChangePlan: FC = () => {
   const { user } = useAuth();
@@ -19,6 +17,7 @@ export const ChangePlan: FC = () => {
   const [open, setOpen] = useState(false);
   const [changePlan, { data, isSuccess, error }] =
     useChangeSubscriptionPlanMutation();
+  const { t } = useTranslation("", { keyPrefix: "pages.workspace" });
 
   useEffect(() => {
     if (isSuccess) {
@@ -33,7 +32,10 @@ export const ChangePlan: FC = () => {
   useEffect(() => {
     if (error) {
       toast.error(
-        <Toaster actionName="Change Plan Error" message={(error as any)?.error} />
+        <Toaster
+          actionName="Change Plan Error"
+          message={(error as any)?.error}
+        />
       );
     }
   }, [error]);
@@ -55,7 +57,7 @@ export const ChangePlan: FC = () => {
         onClose={() => setOpen(false)}
       />
       <Button onClick={() => setOpen(true)} variant="contained" color="primary">
-        Change plan
+        {t("buttons.change")}
       </Button>
     </Box>
   );

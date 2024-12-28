@@ -174,6 +174,7 @@ export const UA: ResourceLanguage = {
           renew: "Оновити підписку",
           cancel: "Скасувати підписку",
           reactivate: "Реактивувати підписку",
+          change: "Змінити план",
         },
         labels: {
           cancel: "Скасування підписки",
@@ -185,6 +186,7 @@ export const UA: ResourceLanguage = {
             "Ви впевнені, що хочете оновити підписку? Поточна підписка активна до {{endDate}} З вас буде стягнута відповідна плата.",
           reactivateConfirm:
             "Ви впевнені, що хочете поновити підписку? З вас буде стягнута відповідна плата.",
+          change: "Зміна плану",
         },
         interval: { week: "Тиждень", month: "Місяць", year: "Рік" },
         period: "Період",
@@ -396,7 +398,7 @@ export const UA: ResourceLanguage = {
           event: "Подія",
         },
         eventStatuses: {
-          pending: "Не підтверджений",  
+          pending: "Не підтверджений",
           confirmed: "Підтверджений",
           awaiting: "Очікує",
           in_cabinet: "На прийомі",
@@ -405,7 +407,7 @@ export const UA: ResourceLanguage = {
         empty: {
           title: "Календар недоступний",
           description: "Будь ласка, створіть пацієнта, кабінет або крісло",
-        }
+        },
       },
       chat: {
         newChat: "Нова переписка",
