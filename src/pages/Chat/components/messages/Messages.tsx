@@ -1,5 +1,6 @@
 import "./style.scss";
-import { type FC, useEffect, useState, useRef } from "react";
+import "../../chat.scss";
+import { type FC, useEffect, useState, useRef, MouseEvent } from "react";
 import Box from "@mui/material/Box";
 import { isMobile } from "react-device-detect";
 import ListItem from "@mui/material/ListItem";
@@ -19,14 +20,14 @@ import { WS_EVENTS } from "@types";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { MessageInput } from "./MessageInput";
 import days from "dayjs";
-
-import "../../chat.scss";
-import "./style.scss";
 import ImageGallery from "./ImageGallery";
 import Avatar from "@mui/material/Avatar";
 import { generateColor } from "../../utils";
 import Divider from "@mui/material/Divider";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { ContextMenu } from "./ContextMenu";
+import ReplyIcon from "@mui/icons-material/Reply";
+import Link from "@mui/material/Link";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -36,7 +37,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
-  const [messages, setMessages] = useState(data?.Items ?? []);
+  const [messages, setMessages] = useState<
+    (Message & { reply?: string; replyId?: string })[]
+  >(data?.Items ?? []);
   const [lastMessageId, setLastMessageId] = useState("");
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -44,6 +47,25 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const contact = usersSummary?.find(
     (u) => u._id === messages.find((m) => m.author !== user?._id)?.author
   );
+  const isPrivateRoom = room.name === "private__";
+  const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number }>();
+  const [selectedMessage, setSelectedMessage] = useState<Message>();
+  const [isReply, setIsReply] = useState(false);
+
+  const massageValidator = (message: Message) => {
+    const isReply = message.message.includes("@@@");
+
+    if (!isReply) return message;
+
+    const lastReplyIndex = message.message.lastIndexOf("@@@");
+
+    return {
+      ...message,
+      message: message.message.slice(lastReplyIndex + 3),
+      reply: message.message.slice(0, lastReplyIndex).split("!!!")[1],
+      replyId: message.message.slice(3, lastReplyIndex).split("!!!")[0],
+    };
+  };
 
   useEffect(() => {
     fetchMessages({ room: room.id });
@@ -55,7 +77,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
       message.data.room === room.id
     ) {
       console.log("NEW MESSAGE", message.data);
-      setMessages((prev) => [message.data as Message, ...prev]);
+      setMessages((prev) =>
+        [message.data as Message, ...prev].map(massageValidator)
+      );
       if (message.data.author !== user?._id) {
         readMessagesInGroup({ room: room.id, messageids: [message.data.id] });
       }
@@ -72,9 +96,18 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
 
   useEffect(() => {
     if (data?.Items.length) {
-      setMessages((prev) => prev.concat(data.Items));
+      setMessages((prev) => prev.concat(data.Items).map(massageValidator));
     }
   }, [data]);
+
+  const handleContextMenu = (
+    e: MouseEvent<HTMLDivElement>,
+    message: Message
+  ) => {
+    e.preventDefault();
+    setMenuAnchor({ x: e.clientX, y: e.clientY });
+    setSelectedMessage(message);
+  };
 
   return (
     <Box className="room-item-messages">
@@ -84,7 +117,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
             <ArrowBackIcon />
           </IconButton>
         )}
-        <Typography variant="h3">{room.name}</Typography>
+        <Typography variant="h3">
+          {isPrivateRoom ? `${contact?.name} ${contact?.surname}` : room.name}
+        </Typography>
       </Box>
       <Paper className="room-item-messages__list" elevation={0}>
         <div className="scrollable-div">
@@ -129,26 +164,58 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                     }`}
                     ref={index === 0 ? lastMessageRef : null}
                     key={message.id}
-                    sx={{ display: "flex" }}
                   >
-                    {message.author !== user?._id && (
-                      <Avatar
-                        sx={{ background: generateColor(room.id) }}
-                        src={contact?.image}
-                      >
-                        {contact?.name[0]}
-                      </Avatar>
-                    )}
-                    <ListItem
-                      className={`message-item ${
-                        message.author === user?._id ? "me" : ""
-                      }`}
+                    <Box
+                      id={message.id}
+                      sx={{ display: "flex", gap: "6px" }}
+                      onContextMenu={(e) => handleContextMenu(e, message)}
                     >
-                      {message.message && (
-                        <ListItemText primary={message.message} />
+                      {message.author !== user?._id && (
+                        <Avatar
+                          sx={{ background: generateColor(room.id) }}
+                          src={contact?.image}
+                        >
+                          {contact?.name[0]}
+                        </Avatar>
                       )}
-                      <ImageGallery attachments={message.attachments} />
-                    </ListItem>
+                      <ListItem
+                        className={`message-item ${
+                          message.author === user?._id ? "me" : ""
+                        }`}
+                      >
+                        {message.reply && (
+                          <Link href={`#${message.replyId}`}>
+                            <Box
+                              className="reply"
+                              sx={{
+                                backgroundColor:
+                                  message.author === user?._id
+                                    ? "rgba(60, 95, 209, 0.172)"
+                                    : "transparent",
+                              }}
+                            >
+                              <ReplyIcon />
+                              {message.replyId &&
+                                messages.find((m) => m.id === message.replyId)
+                                  ?.attachments && (
+                                  <img
+                                    src={""}
+                                    alt="attachment"
+                                    loading="lazy"
+                                  />
+                                )}
+                              <Typography variant="body1">
+                                <ListItemText primary={message.reply} />
+                              </Typography>
+                            </Box>
+                          </Link>
+                        )}
+                        {message.message && (
+                          <ListItemText primary={message.message} />
+                        )}
+                        <ImageGallery attachments={message.attachments} />
+                      </ListItem>
+                    </Box>
                     {message.author === user?._id && (
                       <DoneAllIcon
                         color={`${
@@ -168,11 +235,24 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                 </Box>
               );
             })}
+            <ContextMenu
+              menuAnchor={menuAnchor}
+              handleClose={() => setMenuAnchor(undefined)}
+              onReply={() => setIsReply(true)}
+            />
           </InfiniteScroll>
         </div>
       </Paper>
 
-      <MessageInput roomId={room.id} />
+      <MessageInput
+        roomId={room.id}
+        selectedMessage={selectedMessage}
+        resetSelectedMessage={() => {
+          setSelectedMessage(undefined);
+          setIsReply(false);
+        }}
+        isReply={isReply}
+      />
     </Box>
   );
 };

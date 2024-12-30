@@ -3,9 +3,9 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Box from "@mui/material/Box";
 
-type Props = { attachments: string[] };
+import { IMAGES_ENDINGS } from "./constants";
 
-const IMAGES_ENDINGS = [".jpeg", ".png", ".jpg"];
+type Props = { attachments: string[] };
 
 const ImageGallery: FC<Props> = ({ attachments }) => {
   const images = attachments.filter((img) =>

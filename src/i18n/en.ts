@@ -431,6 +431,8 @@ export const EN: ResourceLanguage = {
             "Are you sure you want to do this? This action cannot be undone.",
         },
         newRoom: "New room",
+        reply: "Reply",
+        replyLabel: "Reply to the message",
       },
       profile: {
         profile: "Profile",

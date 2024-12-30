@@ -27,6 +27,18 @@
             &.me {
               background-color: rgba(60, 95, 209, 0.172);
             }
+
+            .reply {
+              padding: 8px;
+              border-radius: 5px;
+              display: flex;
+              align-items: center;
+
+              a {
+                text-decoration: none;
+                color: #000;
+              }
+            }
           }
 
           .date {
@@ -39,6 +51,7 @@
   }
 
   &__input {
+    position: relative;
     .MuiInputAdornment-root {
       max-height: 100%;
     }
@@ -61,5 +74,41 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+  }
+}
+
+.message-reply {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25px 1fr 20px;
+  position: absolute;
+  top: -60px;
+  left: 0;
+  padding: 8px;
+  background-color: #e8e8e8;
+  gap: 8px;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .message-attachment {
+      width: 40px;
+      height: 40px;
+    }
+
+    .message-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+  }
+}
+
+.message-context-menu {
+  .MuiMenu-paper {
+    box-shadow: "0px 2px 4px rgba(0, 0, 0, 0.1)";
   }
 }
