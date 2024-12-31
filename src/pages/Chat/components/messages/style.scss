@@ -28,15 +28,28 @@
               background-color: rgba(60, 95, 209, 0.172);
             }
 
+            a.MuiLink-root {
+              text-decoration: none;
+            }
+
             .reply {
               padding: 8px;
               border-radius: 5px;
               display: flex;
               align-items: center;
+              gap: 5px;
 
-              a {
-                text-decoration: none;
-                color: #000;
+              &-attachment {
+                width: 40px;
+                height: 40px;
+                margin: 0 5px;
+              }
+
+              &-message {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                max-width: 150px;
               }
             }
           }

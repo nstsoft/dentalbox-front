@@ -26,8 +26,7 @@ import { generateColor } from "../../utils";
 import Divider from "@mui/material/Divider";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { ContextMenu } from "./ContextMenu";
-import ReplyIcon from "@mui/icons-material/Reply";
-import Link from "@mui/material/Link";
+import { Reply } from "./Reply";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -37,9 +36,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
-  const [messages, setMessages] = useState<
-    (Message & { reply?: string; replyId?: string })[]
-  >(data?.Items ?? []);
+  const [messages, setMessages] = useState<(Message & { reply?: Message })[]>(
+    data?.Items ?? []
+  );
   const [lastMessageId, setLastMessageId] = useState("");
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -52,18 +51,22 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [selectedMessage, setSelectedMessage] = useState<Message>();
   const [isReply, setIsReply] = useState(false);
 
-  const massageValidator = (message: Message) => {
+  const massageValidator = (
+    message: Message,
+    index: number,
+    messagesArr: Message[]
+  ) => {
     const isReply = message.message.includes("@@@");
 
     if (!isReply) return message;
 
     const lastReplyIndex = message.message.lastIndexOf("@@@");
+    const replyId = message.message.slice(3, lastReplyIndex).split("!!!")[0];
 
     return {
       ...message,
       message: message.message.slice(lastReplyIndex + 3),
-      reply: message.message.slice(0, lastReplyIndex).split("!!!")[1],
-      replyId: message.message.slice(3, lastReplyIndex).split("!!!")[0],
+      reply: messagesArr.find((m) => m.id === replyId),
     };
   };
 
@@ -118,7 +121,11 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
           </IconButton>
         )}
         <Typography variant="h3">
-          {isPrivateRoom ? `${contact?.name} ${contact?.surname}` : room.name}
+          {isPrivateRoom
+            ? contact
+              ? `${contact?.name} ${contact?.surname}`
+              : ""
+            : room.name}
         </Typography>
       </Box>
       <Paper className="room-item-messages__list" elevation={0}>
@@ -183,33 +190,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                           message.author === user?._id ? "me" : ""
                         }`}
                       >
-                        {message.reply && (
-                          <Link href={`#${message.replyId}`}>
-                            <Box
-                              className="reply"
-                              sx={{
-                                backgroundColor:
-                                  message.author === user?._id
-                                    ? "rgba(60, 95, 209, 0.172)"
-                                    : "transparent",
-                              }}
-                            >
-                              <ReplyIcon />
-                              {message.replyId &&
-                                messages.find((m) => m.id === message.replyId)
-                                  ?.attachments && (
-                                  <img
-                                    src={""}
-                                    alt="attachment"
-                                    loading="lazy"
-                                  />
-                                )}
-                              <Typography variant="body1">
-                                <ListItemText primary={message.reply} />
-                              </Typography>
-                            </Box>
-                          </Link>
-                        )}
+                        <Reply reply={message.reply} />
                         {message.message && (
                           <ListItemText primary={message.message} />
                         )}
