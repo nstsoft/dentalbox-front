@@ -15,19 +15,17 @@ import {
   AppointmentEventListItem,
   AppointmentListItem,
   AppointmentStatus,
-  ChairSummaryListItem,
+  Person,
 } from "@types";
 import {
   useUpsertAppointmentMutation,
   useDeleteAppointmentMutation,
   useGetWorkspaceMetadataQuery,
 } from "@api";
-import { Props } from "../types";
+import { Props, EditableProps, UpdateEventHandler } from "../types";
 import { CalenderModal } from "./modal";
-import { EditableProps, UpdateEventHandler } from "../types";
 import { getCalendarMessages } from "./helpers";
 import { CustomEvent } from "./elements";
-
 import days from "dayjs";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -46,8 +44,8 @@ export const CalendarResource: FC<Props> = ({
   onNavigate,
   eventResources,
 }) => {
-  const { patientsMap, cabinetsMap, usersMap, chairsMap, assistantMap } =
-    eventResources;
+  console.log(resources);
+  const { patientsMap, cabinetsMap, usersMap, assistantMap } = eventResources;
   const { t } = useTranslation("", { keyPrefix: "pages.calendar" });
   const { defaultDates, views, scrollToTime } = useMemo(
     () => ({
@@ -97,7 +95,7 @@ export const CalendarResource: FC<Props> = ({
         cabinet: cabinetsMap.get(data.cabinet)!,
         doctor: usersMap.get(data.doctor)!,
         assistant: assistantMap.get(data.assistant ?? "")!,
-        chair: chairsMap.get(data.chair ?? ""),
+        chair: data.chair,
       };
 
       setMyEvents((prevItems) => {
@@ -112,17 +110,10 @@ export const CalendarResource: FC<Props> = ({
       });
       setSelectedEvent(undefined);
     }
-  }, [cabinetsMap, chairsMap, data, patientsMap, usersMap, assistantMap]);
+  }, [cabinetsMap, data, patientsMap, usersMap, assistantMap]);
 
   const getResourceChairs = (resourceId: string) => {
-    const chairs: ChairSummaryListItem[] = [];
-
-    chairsMap.forEach((chair) => {
-      if (chair.cabinet === resourceId) {
-        chairs.push(chair);
-      }
-    });
-    return chairs;
+    return cabinetsMap.get(resourceId)?.chairs ?? [];
   };
 
   const onSlotSelect = (data: {
@@ -132,17 +123,17 @@ export const CalendarResource: FC<Props> = ({
   }) => {
     setEditableProps(["start", "end", "chair", "cabinet", "doctor", "patient"]);
     setIsModalOpen(true);
-    const [cabinetId, chairId] = (data.resourceId as string).split("_");
+    const [cabinetId, chair] = (data.resourceId as string).split("_");
 
     const event = {
-      title: patientsMap.values().next().value.name,
+      title: patientsMap.values().next().value?.name,
       start: data.start,
       end: days(data.start).add(1, "h").toDate(),
       resourceId: data.resourceId as string,
-      patient: patientsMap.values().next().value,
+      patient: patientsMap.values().next().value as Person,
       cabinet: cabinetsMap.get(cabinetId)!,
-      doctor: usersMap.values().next().value,
-      chair: chairsMap.get(chairId),
+      doctor: usersMap.values().next().value as Person,
+      chair,
       status: AppointmentStatus.pending,
     };
 
@@ -150,14 +141,9 @@ export const CalendarResource: FC<Props> = ({
   };
 
   const onUpdateSelectedEventItem: UpdateEventHandler = (data) => {
-    const chairs: ChairSummaryListItem[] = [];
     setEditableProps([]);
 
-    chairsMap.forEach((chair) => {
-      if (chair.cabinet === selectedEvent?.resourceId) {
-        chairs.push(chair);
-      }
-    });
+    console.log(data);
 
     const val = {
       notes: data.notes,
@@ -187,9 +173,7 @@ export const CalendarResource: FC<Props> = ({
       });
     }
 
-    if (data.chair && chairsMap.get(data.chair)?.cabinet === data.cabinet) {
-      Object.assign(val, { chair: chairsMap.get(data.chair) });
-    }
+    Object.assign(val, { chair: data.chair });
 
     setSelectedEvent((prev) => {
       if (!prev) return prev;
@@ -208,7 +192,7 @@ export const CalendarResource: FC<Props> = ({
         patient: selectedEvent.patient._id,
         doctor: selectedEvent.doctor._id,
         cabinet: selectedEvent.cabinet._id,
-        chair: selectedEvent.chair?._id,
+        chair: selectedEvent.chair,
         assistant: selectedEvent.assistant?._id,
         start: days(selectedEvent.start).toISOString(),
         end: days(selectedEvent.end).toISOString(),
@@ -300,9 +284,7 @@ export const CalendarResource: FC<Props> = ({
         open={isModalOpen}
         event={selectedEvent}
         resources={eventResources}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
+        onClose={() => setIsModalOpen(false)}
         onUpdate={onUpdateSelectedEventItem}
         editableProps={editableProps}
         onDelete={deleteAppointment}

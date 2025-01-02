@@ -1,7 +1,6 @@
 import {
   AppointmentListItem,
   CabinetSummaryListItem,
-  ChairSummaryListItem,
   PatientSummaryListItem,
   UserSummaryListItem,
   AppointmentStatus,
@@ -12,7 +11,6 @@ import { type Dayjs } from "dayjs";
 
 export type AppointmentResources = {
   cabinetsMap: Map<string, CabinetSummaryListItem>;
-  chairsMap: Map<string, ChairSummaryListItem>;
   usersMap: Map<string, UserSummaryListItem>;
   patientsMap: Map<string, PatientSummaryListItem>;
   assistantMap: Map<string, UserSummaryListItem>;

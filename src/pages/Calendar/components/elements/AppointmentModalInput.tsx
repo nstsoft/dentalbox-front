@@ -44,7 +44,7 @@ export const AppointmentModalInput: FC<Props> = ({
           label={label}
         >
           {items.map((v) => (
-            <MenuItem key={v.key} value={v.key}>
+            <MenuItem key={v.key + v.value} value={v.key}>
               {v.value}
             </MenuItem>
           ))}

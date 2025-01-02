@@ -34,7 +34,7 @@ export type UpsertAppointmentElement = {
   status?: AppointmentStatus;
 };
 
-type Person = {
+export type Person = {
   _id: string;
   name: string;
   surname: string;
@@ -52,7 +52,7 @@ export type AppointmentListItem = Omit<
   doctor: Person;
   assistant?: Person;
   cabinet: { _id: string; name: string; image?: string };
-  chair?: { _id: string; name: string };
+  chair?: string;
 };
 
 export type AppointmentEventListItem = AppointmentListItem & {

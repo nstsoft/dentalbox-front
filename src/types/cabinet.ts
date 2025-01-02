@@ -1,5 +1,3 @@
-import { ChairType } from "./chair";
-
 export type Cabinet = {
   _id: string;
   name: string;
@@ -11,7 +9,7 @@ export type Cabinet = {
   users?: string[];
   workspace?: string;
   notes?: string;
-  chairs?: ChairType[];
+  chairs?: string[];
 };
 
 export type CreateCabinet = {
@@ -23,6 +21,9 @@ export type CreateCabinet = {
   chairs: string[];
 };
 
-export type CabinetSummaryListItem = Pick<Cabinet, "name" | "_id" | "image"> & {
+export type CabinetSummaryListItem = Pick<
+  Cabinet,
+  "name" | "_id" | "image" | "chairs"
+> & {
   deleted: boolean;
 };

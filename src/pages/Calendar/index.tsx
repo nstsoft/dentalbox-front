@@ -5,7 +5,6 @@ import {
   useGetCabinetSummaryQuery,
   useGetPatientSummaryQuery,
   useGetUserSummaryQuery,
-  useGetChairSummaryQuery,
 } from "@api";
 import { useState, useEffect } from "react";
 import {
@@ -20,7 +19,6 @@ export const CalendarPage = () => {
   const { data: cabinetSummary } = useGetCabinetSummaryQuery();
   const { data: patientSummary } = useGetPatientSummaryQuery();
   const { data: userSummary } = useGetUserSummaryQuery();
-  const { data: chairSummary } = useGetChairSummaryQuery();
 
   const [view, setView] = useState<"day" | "week">("day");
   const [date, setDate] = useState(days());
@@ -34,7 +32,7 @@ export const CalendarPage = () => {
     refetch();
   }, [date, refetch, view]);
 
-  if (!cabinetSummary || !patientSummary || !userSummary || !chairSummary) {
+  if (!cabinetSummary || !patientSummary || !userSummary) {
     return <EmptyData />;
   }
 
@@ -45,7 +43,6 @@ export const CalendarPage = () => {
   const assistantMap = new Map<string, UserSummaryListItem>();
 
   cabinetSummary.map((cabinet) => cabinetsMap.set(cabinet._id, cabinet));
-  chairSummary.map((chair) => chairsMap.set(chair._id, chair));
   userSummary.map((user) => {
     usersMap.set(user._id, user);
     assistantMap.set(user._id, user);
@@ -74,16 +71,15 @@ export const CalendarPage = () => {
     })
   );
 
-  const resources = cabinetSummary.reduce((acc, { _id, name }) => {
-    const chairs = chairSummary.filter((chair) => chair.cabinet === _id);
-    if (!chairs.length) {
+  const resources = cabinetSummary.reduce((acc, { _id, name, chairs }) => {
+    if (!chairs?.length) {
       return [...acc, { resourceId: _id, resourceTitle: name }];
     }
     return [
       ...acc,
-      ...chairs.map(({ _id: chairId, name: chairName }) => ({
-        resourceId: _id + "_" + chairId,
-        resourceTitle: `${name} - ${chairName}`,
+      ...chairs.map((chair) => ({
+        resourceId: _id + "_" + chair,
+        resourceTitle: `${name} - ${chair}`,
       })),
     ];
   }, [] as { resourceId: string; resourceTitle: string }[]);
@@ -99,7 +95,6 @@ export const CalendarPage = () => {
           cabinetsMap,
           patientsMap,
           usersMap,
-          chairsMap,
           assistantMap,
         }}
       />

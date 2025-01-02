@@ -72,13 +72,11 @@ export const CalenderModal: FC<CalendarModalProps> = ({
   const [end, setEnd] = useState<Dayjs>(days());
   const chairValues = useMemo(() => {
     const arr: { key: string; value: string }[] = [];
-    resources.chairsMap.forEach((p) => {
-      if (p.cabinet === cabinet && !p.deleted) {
-        arr.push({ key: p._id, value: p.name });
-      }
+    resources.cabinetsMap.get(cabinet ?? "")?.chairs?.forEach((chair) => {
+      arr.push({ key: chair, value: chair });
     });
     return arr;
-  }, [cabinet, resources.chairsMap]);
+  }, [cabinet, resources.cabinetsMap]);
 
   const doctorValues: { key: string; value: string }[] = [];
   const assistantValues: { key: string; value: string }[] = [];
@@ -114,7 +112,7 @@ export const CalenderModal: FC<CalendarModalProps> = ({
       setDoctor(event.doctor._id);
       setAssistant(event.assistant?._id);
       setCabinet(event.cabinet._id);
-      setChair(event.chair?._id);
+      setChair(event.chair);
       setPatient(event.patient?._id);
       setStatus(event.status ?? AppointmentStatus.pending);
       setStart(days(event.start));
@@ -126,15 +124,10 @@ export const CalenderModal: FC<CalendarModalProps> = ({
 
   useEffect(() => {
     if (cabinet) {
-      const availableChairs: string[] = [];
-      resources.chairsMap.forEach((ch) => {
-        if (ch.cabinet === cabinet) {
-          availableChairs.push(ch._id);
-        }
-      });
+      const availableChairs = resources.cabinetsMap.get(cabinet)?.chairs ?? [];
       setChair(availableChairs[0]);
     }
-  }, [cabinet, resources.chairsMap]);
+  }, [cabinet, resources.cabinetsMap]);
 
   const isSaveButtonDisabled =
     !doctor || !cabinet || !patient || !status || !start || !end;
@@ -237,7 +230,7 @@ export const CalenderModal: FC<CalendarModalProps> = ({
             label="Chair"
             isEditingMode={isEditingMode}
             items={chairValues}
-            initialValue={event?.chair?.name}
+            initialValue={event?.chair}
             onChange={setChair}
             canEdit={editableProps.includes("chair")}
           />
