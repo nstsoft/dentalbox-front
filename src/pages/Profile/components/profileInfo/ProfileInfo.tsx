@@ -1,7 +1,7 @@
 import { useAuth } from "@hooks";
 import Box from "@mui/material/Box";
 import { NewPassword, UserInfo } from "./components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { matchIsValidTel } from "mui-tel-input";
 import days from "dayjs";
 import { validateLogin } from "@utils";
@@ -9,6 +9,7 @@ import { SecondaryInfo } from "./components/SecondaryInfo";
 import { Notes } from "@components";
 import { useTranslation } from "react-i18next";
 import { User } from "@types";
+import { useUpdateProfileMutation } from "@api";
 
 import "./styles.scss";
 
@@ -20,6 +21,7 @@ export const ProfileInfo = () => {
   const [dobError, setDobError] = useState<string>();
   const [userImage, setUserImage] = useState<File>();
   const { t } = useTranslation("", { keyPrefix: "pages.profile" });
+  const [updateProfile, { isSuccess }] = useUpdateProfileMutation();
 
   const [isDataChanged, setIsDataChanged] = useState({
     primary: false,
@@ -32,18 +34,22 @@ export const ProfileInfo = () => {
     setDobError(undefined);
     setEmailError(undefined);
 
+    if (!userData.name || !userData.surname || !userData.secondName) {
+      return false;
+    }
+
     if (!matchIsValidTel(userData.phone)) {
-      setPhoneError("Please enter a valid phone number.");
+      setPhoneError(t("enterValidPhone", { keyPrefix: "errors" }));
       return false;
     }
 
     if (userData.dob && !days(userData.dob).isValid()) {
-      setDobError("Please enter valid date.");
+      setDobError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
 
     if (!validateLogin(userData.email)) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError(t("enterValidEmail", { keyPrefix: "errors" }));
       return false;
     }
 
@@ -62,11 +68,33 @@ export const ProfileInfo = () => {
     if (userData.phone) {
       data.phone = data.phone.replace(/\s+/g, "");
     }
+
+    updateProfile({
+      image: userImage,
+      name: data.name,
+      surname: userData.surname,
+      secondName: userData.secondName,
+      phone: data.phone,
+      address: data.address,
+      dob: data.dob,
+      sex: data.sex,
+      _id: data._id,
+    });
   };
 
   const userUpdateHandler = (user: Partial<User>) => {
     setUserData((prev) => ({ ...prev, ...user } as User));
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsDataChanged((prev) => ({
+        ...prev,
+        primary: false,
+        secondary: false,
+      }));
+    }
+  }, [isSuccess]);
 
   if (!userData) return null;
 

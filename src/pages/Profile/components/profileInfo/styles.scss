@@ -81,12 +81,11 @@
   }
   .password {
     grid-area: password;
-    
   }
   @media screen and (max-width: 1200px) {
     grid-template-columns: minmax(320px, 1fr) 2fr;
     grid-template-areas:
-      "main"
+      "main password"
       "secondary secondary";
     .secondary {
       display: grid;
@@ -104,7 +103,8 @@
     grid-template-columns: 1fr;
     grid-template-areas:
       "main"
-      "secondary";
+      "secondary"
+      "password";
     .secondary {
       grid-template-columns: 1fr;
     }

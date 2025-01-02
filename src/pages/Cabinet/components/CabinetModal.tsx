@@ -38,9 +38,10 @@ export const CabinetModal: FC<CabinetModalProps> = ({
   setCabinetForm,
 }) => {
   const { t } = useTranslation();
-  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState("");
   const [responseError, setResponseError] = useState<string | string[]>();
   const [cabinetImage, setCabinetImage] = useState<File>();
+  const [imageError, setImageError] = useState("");
 
   const [createCabinet, { error, isSuccess }] = useCreateCabinetMutation();
   const [updateCabinet, { error: updateError, isSuccess: updateSuccess }] =
@@ -98,13 +99,15 @@ export const CabinetModal: FC<CabinetModalProps> = ({
 
   const validateForm = () => {
     setPhoneError("");
+    setImageError("");
 
-    if (!matchIsValidTel(cabinetForm.phone)) {
-      setPhoneError("Please enter a valid phone number.");
+    if ((cabinetForm._id && !cabinetForm.image) ?? !cabinetImage) {
+      setImageError(t("imageRequired", { keyPrefix: "errors" }));
       return false;
     }
 
-    if ((cabinetForm._id && !cabinetForm.image) ?? !cabinetImage) {
+    if (!matchIsValidTel(cabinetForm.phone)) {
+      setPhoneError(t("enterValidPhone", { keyPrefix: "errors" }));
       return false;
     }
 
@@ -134,7 +137,14 @@ export const CabinetModal: FC<CabinetModalProps> = ({
         onSubmit={submitFormHandler}
         sx={{ maxHeight: 500 }}
       >
-        <AvatarUpload image={cabinetForm.image} onUpload={setCabinetImage} />
+        <AvatarUpload
+          image={cabinetForm.image}
+          onUpload={(file) => {
+            setCabinetImage(file);
+            setImageError("");
+          }}
+          error={imageError}
+        />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" ? (

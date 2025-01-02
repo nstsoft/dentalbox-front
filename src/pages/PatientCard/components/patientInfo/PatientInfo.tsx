@@ -80,18 +80,22 @@ export const PatientInfo: FC<Props> = ({ patientId }) => {
     setBirthDateError(undefined);
     setEmailError(undefined);
 
+    if (!patient.name || !patient.surname || !patient.secondName) {
+      return false;
+    }
+
     if (!matchIsValidTel(patient.phone)) {
-      setPhoneError("Please enter a valid phone number.");
+      setPhoneError(t("enterValidPhone", { keyPrefix: "errors" }));
       return false;
     }
 
     if (patient.dob && !days(patient.dob).isValid()) {
-      setBirthDateError("Please enter valid date.");
+      setBirthDateError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
 
     if (!validateLogin(patient.email)) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError(t("enterValidEmail", { keyPrefix: "errors" }));
       return false;
     }
 

@@ -68,8 +68,10 @@ export const MainInfo: FC<Props> = ({
                 setIsDataChanged(true);
               }}
             />
-            <FormHelperText error={!!errors?.[prop]}>
-              {errors?.[prop]}
+            <FormHelperText error={!patient[prop] || !!errors?.[prop]}>
+              {!patient[prop]
+                ? t("required", { keyPrefix: "errors" })
+                : errors?.[prop]}
             </FormHelperText>
           </Fragment>
         ))}

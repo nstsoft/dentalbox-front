@@ -31,7 +31,7 @@ export const PatientModal: FC<PatientModalProps> = ({
   open,
   onClose,
   patient,
-  setPatient
+  setPatient,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patient" });
   const [phoneError, setPhoneError] = useState<string>();
@@ -126,21 +126,18 @@ export const PatientModal: FC<PatientModalProps> = ({
     setBirthDateError(undefined);
     setEmailError(undefined);
 
-    if (
-      !patient.dob ||
-      (patient.dob && !days(patient.dob).isValid())
-    ) {
-      setBirthDateError("Please enter valid date.");
+    if (!patient.dob || (patient.dob && !days(patient.dob).isValid())) {
+      setBirthDateError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
 
     if (!validateLogin(patient.email)) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError(t("enterValidEmail", { keyPrefix: "errors" }));
       return false;
     }
 
     if (!matchIsValidTel(patient.phone)) {
-      setPhoneError("Please enter a valid phone number.");
+      setPhoneError(t("enterValidPhone", { keyPrefix: "errors" }));
       return false;
     }
 
@@ -182,7 +179,6 @@ export const PatientModal: FC<PatientModalProps> = ({
     }
   }, [isSuccess, onClose, isUpdateSuccess]);
 
-
   return (
     <CustomModal
       width="auto"
@@ -194,10 +190,7 @@ export const PatientModal: FC<PatientModalProps> = ({
       }}
     >
       <Box component="form" onSubmit={handleSubmit}>
-        <AvatarUpload
-          image={patient.image ?? ""}
-          onUpload={setPatientImage}
-        />
+        <AvatarUpload image={patient.image ?? ""} onUpload={setPatientImage} />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "phone" && (
@@ -254,7 +247,9 @@ export const PatientModal: FC<PatientModalProps> = ({
                 disableFuture
                 onError={(err) =>
                   setBirthDateError(
-                    err ? "Please enter valid date." : undefined
+                    err
+                      ? t("enterValidDate", { keyPrefix: "errors" })
+                      : undefined
                   )
                 }
                 sx={{

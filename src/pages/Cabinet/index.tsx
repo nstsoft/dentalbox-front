@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CabinetModal, CabinetsTable } from "./components";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GridSearchFilter, Loader, NoData } from "@components";
 import { CabinetForm } from "./types";
 
@@ -39,6 +39,11 @@ export const CabinetPage = () => {
     },
   });
 
+  const handleClose = useCallback(() => {
+    setIsModalOpen(false);
+    setCabinetForm(initCabinet);
+  }, []);
+
   if (isLoading) return <Loader />;
 
   if (!data) return <NoData />;
@@ -55,10 +60,7 @@ export const CabinetPage = () => {
         cabinetForm={cabinetForm}
         setCabinetForm={setCabinetForm}
         open={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setCabinetForm(initCabinet);
-        }}
+        onClose={handleClose}
       />
       <GridSearchFilter
         search={search}

@@ -57,10 +57,13 @@ export const UserInfo: FC<Props> = ({
                 setUser({ [prop]: e.target.value });
                 setIsDataChanged(true);
               }}
+              required
               disabled={prop === "email"}
             />
-            <FormHelperText error={!!errors?.[prop]}>
-              {errors?.[prop]}
+            <FormHelperText error={!user[prop] || !!errors?.[prop]}>
+              {!user[prop]
+                ? t("required", { keyPrefix: "errors" })
+                : errors?.[prop]}
             </FormHelperText>
           </Fragment>
         ))}

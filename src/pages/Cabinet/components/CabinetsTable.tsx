@@ -80,10 +80,10 @@ export const CabinetsTable: FC<Props> = ({
                 event.stopPropagation();
                 setAnchorEl(event.currentTarget);
                 setIsPopoverOpen(true);
-                setSelectedCabinet(params.row)
+                setSelectedCabinet(params.row);
                 onSelectCabinet({
                   ...params.row,
-                  chairs: (params.row.chairs ?? []).map((chair) => chair.name),
+                  chairs: params.row.chairs ?? [],
                 });
               }}
             >

@@ -27,6 +27,7 @@ import Divider from "@mui/material/Divider";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { ContextMenu } from "./ContextMenu";
 import { Reply } from "./Reply";
+import ReplyIcon from "@mui/icons-material/Reply";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -112,6 +113,8 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
     setSelectedMessage(message);
   };
 
+  const isMe = (message: Message) => message.author === user?._id;
+
   return (
     <Box className="room-item-messages">
       <Box className="room-item-messages__header">
@@ -167,7 +170,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                   )}
                   <Box
                     className={`message-item-container ${
-                      message.author === user?._id ? "me" : ""
+                      isMe(message) ? "me" : ""
                     }`}
                     ref={index === 0 ? lastMessageRef : null}
                     key={message.id}
@@ -177,7 +180,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                       sx={{ display: "flex", gap: "6px" }}
                       onContextMenu={(e) => handleContextMenu(e, message)}
                     >
-                      {message.author !== user?._id && (
+                      {!isMe(message) && (
                         <Avatar
                           sx={{ background: generateColor(room.id) }}
                           src={contact?.image}
@@ -186,9 +189,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                         </Avatar>
                       )}
                       <ListItem
-                        className={`message-item ${
-                          message.author === user?._id ? "me" : ""
-                        }`}
+                        className={`message-item ${isMe(message) ? "me" : ""}`}
                       >
                         <Reply reply={message.reply} />
                         {message.message && (
@@ -197,21 +198,35 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                         <ImageGallery attachments={message.attachments} />
                       </ListItem>
                     </Box>
-                    {message.author === user?._id && (
-                      <DoneAllIcon
-                        color={`${
-                          message.readBy.includes(contact?._id ?? "")
-                            ? "primary"
-                            : "disabled"
-                        }`}
-                        sx={{ alignSelf: "flex-start" }}
-                      />
-                    )}
-                    <ListItemText
-                      className="date"
-                      secondary={days(message.createdAt).format("HH:mm")}
-                      sx={{ fontSize: 12 }}
-                    />
+                    <Box
+                      className="message-item-date"
+                      sx={{ alignItems: `flex-${isMe(message) ? "end" : "start"}` }}
+                    >
+                      <Box className="date__container">
+                        <ListItemText
+                          className="date"
+                          secondary={days(message.createdAt).format("HH:mm")}
+                        />
+                        {isMe(message) && (
+                          <DoneAllIcon
+                            color={`${
+                              message.readBy.includes(contact?._id ?? "")
+                                ? "primary"
+                                : "disabled"
+                            }`}
+                            sx={{ alignSelf: "flex-start" }}
+                          />
+                        )}
+                      </Box>
+                      <IconButton
+                        onClick={() => {
+                          setSelectedMessage(message);
+                          setIsReply(true);
+                        }}
+                      >
+                        <ReplyIcon />
+                      </IconButton>
+                    </Box>
                   </Box>
                 </Box>
               );

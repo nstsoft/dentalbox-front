@@ -210,17 +210,17 @@ export const UserData = (props: IUserDataStepProps) => {
     setConfirmPasswordError(undefined);
 
     if (!matchIsValidTel(user.phone)) {
-      setPhoneError("Please enter a valid phone number.");
+      setPhoneError(t("enterValidPhone", { keyPrefix: "errors" }));
       return false;
     }
 
     if (user.dob && !days(user.dob).isValid()) {
-      setBirthDateError("Please enter valid date.");
+      setBirthDateError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
 
     if (!validateLogin(user.email)) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError(t("enterValidEmail", { keyPrefix: "errors" }));
       return false;
     }
 
@@ -335,7 +335,9 @@ export const UserData = (props: IUserDataStepProps) => {
                     disableFuture
                     onError={(err) =>
                       setBirthDateError(
-                        err ? "Please enter valid date." : undefined
+                        err
+                          ? t("enterValidDate", { keyPrefix: "errors" })
+                          : undefined
                       )
                     }
                     sx={{

@@ -59,7 +59,7 @@ export const cabinetApi = createApi({
       providesTags: () => [{ type: CABINET_TAG.CABINET_SUMMARY }],
     }),
     deleteCabinet: builder.mutation<void, string>({
-      query: (cabinetId) => ({ url: `/patient/${cabinetId}`, method: "DELETE" }),
+      query: (cabinetId) => ({ url: `/cabinet/${cabinetId}`, method: "DELETE" }),
       invalidatesTags: [CABINET_TAG.CABINET_LIST]
     }),
   }),

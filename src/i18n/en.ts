@@ -377,7 +377,8 @@ export const EN: ResourceLanguage = {
           payed: "Payed",
           addRecord: "Add new record",
           delete: "Deleting treatment plan",
-          deleteMessage: "Deleting treatment plan will also delete all records and files. Confirm delete?",
+          deleteMessage:
+            "Deleting treatment plan will also delete all records and files. Confirm delete?",
         },
         files: {
           addFile: "New file",
@@ -409,7 +410,7 @@ export const EN: ResourceLanguage = {
         empty: {
           title: "Calendar is not available",
           description: "Please create patient, cabinet or chair",
-        }
+        },
       },
       chat: {
         newChat: "New chat",
@@ -470,6 +471,8 @@ export const EN: ResourceLanguage = {
       enterValidPhone: "Please enter a valid phone number.",
       enterValidDate: "Please enter a valid date.",
       enterValidEmail: "Please enter a valid email address",
+      required: "Field is required",
+      imageRequired: "Image is required",
     },
     common: {
       service: "Service",

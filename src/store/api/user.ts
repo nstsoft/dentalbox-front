@@ -5,6 +5,7 @@ import type {
   UserInvitation,
   UserSummaryListItem,
   StaffForm,
+  UserRequest,
 } from "@types";
 import { USER_TAG, REDUCER } from "../constants";
 import { baseQuery } from "./baseQuery";
@@ -102,11 +103,26 @@ export const userApi = createApi({
 
         return { body: formData, url: "/user", method: "PATCH" };
       },
-      invalidatesTags: [USER_TAG.USER_LIST]
+      invalidatesTags: [USER_TAG.USER_LIST],
     }),
     deleteUser: builder.mutation<void, string>({
       query: (userId) => ({ url: `/user/${userId}`, method: "DELETE" }),
-      invalidatesTags: [USER_TAG.USER_LIST]
+      invalidatesTags: [USER_TAG.USER_LIST],
+    }),
+    updateProfile: builder.mutation<
+      void,
+      Partial<UserRequest> & { image?: File; _id: string }
+    >({
+      query: ({ image, _id, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        formData.append("data", JSON.stringify(body));
+
+        return { body: formData, url: `/user/${_id}`, method: "PATCH" };
+      },
     }),
   }),
 });
@@ -122,6 +138,7 @@ export const {
   useGetUserSummaryQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useUpdateProfileMutation,
 } = userApi;
 
 export default { userApi };

@@ -117,7 +117,7 @@ export const StaffModal: FC<StaffModalProps> = ({
     setBirthDateError(undefined);
 
     if (staffForm.dob && !days(staffForm.dob).isValid()) {
-      setBirthDateError("Please enter valid date.");
+      setBirthDateError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
 
@@ -179,7 +179,9 @@ export const StaffModal: FC<StaffModalProps> = ({
                 disableFuture
                 onError={(err) =>
                   setBirthDateError(
-                    err ? "Please enter valid date." : undefined
+                    err
+                      ? t("enterValidDate", { keyPrefix: "errors" })
+                      : undefined
                   )
                 }
                 sx={{

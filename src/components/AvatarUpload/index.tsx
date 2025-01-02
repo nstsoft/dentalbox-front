@@ -14,9 +14,15 @@ type Props = {
   image: string;
   onUpload: (file: File) => void;
   getImage?: (image: string) => void;
+  error?: string;
 };
 
-export const AvatarUpload: FC<Props> = ({ image, onUpload, getImage }) => {
+export const AvatarUpload: FC<Props> = ({
+  image,
+  onUpload,
+  getImage,
+  error,
+}) => {
   const { t } = useTranslation("", { keyPrefix: "image" });
   const [imageUrl, setImageUrl] = useState<string>(image);
   const [imageMessage, setImageMessage] = useState<string>();
@@ -28,7 +34,11 @@ export const AvatarUpload: FC<Props> = ({ image, onUpload, getImage }) => {
   return (
     <FormControl className="avatar-upload" sx={{ mb: 2, flexDirection: "row" }}>
       <Box sx={{ position: "relative" }}>
-        <Avatar className="avatar-icon" src={imageUrl} alt={imageUrl} />
+        <Avatar
+          className={`avatar-icon ${error ? "error" : ""}`}
+          src={imageUrl}
+          alt={imageUrl}
+        />
         <Button
           className="button"
           component="label"
@@ -61,6 +71,7 @@ export const AvatarUpload: FC<Props> = ({ image, onUpload, getImage }) => {
         </Button>
       </Box>
       {imageMessage && <FormHelperText>{imageMessage}</FormHelperText>}
+      <FormHelperText error={!!error}>{error}</FormHelperText>
     </FormControl>
   );
 };

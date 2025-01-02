@@ -377,7 +377,8 @@ export const UA: ResourceLanguage = {
           payed: "Оплачено",
           addRecord: "Додати новий запис",
           delete: "Видалити план лікування",
-          deleteMessage: "Видалення плану лікування також видалить всі записи та файли. Видалити?",
+          deleteMessage:
+            "Видалення плану лікування також видалить всі записи та файли. Видалити?",
         },
         files: {
           addFile: "Новий файл",
@@ -470,6 +471,8 @@ export const UA: ResourceLanguage = {
       enterValidPhone: "Будь ласка, введіть дійсний номер телефону.",
       enterValidDate: "Будь ласка, введіть дійсний формат дати.",
       enterValidEmail: "Будь ласка, введіть дійсний формат емейлу.",
+      required: "Це поле є обов'язковим",
+      imageRequired: "Фото обов'язкове",
     },
     common: {
       service: "Послуга",
