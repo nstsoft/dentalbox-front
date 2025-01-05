@@ -21,11 +21,7 @@ export const Mobility: FC<Props> = ({ value, onChange }) => {
       <TextField
         select
         defaultValue={value}
-        slotProps={{
-          select: {
-            native: true,
-          },
-        }}
+        slotProps={{ select: { native: true } }}
         variant="standard"
         onChange={(e) => onChange(+e.target.value)}
       >

@@ -8,9 +8,9 @@ type Props = {
   onChange: (value: ToothPropertiesType["implant"]) => void;
 };
 
-export const Implant: FC<Props> = ({ value }) => {
+export const Implant: FC<Props> = ({ value, onChange }) => {
   return (
-    <Box className="implant">
+    <Box onClick={() => onChange(!value)} className="implant">
       {value ? <DangerousIcon /> : <DoneOutlineIcon />}
     </Box>
   );

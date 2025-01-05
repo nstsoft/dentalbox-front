@@ -20,35 +20,39 @@ import {
   Depth,
   Note,
 } from "./elements";
+import { formToothChange } from "../helpers";
+import type { DeepPartial, PeriodontalChart } from "@types";
 
 type Props =
-  | { dataset: UpperJawTeeth; jaw: "upper" }
-  | { dataset: BottomJawTeeth; jaw: "bottom" };
+  | { dataset: UpperJawTeeth; jaw: "upperJaw" }
+  | { dataset: BottomJawTeeth; jaw: "bottomJaw" };
 
-export const Jaw: FC<Props> = ({ dataset, jaw }) => {
+export const Jaw: FC<
+  Props & { onChartSet: (changed: DeepPartial<PeriodontalChart>) => void }
+> = ({ dataset, jaw, onChartSet }) => {
+  console.log("dataset", dataset);
   const currentDirection =
-    jaw === "upper" ? UpperJawDirections : BottomJawDirections;
+    jaw === "upperJaw" ? UpperJawDirections : BottomJawDirections;
 
   const toothSet =
-    jaw === "upper"
+    jaw === "upperJaw"
       ? UpperJawDirections.map((tooth) => dataset[tooth])
       : BottomJawDirections.map((tooth) => dataset[tooth]);
 
-  const renderUpperSet = (t: UpperJawTooth | BottomJawTooth, index: number) => {
+  const renderUpperSet = (
+    t: UpperJawTooth | BottomJawTooth,
+    index: number,
+    side: "buccal" | "lingual"
+  ) => {
     const onChange = (
       key: ToothProperty,
       value: ToothPropertiesType[keyof ToothPropertiesType]
     ) => {
-      console.log("onchange ", {
-        jaw,
-        key,
-        value,
-        side: jaw === "upper" ? "buccal" : "lingual",
-      });
+      onChartSet(formToothChange(jaw, index, key, value, side));
     };
 
     const tooth =
-      jaw === "upper"
+      jaw === "upperJaw"
         ? (t as UpperJawTooth).buccal
         : (t as BottomJawTooth).lingual;
 
@@ -89,22 +93,18 @@ export const Jaw: FC<Props> = ({ dataset, jaw }) => {
 
   const renderBottomSet = (
     t: UpperJawTooth | BottomJawTooth,
-    index: number
+    index: number,
+    side: "buccal" | "palatal"
   ) => {
     const onChange = (
       key: ToothProperty,
       value: ToothPropertiesType[keyof ToothPropertiesType]
     ) => {
-      console.log("onchange ", {
-        jaw,
-        key,
-        value,
-        side: jaw === "upper" ? "buccal" : "lingual",
-      });
+      onChartSet(formToothChange(jaw, index, key, value, side));
     };
 
     const tooth =
-      jaw === "upper"
+      jaw === "upperJaw"
         ? (t as UpperJawTooth).buccal
         : (t as BottomJawTooth).lingual;
 
@@ -143,8 +143,12 @@ export const Jaw: FC<Props> = ({ dataset, jaw }) => {
       <Box className="teeth-section-content">
         <Box className="teeth-section-legend"></Box>
         <Box className="teeth-values">
-          {toothSet.map((t, index) => renderUpperSet(t, index))}
-          {toothSet.map((t, index) => renderBottomSet(t, index))}
+          {toothSet.map((t, index) =>
+            renderUpperSet(t, index, jaw == "upperJaw" ? "buccal" : "lingual")
+          )}
+          {toothSet.map((t, index) =>
+            renderBottomSet(t, index, jaw == "upperJaw" ? "palatal" : "buccal")
+          )}
         </Box>
       </Box>
     </Box>
