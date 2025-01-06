@@ -245,6 +245,14 @@ export const EN: ResourceLanguage = {
           workingHours: "Working hours",
           showPricing: "Show pricing",
         },
+        showMore: "Show more",
+        invoiceStatuses: {
+          draft: "Draft",
+          open: "Open",
+          paid: "Paid",
+          uncollectible: "Uncollectible",
+          void: "Void",
+        }
       },
       staff: {
         staff: "Stuff",

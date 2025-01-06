@@ -20,3 +20,24 @@ export type Payment = {
   id: string;
   last4: string;
 };
+
+export type Line = {
+  amount: number;
+  description: string;
+  id: string;
+  quantity: number;
+  product: string;
+};
+
+export type Invoice = {
+  amount_due: number;
+  created: number;
+  currency: string;
+  hosted_invoice_url: string;
+  id: string;
+  invoice_pdf: string;
+  lines: Line[];
+  status: string;
+  period_start: number;
+  period_end: number;
+};

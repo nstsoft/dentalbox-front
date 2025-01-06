@@ -245,6 +245,14 @@ export const UA: ResourceLanguage = {
           workingHours: "Графік роботи",
           showPricing: "Показувати ціну",
         },
+        showMore: "Показати більше",
+        invoiceStatuses: {
+          draft: "Шаблон",
+          open: "Відкрита",
+          paid: "Оплачена",
+          uncollectible: "Неколективна",
+          void: "Відмінена",
+        },
       },
       staff: {
         staff: "Персонал",

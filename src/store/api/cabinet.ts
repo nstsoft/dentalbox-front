@@ -39,10 +39,10 @@ export const cabinetApi = createApi({
 
         return { body: formData, url: "/cabinet", method: "POST" };
       },
-      invalidatesTags: [CABINET_TAG.CABINET_LIST]
+      invalidatesTags: [CABINET_TAG.CABINET_LIST],
     }),
     updateCabinet: builder.mutation<void, CreateCabinet & { _id: string }>({
-      query: ({ image, ...body }) => {
+      query: ({ image, _id, ...body }) => {
         const formData = new FormData();
         if (image) {
           formData.append("file", image);
@@ -50,17 +50,20 @@ export const cabinetApi = createApi({
 
         formData.append("data", JSON.stringify({ ...body }));
 
-        return { body: formData, url: "/cabinet", method: "PATCH" };
+        return { body: formData, url: `/cabinet/${_id}`, method: "PATCH" };
       },
-      invalidatesTags: [CABINET_TAG.CABINET_LIST]
+      invalidatesTags: [CABINET_TAG.CABINET_LIST],
     }),
     getCabinetSummary: builder.query<CabinetSummaryListItem[], void>({
       query: () => "/cabinet/summary",
       providesTags: () => [{ type: CABINET_TAG.CABINET_SUMMARY }],
     }),
     deleteCabinet: builder.mutation<void, string>({
-      query: (cabinetId) => ({ url: `/cabinet/${cabinetId}`, method: "DELETE" }),
-      invalidatesTags: [CABINET_TAG.CABINET_LIST]
+      query: (cabinetId) => ({
+        url: `/cabinet/${cabinetId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [CABINET_TAG.CABINET_LIST],
     }),
   }),
 });
@@ -70,7 +73,7 @@ export const {
   useCreateCabinetMutation,
   useGetCabinetSummaryQuery,
   useUpdateCabinetMutation,
-  useDeleteCabinetMutation
+  useDeleteCabinetMutation,
 } = cabinetApi;
 
 export default { cabinetApi };

@@ -31,7 +31,7 @@ export const ProductItem = (props: IUserWorkspaceStepProps) => {
       <CardHeader
         className="product-item__header"
         title={
-          i18n.language === "ua"
+          i18n.language === "uk"
             ? product.metadata.ua_name
             : product.metadata.en_name
         }
@@ -57,7 +57,7 @@ export const ProductItem = (props: IUserWorkspaceStepProps) => {
           </Typography>
         </Box>
         <Typography variant="caption" sx={{ textAlign: "center" }}>
-          {i18n.language === "ua"
+          {i18n.language === "uk"
             ? product.metadata.ua_description
             : product.metadata.en_description}
         </Typography>

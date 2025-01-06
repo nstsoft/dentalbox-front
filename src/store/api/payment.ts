@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Payment } from "@types";
+import type { Invoice, Payment } from "@types";
 import { REDUCER, PAYMENT_TAG } from "../constants";
 import { baseQuery } from "./baseQuery";
 import { createQueryStringFromObject } from "@utils";
@@ -22,13 +22,15 @@ export const paymentApi = createApi({
     setDefaultPaymentMethod: builder.mutation<Payment[], string>({
       query: (cardId) => ({ url: `/payment/${cardId}`, method: "PATCH" }),
     }),
-    getInvoiceList: builder.query<unknown, { skip: number; limit: number }>({
-      query: ({ skip, limit }) =>
+    getInvoiceList: builder.mutation<
+      { hasMore: boolean; data: Invoice[] },
+      { startingAfter?: string; limit: string }
+    >({
+      query: ({ startingAfter, limit }) =>
         `/payment/invoices?${createQueryStringFromObject({
-          skip,
           limit,
+          startingAfter,
         })}`,
-      providesTags: () => [{ type: PAYMENT_TAG.INVOICE_LIST }],
     }),
     createPaymentIntent: builder.query<CreatePaymentParam, void>({
       query: () => `/payment/create-payment-intent`,
@@ -45,7 +47,7 @@ export const {
   useGetMyPaymentMethodsQuery,
   useDeletePaymentMethodMutation,
   useSetDefaultPaymentMethodMutation,
-  useGetInvoiceListQuery,
+  useGetInvoiceListMutation,
   useGetClientSecretQuery,
 } = paymentApi;
 
