@@ -91,19 +91,21 @@ export const Jaw: FC<
           isImplant={t.implant}
           isAvailable={toothsFurcation.includes(t.index)}
         />
-        {/* <Bleeding
+        <Bleeding
           onChange={onChange.bind(null, ToothProperty.bleeding)}
           value={tooth.bleeding}
         />
         <Plaque
           onChange={onChange.bind(null, ToothProperty.plaque)}
           value={tooth.plaque}
-        /> */}
+        />
         <Margin
+          toothKey={`${side}_${currentDirection[index]}`}
           onChange={onChange.bind(null, ToothProperty.margin)}
           value={tooth.margin}
         />
         <Depth
+          toothKey={`${side}_${currentDirection[index]}`}
           onChange={onChange.bind(null, ToothProperty.depth)}
           value={tooth.depth}
         />

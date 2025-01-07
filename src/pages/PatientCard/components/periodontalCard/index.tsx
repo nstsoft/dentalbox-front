@@ -16,16 +16,17 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
 
   useEffect(() => {
     if (!chart && data?.chart) {
+      console.log("ddddd");
       setChart(data.chart);
     }
   }, [chart, data?.chart]);
 
   const onChange = (changed: DeepPartial<PeriodontalChart>) => {
-    console.log(changed);
     setChart((prev) => prev && deepMerge(prev ?? {}, changed));
   };
 
   if (!chart) return <NoData />;
+  console.log("=========");
 
   return (
     <Box className="periodontal-card">
