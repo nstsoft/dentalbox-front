@@ -1,9 +1,13 @@
 type Anamnesis = {
-  furcation: number;
+  furcation: [number];
   bleeding: [boolean, boolean, boolean];
   plaque: [boolean, boolean, boolean];
   margin: [number, number, number];
   depth: [number, number, number];
+};
+
+type Anamnesis_fr_2 = Omit<Anamnesis, "furcation"> & {
+  furcation: [number, number];
 };
 
 export enum ToothProperty {
@@ -24,9 +28,12 @@ type ToothT = {
   index: string;
 };
 
-export type ToothPropertiesType = ToothT & Anamnesis;
+export type ToothPropertiesType = ToothT & (Anamnesis | Anamnesis_fr_2);
 
-export type UpperJawTooth = ToothT & { buccal: Anamnesis; palatal: Anamnesis };
+export type UpperJawTooth = ToothT & {
+  buccal: Anamnesis;
+  palatal: Anamnesis_fr_2;
+};
 export type BottomJawTooth = ToothT & { lingual: Anamnesis; buccal: Anamnesis };
 
 export type UpperJawTeeth = {

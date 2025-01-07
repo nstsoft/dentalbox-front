@@ -46,7 +46,6 @@ const toothsFurcation = [
 export const Jaw: FC<
   Props & { onChartSet: (changed: DeepPartial<PeriodontalChart>) => void }
 > = ({ dataset, jaw, onChartSet }) => {
-  console.log("dataset", dataset);
   const currentDirection =
     jaw === "upperJaw" ? UpperJawDirections : BottomJawDirections;
 
@@ -126,8 +125,8 @@ export const Jaw: FC<
 
     const tooth =
       jaw === "upperJaw"
-        ? (t as UpperJawTooth).buccal
-        : (t as BottomJawTooth).lingual;
+        ? (t as UpperJawTooth).palatal
+        : (t as BottomJawTooth).buccal;
 
     return (
       <Box key={currentDirection[index]}>

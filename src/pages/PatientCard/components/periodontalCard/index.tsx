@@ -21,6 +21,7 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
   }, [chart, data?.chart]);
 
   const onChange = (changed: DeepPartial<PeriodontalChart>) => {
+    console.log(changed);
     setChart((prev) => prev && deepMerge(prev ?? {}, changed));
   };
 
