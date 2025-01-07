@@ -1,7 +1,7 @@
 type Anamnesis = {
   furcation: number;
-  bleeding: number;
-  plaque: number;
+  bleeding: [boolean, boolean, boolean];
+  plaque: [boolean, boolean, boolean];
   margin: [number, number, number];
   depth: [number, number, number];
 };
@@ -21,6 +21,7 @@ type ToothT = {
   mobility: number;
   implant: boolean;
   note?: string;
+  index: string;
 };
 
 export type ToothPropertiesType = ToothT & Anamnesis;

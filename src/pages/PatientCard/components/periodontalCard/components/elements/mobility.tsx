@@ -8,29 +8,18 @@ type Props = {
   onChange: (value: ToothPropertiesType["mobility"]) => void;
 };
 
-const Selects = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-];
-
 export const Mobility: FC<Props> = ({ value, onChange }) => {
   return (
-    <Box className="mobility">
+    <Box className="mobility box-item">
       <TextField
-        select
-        defaultValue={value}
-        slotProps={{ select: { native: true } }}
+        type="number"
+        value={value}
         variant="standard"
-        onChange={(e) => onChange(+e.target.value)}
-      >
-        {Selects.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </TextField>
+        onChange={({ target }) => {
+          const value = +target.value;
+          if (value >= 0 && value <= 3) onChange(+target.value);
+        }}
+      />
     </Box>
   );
 };

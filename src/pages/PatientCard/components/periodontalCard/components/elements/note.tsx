@@ -8,5 +8,5 @@ type Props = {
 };
 
 export const Note: FC<Props> = ({ value }) => {
-  return <Box className="note">{value}-</Box>;
+  return <Box className="note box-item">{value}-</Box>;
 };

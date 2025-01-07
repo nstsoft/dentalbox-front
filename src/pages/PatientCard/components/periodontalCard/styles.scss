@@ -1,10 +1,91 @@
 .periodontal-card {
+  padding-top: 5px;
+  .title {
+    margin-bottom: 20px;
+  }
   .teeth-section {
     .teeth-section-content {
+      display: grid;
+      grid-template-columns: 100px auto;
+      margin-bottom: 40px;
+
       .teeth-values {
         display: grid;
-        grid-template-columns: repeat(16, 50px);
-        grid-template-rows: 500px;
+        grid-template-columns: repeat(16, 60px);
+        grid-template-rows: 200px;
+
+        .tooth-number {
+          text-align: center;
+        }
+
+        .box-item {
+          height: 25px;
+          text-align: center;
+          padding: 0 4px;
+          margin-bottom: 8px;
+          .MuiInputBase-input {
+            text-align: center;
+          }
+        }
+        .implant {
+          height: 30px;
+          text-align: center;
+          padding-top: 5px;
+        }
+        .furcation {
+          display: flex;
+          justify-content: center;
+          &-icon {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            .round {
+              width: 50%;
+              height: 100%;
+            }
+            .right {
+              border-top-right-radius: 50%;
+              border-bottom-right-radius: 50%;
+            }
+            .left {
+              border-top-left-radius: 50%;
+              border-bottom-left-radius: 50%;
+            }
+          }
+        }
+        .field {
+          width: 15px;
+          height: 25px;
+        }
+        .depth {
+          .MuiInputBase-root {
+            &::before,
+            &::after {
+              display: "none";
+            }
+            .mui-focused {
+              background-color: "#b0c4de";
+            }
+          }
+        }
+        .margin {
+          .MuiInputBase-root {
+            &::before,
+            &::after {
+              display: "none";
+            }
+            .mui-focused {
+              background-color: "#b0c4de";
+            }
+          }
+        }
+      }
+    }
+    .teeth-section-names {
+      .name {
+        height: 25px;
+        margin-bottom: 8px;
       }
     }
   }
