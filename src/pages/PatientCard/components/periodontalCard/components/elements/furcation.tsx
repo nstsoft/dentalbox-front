@@ -2,6 +2,8 @@ import { useEffect, type FC } from "react";
 import Box from "@mui/material/Box";
 import { ToothPropertiesType } from "@types";
 
+const positions = ["left", "right"];
+
 type Props = {
   value: ToothPropertiesType["furcation"];
   onChange: (value: ToothPropertiesType["furcation"]) => void;
@@ -16,40 +18,51 @@ export const Furcation: FC<Props> = ({
   isAvailable,
 }) => {
   useEffect(() => {
-    if (isImplant) onChange(0);
-  }, [isImplant, onChange]);
+    if (isImplant) onChange(value.length > 1 ? [0, 0] : [0]);
+  }, [isImplant, onChange, value.length]);
 
   return (
-    <Box
-      onClick={() => {
-        if (!isImplant && isAvailable) {
-          onChange(value < 3 ? value + 1 : 0);
-        }
-      }}
-      className="furcation box-item"
-      sx={{
-        backgroundColor: !isAvailable ? "#ffffff" : "#e9e9e9",
-      }}
-    >
-      <Box
-        className="furcation-icon"
-        sx={{
-          border: value ? "1px solid black" : "none",
-        }}
-      >
+    <Box className="multiple-furcations">
+      {value.map((item, index) => (
         <Box
-          className="round left"
-          sx={{
-            backgroundColor: value >= 2 ? "black" : "transparent",
+          key={positions[index] + item}
+          onClick={() => {
+            if (!isImplant && isAvailable) {
+              const newValue = [...value];
+              newValue[index] += 1;
+              onChange(newValue as ToothPropertiesType["furcation"]);
+            }
           }}
-        />
-        <Box
-          className="round right"
+          className="furcation box-item"
           sx={{
-            backgroundColor: value === 3 ? "black" : "transparent",
+            backgroundColor: !isAvailable || isImplant ? "#ffffff" : "#e9e9e9",
+            borderLeft: isAvailable && !isImplant ? "1px solid #ccc" : "none",
+            borderRight: isAvailable && !isImplant ? "1px solid #ccc" : "none",
           }}
-        />
-      </Box>
+        >
+          <Box
+            className="furcation-icon"
+            sx={{
+              border: item && isAvailable ? "1px solid black" : "none",
+            }}
+          >
+            <Box
+              className="round left"
+              sx={{
+                backgroundColor:
+                  item >= 2 && isAvailable ? "black" : "transparent",
+              }}
+            />
+            <Box
+              className="round right"
+              sx={{
+                backgroundColor:
+                  item === 3 && isAvailable ? "black" : "transparent",
+              }}
+            />
+          </Box>
+        </Box>
+      ))}
     </Box>
   );
 };

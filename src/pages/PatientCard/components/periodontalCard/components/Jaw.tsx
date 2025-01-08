@@ -135,19 +135,21 @@ export const Jaw: FC<
         <Depth
           onChange={onChange.bind(null, ToothProperty.depth)}
           value={tooth.depth}
+          toothKey={`${side}_${currentDirection[index]}`}
         />
         <Margin
           onChange={onChange.bind(null, ToothProperty.margin)}
           value={tooth.margin}
+          toothKey={`${side}_${currentDirection[index]}`}
         />
-        {/* <Plaque
+        <Plaque
           onChange={onChange.bind(null, ToothProperty.plaque)}
           value={tooth.plaque}
         />
         <Bleeding
           onChange={onChange.bind(null, ToothProperty.bleeding)}
           value={tooth.bleeding}
-        /> */}
+        />
         <Furcation
           onChange={onChange.bind(null, ToothProperty.furcation)}
           value={tooth.furcation}
