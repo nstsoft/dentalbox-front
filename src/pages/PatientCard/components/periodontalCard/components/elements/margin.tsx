@@ -2,7 +2,6 @@ import { type FC } from "react";
 import Box from "@mui/material/Box";
 import { ToothPropertiesType } from "@types";
 import { isNumber } from "../utils";
-import Input from "@mui/material/Input";
 
 type Props = {
   toothKey: string;
@@ -11,20 +10,21 @@ type Props = {
 };
 
 export const Margin: FC<Props> = ({ value, onChange, toothKey }) => {
-  const keys = ["left", "center", "right"];
   return (
     <Box className="margin box-item">
       {value.map((item, index) => (
-        <Input
+        <input
           className="field"
-          key={`${toothKey}_margin` + keys[index]}
+          key={`${toothKey}_margin_` + index}
           value={item}
           onChange={({ target }) => {
-            if (!isNumber(target.value)) {
-              return;
-            }
+            if (!isNumber(target.value)) return;
+            const targetValue = target.value.startsWith("0")
+              ? target.value.slice(1)
+              : target.value;
+
             const newValue = [...value];
-            newValue[index] = target.value ? +target.value : 0;
+            newValue[index] = +targetValue;
             onChange(newValue as ToothPropertiesType["margin"]);
           }}
         />

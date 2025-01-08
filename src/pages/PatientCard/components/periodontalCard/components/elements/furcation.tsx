@@ -1,67 +1,38 @@
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import Box from "@mui/material/Box";
 import { ToothPropertiesType } from "@types";
+import { FurcationElement } from "./furcationElement";
 
 const positions = ["left", "right"];
 
 type Props = {
   value: ToothPropertiesType["furcation"];
   onChange: (value: ToothPropertiesType["furcation"]) => void;
-  isImplant: boolean;
-  isAvailable: boolean;
+  implant: boolean;
+  available: boolean;
 };
 
 export const Furcation: FC<Props> = ({
   value,
   onChange,
-  isImplant,
-  isAvailable,
+  implant,
+  available,
 }) => {
-  useEffect(() => {
-    if (isImplant) onChange(value.length > 1 ? [0, 0] : [0]);
-  }, [isImplant, onChange, value.length]);
-
+  if (!available || implant) {
+    return <Box className="multiple-furcations"></Box>;
+  }
   return (
     <Box className="multiple-furcations">
       {value.map((item, index) => (
-        <Box
+        <FurcationElement
           key={positions[index] + item}
-          onClick={() => {
-            if (!isImplant && isAvailable) {
-              const newValue = [...value];
-              newValue[index] += 1;
-              onChange(newValue as ToothPropertiesType["furcation"]);
-            }
+          value={item}
+          onChange={(val) => {
+            const newValue = [...value];
+            newValue[index] = val;
+            onChange(newValue as [number] | [number, number]);
           }}
-          className="furcation box-item"
-          sx={{
-            backgroundColor: !isAvailable || isImplant ? "#ffffff" : "#e9e9e9",
-            borderLeft: isAvailable && !isImplant ? "1px solid #ccc" : "none",
-            borderRight: isAvailable && !isImplant ? "1px solid #ccc" : "none",
-          }}
-        >
-          <Box
-            className="furcation-icon"
-            sx={{
-              border: item && isAvailable ? "1px solid black" : "none",
-            }}
-          >
-            <Box
-              className="round left"
-              sx={{
-                backgroundColor:
-                  item >= 2 && isAvailable ? "black" : "transparent",
-              }}
-            />
-            <Box
-              className="round right"
-              sx={{
-                backgroundColor:
-                  item === 3 && isAvailable ? "black" : "transparent",
-              }}
-            />
-          </Box>
-        </Box>
+        />
       ))}
     </Box>
   );

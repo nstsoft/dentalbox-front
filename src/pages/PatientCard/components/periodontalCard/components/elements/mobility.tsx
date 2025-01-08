@@ -2,6 +2,7 @@ import { type FC } from "react";
 import Box from "@mui/material/Box";
 import { ToothPropertiesType } from "@types";
 import TextField from "@mui/material/TextField";
+import { isNumber } from "../utils";
 
 type Props = {
   value: ToothPropertiesType["mobility"];
@@ -12,12 +13,15 @@ export const Mobility: FC<Props> = ({ value, onChange }) => {
   return (
     <Box className="mobility box-item">
       <TextField
-        type="number"
         value={value}
         variant="standard"
         onChange={({ target }) => {
-          const value = +target.value;
-          if (value >= 0 && value <= 3) onChange(+target.value);
+          if (!isNumber(target.value)) return;
+          const targetValue = target.value.startsWith("0")
+            ? target.value.slice(1)
+            : target.value;
+
+          onChange(+targetValue);
         }}
       />
     </Box>

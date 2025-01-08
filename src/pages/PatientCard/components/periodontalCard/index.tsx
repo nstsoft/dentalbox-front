@@ -16,17 +16,15 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
 
   useEffect(() => {
     if (!chart && data?.chart) {
-      console.log("ddddd");
       setChart(data.chart);
     }
   }, [chart, data?.chart]);
 
   const onChange = (changed: DeepPartial<PeriodontalChart>) => {
-    setChart((prev) => prev && deepMerge(prev ?? {}, changed));
+    setChart((prev) => prev && deepMerge(prev, changed));
   };
 
   if (!chart) return <NoData />;
-  console.log("=========");
 
   return (
     <Box className="periodontal-card">
@@ -43,6 +41,7 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
           <Typography variant="h6">0% Bleeding on Probing</Typography>
         </Box>
       </Divider>
+      <Jaw onChartSet={onChange} jaw="bottomJaw" dataset={chart.bottomJaw} />
     </Box>
   );
 };

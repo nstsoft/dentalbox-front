@@ -83,13 +83,13 @@ export const Jaw: FC<
         />
         <Implant
           onChange={onChange.bind(null, ToothProperty.implant)}
-          value={t.implant}
+          value={[t.implant]}
         />
         <Furcation
           onChange={onChange.bind(null, ToothProperty.furcation)}
           value={tooth.furcation}
-          isImplant={t.implant}
-          isAvailable={toothsFurcation.includes(t.index)}
+          implant={t.implant}
+          available={toothsFurcation.includes(t.index)}
         />
         <Bleeding
           onChange={onChange.bind(null, ToothProperty.bleeding)}
@@ -153,8 +153,8 @@ export const Jaw: FC<
         <Furcation
           onChange={onChange.bind(null, ToothProperty.furcation)}
           value={tooth.furcation}
-          isImplant={t.implant}
-          isAvailable={toothsFurcation.includes(t.index)}
+          implant={t.implant}
+          available={toothsFurcation.includes(t.index)}
         />
         <Note
           onChange={onChange.bind(null, ToothProperty.note)}
