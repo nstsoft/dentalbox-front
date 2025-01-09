@@ -20,7 +20,7 @@ export const Plaque: FC<Props> = ({ value, onChange }) => {
             onChange(newValue as ToothPropertiesType["plaque"]);
           }}
           sx={{
-            backgroundColor: item ? "#ff6565" : "#e9e9e9",
+            backgroundColor: item ? "#0098ff" : "#e9e9e9",
           }}
         />
       ))}

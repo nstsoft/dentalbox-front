@@ -9,10 +9,12 @@ import { Jaw } from "./components";
 import { useGetPeriodontalChartQuery } from "@api";
 import type { DeepPartial, PeriodontalChart } from "@types";
 import { deepMerge } from "@utils";
+import Button from "@mui/material/Button";
 
 export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
   const { data } = useGetPeriodontalChartQuery(patientId);
   const [chart, setChart] = useState(data?.chart);
+  const [isDataChanged, setIsDataChanged] = useState(false);
 
   useEffect(() => {
     if (!chart && data?.chart) {
@@ -22,15 +24,21 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
 
   const onChange = (changed: DeepPartial<PeriodontalChart>) => {
     setChart((prev) => prev && deepMerge(prev, changed));
+    setIsDataChanged(true);
   };
 
   if (!chart) return <NoData />;
 
   return (
     <Box className="periodontal-card">
-      <Typography variant="h4" className="title">
-        PERIODONTAL CHART
-      </Typography>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Typography variant="h4" className="title">
+          PERIODONTAL CHART
+        </Typography>
+        <Button variant="contained" disabled={!isDataChanged}>
+          Save
+        </Button>
+      </Box>
       <Jaw onChartSet={onChange} jaw="upperJaw" dataset={chart.upperJaw} />
 
       <Divider className="divider">

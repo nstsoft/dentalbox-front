@@ -111,8 +111,8 @@ export const Files: FC<Props> = ({ files, enableAddFile, isEmptyData }) => {
         <NoData />
       ) : (
         <>
-          {rest.map((file) => (
-            <Box className="rest-file-item" key={file._id}>
+          {rest.map((file, index) => (
+            <Box className="rest-file-item" key={file._id + file.name + index}>
               <Typography variant="h6">
                 <a href={file.url}>{file.name}</a>
               </Typography>
@@ -126,9 +126,9 @@ export const Files: FC<Props> = ({ files, enableAddFile, isEmptyData }) => {
             gap={10}
             rowHeight={200}
           >
-            {images.map((item) => (
+            {images.map((item, index) => (
               <ImageListItem
-                key={item.url}
+                key={item.url + item._id + item.name + index}
                 sx={{ cursor: "pointer" }}
                 onClick={() => handleClickOpen(item)}
                 onMouseOver={() => setHoveredElementId(item._id)}

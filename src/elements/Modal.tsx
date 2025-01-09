@@ -34,7 +34,6 @@ export const CustomModal: FC<Props> = ({
           overflow: "auto",
           boxShadow: 24,
           borderRadius: "8px",
-          p: "15px",
           ...sx,
         }}
       >
@@ -45,6 +44,8 @@ export const CustomModal: FC<Props> = ({
             alignItems: "flex-end",
             marginBottom: "5px",
             position: "relative",
+            backgroundColor: "#008fba",
+            padding: "15px",
           }}
         >
           {headerButtons}
@@ -56,7 +57,7 @@ export const CustomModal: FC<Props> = ({
           </IconButton>
         </Box>
 
-        {children}
+        <Box sx={{ p: "15px" }}>{children}</Box>
       </Box>
     </Modal>
   );

@@ -10,14 +10,12 @@ type Props = {
 
 export const Implant: FC<Props> = ({ value, onChange }) => {
   return (
-    <Box
-      onClick={() => {
-        console.log("111111111111");
-        onChange(!value[0]);
-      }}
-      className="implant box-item"
-    >
-      {value[0] ? <DangerousIcon /> : <DoneOutlineIcon />}
+    <Box onClick={() => onChange(!value[0])} className="implant box-item">
+      {value[0] ? (
+        <DangerousIcon className="icon" />
+      ) : (
+        <DoneOutlineIcon className="icon" />
+      )}
     </Box>
   );
 };

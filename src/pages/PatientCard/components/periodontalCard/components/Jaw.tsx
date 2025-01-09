@@ -75,8 +75,11 @@ export const Jaw: FC<
         : (t as BottomJawTooth).lingual;
 
     return (
-      <Box key={currentDirection[index]}>
-        <Box className="tooth-number"> {currentDirection[index]}</Box>
+      <Box
+        key={currentDirection[index]}
+        className={`${jaw === "bottomJaw" ? "reverse" : ""}`}
+      >
+        <Box className="tooth-number"> {currentDirection[index].slice(1)}</Box>
         <Mobility
           onChange={onChange.bind(null, ToothProperty.mobility)}
           value={t.mobility}
@@ -131,7 +134,10 @@ export const Jaw: FC<
         : (t as BottomJawTooth).buccal;
 
     return (
-      <Box key={currentDirection[index]}>
+      <Box
+        key={currentDirection[index]}
+        className={`${jaw === "bottomJaw" ? "reverse" : ""}`}
+      >
         <Depth
           onChange={onChange.bind(null, ToothProperty.depth)}
           value={tooth.depth}
@@ -167,10 +173,14 @@ export const Jaw: FC<
   return (
     <Box className="teeth-section">
       <Box className="teeth-section-content">
-        <Box className="teeth-section-names">
+        <Box
+          className={`teeth-section-names ${
+            jaw === "bottomJaw" ? "reverse" : ""
+          }`}
+        >
           <Typography className="name"></Typography>
           <Typography className="name">Mobility</Typography>
-          <Typography sx={{ height: "30px" }}>Implant</Typography>
+          <Typography className="name">Implant</Typography>
           <Typography className="name">Furcation</Typography>
           <Typography className="name">Bleeding</Typography>
           <Typography className="name">Plaque</Typography>
@@ -184,7 +194,11 @@ export const Jaw: FC<
         </Box>
       </Box>
       <Box className="teeth-section-content">
-        <Box className="teeth-section-names">
+        <Box
+          className={`teeth-section-names ${
+            jaw === "bottomJaw" ? "reverse" : ""
+          }`}
+        >
           <Typography className="name">Margin</Typography>
           <Typography className="name">Depth</Typography>
           <Typography className="name">Plaque</Typography>
