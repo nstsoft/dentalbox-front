@@ -23,25 +23,11 @@ import {
 import { formToothChange } from "../helpers";
 import type { DeepPartial, PeriodontalChart } from "@types";
 import Typography from "@mui/material/Typography";
+import { teethWithFurcation } from "./utils";
 
 type Props =
   | { dataset: UpperJawTeeth; jaw: "upperJaw" }
   | { dataset: BottomJawTeeth; jaw: "bottomJaw" };
-
-const toothsFurcation = [
-  "t18",
-  "t17",
-  "t16",
-  "t26",
-  "t27",
-  "t28",
-  "t48",
-  "t47",
-  "t46",
-  "t36",
-  "t37",
-  "t38",
-];
 
 export const Jaw: FC<
   Props & { onChartSet: (changed: DeepPartial<PeriodontalChart>) => void }
@@ -57,7 +43,7 @@ export const Jaw: FC<
           index: tooth,
         }));
 
-  const renderUpperSet = (
+  const renderMobilitySet = (
     t: UpperJawTooth | BottomJawTooth,
     index: number,
     side: "buccal" | "lingual"
@@ -92,7 +78,7 @@ export const Jaw: FC<
           onChange={onChange.bind(null, ToothProperty.furcation)}
           value={tooth.furcation}
           implant={t.implant}
-          available={toothsFurcation.includes(t.index)}
+          available={teethWithFurcation.includes(t.index)}
         />
         <Bleeding
           onChange={onChange.bind(null, ToothProperty.bleeding)}
@@ -116,7 +102,7 @@ export const Jaw: FC<
     );
   };
 
-  const renderBottomSet = (
+  const renderNotesSet = (
     t: UpperJawTooth | BottomJawTooth,
     index: number,
     side: "buccal" | "palatal"
@@ -160,13 +146,35 @@ export const Jaw: FC<
           onChange={onChange.bind(null, ToothProperty.furcation)}
           value={tooth.furcation}
           implant={t.implant}
-          available={toothsFurcation.includes(t.index)}
+          available={teethWithFurcation.includes(t.index)}
         />
         <Note
           onChange={onChange.bind(null, ToothProperty.note)}
           value={t.note}
         />
       </Box>
+    );
+  };
+
+  const renderUpperQuarter = () => {
+    if (jaw === "upperJaw") {
+      return (
+        <>{toothSet.map((t, index) => renderMobilitySet(t, index, "buccal"))}</>
+      );
+    }
+    return (
+      <>{toothSet.map((t, index) => renderNotesSet(t, index, "buccal"))}</>
+    );
+  };
+
+  const renderBottomQuarter = () => {
+    if (jaw === "upperJaw") {
+      return (
+        <>{toothSet.map((t, index) => renderNotesSet(t, index, "palatal"))}</>
+      );
+    }
+    return (
+      <>{toothSet.map((t, index) => renderMobilitySet(t, index, "lingual"))}</>
     );
   };
 
@@ -187,11 +195,7 @@ export const Jaw: FC<
           <Typography className="name">Margin</Typography>
           <Typography className="name">Depth</Typography>
         </Box>
-        <Box className="teeth-values">
-          {toothSet.map((t, index) =>
-            renderUpperSet(t, index, jaw == "upperJaw" ? "buccal" : "lingual")
-          )}
-        </Box>
+        <Box className="teeth-values">{renderUpperQuarter()}</Box>
       </Box>
       <Box className="teeth-section-content">
         <Box
@@ -206,11 +210,7 @@ export const Jaw: FC<
           <Typography className="name">Furcation</Typography>
           <Typography className="name">Notes</Typography>
         </Box>
-        <Box className="teeth-values">
-          {toothSet.map((t, index) =>
-            renderBottomSet(t, index, jaw == "upperJaw" ? "palatal" : "buccal")
-          )}
-        </Box>
+        <Box className="teeth-values">{renderBottomQuarter()}</Box>
       </Box>
     </Box>
   );
