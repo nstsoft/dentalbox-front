@@ -6,3 +6,4 @@ export * from "./bleeding";
 export * from "./depth";
 export * from "./margin";
 export * from "./note";
+export * from "./tooth";

@@ -1,8 +1,8 @@
 export const T11_IMAGE = () => {
   return (
     <image
-      width="17.6"
-      height="60.8"
+      width="100%"
+      height="100%"
       preserveAspectRatio="none"
       xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAC+CAYAAACRZJdWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAACAASURB

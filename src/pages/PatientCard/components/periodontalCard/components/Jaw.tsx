@@ -9,6 +9,7 @@ import {
   BottomJawTooth,
   ToothPropertiesType,
   ToothProperty,
+  TEETH_NUMBERS,
 } from "@types";
 import {
   Mobility,
@@ -19,6 +20,7 @@ import {
   Margin,
   Depth,
   Note,
+  ToothImage,
 } from "./elements";
 import { formToothChange } from "../helpers";
 import type { DeepPartial, PeriodontalChart } from "@types";
@@ -98,6 +100,12 @@ export const Jaw: FC<
           onChange={onChange.bind(null, ToothProperty.depth)}
           value={tooth.depth}
         />
+        <ToothImage
+          margin={tooth.margin}
+          tooth={t.index as TEETH_NUMBERS}
+          implant={t.implant}
+          depth={tooth.depth}
+        />
       </Box>
     );
   };
@@ -124,6 +132,13 @@ export const Jaw: FC<
         key={currentDirection[index]}
         className={`${jaw === "bottomJaw" ? "reverse" : ""}`}
       >
+        <ToothImage
+          rotate={jaw === "upperJaw"}
+          tooth={t.index as TEETH_NUMBERS}
+          implant={t.implant}
+          margin={tooth.margin}
+          depth={tooth.depth}
+        />
         <Depth
           onChange={onChange.bind(null, ToothProperty.depth)}
           value={tooth.depth}
@@ -182,9 +197,7 @@ export const Jaw: FC<
     <Box className="teeth-section">
       <Box className="teeth-section-content">
         <Box
-          className={`teeth-section-names ${
-            jaw === "bottomJaw" ? "reverse" : ""
-          }`}
+          className={`teeth-section-names ${jaw === "bottomJaw" && "reverse"}`}
         >
           <Typography className="name"></Typography>
           <Typography className="name">Mobility</Typography>
@@ -193,6 +206,7 @@ export const Jaw: FC<
           <Typography className="name">Bleeding</Typography>
           <Typography className="name">Plaque</Typography>
           <Typography className="name">Margin</Typography>
+          <Typography className="name">Depth</Typography>
           <Typography className="name">Depth</Typography>
         </Box>
         <Box className="teeth-values">{renderUpperQuarter()}</Box>
@@ -203,6 +217,7 @@ export const Jaw: FC<
             jaw === "bottomJaw" ? "reverse" : ""
           }`}
         >
+          <Typography className="name">Margin</Typography>
           <Typography className="name">Margin</Typography>
           <Typography className="name">Depth</Typography>
           <Typography className="name">Plaque</Typography>

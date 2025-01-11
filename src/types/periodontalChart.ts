@@ -74,6 +74,10 @@ export type BottomJawTeeth = {
   t41: BottomJawTooth;
 };
 
+export type TEETH_NUMBERS =
+  | (typeof UpperJawDirections)[number]
+  | (typeof BottomJawDirections)[number];
+
 export type PeriodontalChart = {
   upperJaw: UpperJawTeeth;
   bottomJaw: BottomJawTeeth;
