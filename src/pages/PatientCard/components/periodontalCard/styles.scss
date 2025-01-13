@@ -1,5 +1,6 @@
 .periodontal-card {
   padding-top: 5px;
+  overflow-x: auto;
 
   .title {
     margin-bottom: 20px;
@@ -8,16 +9,17 @@
   .teeth-section {
     display: flex;
     flex-direction: column;
-    align-items: center;
     .teeth-section-content {
-      display: grid;
-      grid-template-columns: 100px auto;
+      display: flex;
+      gap: 10px;
       margin-bottom: 40px;
 
       .teeth-values {
-        display: grid;
-        grid-template-columns: repeat(16, 70px);
-        grid-template-rows: 340px;
+        display: flex;
+        .column {
+          max-height: 340px;
+          width: 70px;
+        }
 
         .tooth-number {
           height: 25px;
@@ -42,6 +44,7 @@
           height: 70px;
           justify-content: center;
           .tooth-image-box {
+            width: 35px;
             img {
               width: auto;
               height: 100%;
@@ -51,7 +54,7 @@
               justify-content: center;
               align-items: center;
 
-              width: 35px;
+              width: 70px;
               height: 100%;
               image {
                 width: auto;
@@ -61,6 +64,7 @@
           }
           .chart {
             position: absolute;
+            height: 35px;
           }
         }
         .box-item.tooth-box.rotate {
@@ -180,7 +184,12 @@
       height: 25px;
       margin-bottom: 8px;
       display: flex;
+      justify-content: flex-end;
       align-items: center;
+      padding-right: 4px;
+      &.icon {
+        height: 70px;
+      }
     }
   }
 

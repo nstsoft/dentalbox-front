@@ -22,8 +22,8 @@ export const ToothImage: FC<Props> = ({
   depth,
 }) => {
   const marginDataset = [0, 1, 2].map((i) => ({
-    margin: margin[i],
-    depth: depth[i],
+    margin: -margin[i],
+    depth: depth[i] ? depth[i] + -margin[i] : 0,
     x: i + 1,
   }));
 
@@ -33,24 +33,24 @@ export const ToothImage: FC<Props> = ({
         {implant ? (
           <img src={Implant} />
         ) : (
-          <SvgIcon> {TEETH_IMAGES[tooth]()}</SvgIcon>
+          <SvgIcon>{TEETH_IMAGES[tooth]()}</SvgIcon>
         )}
       </Box>
 
       <Box className="chart">
         <LineChart width={70} maxBarSize={70} height={70} data={marginDataset}>
-          <YAxis hide domain={[0, 10]} />
+          <YAxis hide domain={[-5, 5]} />
           <Line
             type="monotone"
             dataKey="margin"
-            stroke="#0098ff"
+            stroke="#ff6565"
             dot={false}
             strokeLinecap="square"
           />
           <Line
             type="monotone"
             dataKey="depth"
-            stroke="#ff6565"
+            stroke="#0098ff"
             dot={false}
             strokeLinecap="square"
           />

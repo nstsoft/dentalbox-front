@@ -1,7 +1,6 @@
 import { type FC } from "react";
 import Box from "@mui/material/Box";
 import { ToothPropertiesType } from "@types";
-import { isNumber } from "../utils";
 
 type Props = {
   toothKey: string;
@@ -15,11 +14,12 @@ export const Depth: FC<Props> = ({ value, onChange, toothKey }) => {
     <Box className="depth box-item">
       {value.map((item, index) => (
         <input
+          type="number"
           className="field"
           key={`${toothKey}_margin` + keys[index]}
-          value={item}
+          min={0}
+          value={`${item}`}
           onChange={({ target }) => {
-            if (!isNumber(target.value)) return;
             const targetValue = target.value.startsWith("0")
               ? target.value.slice(1)
               : target.value;

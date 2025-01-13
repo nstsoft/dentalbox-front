@@ -26,6 +26,7 @@ import { formToothChange } from "../helpers";
 import type { DeepPartial, PeriodontalChart } from "@types";
 import Typography from "@mui/material/Typography";
 import { teethWithFurcation } from "./utils";
+import { isMobile, isTablet } from "react-device-detect";
 
 type Props =
   | { dataset: UpperJawTeeth; jaw: "upperJaw" }
@@ -65,7 +66,7 @@ export const Jaw: FC<
     return (
       <Box
         key={currentDirection[index]}
-        className={`${jaw === "bottomJaw" ? "reverse" : ""}`}
+        className={`column ${jaw === "bottomJaw" ? "reverse" : ""}`}
       >
         <Box className="tooth-number"> {currentDirection[index].slice(1)}</Box>
         <Mobility
@@ -105,6 +106,7 @@ export const Jaw: FC<
           tooth={t.index as TEETH_NUMBERS}
           implant={t.implant}
           depth={tooth.depth}
+          rotate={jaw === "bottomJaw"}
         />
       </Box>
     );
@@ -130,7 +132,7 @@ export const Jaw: FC<
     return (
       <Box
         key={currentDirection[index]}
-        className={`${jaw === "bottomJaw" ? "reverse" : ""}`}
+        className={`column ${jaw === "bottomJaw" ? "reverse" : ""}`}
       >
         <ToothImage
           rotate={jaw === "upperJaw"}
@@ -194,20 +196,38 @@ export const Jaw: FC<
   };
 
   return (
-    <Box className="teeth-section">
+    <Box
+      className="teeth-section"
+      sx={{ alignItems: isMobile || isTablet ? "flex-start" : "center" }}
+    >
       <Box className="teeth-section-content">
         <Box
           className={`teeth-section-names ${jaw === "bottomJaw" && "reverse"}`}
         >
-          <Typography className="name"></Typography>
-          <Typography className="name">Mobility</Typography>
-          <Typography className="name">Implant</Typography>
-          <Typography className="name">Furcation</Typography>
-          <Typography className="name">Bleeding</Typography>
-          <Typography className="name">Plaque</Typography>
-          <Typography className="name">Margin</Typography>
-          <Typography className="name">Depth</Typography>
-          <Typography className="name">Depth</Typography>
+          {jaw === "upperJaw" && (
+            <>
+              <Typography className="name"></Typography>
+              <Typography className="name">Mobility</Typography>
+              <Typography className="name">Implant</Typography>
+              <Typography className="name">Furcation</Typography>
+              <Typography className="name">Bleeding</Typography>
+              <Typography className="name">Plaque</Typography>
+              <Typography className="name">Margin</Typography>
+              <Typography className="name">Depth</Typography>
+              <Typography className="name icon"></Typography>
+            </>
+          )}
+          {jaw === "bottomJaw" && (
+            <>
+              <Typography className="name icon"></Typography>
+              <Typography className="name">Margin</Typography>
+              <Typography className="name">Depth</Typography>
+              <Typography className="name">Plaque</Typography>
+              <Typography className="name">Bleeding</Typography>
+              <Typography className="name">Furcation</Typography>
+              <Typography className="name">Notes</Typography>
+            </>
+          )}
         </Box>
         <Box className="teeth-values">{renderUpperQuarter()}</Box>
       </Box>
@@ -217,13 +237,30 @@ export const Jaw: FC<
             jaw === "bottomJaw" ? "reverse" : ""
           }`}
         >
-          <Typography className="name">Margin</Typography>
-          <Typography className="name">Margin</Typography>
-          <Typography className="name">Depth</Typography>
-          <Typography className="name">Plaque</Typography>
-          <Typography className="name">Bleeding</Typography>
-          <Typography className="name">Furcation</Typography>
-          <Typography className="name">Notes</Typography>
+          {jaw === "upperJaw" && (
+            <>
+              <Typography className="name icon"></Typography>
+              <Typography className="name">Margin</Typography>
+              <Typography className="name">Depth</Typography>
+              <Typography className="name">Plaque</Typography>
+              <Typography className="name">Bleeding</Typography>
+              <Typography className="name">Furcation</Typography>
+              <Typography className="name">Notes</Typography>
+            </>
+          )}
+          {jaw === "bottomJaw" && (
+            <>
+              <Typography className="name"></Typography>
+              <Typography className="name">Mobility</Typography>
+              <Typography className="name">Implant</Typography>
+              <Typography className="name">Furcation</Typography>
+              <Typography className="name">Bleeding</Typography>
+              <Typography className="name">Plaque</Typography>
+              <Typography className="name">Margin</Typography>
+              <Typography className="name">Depth</Typography>
+              <Typography className="name icon"></Typography>
+            </>
+          )}
         </Box>
         <Box className="teeth-values">{renderBottomQuarter()}</Box>
       </Box>
