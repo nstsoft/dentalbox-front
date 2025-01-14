@@ -252,7 +252,7 @@ export const EN: ResourceLanguage = {
           paid: "Paid",
           uncollectible: "Uncollectible",
           void: "Void",
-        }
+        },
       },
       staff: {
         staff: "Stuff",
@@ -393,6 +393,22 @@ export const EN: ResourceLanguage = {
           notes: "Notes...",
           select: "Select file",
           saveFile: "Save file",
+        },
+        periodontalCard: {
+          jaw: {
+            mobility: "Mobility",
+            implant: "Implant",
+            furcation: "Furcation",
+            bleeding: "Bleeding on Probing",
+            plaque: "Plaque",
+            margin: "Gingival Margin",
+            depth: "Probing Depth",
+            notes: "Notes",
+          },
+          divider: {
+            meanDepth: "Mean Probing Depth= {{value}}mm",
+            meanAttachment: "Mean Attachment Level= {{value}}mm",
+          },
         },
       },
       calendar: {

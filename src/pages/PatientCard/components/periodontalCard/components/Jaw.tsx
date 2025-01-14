@@ -26,7 +26,7 @@ import { formToothChange } from "../helpers";
 import type { DeepPartial, PeriodontalChart } from "@types";
 import Typography from "@mui/material/Typography";
 import { teethWithFurcation } from "./utils";
-import { isMobile, isTablet } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 
 type Props =
   | { dataset: UpperJawTeeth; jaw: "upperJaw" }
@@ -35,6 +35,9 @@ type Props =
 export const Jaw: FC<
   Props & { onChartSet: (changed: DeepPartial<PeriodontalChart>) => void }
 > = ({ dataset, jaw, onChartSet }) => {
+  const { t } = useTranslation("", {
+    keyPrefix: "pages.patientCard.periodontalCard.jaw",
+  });
   const currentDirection =
     jaw === "upperJaw" ? UpperJawDirections : BottomJawDirections;
 
@@ -198,7 +201,7 @@ export const Jaw: FC<
   return (
     <Box
       className="teeth-section"
-      sx={{ alignItems: isMobile || isTablet ? "flex-start" : "center" }}
+      sx={{ alignItems: "flex-start", }}
     >
       <Box className="teeth-section-content">
         <Box
@@ -207,25 +210,25 @@ export const Jaw: FC<
           {jaw === "upperJaw" && (
             <>
               <Typography className="name"></Typography>
-              <Typography className="name">Mobility</Typography>
-              <Typography className="name">Implant</Typography>
-              <Typography className="name">Furcation</Typography>
-              <Typography className="name">Bleeding</Typography>
-              <Typography className="name">Plaque</Typography>
-              <Typography className="name">Margin</Typography>
-              <Typography className="name">Depth</Typography>
+              <Typography className="name">{t("mobility")}</Typography>
+              <Typography className="name">{t("implant")}</Typography>
+              <Typography className="name">{t("furcation")}</Typography>
+              <Typography className="name">{t("bleeding")}</Typography>
+              <Typography className="name">{t("plaque")}</Typography>
+              <Typography className="name">{t("margin")}</Typography>
+              <Typography className="name">{t("depth")}</Typography>
               <Typography className="name icon"></Typography>
             </>
           )}
           {jaw === "bottomJaw" && (
             <>
               <Typography className="name icon"></Typography>
-              <Typography className="name">Margin</Typography>
-              <Typography className="name">Depth</Typography>
-              <Typography className="name">Plaque</Typography>
-              <Typography className="name">Bleeding</Typography>
-              <Typography className="name">Furcation</Typography>
-              <Typography className="name">Notes</Typography>
+              <Typography className="name">{t("margin")}</Typography>
+              <Typography className="name">{t("depth")}</Typography>
+              <Typography className="name">{t("plaque")}</Typography>
+              <Typography className="name">{t("bleeding")}</Typography>
+              <Typography className="name">{t("furcation")}</Typography>
+              <Typography className="name">{t("notes")}</Typography>
             </>
           )}
         </Box>
@@ -240,24 +243,24 @@ export const Jaw: FC<
           {jaw === "upperJaw" && (
             <>
               <Typography className="name icon"></Typography>
-              <Typography className="name">Margin</Typography>
-              <Typography className="name">Depth</Typography>
-              <Typography className="name">Plaque</Typography>
-              <Typography className="name">Bleeding</Typography>
-              <Typography className="name">Furcation</Typography>
-              <Typography className="name">Notes</Typography>
+              <Typography className="name">{t("margin")}</Typography>
+              <Typography className="name">{t("depth")}</Typography>
+              <Typography className="name">{t("plaque")}</Typography>
+              <Typography className="name">{t("bleeding")}</Typography>
+              <Typography className="name">{t("furcation")}</Typography>
+              <Typography className="name">{t("notes")}</Typography>
             </>
           )}
           {jaw === "bottomJaw" && (
             <>
               <Typography className="name"></Typography>
-              <Typography className="name">Mobility</Typography>
-              <Typography className="name">Implant</Typography>
-              <Typography className="name">Furcation</Typography>
-              <Typography className="name">Bleeding</Typography>
-              <Typography className="name">Plaque</Typography>
-              <Typography className="name">Margin</Typography>
-              <Typography className="name">Depth</Typography>
+              <Typography className="name">{t("mobility")}</Typography>
+              <Typography className="name">{t("implant")}</Typography>
+              <Typography className="name">{t("furcation")}</Typography>
+              <Typography className="name">{t("bleeding")}</Typography>
+              <Typography className="name">{t("plaque")}</Typography>
+              <Typography className="name">{t("margin")}</Typography>
+              <Typography className="name">{t("depth")}</Typography>
               <Typography className="name icon"></Typography>
             </>
           )}

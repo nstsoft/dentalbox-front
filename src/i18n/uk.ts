@@ -394,6 +394,22 @@ export const UA: ResourceLanguage = {
           select: "Вибрати файл",
           saveFile: "Зберегти файл",
         },
+        periodontalCard: {
+          jaw: {
+            mobility: "Мобільність",
+            implant: "Імплант",
+            furcation: "Фукації",
+            bleeding: "Кровотеча при зондуванні",
+            plaque: "Наліт",
+            margin: "Ясновий край",
+            depth: "Глибина зондування",
+            notes: "Нотатки",
+          },
+          divider: {
+            meanDepth: "Середня глибина зондування= {{value}}мм",
+            meanAttachment: "Середнє рівень прикриття= {{value}}мм",
+          },
+        },
       },
       calendar: {
         messages: {

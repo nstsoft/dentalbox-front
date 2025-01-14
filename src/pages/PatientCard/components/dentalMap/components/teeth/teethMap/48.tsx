@@ -36,7 +36,7 @@ export const T48Svg: FC<TeethMapProps> = ({ tooth, onColorChange }) => {
   }
 
   return (
-    <SvgIcon className="tooth-svg l b big 8">
+    <SvgIcon className="tooth-svg l b big t8">
       <svg width="29.76" height="56.64" version="1.1" viewBox="0 0 29.76 56.64">
         <T48_IMAGE />
         <g fillOpacity=".65229">

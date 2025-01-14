@@ -225,7 +225,7 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
   return (
     <div className="dental-map-container">
       <Button variant="contained" color="primary" onClick={onSaveChart}>
-        Save
+        {t("save", { keyPrefix: "buttons" })}
       </Button>
       <div
         className="dental-map-background"

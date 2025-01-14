@@ -29,7 +29,7 @@ export const ToothImage: FC<Props> = ({
 
   return (
     <Box className={`tooth-box box-item ${rotate && "rotate"}`}>
-      <Box className="tooth-image-box">
+      <Box className={`tooth-image-box ${!implant ? tooth : ""}`}>
         {implant ? (
           <img src={Implant} />
         ) : (

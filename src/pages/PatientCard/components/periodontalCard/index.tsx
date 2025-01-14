@@ -6,15 +6,26 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Jaw } from "./components";
-import { useGetPeriodontalChartQuery } from "@api";
+import {
+  useGetPeriodontalChartQuery,
+  useUpdatePeriodontalChartMutation,
+} from "@api";
 import type { DeepPartial, PeriodontalChart } from "@types";
 import { deepMerge } from "@utils";
 import Button from "@mui/material/Button";
+import { useTranslation } from "react-i18next";
 
 export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
   const { data } = useGetPeriodontalChartQuery(patientId);
   const [chart, setChart] = useState(data?.chart);
   const [isDataChanged, setIsDataChanged] = useState(false);
+  const { t } = useTranslation("", {
+    keyPrefix: "pages.patientCard.periodontalCard",
+  });
+  const [updatePeriodontalChart, setUpdatePeriodontalChart] = useState<
+    DeepPartial<PeriodontalChart>
+  >({});
+  const [updateChart] = useUpdatePeriodontalChartMutation();
 
   useEffect(() => {
     if (!chart && data?.chart) {
@@ -23,8 +34,20 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
   }, [chart, data?.chart]);
 
   const onChange = (changed: DeepPartial<PeriodontalChart>) => {
+    setUpdatePeriodontalChart((prev) => prev && deepMerge(prev, changed));
     setChart((prev) => prev && deepMerge(prev, changed));
     setIsDataChanged(true);
+  };
+
+  const saveChanges = () => {
+    console.log(updatePeriodontalChart);
+    if (!updatePeriodontalChart) return;
+    updateChart({
+      patient: patientId,
+      chart: updatePeriodontalChart,
+      notes: "",
+    });
+    setIsDataChanged(false);
   };
 
   if (!chart) return <NoData />;
@@ -32,21 +55,26 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
   return (
     <Box className="periodontal-card">
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <Typography variant="h4" className="title">
-          PERIODONTAL CHART
-        </Typography>
-        <Button variant="contained" disabled={!isDataChanged}>
-          Save
+        <Button
+          variant="contained"
+          disabled={!isDataChanged}
+          onClick={saveChanges}
+        >
+          {t("save", { keyPrefix: "buttons" })}
         </Button>
       </Box>
       <Jaw onChartSet={onChange} jaw="upperJaw" dataset={chart.upperJaw} />
 
       <Divider className="divider">
         <Box className="divider-content">
-          <Typography variant="h6">Mean Probing Depth= 0mm</Typography>
-          <Typography variant="h6">Mean Attachment Level= 0mm</Typography>
-          <Typography variant="h6">0% Plaque</Typography>
-          <Typography variant="h6">0% Bleeding on Probing</Typography>
+          <Typography variant="h6">
+            {t("divider.meanDepth", { value: 0 })}
+          </Typography>
+          <Typography variant="h6">
+            {t("divider.meanAttachment", { value: 0 })}
+          </Typography>
+          <Typography variant="h6">0% {t("jaw.plaque")}</Typography>
+          <Typography variant="h6">0% {t("jaw.bleeding")}</Typography>
         </Box>
       </Divider>
       <Jaw onChartSet={onChange} jaw="bottomJaw" dataset={chart.bottomJaw} />

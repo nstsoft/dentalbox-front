@@ -1,10 +1,7 @@
 export const T47_IMAGE = () => (
   <image
-    transform="scale(-1)"
-    x="-29.76"
-    y="-56.64"
-    width="29.76"
-    height="56.64"
+    width="30.08"
+    height="58.24"
     preserveAspectRatio="none"
     xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAACxCAYAAACm97E6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAACAASURB

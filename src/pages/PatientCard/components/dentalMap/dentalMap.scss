@@ -73,6 +73,18 @@
         }
         .tooth-svg.b.l {
           transform: rotate(180deg) scaleX(-1);
+          &.t6,
+          &.t7,
+          &.t8 {
+            transform: rotate(0deg);
+          }
+        }
+        .tooth-svg.b.r {
+          &.t6,
+          &.t7,
+          &.t8 {
+            transform: rotate(0deg);
+          }
         }
         .tooth-svg.l.u {
           transform: scaleX(-1);
@@ -90,6 +102,11 @@
           display: flex;
           justify-content: center;
         }
+
+        // .tooth-svg.l.b.rotate,
+        // .tooth-svg.r.b.rotate {
+        //   transform: rotate(0deg);
+        // }
 
         .zone-svg {
           display: block;
