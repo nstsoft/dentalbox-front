@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useLoginMutation,
   LOGIN_CACHE_KEY,
@@ -77,8 +77,7 @@ export const Login = () => {
     }
   }, [googleStatus, googleRedirectUrl]);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async () => {
     if (validateLogin(loginForm.login)) {
       setLoginError(null);
     } else {
@@ -115,7 +114,6 @@ export const Login = () => {
           </Typography>
           <Box
             component="form"
-            onSubmit={onSubmit}
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -184,14 +182,14 @@ export const Login = () => {
             </FormControl>
 
             <ForgotPassword open={open} handleClose={() => setOpen(false)} />
-            <Button type="submit" fullWidth variant="contained">
+            <Button fullWidth variant="contained" onClick={onSubmit}>
               {t("signIn")}
             </Button>
             <Typography sx={{ textAlign: "center" }}>
               {t("dontHaveAccount")}{" "}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="/auth/sign-up"
                   variant="body2"
                   sx={{ alignSelf: "center" }}
                 >

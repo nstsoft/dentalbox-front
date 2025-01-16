@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,6 +9,10 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
 import { useTranslation } from "react-i18next";
+import { useRequestResetPasswordMutation } from "@api";
+import { FormEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Toaster } from "@components";
 
 interface ForgotPasswordProps {
   open: boolean;
@@ -19,15 +21,36 @@ interface ForgotPasswordProps {
 
 export const ForgotPassword = ({ open, handleClose }: ForgotPasswordProps) => {
   const { t } = useTranslation("", { keyPrefix: "login" });
+  const [email, setEmail] = useState("");
+  const [requestResetPassword, { isSuccess, error }] = useRequestResetPasswordMutation();
+
+  useEffect(() => {
+    if(isSuccess) {
+      handleClose();
+    }
+  }, [isSuccess, handleClose]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(
+        <Toaster
+          actionName={t("requestResetPasswordError")}
+          message={(error as any)?.error}
+        />
+      );
+    }
+  }, [error, t]);
+
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       PaperProps={{
         component: "form",
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+        onSubmit: (event: FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          handleClose();
+          requestResetPassword(email);
         },
       }}
     >
@@ -47,6 +70,8 @@ export const ForgotPassword = ({ open, handleClose }: ForgotPasswordProps) => {
             label="email"
             type="email"
             fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
       </DialogContent>

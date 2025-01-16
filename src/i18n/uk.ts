@@ -52,6 +52,17 @@ export const UA: ResourceLanguage = {
       authenticationErrorHeader: "Помилка автентифікації",
       authenticationErrorText:
         "Ми маємо труднощі з перевіркою ваших облікових даних. Будь ласка, перевірте своє ім'я користувача та пароль і спробуйте знову. Якщо проблема продовжується, можливо, вам потрібно скинути пароль або звернутися до служби підтримки для отримання допомоги.",
+      requestResetPasswordError: "Помилка запиту скидання пароля",
+    },
+    resetPassword: {
+      title: "Скинути пароль",
+      password: "Пароль",
+      confirmPassword: "Підтвердити пароль",
+      successMessage: "Ваш пароль успішно скинутий.",
+      passwordError: "Пароль має бути не менше 6 символів.",
+      matchError: "Пароль не співпадає.",
+      requiredError: "Це поле є обов'язковим.",
+      resetPasswordError: "Помилка скидання пароля",
     },
     selectWorkspace: {
       workspaces: "Ваші середовища",

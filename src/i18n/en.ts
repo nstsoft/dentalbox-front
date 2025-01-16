@@ -52,6 +52,17 @@ export const EN: ResourceLanguage = {
       authenticationErrorHeader: "Authentication Error",
       authenticationErrorText:
         "We’re having trouble verifying your credentials. Please check your username and password and try again. If you continue to experience issues, you might need to reset your password or contact support for assistance.",
+      requestResetPasswordError: "Request Reset Password Error",
+    },
+    resetPassword: {
+      title: "Reset Password",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      successMessage: "Your password has been successfully reset.",
+      passwordError: "Password must be at least 6 characters long.",
+      matchError: "Password must be the same.",
+      requiredError: "This field is required.",
+      resetPasswordError: "Reset Password Error",
     },
     selectWorkspace: {
       workspaces: "Your Workspaces",

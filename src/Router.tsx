@@ -19,6 +19,7 @@ import {
   AcceptInvitation,
   PatientCardPage,
   ChatPage,
+  ResetPassword,
 } from "./pages";
 
 export const getRoutes = (isAuthenticated: boolean) => {
@@ -37,6 +38,10 @@ export const getRoutes = (isAuthenticated: boolean) => {
             { path: "/auth/oauth2", Component: Oauth2 },
             { path: "/auth/accept-invitation", Component: AcceptInvitation },
           ],
+        },
+        {
+          path: "/reset-password",
+          Component: ResetPassword,
         },
         {
           path: "/app",

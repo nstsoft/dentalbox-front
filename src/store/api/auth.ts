@@ -19,7 +19,10 @@ export const authApi = createApi({
         }
 
         const stringData = JSON.stringify({
-          workspace: { name: workspace.name, description: workspace.description },
+          workspace: {
+            name: workspace.name,
+            description: workspace.description,
+          },
           user,
           productId,
           priceId,
@@ -34,8 +37,21 @@ export const authApi = createApi({
         };
       },
     }),
-
     loginWithGoogle: builder.query<void, void>({ query: () => "/auth/google" }),
+    requestResetPassword: builder.mutation<void, string>({
+      query: (email) => ({
+        url: "auth/request-reset-password",
+        method: "PATCH",
+        body: { email },
+      }),
+    }),
+    resetPassword: builder.mutation<void, { password: string; token: string }>({
+      query: ({ password, token }) => ({
+        url: `auth/reset-password/${token}`,
+        method: "POST",
+        body: { password },
+      }),
+    }),
   }),
 });
 
@@ -43,6 +59,8 @@ export const {
   useLoginMutation,
   useLazyLoginWithGoogleQuery,
   useRegisterMutation,
+  useRequestResetPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;
 export const LOGIN_CACHE_KEY = CACHE_KEYS.LOGIN;
 export default { authApi };
