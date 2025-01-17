@@ -9,7 +9,7 @@ export const CheckoutPage = () => {
   const { data: subscription } = useGetMySubscriptionQuery();
 
   return (
-    <section className="page checkout">
+    <section className="checkout">
       <SubscriptionInfo />
       {subscription && subscription.status === "active" ? (
         <ProductItem

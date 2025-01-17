@@ -95,7 +95,7 @@ export const Login = () => {
   };
 
   return (
-    <section className="page">
+    <section>
       <AuthContainer
         direction={isMobile ? "column" : "row"}
         justifyContent="space-around"

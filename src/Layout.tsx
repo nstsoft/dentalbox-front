@@ -1,6 +1,6 @@
 import "./index.scss";
 import { Outlet } from "react-router-dom";
-import { Header } from "@components";
+import { Footer, Header } from "@components";
 
 import Box from "@mui/material/Box";
 
@@ -11,6 +11,7 @@ export const Layout = () => {
       <Box component="main">
         <Outlet />
       </Box>
+      <Footer />
     </section>
   );
 };
