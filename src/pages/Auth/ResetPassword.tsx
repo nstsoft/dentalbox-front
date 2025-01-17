@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -33,7 +33,7 @@ export const ResetPassword = () => {
       setPasswordError(t("passwordError"));
       return false;
     }
-    if(!confirmPassword) {
+    if (!confirmPassword) {
       setConfirmPasswordError(t("requiredError"));
     }
     if (password !== confirmPassword) {
@@ -43,11 +43,8 @@ export const ResetPassword = () => {
     return true;
   };
 
-  const submitResetPassword = (e: FormEvent) => {
-    e.preventDefault();
-
-    const isFormValid = validateForm();
-    if (isFormValid) {
+  const submitResetPassword = () => {
+    if (validateForm()) {
       resetPassword({ token: token as string, password });
     }
   };
@@ -67,11 +64,7 @@ export const ResetPassword = () => {
     <Box className="container">
       <h1>{t("title")}</h1>
 
-      <Box
-        className="resetPassword"
-        component="form"
-        onSubmit={submitResetPassword}
-      >
+      <Box className="resetPassword">
         {!isSuccess && (
           <>
             <FormControl className="form-control" id="password">
@@ -109,7 +102,11 @@ export const ResetPassword = () => {
               </FormHelperText>
             </FormControl>
 
-            <Button fullWidth type="submit" variant="contained">
+            <Button
+              fullWidth
+              variant="contained"
+              onSubmit={submitResetPassword}
+            >
               {t("submit", { keyPrefix: "buttons" })}
             </Button>
           </>
