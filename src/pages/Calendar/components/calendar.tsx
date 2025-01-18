@@ -44,7 +44,6 @@ export const CalendarResource: FC<Props> = ({
   onNavigate,
   eventResources,
 }) => {
-  console.log(resources);
   const { patientsMap, cabinetsMap, usersMap, assistantMap } = eventResources;
   const { t } = useTranslation("", { keyPrefix: "pages.calendar" });
   const { defaultDates, views, scrollToTime } = useMemo(
@@ -142,8 +141,6 @@ export const CalendarResource: FC<Props> = ({
 
   const onUpdateSelectedEventItem: UpdateEventHandler = (data) => {
     setEditableProps([]);
-
-    console.log(data);
 
     const val = {
       notes: data.notes,

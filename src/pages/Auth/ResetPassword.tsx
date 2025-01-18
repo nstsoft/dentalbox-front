@@ -102,11 +102,7 @@ export const ResetPassword = () => {
               </FormHelperText>
             </FormControl>
 
-            <Button
-              fullWidth
-              variant="contained"
-              onSubmit={submitResetPassword}
-            >
+            <Button fullWidth variant="contained" onClick={submitResetPassword}>
               {t("submit", { keyPrefix: "buttons" })}
             </Button>
           </>

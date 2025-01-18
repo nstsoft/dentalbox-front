@@ -11,9 +11,11 @@ import {
   CabinetSummaryListItem,
   PatientSummaryListItem,
   UserSummaryListItem,
-  ChairSummaryListItem,
   AppointmentEventListItem,
+  Appointment,
 } from "@types";
+import { useWebsocket } from "@hooks";
+import { WS_EVENTS } from "@types";
 
 export const CalendarPage = () => {
   const { data: cabinetSummary } = useGetCabinetSummaryQuery();
@@ -27,17 +29,41 @@ export const CalendarPage = () => {
     start: date.startOf(view).toISOString(),
     end: date.endOf(view).toISOString(),
   });
+  const { message } = useWebsocket();
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   useEffect(() => {
     refetch();
   }, [date, refetch, view]);
+
+  useEffect(() => {
+    setAppointments(data ?? []);
+  }, [data]);
+
+  useEffect(() => {
+    const appointment = message?.data as Appointment | { _id: string };
+    if (message?.action === WS_EVENTS.APPOINTMENT_UPDATED) {
+      setAppointments((appointments) => {
+        return appointments.map((item) =>
+          item._id === appointment._id ? (appointment as Appointment) : item
+        );
+      });
+    }
+    if (message?.action === WS_EVENTS.APPOINTMENT_CREATED) {
+      setAppointments((prev) => [...prev, appointment as Appointment]);
+    }
+    if (message?.action === WS_EVENTS.APPOINTMENT_DELETED) {
+      setAppointments((prev) =>
+        prev.filter((item) => item._id !== appointment._id)
+      );
+    }
+  }, [message]);
 
   if (!cabinetSummary || !patientSummary || !userSummary) {
     return <EmptyData />;
   }
 
   const cabinetsMap = new Map<string, CabinetSummaryListItem>();
-  const chairsMap = new Map<string, ChairSummaryListItem>();
   const usersMap = new Map<string, UserSummaryListItem>();
   const patientsMap = new Map<string, PatientSummaryListItem>();
   const assistantMap = new Map<string, UserSummaryListItem>();
@@ -53,7 +79,7 @@ export const CalendarPage = () => {
     setDate(days(newDate));
   };
 
-  const events: AppointmentEventListItem[] = (data ?? []).map(
+  const events: AppointmentEventListItem[] = (appointments ?? []).map(
     (appointment) => ({
       ...appointment,
       id: appointment._id,
@@ -66,7 +92,7 @@ export const CalendarPage = () => {
       patient: patientsMap.get(appointment.patient)!,
       cabinet: cabinetsMap.get(appointment.cabinet)!,
       doctor: usersMap.get(appointment.doctor)!,
-      chair: chairsMap.get(appointment.chair ?? ""),
+      chair: appointment.chair,
       assistant: assistantMap.get(appointment?.assistant ?? ""),
     })
   );

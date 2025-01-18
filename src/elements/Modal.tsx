@@ -48,9 +48,12 @@ export const CustomModal: FC<Props> = ({
             padding: "15px",
           }}
         >
-          {headerButtons}
+          <Box className="header-buttons" sx={{ color: "white !important" }}>
+            {headerButtons}
+          </Box>
+
           <IconButton
-            sx={{ padding: 0 }}
+            sx={{ padding: 0, color: "#ffffff" }}
             onClick={(e) => props?.onClose?.(e, "backdropClick")}
           >
             <CloseIcon />

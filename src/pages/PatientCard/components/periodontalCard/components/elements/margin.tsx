@@ -21,7 +21,6 @@ export const Margin: FC<Props> = ({ value, onChange, toothKey }) => {
             const targetValue = target.value.startsWith("0")
               ? target.value.slice(1)
               : target.value;
-            console.log(targetValue);
 
             const newValue = [...value];
             newValue[index] = +targetValue;

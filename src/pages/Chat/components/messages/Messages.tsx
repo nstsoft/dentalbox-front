@@ -54,7 +54,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
 
   const massageValidator = (
     message: Message,
-    index: number,
+    _: number,
     messagesArr: Message[]
   ) => {
     const isReply = message.message.includes("@@@");
@@ -200,7 +200,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                     </Box>
                     <Box
                       className="message-item-date"
-                      sx={{ alignItems: `flex-${isMe(message) ? "end" : "start"}` }}
+                      sx={{
+                        alignItems: `flex-${isMe(message) ? "end" : "start"}`,
+                      }}
                     >
                       <Box className="date__container">
                         <ListItemText

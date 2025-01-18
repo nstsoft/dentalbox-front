@@ -85,8 +85,6 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
     { depth: 0, margin: 0, plaque: 0, bleeding: 0 }
   );
 
-  console.log(measurements);
-
   return (
     <Box className="periodontal-card">
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>

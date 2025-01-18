@@ -184,7 +184,6 @@ export const PatientModal: FC<PatientModalProps> = ({
       width="auto"
       open={open}
       onClose={() => {
-        console.log("close modal");
         onClose();
         clearFields();
       }}
