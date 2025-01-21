@@ -111,19 +111,17 @@ export const CalendarPage = () => {
   }, [] as { resourceId: string; resourceTitle: string }[]);
 
   return (
-    <div>
-      <CalendarResource
-        onNavigate={onNavigate}
-        onViewChange={setView}
-        events={events ?? []}
-        resources={resources}
-        eventResources={{
-          cabinetsMap,
-          patientsMap,
-          usersMap,
-          assistantMap,
-        }}
-      />
-    </div>
+    <CalendarResource
+      onNavigate={onNavigate}
+      onViewChange={setView}
+      events={events ?? []}
+      resources={resources}
+      eventResources={{
+        cabinetsMap,
+        patientsMap,
+        usersMap,
+        assistantMap,
+      }}
+    />
   );
 };

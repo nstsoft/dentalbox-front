@@ -1,8 +1,6 @@
 export const T46_IMAGE = () => (
   <image
-    // transform="scale(-1)"
-    // x="-29.76"
-    // y="-56.64"
+    className="rotate"
     width="29.76"
     height="56.64"
     preserveAspectRatio="none"

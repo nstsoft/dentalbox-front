@@ -3,7 +3,6 @@
     padding: 0;
     .scrollable-div {
       height: 100%;
-      overflow: auto;
       .scrollable-div__scroller {
         display: flex;
         flex-direction: column-reverse;

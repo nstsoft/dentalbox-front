@@ -11,6 +11,7 @@ import {
 import { type FC } from "react";
 
 const sx = {
+  width: "100vw",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",

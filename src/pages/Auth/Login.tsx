@@ -113,7 +113,6 @@ export const Login = () => {
             {t("signIn")}
           </Typography>
           <Box
-            component="form"
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -169,10 +168,7 @@ export const Login = () => {
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Link
                   component="button"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    setOpen(true);
-                  }}
+                  onClick={() => setOpen(true)}
                   variant="body2"
                   sx={{ alignSelf: "baseline" }}
                 >

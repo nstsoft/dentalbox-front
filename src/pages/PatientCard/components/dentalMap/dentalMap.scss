@@ -71,20 +71,11 @@
         .tooth-svg.b {
           transform: rotate(180deg);
         }
+        .rotate {
+          transform: rotate(180deg) translate(-30px, -58px);
+        }
         .tooth-svg.b.l {
           transform: rotate(180deg) scaleX(-1);
-          &.t6,
-          &.t7,
-          &.t8 {
-            transform: rotate(0deg);
-          }
-        }
-        .tooth-svg.b.r {
-          &.t6,
-          &.t7,
-          &.t8 {
-            transform: rotate(0deg);
-          }
         }
         .tooth-svg.l.u {
           transform: scaleX(-1);
