@@ -68,6 +68,18 @@ export const RoomItem: FC<Props> = ({
     return room.name;
   };
 
+  const massageValidator = (message?: string) => {
+    if (!message) return "";
+
+    const isReply = message.includes("@@@");
+
+    if (!isReply) return message;
+
+    const lastReplyIndex = message.lastIndexOf("@@@");
+
+    return message.slice(lastReplyIndex + 3);
+  };
+
   return (
     <Box
       className={`room-item ${selected ? "selected" : ""}`}
@@ -89,7 +101,7 @@ export const RoomItem: FC<Props> = ({
         </Typography>
         {roomNotifications?.[room.id] && (
           <Typography className="last-message" variant="body2">
-            {roomNotifications?.[room.id]?.last}
+            {massageValidator(roomNotifications?.[room.id]?.last)}
           </Typography>
         )}
       </Box>
