@@ -1,6 +1,7 @@
 import "./style.scss";
 import "../../chat.scss";
 import { type FC, useEffect, useState, useRef, MouseEvent } from "react";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import { isMobile } from "react-device-detect";
 import ListItem from "@mui/material/ListItem";
@@ -13,7 +14,10 @@ import {
   useGetUserSummaryQuery,
   useLazyGetMessagesQuery,
   useLazyReadMessagesInGroupQuery,
+  chatApi,
 } from "@api";
+import { API_CONSTANTS } from "@store";
+
 import { Message, Room } from "@types";
 import { useWebsocket, useAuth } from "@hooks";
 import { WS_EVENTS } from "@types";
@@ -33,16 +37,16 @@ type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
-  const { message } = useWebsocket();
-  const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState<(Message & { reply?: Message })[]>(
     data?.Items ?? []
   );
+  const { message } = useWebsocket();
+  const { user } = useAuth();
   const [lastMessageId, setLastMessageId] = useState("");
-
   const lastMessageRef = useRef<HTMLDivElement>(null);
+
   const { data: usersSummary } = useGetUserSummaryQuery();
   const contact = usersSummary?.find(
     (u) => u._id === messages.find((m) => m.author !== user?._id)?.author
@@ -51,15 +55,24 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number }>();
   const [selectedMessage, setSelectedMessage] = useState<Message>();
   const [isReply, setIsReply] = useState(false);
+  const [messageIds, setMessageIds] = useState<string[]>([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      setSelectedMessage(undefined);
+      setLastMessageId("");
+      setMessages([]);
+      dispatch(chatApi.util.invalidateTags([API_CONSTANTS.CHAT_TAG.MESSAGES]));
+    };
+  }, [dispatch]);
 
   const massageValidator = (
     message: Message,
-    _: number,
+    _: number | null,
     messagesArr: Message[]
   ) => {
-    const isReply = message.message.includes("@@@");
-
-    if (!isReply) return message;
+    if (!message.message.includes("@@@")) return message;
 
     const lastReplyIndex = message.message.lastIndexOf("@@@");
     const replyId = message.message.slice(3, lastReplyIndex).split("!!!")[0];
@@ -80,10 +93,13 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
       message?.action === WS_EVENTS.NEW_MESSAGE &&
       message.data.room === room.id
     ) {
-      console.log("NEW MESSAGE", message.data);
-      setMessages((prev) =>
-        [message.data as Message, ...prev].map(massageValidator)
-      );
+      setMessages((prev) => {
+        if (!prev[0]?.id || prev[0]?.id === message?.data?.id) {
+          return prev;
+        }
+        return [massageValidator(message.data as Message, null, prev), ...prev];
+      });
+
       if (message.data.author !== user?._id) {
         readMessagesInGroup({ room: room.id, messageids: [message.data.id] });
       }
@@ -99,10 +115,17 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   }, [lastMessageId]);
 
   useEffect(() => {
-    if (data?.Items.length) {
-      setMessages((prev) => prev.concat(data.Items).map(massageValidator));
+    if (!data?.Items?.length) {
+      return;
     }
-  }, [data]);
+    const unique = data.Items.filter(({ id }) =>
+      messageIds.every((msgId) => id !== msgId)
+    );
+    setMessages((prev) => {
+      return prev.concat(unique.map(massageValidator));
+    });
+    setMessageIds((prev) => prev.concat(unique.map(({ id }) => id)));
+  }, [data, messageIds]);
 
   const handleContextMenu = (
     e: MouseEvent<HTMLDivElement>,
