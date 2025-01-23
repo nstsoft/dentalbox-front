@@ -3,10 +3,24 @@
     padding: 0;
     .scrollable-div {
       height: 100%;
+      position: relative;
+      .scroll-button {
+        transform: rotate(180deg);
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        z-index: 1024;
+
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+      }
       .scrollable-div__scroller {
         display: flex;
         flex-direction: column-reverse;
         padding-left: 10px;
+        scrollbar-width: none;
         .message-item-container {
           display: flex;
           flex-direction: row;

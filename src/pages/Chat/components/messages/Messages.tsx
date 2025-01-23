@@ -32,6 +32,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { ContextMenu } from "./ContextMenu";
 import { Reply } from "./Reply";
 import ReplyIcon from "@mui/icons-material/Reply";
+import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -57,6 +58,16 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [isReply, setIsReply] = useState(false);
   const [messageIds, setMessageIds] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const scrollableRef = useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    if (scrollableRef.current) {
+      scrollableRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -156,6 +167,9 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
       </Box>
       <Paper className="room-item-messages__list" elevation={0}>
         <div className="scrollable-div">
+          <IconButton className="scroll-button" onClick={scrollToTop}>
+            <ExpandCircleDownIcon />
+          </IconButton>
           <InfiniteScroll
             inverse={true}
             className="scrollable-div__scroller"
@@ -256,6 +270,7 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                 </Box>
               );
             })}
+            <div ref={scrollableRef}></div>
             <ContextMenu
               menuAnchor={menuAnchor}
               handleClose={() => setMenuAnchor(undefined)}
