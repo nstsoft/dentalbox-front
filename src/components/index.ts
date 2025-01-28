@@ -19,3 +19,4 @@ export * from "./ProductItem";
 export * from "./Toaster";
 export * from './TabsMenu';
 export * from './Footer';
+export * from './InvitationForm';

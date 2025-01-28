@@ -33,6 +33,7 @@ import { ContextMenu } from "./ContextMenu";
 import { Reply } from "./Reply";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
+import { Loader } from "@components";
 
 type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 
@@ -184,7 +185,11 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
                 <b>The end</b>
               </p>
             }
-            loader={<h4>Loading...</h4>}
+            loader={
+              <Box className="messages-loader">
+                <Loader />
+              </Box>
+            }
           >
             <div ref={messagesEndRef} />
             {messages.map((message, index) => {

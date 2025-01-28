@@ -15,13 +15,13 @@ import { User, UserRole } from "@types";
 import { useUpdateUserMutation } from "@api";
 import { AvatarUpload } from "@components";
 
-type StaffModalProps = {
+type StuffModalProps = {
   open: boolean;
   onClose: () => void;
   selectedUser: User | null;
 };
 
-type StaffForm = {
+type StuffForm = {
   _id: string;
   name: string;
   secondName: string;
@@ -31,13 +31,13 @@ type StaffForm = {
   image?: string;
 };
 
-export const StaffModal: FC<StaffModalProps> = ({
+export const StuffModal: FC<StuffModalProps> = ({
   selectedUser,
   open,
   onClose,
 }) => {
-  const { t } = useTranslation("", { keyPrefix: "pages.staff" });
-  const [staffForm, setStaffForm] = useState<StaffForm>({
+  const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
+  const [stuffForm, setStuffForm] = useState<StuffForm>({
     _id: "",
     name: "",
     secondName: "",
@@ -48,11 +48,11 @@ export const StaffModal: FC<StaffModalProps> = ({
   });
   const [birthDateError, setBirthDateError] = useState<string>();
   const [responseError, setResponseError] = useState<string | string[]>();
-  const [staffImage, setStaffImage] = useState<File>();
+  const [stuffImage, setStuffImage] = useState<File>();
 
   useEffect(() => {
     if (selectedUser) {
-      setStaffForm({
+      setStuffForm({
         _id: selectedUser._id,
         name: selectedUser.name,
         secondName: selectedUser.secondName,
@@ -70,9 +70,9 @@ export const StaffModal: FC<StaffModalProps> = ({
     {
       id: "name",
       label: t("name"),
-      value: staffForm.name,
+      value: stuffForm.name,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setStaffForm((prevState) => ({
+        setStuffForm((prevState) => ({
           ...prevState,
           name: event.target.value,
         })),
@@ -80,9 +80,9 @@ export const StaffModal: FC<StaffModalProps> = ({
     {
       id: "secondName",
       label: t("secondName"),
-      value: staffForm.secondName,
+      value: stuffForm.secondName,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setStaffForm((prevState) => ({
+        setStuffForm((prevState) => ({
           ...prevState,
           secondName: event.target.value,
         })),
@@ -90,9 +90,9 @@ export const StaffModal: FC<StaffModalProps> = ({
     {
       id: "surname",
       label: t("surname"),
-      value: staffForm.surname,
+      value: stuffForm.surname,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setStaffForm((prevState) => ({
+        setStuffForm((prevState) => ({
           ...prevState,
           surname: event.target.value,
         })),
@@ -100,23 +100,23 @@ export const StaffModal: FC<StaffModalProps> = ({
     {
       id: "dob",
       label: t("dob"),
-      value: staffForm.dob,
+      value: stuffForm.dob,
       onChange: ({ target }: ChangeEvent<HTMLInputElement>) => {
-        setStaffForm((prev) => ({ ...prev, dob: target.value }));
+        setStuffForm((prev) => ({ ...prev, dob: target.value }));
       },
       error: birthDateError,
     },
     {
       id: "roles",
       label: t("roles"),
-      value: staffForm.roles,
+      value: stuffForm.roles,
     },
   ];
 
   const validateForm = () => {
     setBirthDateError(undefined);
 
-    if (staffForm.dob && !days(staffForm.dob).isValid()) {
+    if (stuffForm.dob && !days(stuffForm.dob).isValid()) {
       setBirthDateError(t("enterValidDate", { keyPrefix: "errors" }));
       return false;
     }
@@ -129,7 +129,7 @@ export const StaffModal: FC<StaffModalProps> = ({
 
     const isFormValid = validateForm();
     if (isFormValid) {
-      updateUser({ ...staffForm, image: staffImage });
+      updateUser({ ...stuffForm, image: stuffImage });
     }
   };
 
@@ -164,14 +164,14 @@ export const StaffModal: FC<StaffModalProps> = ({
           p: 4,
         }}
       >
-        <AvatarUpload image={staffForm.image ?? ""} onUpload={setStaffImage} />
+        <AvatarUpload image={stuffForm.image ?? ""} onUpload={setStuffImage} />
         {fieldsMap.map((input) => (
           <FormControl key={input.id} fullWidth sx={{ mb: 2 }}>
             {input.id === "dob" && (
               <DatePicker
                 value={input.value ? days(input.value as string) : null}
                 onChange={(newValue: Dayjs | null) =>
-                  setStaffForm((prev) => ({
+                  setStuffForm((prev) => ({
                     ...prev,
                     dob: newValue?.toString() ?? "",
                   }))
@@ -196,11 +196,11 @@ export const StaffModal: FC<StaffModalProps> = ({
               <CustomMultiSelect
                 data={Object.values(UserRole).map((role) => ({
                   value: role,
-                  label: t(`roleItems.${role}`),
+                  label: t(role, { keyPrefix: "roleItems" }),
                 }))}
-                selected={staffForm.roles}
+                selected={stuffForm.roles}
                 setValue={(value: string[]) =>
-                  setStaffForm((prev) => ({ ...prev, roles: value }))
+                  setStuffForm((prev) => ({ ...prev, roles: value }))
                 }
                 label={t("roles")}
                 sx={{

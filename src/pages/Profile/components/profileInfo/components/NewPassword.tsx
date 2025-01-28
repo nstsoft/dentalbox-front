@@ -62,7 +62,7 @@ export const NewPassword: FC<Props> = ({ onSubmit }) => {
     <InfoCard
       onSubmit={handleSubmit}
       buttonLabel={t("save", { keyPrefix: "buttons" })}
-      onlyEdit
+      canEdit
     >
       <Box
         component="form"

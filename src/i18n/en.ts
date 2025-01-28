@@ -149,11 +149,23 @@ export const EN: ResourceLanguage = {
         workspace: "Workspace",
         cabinets: "Cabinets",
         calendar: "Calendar",
-        staff: "Staff",
+        stuff: "Stuff",
         profile: "Profile",
         patients: "Patients",
         chat: "Chat",
       },
+    },
+    invitationForm: {
+      email: "Email",
+      role: "Role",
+      addStuff: "Add stuff",
+    },
+    roleItems: {
+      admin: "Admin",
+      manager: "Manager",
+      doctor: "Doctor",
+      assistant: "Assistant",
+      owner: "Owner",
     },
     pages: {
       workspace: {
@@ -162,9 +174,9 @@ export const EN: ResourceLanguage = {
         address: "Address",
         phone: "Phone",
         notes: "Notes",
-        currentStaff: "Current staff",
-        maxStaff: "Maximum stuff",
-        addStaff: "Add stuff",
+        currentStuff: "Current stuff",
+        maxStuff: "Maximum stuff",
+        addStuff: "Add stuff",
         maxStorage: "Max storage",
         subscription: "Subscription",
         package: "Package",
@@ -209,17 +221,6 @@ export const EN: ResourceLanguage = {
           managePayments: "Manage Your Payment Methods",
           addCard: "Add credit card",
         },
-        popover: {
-          email: "Email",
-          role: "Role",
-        },
-        roleItems: {
-          admin: "Admin",
-          manager: "Manager",
-          doctor: "Doctor",
-          assistant: "Assistant",
-          owner: "Owner",
-        },
         tabs: {
           workspace: "Workspace",
           subscription: "Subscription",
@@ -255,6 +256,7 @@ export const EN: ResourceLanguage = {
           currency: "Currency",
           workingHours: "Working hours",
           showPricing: "Show pricing",
+          name: "Name",
         },
         showMore: "Show more",
         invoiceStatuses: {
@@ -265,18 +267,12 @@ export const EN: ResourceLanguage = {
           void: "Void",
         },
       },
-      staff: {
-        staff: "Stuff",
+      stuff: {
+        stuff: "Stuff",
+        addStuff: "Add stuff",
         search: "Search",
         isVerified: "Is verified",
         roles: "Roles",
-        roleItems: {
-          admin: "Admin",
-          manager: "Manager",
-          doctor: "Doctor",
-          assistant: "Assistant",
-          owner: "Owner",
-        },
         invitationStatuses: {
           pending: "Pending",
           accepted: "Accepted",

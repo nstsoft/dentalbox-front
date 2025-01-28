@@ -4,7 +4,7 @@ import type {
   Workspace,
   UserInvitation,
   UserSummaryListItem,
-  StaffForm,
+  StuffForm,
   UserRequest,
 } from "@types";
 import { USER_TAG, REDUCER } from "../constants";
@@ -92,7 +92,7 @@ export const userApi = createApi({
       query: () => "/user/summary",
       providesTags: () => [{ type: USER_TAG.USER_SUMMARY }],
     }),
-    updateUser: builder.mutation<unknown, StaffForm>({
+    updateUser: builder.mutation<unknown, StuffForm>({
       query: ({ image, ...body }) => {
         const formData = new FormData();
         if (image) {

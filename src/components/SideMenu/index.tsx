@@ -17,11 +17,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import { useNavigate } from "react-router-dom";
-import { PAGES } from "@utils";
+import { PAGES, USER_PAGES } from "@utils";
 import { useTranslation } from "react-i18next";
 import { OPENED_MENU_WIDTH, CLOSED_MENU_WIDTH } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
-import { useSideMenu } from "@hooks";
+import { useAuth, useSideMenu } from "@hooks";
 import { FaUserDoctor } from "react-icons/fa6";
 import SvgIcon from "@mui/material/SvgIcon";
 
@@ -34,7 +34,7 @@ const icons: { [key in Pages]: JSX.Element } = {
   patients: <GroupIcon />,
   cabinets: <AddLocationAltIcon />,
   calendar: <CalendarMonthIcon />,
-  staff: (
+  stuff: (
     <SvgIcon>
       <FaUserDoctor />
     </SvgIcon>
@@ -61,14 +61,21 @@ const getDrawerStyle = (isOpen: boolean) =>
       };
 
 import ForumIcon from "@mui/icons-material/Forum";
+import { UserRole } from "@types";
 export const SideMenu: FC = () => {
   const { isOpenMenu, setIsOpen, toggle } = useSideMenu();
   const { t } = useTranslation("", { keyPrefix: "sideMenu" });
+  const { user } = useAuth();
+  const possiblePages =
+    user &&
+    [UserRole.assistant, UserRole.doctor, UserRole.manager].includes(user?.role)
+      ? USER_PAGES
+      : PAGES;
 
   const [page, setPage] = useState<Pages | "chat">(
-    ([...PAGES, "chat"].find(
+    ([...possiblePages, "chat"].find(
       (page) => page === location.pathname.split("/")[2]
-    ) as Pages | "chat") ?? "workspace"
+    ) as Pages | "chat") ?? "calendar"
   );
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -89,7 +96,7 @@ export const SideMenu: FC = () => {
         >
           {isOpenMenu ? <ArrowBackIcon /> : <ArrowForwardIcon />}
         </ListItem>
-        {PAGES.map((text) => (
+        {possiblePages.map((text) => (
           <ListItem
             key={text}
             disablePadding

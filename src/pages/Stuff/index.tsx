@@ -12,8 +12,8 @@ import { CustomTabPanel } from "@components";
 
 import './styles.scss';
 
-export const StaffPage = () => {
-  const { t } = useTranslation("", { keyPrefix: "pages.staff" });
+export const StuffPage = () => {
+  const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
 
   const [rolesValues, setRolesValues] = useState<string[]>([]);
   const [verifiedValue, setVerifiedValue] = useState<string[]>([]);
@@ -71,7 +71,7 @@ export const StaffPage = () => {
 
   return (
     <>
-      <Typography variant="h4">{t("staff")}</Typography>
+      <Typography variant="h4">{t("stuff")}</Typography>
 
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -80,7 +80,7 @@ export const StaffPage = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label={t("staff")} />
+            <Tab label={t("stuff")} />
             <Tab label={t("invitations")} />
           </Tabs>
         </Box>

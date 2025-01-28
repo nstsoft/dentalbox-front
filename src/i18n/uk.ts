@@ -149,11 +149,23 @@ export const UA: ResourceLanguage = {
         workspace: "Середовище",
         cabinets: "Кабінети",
         calendar: "Календар",
-        staff: "Персонал",
+        stuff: "Персонал",
         profile: "Профіль",
         patients: "Пацієнти",
         chat: "Чат",
       },
+    },
+    invitationForm: {
+      email: "Емейл",
+      role: "Роль",
+      addStuff: "Додати користувача",
+    },
+    roleItems: {
+      admin: "Адміністратор",
+      manager: "Менеджер",
+      doctor: "Лікар",
+      assistant: "Асистент",
+      owner: "Власник акаунту",
     },
     pages: {
       workspace: {
@@ -162,9 +174,9 @@ export const UA: ResourceLanguage = {
         address: "Адреса",
         phone: "Телефон",
         notes: "Нотатки",
-        currentStaff: "Поточно кількість персоналу",
-        maxStaff: "Максимальна кількість персоналу",
-        addStaff: "Додати користувача",
+        currentStuff: "Поточно кількість персоналу",
+        maxStuff: "Максимальна кількість персоналу",
+        addStuff: "Додати користувача",
         maxStorage: "Максимальна доступна кількість даних",
         subscription: "Підписка",
         package: "Пакет",
@@ -209,17 +221,6 @@ export const UA: ResourceLanguage = {
           managePayments: 'Змінити "Платіжні методи"',
           addCard: "Додати картку",
         },
-        popover: {
-          email: "Емейл",
-          role: "Роль",
-        },
-        roleItems: {
-          admin: "Адміністратор",
-          manager: "Менеджер",
-          doctor: "Лікар",
-          assistant: "Асистент",
-          owner: "Власник акаунту",
-        },
         paymentMethods: {
           confirmDeleteLabel:
             "Видалити поточний метод платежу? Ви не зможете його використати для оплати підписки.",
@@ -255,6 +256,7 @@ export const UA: ResourceLanguage = {
           currency: "Валюта",
           workingHours: "Графік роботи",
           showPricing: "Показувати ціну",
+          name: "Назва",
         },
         showMore: "Показати більше",
         invoiceStatuses: {
@@ -265,18 +267,12 @@ export const UA: ResourceLanguage = {
           void: "Відмінена",
         },
       },
-      staff: {
-        staff: "Персонал",
+      stuff: {
+        stuff: "Персонал",
+        addStuff: "Додати користувача",
         search: "Пошук",
         isVerified: "Веріфікований",
         roles: "Роль",
-        roleItems: {
-          admin: "Адміністратор",
-          manager: "Менеджер",
-          doctor: "Лікар",
-          assistant: "Асистент",
-          owner: "Власник акаунту",
-        },
         invitationStatuses: {
           pending: "Очікується",
           accepted: "Прийнята",

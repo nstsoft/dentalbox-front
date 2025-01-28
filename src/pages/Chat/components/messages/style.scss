@@ -4,6 +4,12 @@
     .scrollable-div {
       height: 100%;
       position: relative;
+      .messages-loader {
+        position: absolute;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+      }
       .scroll-button {
         transform: rotate(180deg);
         position: absolute;

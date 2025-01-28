@@ -1,5 +1,6 @@
 .metadata {
-  .metadata-info {
+  .metadata-info,
+  .workspace-info {
     position: relative;
     align-self: flex-start;
     .edit-btn-box {
@@ -26,6 +27,10 @@
         }
       }
     }
+  }
+
+  #workspaceNotes {
+    padding: 4px 8px;
   }
 }
 

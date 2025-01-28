@@ -10,7 +10,7 @@ import "./styles.scss";
 
 export const Footer = () => {
   return (
-    <Box className="footer">
+    <Box className="footer_section">
       <Box className="info">
         <Typography component="h1">Let's Talk</Typography>
         <p>

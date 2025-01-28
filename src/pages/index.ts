@@ -5,7 +5,7 @@ export * from "./Workspace";
 export * from "./Checkout";
 export * from "./Cabinet";
 export * from "./Calendar";
-export * from "./Staff";
+export * from "./Stuff";
 export * from "./Patient";
 export * from "./Profile";
 export * from "./App";

@@ -84,7 +84,7 @@ export type UserForm = {
   address?: string;
 };
 
-export type StaffForm = {
+export type StuffForm = {
   _id: string;
   name: string;
   secondName: string;

@@ -27,7 +27,7 @@ export const Filter: FC<Props> = ({
   setSearch,
   applyFilters,
 }) => {
-  const { t } = useTranslation("", { keyPrefix: "pages.staff" });
+  const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
 
   return (
     <Grid2
@@ -70,7 +70,7 @@ export const Filter: FC<Props> = ({
           <CustomMultiSelect
             data={Object.values(UserRole).map((role) => ({
               value: role,
-              label: t(`roleItems.${role}`),
+              label: t(role, { keyPrefix: "roleItems" }),
             }))}
             selected={roles}
             setValue={setRole}

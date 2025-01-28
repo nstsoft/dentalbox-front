@@ -12,9 +12,31 @@ export const workspaceApi = createApi({
       query: () => `/workspace`,
       providesTags: () => [{ type: WORKSPACE_TAG.WORKSPACE }],
     }),
+    updateWorkspace: builder.mutation<
+      void,
+      { name: string; notes?: string; image?: File }
+    >({
+      query: ({ image, ...body }) => {
+        const formData = new FormData();
+        if (image) {
+          formData.append("file", image);
+        }
+
+        formData.append("data", JSON.stringify(body));
+        return {
+          url: "/workspace",
+          method: "PUT",
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
-export const { useLazyGetMyWorkspacesQuery, useGetMyWorkspacesQuery } = workspaceApi;
+export const {
+  useLazyGetMyWorkspacesQuery,
+  useGetMyWorkspacesQuery,
+  useUpdateWorkspaceMutation,
+} = workspaceApi;
 
 export default { workspaceApi };

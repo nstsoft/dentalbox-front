@@ -2,7 +2,7 @@ import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-import { User } from "@types";
+import { User, UserRole } from "@types";
 import {
   type Dispatch,
   type SetStateAction,
@@ -16,8 +16,9 @@ import days from "dayjs";
 import { isMobile } from "react-device-detect";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { StaffModal } from "./modal";
+import { StuffModal } from "./modal";
 import { useDeleteUserMutation } from "@api";
+import { useAuth } from "@hooks";
 
 type Props = {
   setPaginationModel: Dispatch<SetStateAction<{ skip: number; limit: number }>>;
@@ -33,12 +34,13 @@ export const UsersTable: FC<Props> = ({
   data,
   onReset,
 }) => {
-  const { t } = useTranslation("", { keyPrefix: "pages.staff" });
+  const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [deleteUser, { isSuccess }] = useDeleteUserMutation();
+  const { user } = useAuth();
 
   const mobileColumns: GridColDef<User>[] = [
     {
@@ -129,8 +131,12 @@ export const UsersTable: FC<Props> = ({
         rowCount={data.count}
         loading={isLoading}
         onPagination={setPaginationModel}
+        columnVisibilityModel={{
+          actions:
+            user && ![UserRole.doctor, UserRole.assistant].includes(user?.role),
+        }}
       />
-      <StaffModal
+      <StuffModal
         selectedUser={selectedUser}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}

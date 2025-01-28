@@ -48,8 +48,8 @@ export const AvatarUpload: FC<Props> = ({
         >
           <EditIcon />
           <VisuallyHiddenInput
-            id="staffImage"
-            name="staffImage"
+            id="stuffImage"
+            name="stuffImage"
             type="file"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const file = e.target.files?.[0];

@@ -15,7 +15,7 @@ type Props = CardProps & {
   onSubmit: () => void;
   buttonLabel: string;
   disabledButton?: boolean;
-  onlyEdit?: boolean;
+  canEdit?: boolean;
 };
 
 export const InfoCard: FC<Props> = ({
@@ -25,7 +25,7 @@ export const InfoCard: FC<Props> = ({
   onSubmit,
   buttonLabel,
   disabledButton,
-  onlyEdit,
+  canEdit,
   ...props
 }) => {
   return (
@@ -34,11 +34,11 @@ export const InfoCard: FC<Props> = ({
       className={
         "info-card-component " +
         (props.className || "") +
-        (isEditMode ?? onlyEdit ? " edit-mode" : "")
+        (isEditMode ?? canEdit ? " edit-mode" : "")
       }
     >
       <Box className="header">
-        {!onlyEdit && (
+        {!canEdit && (
           <IconButton
             onClick={() => setIsEditMode?.((prev) => !prev)}
             sx={{ m: isMobile ? "16px 24px" : 0 }}
@@ -49,7 +49,7 @@ export const InfoCard: FC<Props> = ({
       </Box>
       <Box className="content">{children}</Box>
       <Box className="footer">
-        {(isEditMode ?? onlyEdit) && (
+        {(isEditMode ?? canEdit) && (
           <Button
             fullWidth
             className="submit-button"
