@@ -12,7 +12,7 @@ import {
   useUpdateAnamnesisMutation,
 } from "@api";
 import { MainInfo, SecondaryInfo, AnamnesisInfo } from "./components";
-import { Notes } from "@components";
+import { Loader, Notes } from "@components";
 import Box from "@mui/material/Box";
 
 type Props = {
@@ -22,7 +22,8 @@ type Props = {
 export const PatientInfo: FC<Props> = ({ patientId }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.patientCard" });
   const { data, isFetching } = useGetPatientByIdQuery(patientId);
-  const { data: anamnesisData } = useGetAnamnesisQuery(patientId!);
+  const { data: anamnesisData, isFetching: isFetchingAnamnesis } =
+    useGetAnamnesisQuery(patientId!);
 
   const [patient, setPatient] = useState<Patient>();
   const [anamnesis, setAnamnesis] = useState<AnamnesisData>();
@@ -133,6 +134,8 @@ export const PatientInfo: FC<Props> = ({ patientId }) => {
     if (!anamnesis) return;
     updateAnamnesis({ patient: patientId, data: anamnesis });
   };
+
+  if (isFetching || isFetchingAnamnesis) return <Loader />;
 
   if (!patient || !anamnesis) return null;
 

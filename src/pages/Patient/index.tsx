@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useCallback, useState } from "react";
-import { GridSearchFilter } from "@components";
+import { GridSearchFilter, Loader } from "@components";
 import { PatientsTable, PatientModal } from "./components";
 import { Patient } from "@types";
 import { initPatient } from "./initValue";
@@ -35,7 +35,7 @@ export const PatientsPage = () => {
     setPatient(initPatient);
   }, []);
 
-  if (!data || ["uninitialized", "loading"].includes(status)) return null;
+  if (!data || ["uninitialized", "loading"].includes(status)) return <Loader />;
 
   return (
     <>

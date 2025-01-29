@@ -1,6 +1,6 @@
 import "./styles.scss";
 
-import { NoData } from "@components";
+import { Loader, NoData } from "@components";
 import { type FC, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -21,7 +21,7 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 
 export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
-  const { data } = useGetPeriodontalChartQuery(patientId);
+  const { data, isLoading } = useGetPeriodontalChartQuery(patientId);
   const [chart, setChart] = useState(data?.chart);
   const [isDataChanged, setIsDataChanged] = useState(false);
   const { t } = useTranslation("", {
@@ -53,6 +53,8 @@ export const PeriodontalCard: FC<{ patientId: string }> = ({ patientId }) => {
     });
     setIsDataChanged(false);
   };
+
+  if (isLoading) return <Loader />;
 
   if (!chart) return <NoData />;
 

@@ -220,7 +220,7 @@ export const DentalMap: FC<{ patientId: string }> = ({ patientId }) => {
 
   const mergedChart = deepMerge(data?.chart, chart ?? {});
 
-  if (isLoading ?? isLoadingMetadata) return <Loader />;
+  if (isLoading || isLoadingMetadata) return <Loader />;
 
   return (
     <div className="dental-map-container">

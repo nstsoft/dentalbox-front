@@ -1,7 +1,7 @@
 import { GridMoreVertIcon, type GridColDef } from "@mui/x-data-grid";
 import { Cabinet } from "@types";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
-import { CustomTable, Loader, NoData, TablePopover } from "@components";
+import { CustomTable, NoData, TablePopover } from "@components";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -94,8 +94,6 @@ export const CabinetsTable: FC<Props> = ({
       },
     },
   ];
-
-  if (isLoading) return <Loader />;
 
   if (!data) return <NoData />;
 

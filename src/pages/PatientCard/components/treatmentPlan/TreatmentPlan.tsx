@@ -42,7 +42,7 @@ export const TreatmentPlan: FC<Props> = ({ patientId }) => {
     }
   };
 
-  if (isLoading ?? isLoadingServices) return <Loader />;
+  if (isLoading || isLoadingServices) return <Loader />;
 
   return (
     <Box className="treatment-plan">

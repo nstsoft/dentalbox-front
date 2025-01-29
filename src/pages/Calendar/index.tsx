@@ -16,16 +16,20 @@ import {
 } from "@types";
 import { useWebsocket } from "@hooks";
 import { WS_EVENTS } from "@types";
+import { Loader } from "@components";
 
 export const CalendarPage = () => {
-  const { data: cabinetSummary } = useGetCabinetSummaryQuery();
-  const { data: patientSummary } = useGetPatientSummaryQuery();
-  const { data: userSummary } = useGetUserSummaryQuery();
+  const { data: cabinetSummary, isLoading: isLoadingCabinet } =
+    useGetCabinetSummaryQuery();
+  const { data: patientSummary, isLoading: isLoadingPatient } =
+    useGetPatientSummaryQuery();
+  const { data: userSummary, isLoading: isLoadingUser } =
+    useGetUserSummaryQuery();
 
   const [view, setView] = useState<"day" | "week">("day");
   const [date, setDate] = useState(days());
 
-  const { data, refetch } = useGetAppointmentsQuery({
+  const { data, refetch, isFetching } = useGetAppointmentsQuery({
     start: date.startOf(view).toISOString(),
     end: date.endOf(view).toISOString(),
   });
@@ -58,6 +62,10 @@ export const CalendarPage = () => {
       );
     }
   }, [message]);
+
+  if (isLoadingCabinet || isLoadingPatient || isLoadingUser || isFetching) {
+    return <Loader />;
+  }
 
   if (!cabinetSummary || !patientSummary || !userSummary) {
     return <EmptyData />;

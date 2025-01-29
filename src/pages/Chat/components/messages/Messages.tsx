@@ -40,7 +40,7 @@ type Props = { room: Room; setSelectedRoom: (room?: Room) => void };
 export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   const [readMessagesInGroup] = useLazyReadMessagesInGroupQuery();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [fetchMessages, { data, isUninitialized }] = useLazyGetMessagesQuery();
+  const [fetchMessages, { data, isUninitialized, isLoading }] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState<(Message & { reply?: Message })[]>(
     data?.Items ?? []
   );
@@ -149,6 +149,10 @@ export const Messages: FC<Props> = ({ room, setSelectedRoom }) => {
   };
 
   const isMe = (message: Message) => message.author === user?._id;
+
+  if(isLoading) {
+    return <Loader />
+  }
 
   return (
     <Box className="room-item-messages">

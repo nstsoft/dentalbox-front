@@ -18,14 +18,20 @@ import Typography from "@mui/material/Typography";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { ChatDrawer } from "../drawer";
 import { useTranslation } from "react-i18next";
+import { Loader } from "@components";
 
 type Props = { selectedRoom?: Room; setSelectedRoom: (room?: Room) => void };
 
 export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.chat" });
-  const { data: rooms } = useGetRoomsQuery();
-  const { data: usersSummary } = useGetUserSummaryQuery();
-  const { data: connections, isSuccess } = useGetConnectionsQuery();
+  const { data: rooms, isLoading: isLoadingRooms } = useGetRoomsQuery();
+  const { data: usersSummary, isLoading: isLoadingUsers } =
+    useGetUserSummaryQuery();
+  const {
+    data: connections,
+    isSuccess,
+    isLoading: isLoadingConnections,
+  } = useGetConnectionsQuery();
   const { message } = useWebsocket();
   const { user } = useAuth();
   const [roomsList, setRoomsList] = useState<Room[]>([]);
@@ -120,6 +126,10 @@ export const Rooms: FC<Props> = ({ selectedRoom, setSelectedRoom }) => {
       setRoomsList(roomsList);
     }
   }, [parseRoom, rooms, user?._id, usersSummary?.length]);
+
+  if (isLoadingRooms || isLoadingUsers || isLoadingConnections) {
+    return <Loader />;
+  }
 
   return (
     <>

@@ -28,7 +28,7 @@ export const getRoutes = (isAuthenticated: boolean) => {
       path: "/",
       Component: Layout,
       children: [
-        { index: true, Component: HomePage },
+        { index: true, element: <Navigate to="/app/workspace" /> },
         {
           path: "/auth",
           Component: Auth,

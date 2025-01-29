@@ -3,14 +3,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import { useGetUserListQuery, useGetInvitationsQuery } from "@api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { CustomTabPanel } from "@components";
+import { CustomTabPanel, Loader } from "@components";
 
-import './styles.scss';
+import "./styles.scss";
 
 export const StuffPage = () => {
   const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
@@ -67,6 +66,8 @@ export const StuffPage = () => {
     refetch();
   };
 
+  if(isLoading || isLoadingInvitations) return <Loader />
+
   if (!data || !invitationData) return null;
 
   return (
@@ -94,19 +95,13 @@ export const StuffPage = () => {
             setIsVerified={setVerifiedValue}
             applyFilters={applyFilters}
           />
-          {isLoading ? (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <UsersTable
-              data={data}
-              isLoading={isLoading}
-              paginationModel={paginationModel}
-              setPaginationModel={setPaginationModel}
-              onReset={resetFilters}
-            />
-          )}
+          <UsersTable
+            data={data}
+            isLoading={isLoading}
+            paginationModel={paginationModel}
+            setPaginationModel={setPaginationModel}
+            onReset={resetFilters}
+          />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <InvitationsTable

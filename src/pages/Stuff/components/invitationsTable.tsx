@@ -1,6 +1,6 @@
 import { type GridColDef } from "@mui/x-data-grid";
 import { UserInvitation, UserRole } from "@types";
-import { CustomTable, InvitationForm, Loader, NoData } from "@components";
+import { CustomTable, InvitationForm, NoData } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
 import { type Dispatch, type SetStateAction, type FC, useState } from "react";
@@ -24,8 +24,6 @@ export const InvitationsTable: FC<Props> = ({
   const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
   const { user, workspace } = useAuth();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  if (isLoading) return <Loader />;
 
   if (!data || !user || !workspace) return <NoData />;
 
