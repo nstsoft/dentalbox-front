@@ -125,6 +125,7 @@ export const Files: FC<Props> = ({ files, enableAddFile, isEmptyData }) => {
             cols={isMobile ? 1 : 4}
             gap={10}
             rowHeight={200}
+            sx={{ overflowX: "hidden" }}
           >
             {images.map((item, index) => (
               <ImageListItem

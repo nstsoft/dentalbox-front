@@ -7,7 +7,11 @@ import Tab from "@mui/material/Tab";
 import { useGetUserListQuery, useGetInvitationsQuery } from "@api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { CustomTabPanel, Loader } from "@components";
+import { CustomTabPanel, InvitationForm, Loader } from "@components";
+import Button from "@mui/material/Button";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import { UserRole } from "@types";
+import { useAuth } from "@hooks";
 
 import "./styles.scss";
 
@@ -17,10 +21,12 @@ export const StuffPage = () => {
   const [rolesValues, setRolesValues] = useState<string[]>([]);
   const [verifiedValue, setVerifiedValue] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const [roles, setRole] = useState<string[]>([]);
   const [verified, setIsVerified] = useState<string>();
   const [search, setSearch] = useState<string>();
+  const { user, workspace } = useAuth();
 
   const [paginationModel, setPaginationModel] = useState({
     skip: 0,
@@ -36,11 +42,14 @@ export const StuffPage = () => {
     limit: paginationModel.limit,
     filter: { roles, verified, search },
   });
-  const { isLoading: isLoadingInvitations, data: invitationData } =
-    useGetInvitationsQuery({
-      skip: invitationPaginationModel.skip,
-      limit: invitationPaginationModel.limit,
-    });
+  const {
+    isLoading: isLoadingInvitations,
+    data: invitationData,
+    refetch: refetchInvitations,
+  } = useGetInvitationsQuery({
+    skip: invitationPaginationModel.skip,
+    limit: invitationPaginationModel.limit,
+  });
 
   const applyFilters = () => {
     setRole(rolesValues);
@@ -66,7 +75,17 @@ export const StuffPage = () => {
     refetch();
   };
 
-  if(isLoading || isLoadingInvitations) return <Loader />
+  const canInviteUser =
+    user &&
+    workspace &&
+    workspace.currentMembersCount < workspace.maxMembersCount &&
+    [UserRole.admin, UserRole.owner, UserRole.manager].includes(user.role);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  if (isLoading || isLoadingInvitations) return <Loader />;
 
   if (!data || !invitationData) return null;
 
@@ -104,6 +123,21 @@ export const StuffPage = () => {
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
+          <Button
+            disabled={!canInviteUser}
+            sx={{ mt: 1, mb: 1 }}
+            onClick={handleClick}
+          >
+            <PersonAddAlt1Icon sx={{ mr: 1 }} /> {t("addStuff")}
+          </Button>
+          <InvitationForm
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            onSubmit={() => {
+              setAnchorEl(null);
+              refetchInvitations();
+            }}
+          />
           <InvitationsTable
             isLoading={isLoadingInvitations}
             data={invitationData}

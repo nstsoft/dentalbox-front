@@ -1,13 +1,12 @@
 import { type GridColDef } from "@mui/x-data-grid";
 import { UserInvitation, UserRole } from "@types";
-import { CustomTable, InvitationForm, NoData } from "@components";
+import { CustomTable, NoData } from "@components";
 import { useTranslation } from "react-i18next";
 import days from "dayjs";
-import { type Dispatch, type SetStateAction, type FC, useState } from "react";
+import { type Dispatch, type SetStateAction, type FC } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useAuth } from "@hooks";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 type Props = {
   isLoading: boolean;
@@ -22,18 +21,9 @@ export const InvitationsTable: FC<Props> = ({
   data,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "pages.stuff" });
-  const { user, workspace } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const { user } = useAuth();
 
-  if (!data || !user || !workspace) return <NoData />;
-
-  const canInviteUser =
-    workspace.currentMembersCount < workspace.maxMembersCount &&
-    [UserRole.admin, UserRole.owner, UserRole.manager].includes(user.role);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  if (!data || !user) return <NoData />;
 
   const statusColors: Record<string, string> = {
     pending: "#f9b071",
@@ -86,18 +76,6 @@ export const InvitationsTable: FC<Props> = ({
 
   return (
     <>
-      <Button
-        disabled={!canInviteUser}
-        sx={{ mt: 1, mb: 1 }}
-        onClick={handleClick}
-      >
-        <PersonAddAlt1Icon sx={{ mr: 1 }} /> {t("addStuff")}
-      </Button>
-      <InvitationForm
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
-        onSubmit={() => setAnchorEl(null)}
-      />
       <div style={{ width: "100%" }}>
         <CustomTable
           rows={data.data}
