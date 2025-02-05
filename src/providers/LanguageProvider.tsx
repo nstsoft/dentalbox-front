@@ -2,7 +2,8 @@ import { useState, type FC, type ReactElement, useEffect } from "react";
 import { LanguageContext } from "./context";
 import { LANGUAGES } from "@types";
 import days from "dayjs";
-import { LANGUAGE, useLocalStorage } from "@hooks";
+import { useLocalStorage } from "@hooks";
+import { LANGUAGE } from "@utils";
 
 export const LanguageProvider: FC<{
   children: ReactElement[] | ReactElement;

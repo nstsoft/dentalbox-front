@@ -9,12 +9,12 @@ import {
   useLazyGetWorkspaceMetadataQuery,
   useLazyGetServicesQuery,
 } from "@api";
-import { useLocalStorage, WORKSPACE, useAuth, useSideMenu } from "@hooks";
+import { useLocalStorage, useAuth, useSideMenu } from "@hooks";
 import { ConfirmOtpDialog, SelectWorkspaceDialog } from "@components";
 import Box from "@mui/material/Box";
 import Grid2 from "@mui/material/Grid2";
 import { SideMenu } from "@components";
-import { CLOSED_MENU_WIDTH, OPENED_MENU_WIDTH } from "@utils";
+import { CLOSED_MENU_WIDTH, OPENED_MENU_WIDTH, WORKSPACE } from "@utils";
 import { isMobile, isTablet } from "react-device-detect";
 
 const isMobileMenu = isMobile || isTablet;

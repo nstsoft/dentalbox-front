@@ -7,7 +7,7 @@ export const PAGES = [
   "patients",
 ] as const;
 
-export const USER_PAGES = ['calendar', 'stuff', 'profile', 'patients'] as const;
+export const USER_PAGES = ["calendar", "stuff", "profile", "patients"] as const;
 
 export const OPENED_MENU_WIDTH = 200;
 export const CLOSED_MENU_WIDTH = 65;
@@ -31,3 +31,9 @@ export const TOOTH_ZONES_STYLE = {
   strokeOpacity: 1,
   cursor: "pointer",
 };
+
+export const AUTH_TOKEN = "auth-token";
+export const REFRESH_TOKEN = "refresh-token";
+export const USER = "user";
+export const WORKSPACE = "workspace";
+export const LANGUAGE = "language";

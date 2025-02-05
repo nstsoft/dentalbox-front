@@ -1,22 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchBaseQuery, type BaseQueryFn } from "@reduxjs/toolkit/query";
+import { AUTH_TOKEN, REFRESH_TOKEN, WORKSPACE } from "@utils";
 
 const buildQueryInstance = (baseUrl: string) => {
   return fetchBaseQuery({
     baseUrl,
     prepareHeaders: async (headers) => {
-      const token = localStorage.getItem("auth-token");
-      const refreshToken = localStorage.getItem("refresh-token");
-      const workspace = localStorage.getItem("workspace");
+      const cookiesList = document.cookie.split("; ");
+      const token = cookiesList
+        .find((item) => item.startsWith(`${AUTH_TOKEN}=`))
+        ?.split("=")[1];
+      const refreshToken = cookiesList
+        .find((item) => item.startsWith(`${REFRESH_TOKEN}=`))
+        ?.split("=")[1];
+      const workspace = localStorage.getItem(WORKSPACE);
 
       if (token) {
-        headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       if (workspace) {
-        headers.set("workspace", JSON.parse(workspace));
+        headers.set(WORKSPACE, JSON.parse(workspace));
       }
       if (refreshToken) {
-        headers.set("refresh-token", JSON.parse(refreshToken));
+        headers.set(REFRESH_TOKEN, refreshToken);
       }
 
       return headers;
@@ -43,11 +49,8 @@ const buildQuery = (baseUrl: string): BaseQueryFn => {
         data: { authToken: string; refreshToken: string };
       };
 
-      window.localStorage.setItem(
-        "refresh-token",
-        JSON.stringify(data.refreshToken)
-      );
-      window.localStorage.setItem("auth-token", JSON.stringify(data.authToken));
+      document.cookie = `${REFRESH_TOKEN}=${data.refreshToken}; path=/`;
+      document.cookie = `${AUTH_TOKEN}=${data.authToken}; path=/`;
     } catch (error: any) {
       throw new Error(error);
     }

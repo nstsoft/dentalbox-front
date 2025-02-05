@@ -11,7 +11,7 @@ import {
 import type { Sex, UserForm } from "@types";
 
 import { useRegisterMutation } from "@api";
-import { WORKSPACE, useLocalStorage, useAuth } from "@hooks";
+import { useLocalStorage, useAuth } from "@hooks";
 import { AuthContainer } from "@elements";
 import { Product } from "@types";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { useTranslation } from "react-i18next";
+import { WORKSPACE } from "@utils";
 
 export const SignUp = () => {
   const [, setWorkspaceId] = useLocalStorage(WORKSPACE, null);

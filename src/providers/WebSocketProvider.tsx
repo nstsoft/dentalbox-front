@@ -8,6 +8,8 @@ import {
 } from "react";
 import { WebsocketContext } from "./context";
 import { SocketMessage } from "@types";
+import { useCookie } from "../hooks/useCookie";
+import { AUTH_TOKEN } from "@utils";
 
 const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -17,6 +19,7 @@ export const WebsocketProvider: FC<{
   const [message, setMessage] = useState<SocketMessage | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const { getCookie } = useCookie();
 
   const connect = useCallback(() => {
     if (
@@ -24,7 +27,7 @@ export const WebsocketProvider: FC<{
       socketRef.current.readyState === WebSocket.CLOSED
     ) {
       console.log("Creating new WebSocket connection...");
-      const token = JSON.parse(localStorage.getItem("auth-token") ?? "");
+      const token = getCookie(AUTH_TOKEN);
       const workspace = JSON.parse(localStorage.getItem("workspace") ?? "");
       const url = `${socketUrl}?token=${token}&workspace=${workspace}`;
 

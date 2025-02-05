@@ -3,19 +3,17 @@ import { useDispatch } from "react-redux";
 import { User, AuthState, Workspace } from "@types";
 import { AuthContext } from "./context";
 import { authApi } from "@api";
-
-const AUTH_TOKEN = "auth-token";
-const REFRESH_TOKEN = "refresh-token";
-const USER = "user";
-const WORKSPACE = "workspace";
+import { AUTH_TOKEN, REFRESH_TOKEN, USER, WORKSPACE } from "@utils";
+import { useCookie } from "../hooks/useCookie";
 
 export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const dispatch = useDispatch();
+  const { setCookie, getCookie, cleanCookie } = useCookie();
 
   const [authToken, setAuthToken] = useState<string | null>(() => {
     try {
-      const item = localStorage.getItem(AUTH_TOKEN);
-      return item ? JSON.parse(item) : null;
+      const item = getCookie(AUTH_TOKEN);
+      return item ?? null;
     } catch (error) {
       console.error(error);
       return null;
@@ -23,8 +21,8 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
   });
   const [refreshToken, setRefreshToken] = useState<string | null>(() => {
     try {
-      const item = localStorage.getItem(REFRESH_TOKEN);
-      return item ? JSON.parse(item) : null;
+      const item = getCookie(REFRESH_TOKEN);
+      return item ?? null;
     } catch (error) {
       console.error(error);
       return null;
@@ -49,11 +47,11 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
       setRefreshToken(data.refreshToken);
       setUser(data.user);
 
-      localStorage.setItem(REFRESH_TOKEN, JSON.stringify(data.refreshToken));
-      localStorage.setItem(AUTH_TOKEN, JSON.stringify(data.authToken));
+      setCookie(AUTH_TOKEN, data.authToken);
+      setCookie(REFRESH_TOKEN, data.refreshToken);
       localStorage.setItem(USER, JSON.stringify(data.user));
     },
-    [setAuthToken, setRefreshToken, setUser]
+    [setAuthToken, setRefreshToken, setUser, setCookie]
   );
 
   const logout = useCallback(() => {
@@ -63,8 +61,7 @@ export const AuthProvider: FC<{ children: ReactElement }> = ({ children }) => {
     setUser(null);
     setWorkspaceData(null);
 
-    localStorage.removeItem(REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_TOKEN);
+    cleanCookie();
     localStorage.removeItem(USER);
     localStorage.removeItem(WORKSPACE);
   }, []);
