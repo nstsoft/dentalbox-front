@@ -6,4 +6,6 @@ export type WorkspaceMetadata = {
   };
   workingHours: { start: string; end: string };
   showPricing: boolean;
+  sendNotifications: boolean;
+  notificationsLanguage: string;
 };

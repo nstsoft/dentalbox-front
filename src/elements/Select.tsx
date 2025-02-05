@@ -13,6 +13,7 @@ type Props = {
   label: string;
   renderValue?: (selected: string) => string;
   width?: number;
+  disabled?: boolean;
 };
 
 export const CustomSelect: FC<Props> = ({
@@ -21,6 +22,7 @@ export const CustomSelect: FC<Props> = ({
   selected,
   label,
   width,
+  disabled
 }) => {
   return (
     <FormControl sx={{ m: 0, mt: 1, mb: 1, p: 0, width: width ?? 300 }}>
@@ -30,6 +32,7 @@ export const CustomSelect: FC<Props> = ({
       <Select
         labelId="checkbox-label"
         value={selected}
+        disabled={disabled}
         onChange={({ target }) => setValue(target.value)}
         input={<OutlinedInput label={label} />}
         renderValue={(selected) =>

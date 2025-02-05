@@ -256,6 +256,8 @@ export const UA: ResourceLanguage = {
           currency: "Валюта",
           workingHours: "Графік роботи",
           showPricing: "Показувати ціну",
+          sendNotifications: "Надсилати сповіщення",
+          notificationsLanguage: "Мова сповіщень",
           name: "Назва",
         },
         showMore: "Показати більше",

@@ -256,6 +256,8 @@ export const EN: ResourceLanguage = {
           currency: "Currency",
           workingHours: "Working hours",
           showPricing: "Show pricing",
+          sendNotifications: "Send notifications",
+          notificationsLanguage: "Notifications language",
           name: "Name",
         },
         showMore: "Show more",

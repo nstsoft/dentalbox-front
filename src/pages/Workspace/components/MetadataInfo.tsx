@@ -32,6 +32,12 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
   const [showPricing, setShowPricing] = useState(
     metadata?.showPricing ?? false
   );
+  const [sendNotifications, setSendNotifications] = useState(
+    metadata?.sendNotifications ?? false
+  );
+  const [notificationsLanguage, setNotificationsLanguage] = useState(
+    metadata?.notificationsLanguage ?? "en"
+  );
 
   const onUpdateMetadata = () => {
     updateMetadata({
@@ -128,6 +134,45 @@ export const MetadataInfo: FC<Props> = ({ metadata }) => {
             onChange={({ target }) => setShowPricing(target.checked)}
             disabled={!isEditingMode}
           />
+        </Box>
+
+        <Box className="metadata-item">
+          <Typography className="metadata-item-title" variant="h6">
+            {t("sendNotifications")}
+          </Typography>
+
+          <Android12Switch
+            className="metadata-item-value"
+            checked={sendNotifications}
+            onChange={({ target }) => setSendNotifications(target.checked)}
+            disabled={!isEditingMode}
+          />
+        </Box>
+
+        <Box className="metadata-item">
+          <Typography className="metadata-item-title" variant="h6">
+            {t("notificationsLanguage")}
+          </Typography>
+
+          {isEditingMode ? (
+            <Box className="metadata-item-value">
+              <CustomSelect
+                label=""
+                data={[
+                  { value: "en", label: "En" },
+                  { value: "uk", label: "Укр" },
+                ]}
+                selected={notificationsLanguage}
+                setValue={setNotificationsLanguage}
+                disabled={!isEditingMode}
+                width={184}
+              />
+            </Box>
+          ) : (
+            <Typography variant="body1">
+              {metadata?.notificationsLanguage ?? "En"}
+            </Typography>
+          )}
         </Box>
       </Box>
       {isEditingMode && (
