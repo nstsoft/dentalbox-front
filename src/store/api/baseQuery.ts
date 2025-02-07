@@ -31,7 +31,7 @@ const buildQueryInstance = (baseUrl: string) => {
 };
 
 const buildQuery = (baseUrl: string): BaseQueryFn => {
-  const baseQueryInstance = buildQueryInstance(baseUrl);
+  let baseQueryInstance = buildQueryInstance(baseUrl);
   const baseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     const result: any = await baseQueryInstance(args, api, extraOptions);
     if (result?.error?.data?.error?.type !== "Expired") {
@@ -39,6 +39,10 @@ const buildQuery = (baseUrl: string): BaseQueryFn => {
     }
 
     try {
+      if (baseUrl === import.meta.env.VITE_CHAT_API_URL) {
+        baseQueryInstance = buildQueryInstance(import.meta.env.VITE_API_URL);
+      }
+      console.log(baseUrl, args, api, extraOptions, result);
       const response = await baseQueryInstance(
         "/auth/refresh-token",
         api,
