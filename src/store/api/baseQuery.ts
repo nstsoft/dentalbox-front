@@ -42,7 +42,7 @@ const buildQuery = (baseUrl: string): BaseQueryFn => {
       if (baseUrl === import.meta.env.VITE_CHAT_API_URL) {
         baseQueryInstance = buildQueryInstance(import.meta.env.VITE_API_URL);
       }
-      console.log(baseUrl, args, api, extraOptions, result);
+
       const response = await baseQueryInstance(
         "/auth/refresh-token",
         api,
